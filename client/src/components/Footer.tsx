@@ -11,9 +11,11 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                <i className="fas fa-heart text-white text-lg"></i>
-              </div>
+              <img 
+                src="/logo.png" 
+                alt="Janma Sethu Logo" 
+                className="w-10 h-10 object-contain"
+              />
               <h3 className="text-xl font-bold text-foreground font-serif">Janma Sethu</h3>
             </div>
             <p className="text-muted-foreground text-sm">{t('brand_tag')}</p>
