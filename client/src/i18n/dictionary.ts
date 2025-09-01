@@ -4,7 +4,7 @@ export const dict = {
   en: {
     // Header & Nav
     brand_tag: "Your fertility journey starts here",
-    nav_home: "Home", nav_knowledge: "Knowledge Hub", nav_treatments: "Treatments", nav_life: "Life Stages", nav_success: "Success Stories", nav_blog: "Blog", nav_experts: "Experts", nav_tools: "Tools", nav_sakhi: "Sakhi (Companion)", lang_label: "Language",
+    nav_home: "Home", nav_knowledge: "Knowledge Hub", nav_treatments: "Treatments", nav_life: "Life Stages", nav_success: "Success Stories", nav_blog: "Blog", nav_experts: "Experts", nav_tools: "Tools", nav_sakhi: "Sakhi", lang_label: "Language",
 
     // Hero
     hero_title: "Nurture Every <span>Journey to Parenthood</span>",
