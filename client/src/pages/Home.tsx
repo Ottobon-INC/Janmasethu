@@ -27,8 +27,7 @@ const Home = () => {
 
         {/* Hero Title */}
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground font-serif mb-6 leading-tight">
-          <span className="gradient-text">Bridge to Parenthood.</span>
-          <br />
+          Bridge to <span className="gradient-text">Parenthood</span>.<br />
           For every step of the journey.
         </h1>
 
@@ -37,9 +36,9 @@ const Home = () => {
           {t('hero_sub')}
         </p>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons - Updated to match blueprint */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link href="/sakhi">
+          <Link href="/sakhi/try">
             <Button className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300" data-testid="button-cta-primary">
               Meet Sakhi
             </Button>
@@ -61,49 +60,51 @@ const Home = () => {
         </div>
       </section>
 
-      {/* About JanmaSethu - Who We Serve */}
+      {/* About JanmaSethu - 3 Cards as per blueprint */}
       <section className="py-16">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground font-serif mb-4">Who We Serve</h2>
+          <h2 className="text-4xl font-bold text-foreground font-serif mb-4" data-testid="text-about-title">
+            {t('who_title')}
+          </h2>
         </div>
-        
+
         <div className="grid md:grid-cols-3 gap-8">
           {/* Patients Card */}
-          <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 group hover:bg-gradient-to-br hover:from-purple-50 hover:to-pink-50">
-            <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <Users className="text-purple-600 text-2xl" />
+          <Card className="rounded-3xl p-8 card-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group backdrop-blur-sm bg-white/80" data-testid="card-about-patients">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <Heart className="text-purple-600 text-2xl" />
             </div>
             <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid="text-patients-title">
-              Patients
+              {t('about_patients_title')}
             </h3>
             <p className="text-muted-foreground" data-testid="text-patients-desc">
-              Comprehensive guidance and emotional support for every step of your fertility journey.
+              {t('about_patients_desc')}
             </p>
           </Card>
 
           {/* Clinics Card */}
-          <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 group hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50">
-            <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+          <Card className="rounded-3xl p-8 card-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group backdrop-blur-sm bg-white/80" data-testid="card-about-clinics">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <Stethoscope className="text-blue-600 text-2xl" />
             </div>
             <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid="text-clinics-title">
-              Clinics
+              {t('about_clinics_title')}
             </h3>
             <p className="text-muted-foreground" data-testid="text-clinics-desc">
-              Evidence-based resources and patient education tools to enhance care delivery.
+              {t('about_clinics_desc')}
             </p>
           </Card>
 
           {/* Investors Card */}
-          <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 group hover:bg-gradient-to-br hover:from-green-50 hover:to-blue-50">
-            <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+          <Card className="rounded-3xl p-8 card-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group backdrop-blur-sm bg-white/80" data-testid="card-about-investors">
+            <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
               <IndianRupee className="text-green-600 text-2xl" />
             </div>
             <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid="text-investors-title">
-              Investors
+              {t('about_investors_title')}
             </h3>
             <p className="text-muted-foreground" data-testid="text-investors-desc">
-              Scalable healthcare technology addressing India's fertility and maternal health needs.
+              {t('about_investors_desc')}
             </p>
           </Card>
         </div>
@@ -113,13 +114,13 @@ const Home = () => {
       <section className="py-16 bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50 rounded-3xl mx-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-foreground font-serif mb-4" data-testid="text-journey-title">
-            Your Parenthood Journey
+            {t('journey_title')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Sakhi guides you at every stage with personalized support and expert knowledge
+            {t('journey_subtitle')}
           </p>
         </div>
-        
+
         {/* Journey Timeline */}
         <div className="relative overflow-x-auto pb-8">
           <div className="flex items-center justify-between min-w-[800px] px-8">
@@ -128,10 +129,14 @@ const Home = () => {
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors shadow-lg">
                 <span className="text-2xl">🌱</span>
               </div>
-              <h3 className="text-sm font-bold text-foreground text-center mb-2">Thinking of<br/>Parenthood</h3>
-              <p className="text-xs text-muted-foreground text-center max-w-[120px]">Nutrition, emotional readiness, financial planning</p>
+              <h3 className="text-sm font-bold text-foreground text-center mb-2">
+                {t('journey_stage_1_title')}
+              </h3>
+              <p className="text-xs text-muted-foreground text-center max-w-[120px]">
+                {t('journey_stage_1_desc')}
+              </p>
               <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
-                <p className="text-xs text-center whitespace-nowrap">Sakhi guides you at this stage</p>
+                <p className="text-xs text-center whitespace-nowrap">{t('journey_stage_tooltip')}</p>
               </div>
             </div>
 
@@ -143,10 +148,14 @@ const Home = () => {
               <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-pink-200 transition-colors shadow-lg">
                 <span className="text-2xl">💖</span>
               </div>
-              <h3 className="text-sm font-bold text-foreground text-center mb-2">Trying<br/>Naturally</h3>
-              <p className="text-xs text-muted-foreground text-center max-w-[120px]">Cycle tracking, lifestyle tips</p>
+              <h3 className="text-sm font-bold text-foreground text-center mb-2">
+                {t('journey_stage_2_title')}
+              </h3>
+              <p className="text-xs text-muted-foreground text-center max-w-[120px]">
+                {t('journey_stage_2_desc')}
+              </p>
               <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
-                <p className="text-xs text-center whitespace-nowrap">Sakhi guides you at this stage</p>
+                <p className="text-xs text-center whitespace-nowrap">{t('journey_stage_tooltip')}</p>
               </div>
             </div>
 
@@ -158,10 +167,14 @@ const Home = () => {
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors shadow-lg">
                 <span className="text-2xl">🔬</span>
               </div>
-              <h3 className="text-sm font-bold text-foreground text-center mb-2">Exploring<br/>Options</h3>
-              <p className="text-xs text-muted-foreground text-center max-w-[120px]">IUI/IVF preparedness, questions for doctors</p>
+              <h3 className="text-sm font-bold text-foreground text-center mb-2">
+                {t('journey_stage_3_title')}
+              </h3>
+              <p className="text-xs text-muted-foreground text-center max-w-[120px]">
+                {t('journey_stage_3_desc')}
+              </p>
               <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
-                <p className="text-xs text-center whitespace-nowrap">Sakhi guides you at this stage</p>
+                <p className="text-xs text-center whitespace-nowrap">{t('journey_stage_tooltip')}</p>
               </div>
             </div>
 
@@ -173,10 +186,14 @@ const Home = () => {
               <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors shadow-lg">
                 <span className="text-2xl">🤰</span>
               </div>
-              <h3 className="text-sm font-bold text-foreground text-center mb-2">Pregnancy</h3>
-              <p className="text-xs text-muted-foreground text-center max-w-[120px]">Trimester guidance, myths vs facts</p>
+              <h3 className="text-sm font-bold text-foreground text-center mb-2">
+                {t('journey_stage_4_title')}
+              </h3>
+              <p className="text-xs text-muted-foreground text-center max-w-[120px]">
+                {t('journey_stage_4_desc')}
+              </p>
               <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
-                <p className="text-xs text-center whitespace-nowrap">Sakhi guides you at this stage</p>
+                <p className="text-xs text-center whitespace-nowrap">{t('journey_stage_tooltip')}</p>
               </div>
             </div>
 
@@ -188,10 +205,14 @@ const Home = () => {
               <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-orange-200 transition-colors shadow-lg">
                 <span className="text-2xl">👶</span>
               </div>
-              <h3 className="text-sm font-bold text-foreground text-center mb-2">Post-<br/>Delivery</h3>
-              <p className="text-xs text-muted-foreground text-center max-w-[120px]">Recovery, newborn care, mental health</p>
+              <h3 className="text-sm font-bold text-foreground text-center mb-2">
+                {t('journey_stage_5_title')}
+              </h3>
+              <p className="text-xs text-muted-foreground text-center max-w-[120px]">
+                {t('journey_stage_5_desc')}
+              </p>
               <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
-                <p className="text-xs text-center whitespace-nowrap">Sakhi guides you at this stage</p>
+                <p className="text-xs text-center whitespace-nowrap">{t('journey_stage_tooltip')}</p>
               </div>
             </div>
           </div>
@@ -201,7 +222,7 @@ const Home = () => {
         <div className="text-center mt-12">
           <Link href="/sakhi">
             <Button className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-flex items-center" data-testid="button-sakhi-support">
-              See how Sakhi supports you
+              {t('journey_cta')}
               <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
           </Link>
@@ -215,7 +236,7 @@ const Home = () => {
             {t('orient_title')}
           </h2>
         </div>
-        
+
         <div className="grid md:grid-cols-3 gap-8">
           {/* TTC Card */}
           <Link href="/life-stages/ttc" className="group">
@@ -286,7 +307,7 @@ const Home = () => {
             {t('lens_title')}
           </h2>
         </div>
-        
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Medical Lens */}
           <Link href="/knowledge?lens=medical" className="group">
@@ -345,7 +366,7 @@ const Home = () => {
             {t('featured_title')}
           </h2>
         </div>
-        
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {featuredArticles.map((article, index) => (
             <Link key={article.slug} href={`/knowledge/${article.slug}`} className="group">
@@ -374,7 +395,7 @@ const Home = () => {
             {t('treatments_overview_title')}
           </h2>
         </div>
-        
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {getTreatmentCards().map((treatment, index) => (
             <Link key={treatment.slug} href={`/treatments/${treatment.slug}`} className="group">
@@ -401,7 +422,7 @@ const Home = () => {
             {t('success_preview_title')}
           </h2>
         </div>
-        
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredStories.map((story, index) => (
             <Link key={story.slug} href={`/success-stories/${story.slug}`} className="group">
@@ -438,7 +459,7 @@ const Home = () => {
               <p className="text-lg text-muted-foreground mb-8" data-testid="text-sakhi-sub">
                 {t('sakhi_sub')}
               </p>
-              
+
               <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid="text-sakhi-how-title">
                 {t('sakhi_how_title')}
               </h3>
@@ -450,7 +471,7 @@ const Home = () => {
                   </li>
                 ))}
               </ul>
-              
+
               <Link href="/sakhi/try">
                 <Button className="gradient-button-secondary text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-flex items-center" data-testid="button-try-sakhi">
                   {t('sakhi_try')}
@@ -458,7 +479,7 @@ const Home = () => {
                 </Button>
               </Link>
             </div>
-            
+
             {/* Chat Interface Preview */}
             <Card className="rounded-3xl p-6 card-shadow">
               <div className="border-b border-border pb-4 mb-4">
@@ -470,7 +491,7 @@ const Home = () => {
                   Sakhi is online and ready to help
                 </p>
               </div>
-              
+
               <div className="space-y-4 mb-4 h-60 overflow-y-auto">
                 {/* Sample Chat Messages */}
                 <div className="flex justify-end">
@@ -478,7 +499,7 @@ const Home = () => {
                     I'm feeling anxious about tomorrow's scan
                   </div>
                 </div>
-                
+
                 <div className="flex justify-start">
                   <div className="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-2xl max-w-xs shadow-md" data-testid="message-sample-bot">
                     I understand your anxiety. It's completely normal to feel this way before scans. 
@@ -499,7 +520,7 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex space-x-2">
                 <Input
                   type="text"
@@ -511,7 +532,7 @@ const Home = () => {
                   <Send className="w-4 h-4" />
                 </Button>
               </div>
-              
+
               <p className="text-xs text-muted-foreground mt-2" data-testid="text-chat-preview-privacy">
                 {t('chat_privacy')}
               </p>
@@ -538,7 +559,7 @@ const getStoryImage = (index: number) => {
   const images = [
     "https://images.unsplash.com/photo-1609220136736-443140cffec6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300",
     "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300",
-    "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300"
+    "https://images.unsplash.com/photo-15443675670f0ffc700b90b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300"
   ];
   return images[index] || images[0];
 };
