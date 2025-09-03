@@ -26,9 +26,8 @@ const Home = () => {
         </div>
 
         {/* Hero Title */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground font-serif mb-6 leading-tight">
-          Bridge to <span className="gradient-text">Parenthood</span>.<br />
-          For every step of the journey.
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground font-serif mb-6 leading-tight" data-testid="text-hero-title">
+          <span dangerouslySetInnerHTML={{ __html: t('hero_title') }} />
         </h1>
 
         {/* Hero Subtitle */}
@@ -40,12 +39,12 @@ const Home = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link href="/sakhi/try">
             <Button className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300" data-testid="button-cta-primary">
-              Meet Sakhi
+              {t('cta_primary')}
             </Button>
           </Link>
           <Link href="/knowledge">
             <Button variant="outline" className="bg-white text-foreground px-8 py-4 rounded-full font-semibold text-lg border-border hover:shadow-lg transition-all duration-300" data-testid="button-cta-secondary">
-              For Clinics
+              {t('cta_secondary')}
             </Button>
           </Link>
         </div>
