@@ -121,4 +121,46 @@
   .skip-link:focus {
     top: 6px;
   }
+
+  /* Journey Timeline Animations */
+  @keyframes glow-line {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .journey-line {
+    animation: glow-line 3s ease-in-out infinite;
+  }
+
+  /* Glassmorphism effect for cards */
+  .glassmorphism {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  /* Enhanced hover effects */
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(20, 20, 43, 0.15);
+  }
+
+  /* Typing animation */
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  .typing-text {
+    overflow: hidden;
+    border-right: 2px solid #8B5CF6;
+    white-space: nowrap;
+    margin: 0 auto;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+
+  @keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #8B5CF6; }
+  }
 }

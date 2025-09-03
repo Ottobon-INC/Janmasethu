@@ -27,9 +27,9 @@ const Home = () => {
 
         {/* Hero Title */}
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground font-serif mb-6 leading-tight">
-          <span dangerouslySetInnerHTML={{ 
-            __html: t('hero_title').replace('<span>', '<span class="gradient-text">').replace('</span>', '</span>')
-          }} data-testid="text-hero-title" />
+          <span className="gradient-text">Bridge to Parenthood.</span>
+          <br />
+          For every step of the journey.
         </h1>
 
         {/* Hero Subtitle */}
@@ -39,14 +39,14 @@ const Home = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link href="/knowledge">
+          <Link href="/sakhi">
             <Button className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300" data-testid="button-cta-primary">
-              {t('cta_primary')}
+              Meet Sakhi
             </Button>
           </Link>
-          <Link href="/sakhi">
+          <Link href="/knowledge">
             <Button variant="outline" className="bg-white text-foreground px-8 py-4 rounded-full font-semibold text-lg border-border hover:shadow-lg transition-all duration-300" data-testid="button-cta-secondary">
-              {t('cta_secondary')}
+              For Clinics
             </Button>
           </Link>
         </div>
@@ -61,38 +61,150 @@ const Home = () => {
         </div>
       </section>
 
-      {/* What & Why Section */}
+      {/* About JanmaSethu - Who We Serve */}
       <section className="py-16">
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* What is Janma Sethu */}
-          <Card className="rounded-3xl p-8 card-shadow">
-            <h2 className="text-3xl font-bold text-foreground font-serif mb-6" data-testid="text-what-title">
-              {t('who_title')}
-            </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-6" data-testid="text-what-body">
-              {t('who_body')}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-foreground font-serif mb-4">Who We Serve</h2>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Patients Card */}
+          <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 group hover:bg-gradient-to-br hover:from-purple-50 hover:to-pink-50">
+            <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Users className="text-purple-600 text-2xl" />
+            </div>
+            <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid="text-patients-title">
+              Patients
+            </h3>
+            <p className="text-muted-foreground" data-testid="text-patients-desc">
+              Comprehensive guidance and emotional support for every step of your fertility journey.
             </p>
-            <img 
-              src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" 
-              alt="Doctor consultation with expecting parents" 
-              className="rounded-xl w-full h-48 object-cover"
-            />
           </Card>
 
-          {/* Why Janma Sethu */}
-          <Card className="rounded-3xl p-8 card-shadow">
-            <h2 className="text-3xl font-bold text-foreground font-serif mb-6" data-testid="text-why-title">
-              {t('why_title')}
-            </h2>
-            <ul className="space-y-4">
-              {t('why_points').split(',').map((point: string, index: number) => (
-                <li key={index} className="flex items-start space-x-3" data-testid={`item-why-point-${index}`}>
-                  <CheckCircle className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                  <span className="text-muted-foreground">{point.trim()}</span>
-                </li>
-              ))}
-            </ul>
+          {/* Clinics Card */}
+          <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 group hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50">
+            <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Stethoscope className="text-blue-600 text-2xl" />
+            </div>
+            <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid="text-clinics-title">
+              Clinics
+            </h3>
+            <p className="text-muted-foreground" data-testid="text-clinics-desc">
+              Evidence-based resources and patient education tools to enhance care delivery.
+            </p>
           </Card>
+
+          {/* Investors Card */}
+          <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 group hover:bg-gradient-to-br hover:from-green-50 hover:to-blue-50">
+            <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <IndianRupee className="text-green-600 text-2xl" />
+            </div>
+            <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid="text-investors-title">
+              Investors
+            </h3>
+            <p className="text-muted-foreground" data-testid="text-investors-desc">
+              Scalable healthcare technology addressing India's fertility and maternal health needs.
+            </p>
+          </Card>
+        </div>
+      </section>
+
+      {/* Parenthood Journey Strip */}
+      <section className="py-16 bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50 rounded-3xl mx-4">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-foreground font-serif mb-4" data-testid="text-journey-title">
+            Your Parenthood Journey
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            Sakhi guides you at every stage with personalized support and expert knowledge
+          </p>
+        </div>
+        
+        {/* Journey Timeline */}
+        <div className="relative overflow-x-auto pb-8">
+          <div className="flex items-center justify-between min-w-[800px] px-8">
+            {/* Stage 1: Thinking of Parenthood */}
+            <div className="flex flex-col items-center group cursor-pointer hover:scale-105 transition-all duration-300" data-testid="journey-stage-thinking">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors shadow-lg">
+                <span className="text-2xl">🌱</span>
+              </div>
+              <h3 className="text-sm font-bold text-foreground text-center mb-2">Thinking of<br/>Parenthood</h3>
+              <p className="text-xs text-muted-foreground text-center max-w-[120px]">Nutrition, emotional readiness, financial planning</p>
+              <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
+                <p className="text-xs text-center whitespace-nowrap">Sakhi guides you at this stage</p>
+              </div>
+            </div>
+
+            {/* Connection Line 1 */}
+            <div className="flex-1 h-1 bg-gradient-to-r from-green-200 to-pink-200 mx-4 rounded-full"></div>
+
+            {/* Stage 2: Trying Naturally */}
+            <div className="flex flex-col items-center group cursor-pointer hover:scale-105 transition-all duration-300" data-testid="journey-stage-trying">
+              <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-pink-200 transition-colors shadow-lg">
+                <span className="text-2xl">💖</span>
+              </div>
+              <h3 className="text-sm font-bold text-foreground text-center mb-2">Trying<br/>Naturally</h3>
+              <p className="text-xs text-muted-foreground text-center max-w-[120px]">Cycle tracking, lifestyle tips</p>
+              <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
+                <p className="text-xs text-center whitespace-nowrap">Sakhi guides you at this stage</p>
+              </div>
+            </div>
+
+            {/* Connection Line 2 */}
+            <div className="flex-1 h-1 bg-gradient-to-r from-pink-200 to-blue-200 mx-4 rounded-full"></div>
+
+            {/* Stage 3: Exploring Options */}
+            <div className="flex flex-col items-center group cursor-pointer hover:scale-105 transition-all duration-300" data-testid="journey-stage-exploring">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors shadow-lg">
+                <span className="text-2xl">🔬</span>
+              </div>
+              <h3 className="text-sm font-bold text-foreground text-center mb-2">Exploring<br/>Options</h3>
+              <p className="text-xs text-muted-foreground text-center max-w-[120px]">IUI/IVF preparedness, questions for doctors</p>
+              <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
+                <p className="text-xs text-center whitespace-nowrap">Sakhi guides you at this stage</p>
+              </div>
+            </div>
+
+            {/* Connection Line 3 */}
+            <div className="flex-1 h-1 bg-gradient-to-r from-blue-200 to-purple-200 mx-4 rounded-full"></div>
+
+            {/* Stage 4: Pregnancy */}
+            <div className="flex flex-col items-center group cursor-pointer hover:scale-105 transition-all duration-300" data-testid="journey-stage-pregnancy">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors shadow-lg">
+                <span className="text-2xl">🤰</span>
+              </div>
+              <h3 className="text-sm font-bold text-foreground text-center mb-2">Pregnancy</h3>
+              <p className="text-xs text-muted-foreground text-center max-w-[120px]">Trimester guidance, myths vs facts</p>
+              <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
+                <p className="text-xs text-center whitespace-nowrap">Sakhi guides you at this stage</p>
+              </div>
+            </div>
+
+            {/* Connection Line 4 */}
+            <div className="flex-1 h-1 bg-gradient-to-r from-purple-200 to-orange-200 mx-4 rounded-full"></div>
+
+            {/* Stage 5: Post-Delivery */}
+            <div className="flex flex-col items-center group cursor-pointer hover:scale-105 transition-all duration-300" data-testid="journey-stage-postdelivery">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-orange-200 transition-colors shadow-lg">
+                <span className="text-2xl">👶</span>
+              </div>
+              <h3 className="text-sm font-bold text-foreground text-center mb-2">Post-<br/>Delivery</h3>
+              <p className="text-xs text-muted-foreground text-center max-w-[120px]">Recovery, newborn care, mental health</p>
+              <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
+                <p className="text-xs text-center whitespace-nowrap">Sakhi guides you at this stage</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA under strip */}
+        <div className="text-center mt-12">
+          <Link href="/sakhi">
+            <Button className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-flex items-center" data-testid="button-sakhi-support">
+              See how Sakhi supports you
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -351,24 +463,39 @@ const Home = () => {
             <Card className="rounded-3xl p-6 card-shadow">
               <div className="border-b border-border pb-4 mb-4">
                 <h4 className="font-bold text-foreground" data-testid="text-chat-preview-title">
-                  {t('chat_title')}
+                  Chat with Sakhi
                 </h4>
                 <p className="text-sm text-muted-foreground" data-testid="text-chat-preview-hint">
-                  {t('chat_hint')}
+                  <span className="w-2 h-2 bg-green-500 rounded-full inline-block mr-2"></span>
+                  Sakhi is online and ready to help
                 </p>
               </div>
               
               <div className="space-y-4 mb-4 h-60 overflow-y-auto">
                 {/* Sample Chat Messages */}
                 <div className="flex justify-end">
-                  <div className="bg-primary text-primary-foreground px-4 py-2 rounded-2xl max-w-xs" data-testid="message-sample-user">
+                  <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-2xl max-w-xs shadow-md" data-testid="message-sample-user">
                     I'm feeling anxious about tomorrow's scan
                   </div>
                 </div>
                 
                 <div className="flex justify-start">
-                  <div className="bg-muted text-muted-foreground px-4 py-2 rounded-2xl max-w-xs" data-testid="message-sample-bot">
-                    I understand your anxiety. It's completely normal to feel this way before scans. Try some deep breathing exercises and remember that you're taking positive steps for your journey.
+                  <div className="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-2xl max-w-xs shadow-md" data-testid="message-sample-bot">
+                    I understand your anxiety. It's completely normal to feel this way before scans. 
+                    <div className="mt-2 text-xs text-gray-500">
+                      <span className="animate-pulse">💭 Try some deep breathing exercises...</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Typing indicator */}
+                <div className="flex justify-start">
+                  <div className="bg-gray-100 px-4 py-2 rounded-2xl">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    </div>
                   </div>
                 </div>
               </div>
