@@ -96,8 +96,8 @@ const Home = () => {
         {/* Hero Background Image */}
         <div className="absolute inset-0 -z-10 opacity-10">
           <img 
-            src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080" 
-            alt="Family moment with newborn" 
+            src="/babyFeet.jpg" 
+            alt="Baby feet - nurturing parenthood journey" 
             className="w-full h-full object-cover rounded-3xl"
           />
         </div>
