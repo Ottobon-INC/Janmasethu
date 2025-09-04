@@ -127,10 +127,20 @@
   /* Logo hover effects */
   .logo-hover {
     transition: transform 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
   }
 
   .logo-hover:hover {
     transform: scale(1.05);
+  }
+
+  .logo-hover img {
+    filter: brightness(1.1) contrast(1.1);
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    padding: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   /* Journey Timeline Animations */

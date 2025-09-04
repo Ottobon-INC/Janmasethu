@@ -34,9 +34,10 @@ const Header = () => {
               <img 
                 src="/janma-sethu-logo.png" 
                 alt="Janma Sethu Logo" 
-                className="w-12 h-12 object-contain"
+                className="w-16 h-16 md:w-20 md:h-20 object-contain flex-shrink-0"
+                style={{ maxHeight: '4rem', width: 'auto' }}
               />
-              <span className="text-2xl font-bold text-foreground font-serif">Janma Sethu</span>
+              <span className="text-xl md:text-2xl font-bold text-foreground font-serif whitespace-nowrap">Janma Sethu</span>
             </Link>
 
             {/* Desktop Navigation */}
