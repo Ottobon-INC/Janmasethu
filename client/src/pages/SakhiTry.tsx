@@ -1,7 +1,6 @@
 import { Link } from 'wouter';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import SakhiWidget from '@/components/sakhi/SakhiWidget';
 
 const SakhiTry = () => {
   return (
@@ -16,20 +15,14 @@ const SakhiTry = () => {
         </Link>
       </div>
 
-      {/* Page Header */}
-      <div className="text-center mb-8">
+      {/* Blank Page Content */}
+      <div className="text-center py-32">
         <h1 className="text-4xl font-bold text-foreground font-serif mb-4">
-          Try Sakhi - Interactive Demo
+          Coming Soon
         </h1>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          Experience compassionate, culturally-aware support for your fertility journey. 
-          Switch between English and Telugu to see how Sakhi adapts to your language.
+        <p className="text-muted-foreground">
+          This page is currently under development.
         </p>
-      </div>
-
-      {/* Sakhi Widget */}
-      <div className="mb-8">
-        <SakhiWidget />
       </div>
     </div>
   );
