@@ -324,6 +324,7 @@ const SakhiTry = () => {
                 currentPrompts={currentPrompts}
                 messagesEndRef={messagesEndRef}
                 selectedLanguage={selectedLanguage}
+                setSelectedLanguage={setSelectedLanguage}
               />
             </ResizablePanel>
             <ResizableHandle withHandle />
