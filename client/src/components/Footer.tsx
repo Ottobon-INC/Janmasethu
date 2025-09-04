@@ -12,9 +12,9 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-3 mb-4">
               <img 
-                src="/logo.png" 
+                src="/JanmaSethu Logo.png" 
                 alt="Janma Sethu Logo" 
-                className="w-10 h-10 object-contain"
+                className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
               />
               <h3 className="text-xl font-bold text-foreground font-serif">Janma Sethu</h3>
             </div>
