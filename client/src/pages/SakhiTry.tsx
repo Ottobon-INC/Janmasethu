@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Send, MessageCircle, Heart, Shield, Clock, Users, Play, Volume2, VolumeX, Globe, User, Bot, X } from 'lucide-react';
@@ -238,7 +237,7 @@ const SakhiTry = () => {
 
     const message = userMessage.toLowerCase();
     let category = 'anxiety';
-    
+
     if (message.includes('wait') || message.includes('waiting') || message.includes('two week') || 
         message.includes('प्रतीक्षा') || message.includes('इंतज़ार') || 
         message.includes('వేచిచూపు') || message.includes('వేచి')) {
@@ -265,7 +264,7 @@ const SakhiTry = () => {
     };
 
     setMessages(prev => [...prev, newMessage]);
-    
+
     // Generate preview content based on the message
     const preview = generatePreviewContent(inputText, detectedLanguage);
     setPreviewContent(preview);
@@ -368,6 +367,7 @@ const SakhiTry = () => {
               currentPrompts={currentPrompts}
               messagesEndRef={messagesEndRef}
               selectedLanguage={selectedLanguage}
+              setSelectedLanguage={setSelectedLanguage}
             />
           </div>
           <div className="h-1/2">
@@ -387,11 +387,11 @@ const SakhiTry = () => {
 };
 
 // Chat Panel Component
-const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentPrompts, messagesEndRef, selectedLanguage }: any) => {
+const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentPrompts, messagesEndRef, selectedLanguage, setSelectedLanguage }: any) => {
   return (
     <div className="h-full flex flex-col bg-white">
       {/* Chat Header */}
-      <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+      <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-purple-500 to-pink-500 text-white relative">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
             <Heart className="w-5 h-5" />
@@ -402,6 +402,21 @@ const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentProm
               <span className="w-2 h-2 bg-green-400 rounded-full inline-block mr-1"></span>
               Online and ready to help
             </p>
+          </div>
+        </div>
+        {/* Language Selector within Chat Header for Mobile */}
+        <div className="absolute top-1/2 right-4 -translate-y-1/2 z-10">
+          <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-2">
+            <Globe className="w-4 h-4 text-gray-500" />
+            <select 
+              value={selectedLanguage} 
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+              className="border-none bg-transparent text-sm focus:ring-0 focus:outline-none"
+            >
+              <option value="en">EN</option>
+              <option value="hi">हि</option>
+              <option value="te">తె</option>
+            </select>
           </div>
         </div>
       </div>
