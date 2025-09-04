@@ -106,20 +106,31 @@
     }
   }
 
+  /* Skip to content link */
   .skip-link {
     position: absolute;
     top: -40px;
     left: 6px;
-    background: #8B5CF6;
-    color: white;
+    background: white;
+    color: black;
     padding: 8px;
     text-decoration: none;
     border-radius: 4px;
-    z-index: 1000;
+    z-index: 100;
+    border: 1px solid #ccc;
   }
 
   .skip-link:focus {
     top: 6px;
+  }
+
+  /* Logo hover effects */
+  .logo-hover {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .logo-hover:hover {
+    transform: scale(1.05);
   }
 
   /* Journey Timeline Animations */

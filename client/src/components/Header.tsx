@@ -30,12 +30,13 @@ const Header = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center" data-testid="link-home-logo">
+            <Link href="/" className="flex items-center space-x-3 logo-hover">
               <img 
-                src="/logo.png" 
+                src="/janma-sethu-logo.png" 
                 alt="Janma Sethu Logo" 
-                className="w-16 h-16 object-contain"
+                className="w-12 h-12 object-contain"
               />
+              <span className="text-2xl font-bold text-foreground font-serif">Janma Sethu</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -63,7 +64,7 @@ const Header = () => {
                 <Input
                   type="search"
                   placeholder="Search articles, treatments..."
-                  className="pl-10 pr-4 py-2 rounded-full border-border bg-background/50 focus:ring-ring w-64"
+                  className="pl-10 pr-4 py-2 rounded-full border-background bg-background/50 focus:ring-ring w-64"
                   data-testid="input-search"
                 />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
