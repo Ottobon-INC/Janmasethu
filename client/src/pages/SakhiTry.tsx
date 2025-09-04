@@ -310,22 +310,6 @@ const SakhiTry = () => {
         </Link>
       </div>
 
-      {/* Language Selector */}
-      <div className="absolute top-4 left-4 z-50">
-        <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-2">
-          <Globe className="w-4 h-4 text-gray-500" />
-          <select 
-            value={selectedLanguage} 
-            onChange={(e) => setSelectedLanguage(e.target.value)}
-            className="border-none bg-transparent text-sm focus:ring-0 focus:outline-none"
-          >
-            <option value="en">EN</option>
-            <option value="hi">हि</option>
-            <option value="te">తె</option>
-          </select>
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="h-screen">
         {/* Desktop Layout */}
@@ -404,18 +388,18 @@ const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentProm
             </p>
           </div>
         </div>
-        {/* Language Selector within Chat Header for Mobile */}
+        {/* Language Selector within Chat Header */}
         <div className="absolute top-1/2 right-4 -translate-y-1/2 z-10">
-          <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-2">
-            <Globe className="w-4 h-4 text-gray-500" />
+          <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/30">
+            <Globe className="w-4 h-4 text-white" />
             <select 
               value={selectedLanguage} 
               onChange={(e) => setSelectedLanguage(e.target.value)}
-              className="border-none bg-transparent text-sm focus:ring-0 focus:outline-none"
+              className="border-none bg-transparent text-sm text-white focus:ring-0 focus:outline-none cursor-pointer"
             >
-              <option value="en">EN</option>
-              <option value="hi">हि</option>
-              <option value="te">తె</option>
+              <option value="en" className="text-gray-900 bg-white">EN</option>
+              <option value="hi" className="text-gray-900 bg-white">हि</option>
+              <option value="te" className="text-gray-900 bg-white">తె</option>
             </select>
           </div>
         </div>
