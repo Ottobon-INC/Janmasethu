@@ -1,0 +1,71 @@
+
+
+> Add a **Sakhi dual-panel widget** to my existing **/sakhi** page (the page that already says “Try Sakhi”).
+>
+> **Goal:** Left = chat panel, Right = preview panel, with a **language toggle (EN | HI |  TE)**. Default language is **TE**. All text must come from JSON files (no hardcoded strings). Use a soft gradient accent (pink→purple→blue) to match our brand. 
+>
+> **Detect my stack and implement accordingly:**
+>
+> 1. **If this is a React project (Next/CRA/Vite):**
+>
+>    * Create a self-contained component: `src/components/sakhi/SakhiWidget.tsx` with scoped styles (Tailwind or CSS Module).
+>    * Subcomponents: `LanguageToggle.tsx`, `ChatPanel.tsx`, `PreviewPanel.tsx`.
+>    * Data files in **public**:
+>
+>      * `public/sakhi/locales/en.json`, `public/sakhi/locales/te.json` (UI strings)
+>      * `public/sakhi/demo/chat.json`, `public/sakhi/demo/preview.json` (scripted data)
+>    * In the **Sakhi page/route**, render `<SakhiWidget />` directly under the “Try Sakhi” heading.
+>    * Keep `lang` in component state + `localStorage.lang` (default `'te'`). A helper `t(key)` should read from the current locale JSON and fall back to English if a key is missing.
+>    * Layout: responsive grid — chat 30%, preview 70%; stack on mobile.
+>    * Fonts: Inter for EN, **Noto Sans Telugu** for TE (load via index/\_app).
+> 2. **If this is a plain HTML site (no React):**
+>
+>    * Add a mount point `<div id="sakhi-widget"></div>` below the “Try Sakhi” text in the Sakhi page.
+>    * Create:
+>
+>      * `sakhi/sakhi-widget.css` (scoped with `#sakhi-widget …`)
+>      * `sakhi/sakhi-widget.js` (build DOM, load JSON, toggle EN/HI/TE) 
+>      * `sakhi/locales/en.json`, `sakhi/locales/te.json`
+>      * `sakhi/demo/chat.json`, `sakhi/demo/preview.json`
+>    * Include in the Sakhi page:
+>
+>      ```html
+>      <link rel="stylesheet" href="/sakhi/sakhi-widget.css">
+>      <div id="sakhi-widget"></div>
+>      <script src="/sakhi/sakhi-widget.js" defer></script>
+>      ```
+>    * Load **Noto Sans Telugu** via Google Fonts in the widget CSS.
+>
+> **Widget behavior & content:**
+>
+> * **Header bar:** “Sakhi — Your Parenthood Companion” (localized). Right side shows pill toggle **EN | TE**; active pill filled, inactive outlined.
+> * **Chat (left):** render scripted bubbles from `chat.json` for the current lang. User bubble = gray; Sakhi bubble = gradient (pink→purple). Input at bottom is non-functional with localized placeholder.
+> * **Preview (right):** three cards from `preview.json`:
+>
+>   1. Checklist — title: “Pre-Consult Questions” / “ప్రీ-కన్సల్ట్ ప్రశ్నలు” + 3 bullets.
+>   2. Video — title: “IVF Explained in 90 Seconds” / “90 సెకన్లలో IVF వివరణ” + localized caption; show a thumbnail with a play icon.
+>   3. Info — title: “IVF Success Rates by Age” / “వయస్సు ఆధారంగా IVF విజయ శాతం” + 4 lines + “Source” line.
+> * **Disclaimer** at the bottom (localized):
+>   EN: “General guidance only. Not a diagnosis. Please consult your doctor.”
+ 
+> **Styling requirements (scoped):**
+>
+> * Rounded cards, soft shadows, airy spacing.
+> * Accent gradients (pink→purple→blue) for Sakhi bubbles and buttons.
+> * Respect Telugu length: larger line-height and auto-wrap on buttons.
+>
+> **Acceptance criteria:**
+>
+> * Clicking **EN/TE** instantly swaps every visible string (header, chat, cards, disclaimer).
+> * Default language is **TE**, persist selection in `localStorage`.
+> * Works on mobile (panels stack).
+> * No hardcoded strings in components/HTML; everything from JSON.
+> * Styles do not leak outside the Sakhi widget.
+>
+> After implementing, please:
+>
+> * Tell me which stack you detected and what files you created/edited.
+> * Provide where to edit the JSON text later (paths).
+> * Run and give me the preview URL for the **/sakhi** page.
+
+
