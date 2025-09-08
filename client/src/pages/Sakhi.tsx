@@ -176,6 +176,141 @@ const Sakhi = () => {
           </Card>
         </div>
 
+        {/* Journey Timeline */}
+        <div className="mb-12">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Your Complete Parenthood Journey</h2>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              Sakhi guides you through every stage with compassionate, evidence-based support
+            </p>
+          </div>
+          
+          {/* Desktop Timeline */}
+          <div className="hidden lg:block relative">
+            <div className="flex justify-between items-center relative">
+              {/* Connecting Line */}
+              <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-300 via-pink-300 to-orange-300 transform -translate-y-1/2 z-0"></div>
+              
+              {/* Stage 1 */}
+              <div className="flex flex-col items-center text-center relative z-10 bg-white px-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center mb-3 shadow-lg">
+                  <span className="text-2xl">🌱</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">Thinking of Parenthood</h3>
+                <p className="text-sm text-gray-600 max-w-32">Nutrition, emotional readiness, financial planning</p>
+              </div>
+              
+              {/* Stage 2 */}
+              <div className="flex flex-col items-center text-center relative z-10 bg-white px-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center mb-3 shadow-lg">
+                  <span className="text-2xl">💕</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">Trying Naturally</h3>
+                <p className="text-sm text-gray-600 max-w-32">Cycle tracking, lifestyle tips</p>
+              </div>
+              
+              {/* Stage 3 */}
+              <div className="flex flex-col items-center text-center relative z-10 bg-white px-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center mb-3 shadow-lg">
+                  <span className="text-2xl">🔍</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">Exploring Options</h3>
+                <p className="text-sm text-gray-600 max-w-32">Preparedness checklists, questions for your doctor</p>
+              </div>
+              
+              {/* Stage 4 */}
+              <div className="flex flex-col items-center text-center relative z-10 bg-white px-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center mb-3 shadow-lg">
+                  <span className="text-2xl">🤱</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">Pregnancy</h3>
+                <p className="text-sm text-gray-600 max-w-32">Trimester guidance, myths vs facts</p>
+              </div>
+              
+              {/* Stage 5 */}
+              <div className="flex flex-col items-center text-center relative z-10 bg-white px-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-200 flex items-center justify-center mb-3 shadow-lg">
+                  <span className="text-2xl">👶</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">Post-Delivery</h3>
+                <p className="text-sm text-gray-600 max-w-32">Recovery, newborn care, mental health</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Mobile Timeline */}
+          <div className="lg:hidden space-y-6">
+            {/* Stage 1 */}
+            <div className="flex items-start space-x-4 relative">
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center shadow-md">
+                  <span className="text-lg">🌱</span>
+                </div>
+                <div className="w-0.5 h-16 bg-gradient-to-b from-green-300 to-pink-300 mt-2"></div>
+              </div>
+              <div className="flex-1 pt-2">
+                <h3 className="font-semibold text-gray-900 mb-1">Thinking of Parenthood</h3>
+                <p className="text-sm text-gray-600">Nutrition, emotional readiness, financial planning</p>
+              </div>
+            </div>
+            
+            {/* Stage 2 */}
+            <div className="flex items-start space-x-4 relative">
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center shadow-md">
+                  <span className="text-lg">💕</span>
+                </div>
+                <div className="w-0.5 h-16 bg-gradient-to-b from-pink-300 to-blue-300 mt-2"></div>
+              </div>
+              <div className="flex-1 pt-2">
+                <h3 className="font-semibold text-gray-900 mb-1">Trying Naturally</h3>
+                <p className="text-sm text-gray-600">Cycle tracking, lifestyle tips</p>
+              </div>
+            </div>
+            
+            {/* Stage 3 */}
+            <div className="flex items-start space-x-4 relative">
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center shadow-md">
+                  <span className="text-lg">🔍</span>
+                </div>
+                <div className="w-0.5 h-16 bg-gradient-to-b from-blue-300 to-purple-300 mt-2"></div>
+              </div>
+              <div className="flex-1 pt-2">
+                <h3 className="font-semibold text-gray-900 mb-1">Exploring Options</h3>
+                <p className="text-sm text-gray-600">Preparedness checklists, questions for your doctor</p>
+              </div>
+            </div>
+            
+            {/* Stage 4 */}
+            <div className="flex items-start space-x-4 relative">
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center shadow-md">
+                  <span className="text-lg">🤱</span>
+                </div>
+                <div className="w-0.5 h-16 bg-gradient-to-b from-purple-300 to-yellow-300 mt-2"></div>
+              </div>
+              <div className="flex-1 pt-2">
+                <h3 className="font-semibold text-gray-900 mb-1">Pregnancy</h3>
+                <p className="text-sm text-gray-600">Trimester guidance, myths vs facts</p>
+              </div>
+            </div>
+            
+            {/* Stage 5 */}
+            <div className="flex items-start space-x-4 relative">
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-200 flex items-center justify-center shadow-md">
+                  <span className="text-lg">👶</span>
+                </div>
+              </div>
+              <div className="flex-1 pt-2">
+                <h3 className="font-semibold text-gray-900 mb-1">Post-Delivery</h3>
+                <p className="text-sm text-gray-600">Recovery, newborn care, mental health</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Main Chat Interface */}
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
           <div className="lg:col-span-2">
