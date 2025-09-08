@@ -3,6 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile safe area utilities */
+.safe-area-padding-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
 :root {
   --background: hsl(221, 83%, 97%);
   --foreground: hsl(220, 14%, 11%);
