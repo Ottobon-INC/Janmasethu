@@ -452,9 +452,9 @@ const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentProm
                   </p>
                 </div>
               </div>
-              {/* Render preview content for bot messages in mobile view */}
+              {/* Render preview content for bot messages in mobile view only */}
               {!message.isUser && message.previewContent && (
-                <div className="mt-3 space-y-3">
+                <div className="lg:hidden mt-3 space-y-3">
                   {/* Title and Description */}
                   <div className="p-3 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl shadow-sm">
                     <h4 className="font-semibold text-purple-800 mb-2 flex items-center">
