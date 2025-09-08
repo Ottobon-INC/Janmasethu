@@ -341,18 +341,30 @@ const SakhiTry = () => {
           </ResizablePanelGroup>
         </div>
 
-        {/* Mobile Layout - Chat Panel Only */}
-        <div className="lg:hidden h-full">
-          <ChatPanel 
-            messages={messages}
-            inputText={inputText}
-            setInputText={setInputText}
-            sendMessage={sendMessage}
-            currentPrompts={currentPrompts}
-            messagesEndRef={messagesEndRef}
-            selectedLanguage={selectedLanguage}
-            setSelectedLanguage={setSelectedLanguage}
-          />
+        {/* Mobile Layout - Stacked Panels */}
+        <div className="lg:hidden h-full flex flex-col">
+          <div className="h-1/2 border-b border-gray-200">
+            <ChatPanel 
+              messages={messages}
+              inputText={inputText}
+              setInputText={setInputText}
+              sendMessage={sendMessage}
+              currentPrompts={currentPrompts}
+              messagesEndRef={messagesEndRef}
+              selectedLanguage={selectedLanguage}
+              setSelectedLanguage={setSelectedLanguage}
+            />
+          </div>
+          <div className="h-1/2">
+            <PreviewPanel 
+              previewContent={previewContent}
+              isVideoPlaying={isVideoPlaying}
+              setIsVideoPlaying={setIsVideoPlaying}
+              isMuted={isMuted}
+              setIsMuted={setIsMuted}
+              selectedLanguage={selectedLanguage}
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -364,27 +376,27 @@ const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentProm
   return (
     <div className="h-full flex flex-col bg-white">
       {/* Chat Header */}
-      <div className="p-3 lg:p-4 border-b border-gray-200 bg-gradient-to-r from-purple-500 to-pink-500 text-white relative">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-              <Heart className="w-4 h-4 lg:w-5 lg:h-5" />
-            </div>
-            <div>
-              <h2 className="font-semibold text-sm lg:text-base">Chat with Sakhi</h2>
-              <p className="text-xs opacity-90">
-                <span className="w-2 h-2 bg-green-400 rounded-full inline-block mr-1"></span>
-                Online and ready to help
-              </p>
-            </div>
+      <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-purple-500 to-pink-500 text-white relative">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+            <Heart className="w-5 h-5" />
           </div>
-          {/* Language Selector */}
-          <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-lg px-2 lg:px-3 py-1 lg:py-2 border border-white/30">
-            <Globe className="w-3 h-3 lg:w-4 lg:h-4 text-white" />
+          <div>
+            <h2 className="font-semibold">Chat with Sakhi</h2>
+            <p className="text-xs opacity-90">
+              <span className="w-2 h-2 bg-green-400 rounded-full inline-block mr-1"></span>
+              Online and ready to help
+            </p>
+          </div>
+        </div>
+        {/* Language Selector within Chat Header */}
+        <div className="absolute top-1/2 right-4 -translate-y-1/2 z-10">
+          <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/30">
+            <Globe className="w-4 h-4 text-white" />
             <select 
               value={selectedLanguage} 
               onChange={(e) => setSelectedLanguage(e.target.value)}
-              className="border-none bg-transparent text-xs lg:text-sm text-white focus:ring-0 focus:outline-none cursor-pointer"
+              className="border-none bg-transparent text-sm text-white focus:ring-0 focus:outline-none cursor-pointer"
             >
               <option value="en" className="text-gray-900 bg-white">EN</option>
               <option value="hi" className="text-gray-900 bg-white">हि</option>
@@ -395,12 +407,12 @@ const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentProm
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-3 lg:p-4 space-y-3 lg:space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && (
-          <div className="text-center py-4 lg:py-8 px-4">
-            <Heart className="w-8 h-8 lg:w-12 lg:h-12 text-purple-300 mx-auto mb-3 lg:mb-4" />
-            <h3 className="text-base lg:text-lg font-semibold text-gray-700 mb-2">Welcome to Sakhi</h3>
-            <p className="text-gray-500 text-xs lg:text-sm mb-3 lg:mb-4 leading-relaxed">
+          <div className="text-center py-8">
+            <Heart className="w-12 h-12 text-purple-300 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Welcome to Sakhi</h3>
+            <p className="text-gray-500 text-sm mb-4">
               I'm here to provide compassionate support for your fertility journey. 
               Type in any language - I'll respond in the same language.
             </p>
@@ -410,7 +422,7 @@ const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentProm
                 <button
                   key={index}
                   onClick={() => setInputText(prompt)}
-                  className="block w-full text-left p-2 lg:p-3 text-xs lg:text-sm bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200"
+                  className="block w-full text-left p-2 text-xs bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   "{prompt}"
                 </button>
@@ -420,20 +432,20 @@ const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentProm
         )}
 
         {messages.map((message) => (
-          <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} px-2 lg:px-0`}>
-            <div className={`max-w-[85%] lg:max-w-[80%] ${message.isUser ? 'order-2' : 'order-1'}`}>
+          <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
+            <div className={`max-w-[80%] ${message.isUser ? 'order-2' : 'order-1'}`}>
               <div className={`flex items-start space-x-2 ${message.isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                <div className={`w-6 h-6 lg:w-8 lg:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                   message.isUser ? 'bg-purple-500 text-white' : 'bg-pink-100 text-pink-600'
                 }`}>
-                  {message.isUser ? <User className="w-3 h-3 lg:w-4 lg:h-4" /> : <Bot className="w-3 h-3 lg:w-4 lg:h-4" />}
+                  {message.isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                 </div>
-                <div className={`px-3 lg:px-4 py-2 rounded-2xl ${
+                <div className={`px-4 py-2 rounded-2xl ${
                   message.isUser 
                     ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' 
                     : 'bg-gray-100 text-gray-800'
                 }`}>
-                  <p className="text-sm leading-relaxed">{message.text}</p>
+                  <p className="text-sm">{message.text}</p>
                   <p className={`text-xs mt-1 ${message.isUser ? 'text-white opacity-70' : 'text-gray-500'}`}>
                     {message.timestamp.toLocaleTimeString()}
                   </p>
@@ -446,23 +458,23 @@ const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentProm
       </div>
 
       {/* Input Area */}
-      <div className="p-3 lg:p-4 border-t border-gray-200 bg-gray-50 safe-area-padding-bottom">
-        <div className="flex space-x-2 mb-2">
+      <div className="p-4 border-t border-gray-200 bg-gray-50">
+        <div className="flex space-x-2">
           <Input
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-1 rounded-full text-sm lg:text-base h-10 lg:h-auto"
+            placeholder="Type your message... (any language)"
+            className="flex-1 rounded-full"
             onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
           />
           <Button 
             onClick={sendMessage}
-            className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 h-10 w-10 lg:h-auto lg:w-auto lg:px-4"
+            className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
           >
             <Send className="w-4 h-4" />
           </Button>
         </div>
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-gray-500 mt-2 text-center">
           <Shield className="w-3 h-3 inline mr-1" />
           All conversations are private and stay on your device
         </p>
