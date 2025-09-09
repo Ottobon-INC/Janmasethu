@@ -57,7 +57,7 @@ const Home = () => {
           className="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text font-serif mb-6 leading-relaxed"
           data-testid="text-hero-title"
         >
-          <span dangerouslySetInnerHTML={{ __html: t("hero_title") }} />
+          {t("hero_title")}
         </h1>
 
         {/* Hero Subtitle */}
