@@ -5,6 +5,7 @@ export const dict = {
     // Header & Nav
     brand_tag: "Your fertility journey starts here",
     nav_home: "Home", nav_knowledge: "Knowledge Hub", nav_treatments: "Treatments", nav_life: "Life Stages", nav_success: "Success Stories", nav_blog: "Blog", nav_experts: "Experts", nav_tools: "Tools", nav_sakhi: "Sakhi", lang_label: "Language",
+    nav_investors: "Investors",
 
     // Hero
     hero_title: "Nurture Every <span>Journey to Parenthood</span>",
@@ -24,8 +25,7 @@ export const dict = {
     about_patients_desc: "Simplified fertility guidance, India-aware and judgment-free.",
     about_clinics_title: "Clinics", 
     about_clinics_desc: "Evidence-based resources to support your patient conversations.",
-    about_investors_title: "Investors",
-    about_investors_desc: "Scalable healthcare infrastructure for underserved communities.",
+    // Removed Investors card data as per instructions
 
     // New Parenthood Journey Strip
     journey_title: "Your Complete Parenthood Journey",
@@ -124,6 +124,7 @@ export const dict = {
   hi: {
     brand_tag: "आपकी प्रजनन यात्रा यहीं से शुरू होती है",
     nav_home: "होम", nav_knowledge: "ज्ञान भंडार", nav_treatments: "उपचार", nav_life: "जीवन चरण", nav_success: "सफलता की कहानियाँ", nav_blog: "ब्लॉग", nav_experts: "विशेषज्ञ", nav_tools: "उपकरण", nav_sakhi: "सखी (साथी)", lang_label: "भाषा",
+    nav_investors: "निवेशक",
     hero_title: "<span>मातृत्व</span> का सेतु।<br />यात्रा के हर कदम के लिए।",
     hero_sub: "भारत के लिए सरल, स्रोत‑आधारित मार्गदर्शिकाएँ।",
     trust_pill: "भारत भर के परिवारों का भरोसा",
@@ -137,8 +138,7 @@ export const dict = {
     about_patients_desc: "सरल प्रजनन मार्गदर्शन, भारत‑जागरूक और निर्णय‑मुक्त।",
     about_clinics_title: "क्लिनिक",
     about_clinics_desc: "साक्ष्य‑आधारित संसाधन रोगी बातचीत के लिए।",
-    about_investors_title: "निवेशक",
-    about_investors_desc: "अधिक सेवा वाले समुदायों के लिए स्वास्थ्य अवसंरचना।",
+    // Removed Investors card data as per instructions
 
     // Journey Strip
     journey_title: "आपकी संपूर्ण मातृत्व यात्रा",
@@ -198,11 +198,26 @@ export const dict = {
 
     sakhi_hero: "प्रजनन यात्रा के लिए सहृदय साथी", sakhi_sub: "24/7 भावनात्मक सहयोग — निजी", sakhi_how_title: "सखी कैसे मदद करती है", sakhi_how_list: "स्कैन/इंजेक्शन से पहले शांति,टू‑वीक‑वेट में छोटे रूटीन,साथी का सहयोग,नींद व योजना,कब पेशेवर मदद लें", sakhi_try: "सखी आज़माएँ", sakhi_demo_title: "एक परिदृश्य आज़माएँ",
     chat_title: "सखी — बातचीत (डेमो)", chat_hint: "English/हिंदी/తెలుగు — जिस लिपि में लिखेंगे, उसी में उत्तर।", chat_quick: "त्वरित संकेत", chat_p1: "कल के स्कैन को लेकर घबराहट है", chat_p2: "रिज़ल्ट के बारे में सोच रुक नहीं रहा", chat_p3: "डायग्नोसिस के बाद साथी को ग्लानि है", chat_end: "समाप्त", chat_clear: "साफ़ करें", chat_privacy: "निजी व स्थानीय।",
-    chat_reply_en: "I'm glad you shared this. It's normal to feel anxious. Try 4‑4‑6 breathing (in 4, hold 4, out 6) three times. Then pick one small step you control. If you notice chest pain, dizziness, or thoughts of self‑harm, please contact professional or emergency care.", chat_reply_hi: "आपने साझा किया, धन्यवाद। घबराहट सामान्य है। 4‑4‑6 साँस (4 अंदर, 4 रोकें, 6 बाहर) तीन बार करें। फिर अपने नियंत्रण में एक छोटा कदम चुनें। यदि सीने में दर्द/चक्कर/आत्म‑हानि के विचार हों तो तुरंत मदद लें।", chat_reply_te: "మీరు పంచుకున్నందుకు ధన్యవాదాలు. ఆందోళన సహజం. 4‑4‑6 శ్వాస (4 లోపల, 4 ఆపి, 6 బయట) మూడు సార్లు చేయండి. తర్వాత మీరు నియంత్రించగల చిన్న మెట్టు ఎంచుకోండి. ఛాతి నొప్పి/తల తిరుగుడు/స్వీయహానీ ఆలోచనలు ఉంటే సహాయం పొందండి.",
+    chat_reply_en: "I'm glad you shared this. It's normal to feel anxious. Try 4‑4‑6 breathing (in 4, hold 4, out 6) three times. Then pick one small step you control. If you notice chest pain, dizziness, or thoughts of self‑harm, please contact professional or emergency care.", 
+    chat_reply_hi: "आपने साझा किया, धन्यवाद। घबराहट सामान्य है। 4‑4‑6 साँस (4 अंदर, 4 रोकें, 6 बाहर) तीन बार करें। फिर अपने नियंत्रण में एक छोटा कदम चुनें। यदि सीने में दर्द/चक्कर/आत्म‑हानि के विचार हों तो तुरंत मदद लें।", 
+    chat_reply_te: "మీరు పంచుకున్నందుకు ధన్యవాదాలు. ఆందోళన సహజం. 4‑4‑6 శ్వాస (4 లోపల, 4 ఆపి, 6 బయట) మూడు సార్లు చేయండి. తర్వాత మీరు నియంత్రించగల చిన్న మెట్టు ఎంచుకోండి. ఛాతి నొప్పి/తల తిరుగుడు/స్వీయహానీ ఆలోచనలు ఉంటే సహాయం పొందండి.",
+
+    // Investors page
+    investors_title: "निवेशक",
+    investors_intro: "अधिक सेवा वाले समुदायों के लिए स्केलेबल स्वास्थ्य अवसंरचना। साक्ष्य-आधारित ज्ञान और भावनात्मक सहायता प्रणालियों के माध्यम से विश्वास निर्माण।",
+    investors_platform_title: "प्लेटफॉर्म",
+    investors_platform_desc: "पितृत्व यात्रा में तैयारी स्तर; पुन: उपयोग योग्य घटक और सामग्री स्कीमा।",
+    investors_model_title: "मॉडल",
+    investors_model_desc: "परिणाम-संरेखित पायलट; सब्सक्रिप्शन + उपयोग मूल्य निर्धारण (भविष्य); कोई भुगतान लीडजेन नहीं।",
+    investors_defensibility_title: "रक्षा क्षमता",
+    investors_defensibility_desc: "चिकित्सक-समीक्षित ज्ञान, स्थानीयकृत सामग्री, निरंतर मूल्यांकन के लिए उपयोग संकेत।",
+    investors_cta_onepager: "1-पेजर डाउनलोड करें",
+    investors_cta_contact: "संपर्क करें",
   },
   te: {
     brand_tag: "మీ ప్రజనన ప్రయాణం ఇక్కడ ప్రారంభమవుతుంది",
     nav_home: "హోమ్", nav_knowledge: "నాలెడ్జ్ హబ్", nav_treatments: "ట్రీట్‌మెంట్‌లు", nav_life: "లైఫ్ స్టేజెస్", nav_success: "సక్సెస్ స్టోరీస్", nav_blog: "బ్లాగ్", nav_experts: "నిపుణులు", nav_tools: "టూల్స్", nav_sakhi: "సఖి (సహచరి)", lang_label: "భాష",
+    nav_investors: "పెట్టుబడిదారులు",
     hero_title: "<span>తల్లిదండ్రత్వానికి</span> వంతెన।<br />ప్రయాణంలోని ప్రతి అడుగుకు।", hero_sub: "భారతీయ సందర్భానికి సరళమైన, ఆధారాలతో కూడిన గైడ్లు.", trust_pill: "భారత్ అంతటా కుటుంబాల విశ్వాసం", cta_primary: "సాఖిని కలవండి", cta_secondary: "క్లినిక్‌ల కోసం",
     who_title: "మేము ఎవరికి సేవలు అందిస్తాము", who_body: "భారతీయుల కోసం రూపొందించిన జ్ఞాన వంతెన — మెడికల్, సామాజిక‑భావోద్వేగ, ఆర్థిక, పోషణ అనే నాలుగు కోణాలు. కఠిన సమయాల్లో 24/7 **సఖి** భావోద్వేగ సహాయం అందిస్తుంది.",
     why_title: "ఎందుకు జన్మ సేతు?", why_points: "ఇండియా‑ఫస్ట్,సులభ భాష,స్టేజ్ & లెన్స్ ద్వారా బ్రౌజ్,చర్యకు దారి,నమ్మదగిన మూలాలు,భావాలకు తోడు,గోప్యత",
@@ -212,8 +227,7 @@ export const dict = {
     about_patients_desc: "సరళమైన ప్రజనన మార్గదర్శకత్వం, భారతీయ‑అవగాహనతో మరియు తీర్పు లేకుండా।",
     about_clinics_title: "క్లినిక్‌లు",
     about_clinics_desc: "రోగుల సంభాషణలకు తోడ్పాటు కోసం సాక్ష్యాధార వనరులు।",
-    about_investors_title: "పెట్టుబడిదారులు",
-    about_investors_desc: "తక్కువ సేవలున్న కమ్యూనిటీలకు స్కేలబుల్ ఆరోగ్య మౌలిక సదుపాయాలు।",
+    // Removed Investors card data as per instructions
 
     // Journey Strip
     journey_title: "మీ సంపూర్ణ తల్లిదండ్రత్వ ప్రయాణం",
@@ -273,6 +287,20 @@ export const dict = {
 
     sakhi_hero: "మీ ప్రయాణానికి కరుణతో కూడిన సహచరి", sakhi_sub: "24/7 భావోద్వేగ సహాయం — ప్రైవేట్", sakhi_how_title: "సఖి ఎలా సహాయపడుతుంది", sakhi_how_list: "స్కాన్/ఇంజెక్షన్ ముందు ప్రశాంతత,టూ‑వీక్‑వైట్ రొటీన్లు,భాగస్వామి సహాయం,నిద్ర & ప్రణాళిక,ఎప్పుడు నిపుణుడిని సంప్రదించాలి", sakhi_try: "సఖిని ప్రయత్నించండి", sakhi_demo_title: "ఒక సందర్భం ప్రయత్నించండి",
     chat_title: "సఖి — సంభాషణ (డెమో)", chat_hint: "English/हिंदी/తెలుగు — మీరు టైప్ చేసే లిపిలోనే సమాధానం.", chat_quick: "త్వరిత సూచనలు", chat_p1: "రేపటి స్కాన్ గురించి ఆందోళన", chat_p2: "రిజల్ట్స్ గురించే ఆలోచన", chat_p3: "డయగ్నోసిస్ తరువాత గిల్ట్", chat_end: "ముగించండి", chat_clear: "క్లియర్", chat_privacy: "ప్రైవేట్ & లోకల్",
-    chat_reply_en: "I'm glad you shared this. It's normal to feel anxious. Try 4‑4‑6 breathing (in 4, hold 4, out 6) three times. Then pick one small step you control. If you notice chest pain, dizziness, or thoughts of self‑harm, please contact professional or emergency care.", chat_reply_hi: "आपने साझा किया, धन्यवाद। घबराहट सामान्य है। 4‑4‑6 साँस (4 अंदर, 4 रोकें, 6 बाहर) तीन बार करें। फिर अपने नियंत्रण में एक छोटा कदम चुनें। यदि सीने में दर्द/चक्कर/आत्म‑हानि के विचार हों तो तुरंत मदद लें।", chat_reply_te: "మీరు పంచుకున్నందుకు ధన్యవాదాలు. ఆందోళన సహజం. 4‑4‑6 శ్వాస (4 లోపల, 4 ఆపి, 6 బయట) మూడు సార్లు చేయండి. తర్వాత మీరు నియంత్రించగల చిన్న మెట్టు ఎంచుకోండి. ఛాతి నొప్పి/తల తిరుగుడు/స్వీయహానీ ఆలోచనలు ఉంటే సహాయం పొందండి.",
+    chat_reply_en: "I'm glad you shared this. It's normal to feel anxious. Try 4‑4‑6 breathing (in 4, hold 4, out 6) three times. Then pick one small step you control. If you notice chest pain, dizziness, or thoughts of self‑harm, please contact professional or emergency care.", 
+    chat_reply_hi: "आपने साझा किया, धन्यवाद। घबराहट सामान्य है। 4‑4‑6 साँस (4 अंदर, 4 रोकें, 6 बाहर) तीन बार करें। फिर अपने नियंत्रण में एक छोटा कदम चुनें। यदि सीने में दर्द/चक्कर/आत्म‑हानि के विचार हों तो तुरंत मदद लें।", 
+    chat_reply_te: "మీరు పంచుకున్నందుకు ధన్యవాదాలు. ఆందోళన సహజం. 4‑4‑6 శ్వాస (4 లోపల, 4 ఆపి, 6 బయట) మూడు సార్లు చేయండి. తర్వాత మీరు నియంత్రించగల చిన్న మెట్టు ఎంచుకోండి. ఛాతి నొప్పి/తల తిరుగుడు/స్వీయహానీ ఆలోచనలు ఉంటే సహాయం పొందండి.",
+
+    // Investors page
+    investors_title: "ఇన్వెస్టర్స్",
+    investors_intro: "తక్కువ సేవలున్న కమ్యూనిటీలకు స్కేలబుల్ ఆరోగ్య మౌలిక సదుపాయాలు। సాక్ష్యాధార జ్ఞానం మరియు భావోద్వేగ మద్దతు వ్యవస్థల ద్వారా విశ్వాసం నిర్మించడం।",
+    investors_platform_title: "ప్లాట్‌ఫారమ్",
+    investors_platform_desc: "తల్లిదండ్రత్వ ప్రయాణంలో సిద్ధత స్థాయి; పునర్వినియోగ భాగాలు మరియు కంటెంట్ స్కీమా।",
+    investors_model_title: "మోడల్",
+    investors_model_desc: "ఫలితం-సమలేఖన పైలట్లు; సబ్స్క్రిప్షన్ + వినియోగ ధర (భవిష్యత్తు); చెల్లింపు లీడ్‌జెన్ లేదు।",
+    investors_defensibility_title: "రక్షణ సామర్థ్యం",
+    investors_defensibility_desc: "వైద్యుల-సమీక్షిత జ్ఞానం, స్థానీకరించిన కంటెంట్, నిరంతర మూల్యాంకనాల కోసం వినియోగ సంకేతాలు।",
+    investors_cta_onepager: "1-పేజర్ డౌన్‌లోడ్ చేయండి",
+    investors_cta_contact: "మాతో సంప్రదించండి",
   }
 } as const;

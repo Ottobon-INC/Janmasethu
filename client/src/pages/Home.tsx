@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { CheckCircle, Heart, Baby, Cat, Stethoscope, Users, IndianRupee, Apple, ArrowRight, Send } from 'lucide-react';
+import { CheckCircle, Heart, Baby, Cat, Stethoscope, Users, Apple, ArrowRight, Send } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageProvider';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -115,7 +115,7 @@ const Home = () => {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Patients Card */}
           <Card className="rounded-3xl p-8 card-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group backdrop-blur-sm bg-white/80" data-testid="card-about-patients">
             <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -143,21 +143,6 @@ const Home = () => {
             <p className="text-muted-foreground" data-testid="text-clinics-desc">
               <span className="group-hover:hidden">Evidence-based resources to support your patient conversations.</span>
               <span className="hidden group-hover:block">{t('about_clinics_desc')}</span>
-            </p>
-          </Card>
-
-          {/* Investors Card */}
-          <Card className="rounded-3xl p-8 card-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group backdrop-blur-sm bg-white/80" data-testid="card-about-investors">
-            <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <IndianRupee className="text-green-600 text-2xl" />
-            </div>
-            <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid="text-investors-title">
-              <span className="group-hover:hidden">Investors</span>
-              <span className="hidden group-hover:block">{t('about_investors_title')}</span>
-            </h3>
-            <p className="text-muted-foreground" data-testid="text-investors-desc">
-              <span className="group-hover:hidden">Scalable healthcare infrastructure for underserved communities.</span>
-              <span className="hidden group-hover:block">{t('about_investors_desc')}</span>
             </p>
           </Card>
         </div>
