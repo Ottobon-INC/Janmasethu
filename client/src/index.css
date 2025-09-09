@@ -68,22 +68,53 @@
     min-height: 100vh;
   }
 
-  /* Multilingual text rendering improvements */
+  /* Comprehensive multilingual text rendering improvements */
   h1, h2, h3, h4, h5, h6 {
     text-rendering: optimizeLegibility;
     -webkit-font-feature-settings: "kern" 1;
     font-feature-settings: "kern" 1;
+    /* Ensure proper vertical spacing for all scripts */
+    line-height: 1.4;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    /* Prevent text clipping for Devanagari, Telugu, and other complex scripts */
+    overflow: visible;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* Specific fixes for gradient text elements */
+  .gradient-text {
+    /* Increase vertical spacing to prevent clipping */
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+    line-height: 1.5 !important;
+    /* Ensure text doesn't get clipped */
+    overflow: visible !important;
+    display: inline-block;
+    vertical-align: baseline;
   }
 
   /* Ensure proper line height for all text elements to prevent clipping */
   .leading-tight {
-    line-height: 1.3 !important;
+    line-height: 1.4 !important;
   }
 
-  /* Add padding to prevent character clipping in complex scripts */
-  h1, h2, h3 {
-    padding-top: 0.125rem;
-    padding-bottom: 0.125rem;
+  .leading-relaxed {
+    line-height: 1.6 !important;
+  }
+
+  /* Additional spacing for all heading elements */
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Special handling for spans inside headings */
+  h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
+    display: inline-block;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
 }
 
@@ -93,13 +124,24 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    /* Ensure proper spacing for multilingual text */
-    line-height: 1.3;
-    padding: 0.25rem 0;
+    /* Enhanced spacing for multilingual text */
+    line-height: 1.5 !important;
+    padding: 0.75rem 0 !important;
+    margin: 0.25rem 0;
     /* Prevent text clipping for complex scripts */
     text-rendering: optimizeLegibility;
     -webkit-font-feature-settings: "kern" 1;
     font-feature-settings: "kern" 1;
+    /* Ensure proper display and overflow handling */
+    display: inline-block;
+    overflow: visible;
+    vertical-align: baseline;
+    /* Additional safety for character rendering */
+    white-space: normal;
+    word-wrap: break-word;
+    /* Specific fixes for Devanagari and Telugu scripts */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   .gradient-button {
