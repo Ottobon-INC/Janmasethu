@@ -1,0 +1,67 @@
+
+{
+  "patients": {
+    "en": {
+      "title": "Patients",
+      "about": "Guidance that helps you ask better questions and prepare with confidence.",
+      "bullets": [
+        "Clinician-reviewed knowledge in your language",
+        "Step-by-step checklists and reminders",
+        "Anonymous, judgment-free guidance",
+        "Try Sakhi chat anytime"
+      ]
+    },
+    "hi": {
+      "title": "मरीज़",
+      "about": "ऐसा मार्गदर्शन जो आपको बेहतर प्रश्न पूछने और आत्मविश्वास से तैयारी करने में मदद करता है।",
+      "bullets": [
+        "चिकित्सक द्वारा समीक्षा किया गया ज्ञान, आपकी भाषा में",
+        "स्टेप-बाय-स्टेप चेकलिस्ट और रिमाइंडर",
+        "गोपनीय और बिना किसी निर्णय का मार्गदर्शन",
+        "कभी भी सखी चैट आज़माएँ"
+      ]
+    },
+    "te": {
+      "title": "రోగులు",
+      "about": "మెరుగైన ప్రశ్నలు అడగడానికి, ధైర్యంగా సిద్ధం కావడానికి మార్గదర్శకం.",
+      "bullets": [
+        "వైద్యుల సమీక్ష చేసిన సమాచారం — మీ భాషలో",
+        "దశలవారీ చెక్లిస్టులు & రిమైండర్లు",
+        "గోప్యంగా, విమర్శలేని మార్గదర్శనం",
+        "ఎప్పుడైనా సఖి చాట్ ప్రయత్నించండి"
+      ]
+    }
+  },
+  "clinics": {
+    "en": {
+      "title": "Clinics",
+      "about": "Prepared patients lead to smoother consults and better outcomes.",
+      "bullets": [
+        "Patients arrive informed & prepared",
+        "Lower cancellations, smoother consults",
+        "Widgets: FAQs, reminders, checklists",
+        "Insights: show-rate & preparedness score"
+      ]
+    },
+    "hi": {
+      "title": "क्लीनिक",
+      "about": "तैयार मरीज़ सहज परामर्श और बेहतर परिणाम लाते हैं।",
+      "bullets": [
+        "मरीज़ जानकारी के साथ और तैयार होकर आते हैं",
+        "कम रद्दीकरण, सहज परामर्श",
+        "विजेट्स: FAQs, रिमाइंडर, चेकलिस्ट",
+        "इनसाइट्स: शो-रेट और तैयारी स्कोर"
+      ]
+    },
+    "te": {
+      "title": "క్లినిక్స్",
+      "about": "సిద్ధమైన రోగులు సులభమైన కన్సల్టేషన్స్‌కి దారి తీస్తారు.",
+      "bullets": [
+        "అవగాహనతో, సిద్ధంగా వచ్చే రోగులు",
+        "తక్కువ రద్దులు, సులభమైన కన్సల్టేషన్స్",
+        "విడ్జెట్లు: FAQs, రిమైండర్లు, చెక్లిస్టులు",
+        "డేటా: షో రేట్ & సిద్ధత స్కోరు"
+      ]
+    }
+  }
+}

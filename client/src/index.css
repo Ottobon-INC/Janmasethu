@@ -183,7 +183,7 @@
       display: block !important;
       visibility: visible !important;
     }
-    
+
     .journey-timeline-mobile .bg-gradient-to-r {
       background: linear-gradient(to right, var(--tw-gradient-stops)) !important;
       opacity: 1 !important;
@@ -284,4 +284,30 @@
       transform: scale(0.5);
     }
   }
+}
+
+/* Custom hover effects */
+.hover\:scale-104:hover {
+  transform: scale(1.04);
+}
+
+/* Modal animation */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-content {
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+/* Backdrop blur effect */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
 }

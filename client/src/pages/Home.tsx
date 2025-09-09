@@ -29,6 +29,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { articles } from '../data/articles';
 import { stories } from '../data/stories';
+import WhoWeServe from '../components/WhoWeServe';
 
 const Home = () => {
   const { t } = useLanguage();
@@ -130,46 +131,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* About JanmaSethu - 3 Cards as per blueprint */}
-      <section className="py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground font-serif mb-4" data-testid="text-about-title">
-            {t('who_title')}
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Patients Card */}
-          <Card className="rounded-3xl p-8 card-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group backdrop-blur-sm bg-white/80" data-testid="card-about-patients">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Heart className="text-purple-600 text-2xl" />
-            </div>
-            <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid="text-patients-title">
-              <span className="group-hover:hidden">Patients</span>
-              <span className="hidden group-hover:block">{t('about_patients_title')}</span>
-            </h3>
-            <p className="text-muted-foreground" data-testid="text-patients-desc">
-              <span className="group-hover:hidden">Simplified fertility guidance, India-aware and judgment-free.</span>
-              <span className="hidden group-hover:block">{t('about_patients_desc')}</span>
-            </p>
-          </Card>
-
-          {/* Clinics Card */}
-          <Card className="rounded-3xl p-8 card-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group backdrop-blur-sm bg-white/80" data-testid="card-about-clinics">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Stethoscope className="text-blue-600 text-2xl" />
-            </div>
-            <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid="text-clinics-title">
-              <span className="group-hover:hidden">Clinics</span>
-              <span className="hidden group-hover:block">{t('about_clinics_title')}</span>
-            </h3>
-            <p className="text-muted-foreground" data-testid="text-clinics-desc">
-              <span className="group-hover:hidden">Evidence-based resources to support your patient conversations.</span>
-              <span className="hidden group-hover:block">{t('about_clinics_desc')}</span>
-            </p>
-          </Card>
-        </div>
-      </section>
+      {/* Who We Serve - Interactive Cards with Modal */}
+      <WhoWeServe />
 
       {/* Parenthood Journey Strip */}
       <section className="py-16 bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50 rounded-3xl mx-4">
