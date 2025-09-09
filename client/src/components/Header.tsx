@@ -76,8 +76,8 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-sm border-b border-border">
-        <div className="container mx-auto px-4 py-4">
+      <header className="sticky top-0 z-40 w-full bg-gradient-to-r from-white/95 via-white/90 to-white/95 backdrop-blur-md border-b border-border/50 shadow-sm">
+        <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center" data-testid="link-home-logo">
@@ -89,20 +89,23 @@ const Header = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-6" role="navigation" aria-label="Main navigation">
+            <nav className="hidden lg:flex items-center space-x-2" role="navigation" aria-label="Main navigation">
               {/* Primary Navigation Items */}
               {primaryNavItems.map((item) => (
                 <Link 
                   key={item.href}
                   href={item.href} 
-                  className={`font-semibold text-sm tracking-wide transition-all duration-200 px-3 py-2 rounded-md ${
+                  className={`font-semibold text-sm tracking-wide transition-all duration-300 px-4 py-2.5 rounded-lg relative overflow-hidden group ${
                     location === item.href 
-                      ? 'text-primary bg-primary/10' 
-                      : 'text-foreground hover:text-primary hover:bg-primary/5'
+                      ? 'text-white bg-gradient-to-r from-primary to-primary/80 shadow-md' 
+                      : 'text-foreground hover:text-primary hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:shadow-sm'
                   }`}
                   data-testid={`link-nav-${item.id}`}
                 >
-                  {item.label[language]}
+                  <span className="relative z-10">{item.label[language]}</span>
+                  {location !== item.href && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:to-primary/10 transition-all duration-300" />
+                  )}
                 </Link>
               ))}
 
@@ -113,19 +116,24 @@ const Header = () => {
                     ref={buttonRef}
                     onClick={handleMoreButtonClick}
                     onKeyDown={handleMoreButtonKeyDown}
-                    className="font-semibold text-sm tracking-wide transition-all duration-200 px-3 py-2 rounded-md text-foreground hover:text-primary hover:bg-primary/5 flex items-center space-x-1"
+                    className={`font-semibold text-sm tracking-wide transition-all duration-300 px-4 py-2.5 rounded-lg flex items-center space-x-2 group relative overflow-hidden ${
+                      moreDropdownOpen 
+                        ? 'text-primary bg-gradient-to-r from-primary/15 to-primary/10 shadow-md' 
+                        : 'text-foreground hover:text-primary hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:shadow-sm'
+                    }`}
                     aria-haspopup="menu"
                     aria-expanded={moreDropdownOpen}
                     data-testid="button-nav-more"
                   >
-                    <span>{moreLabel[language]}</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${moreDropdownOpen ? 'rotate-180' : ''}`} />
+                    <span className="relative z-10">{moreLabel[language]}</span>
+                    <ChevronDown className={`w-4 h-4 transition-all duration-300 relative z-10 ${moreDropdownOpen ? 'rotate-180 text-primary' : 'group-hover:text-primary'}`} />
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:to-primary/10 transition-all duration-300" />
                   </button>
 
                   {/* Dropdown Menu */}
                   {moreDropdownOpen && (
                     <div
-                      className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-border py-2 min-w-48 z-50"
+                      className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-border/30 py-3 min-w-52 z-50 animate-in slide-in-from-top-2 duration-200"
                       role="menu"
                       onKeyDown={handleDropdownKeyDown}
                       data-testid="dropdown-nav-more"
@@ -134,17 +142,20 @@ const Header = () => {
                         <Link
                           key={item.href}
                           href={item.href}
-                          className={`block px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                          className={`block px-5 py-3 text-sm font-medium transition-all duration-300 mx-2 rounded-lg group relative overflow-hidden ${
                             location === item.href
-                              ? 'text-primary bg-primary/10'
-                              : 'text-foreground hover:text-primary hover:bg-primary/5'
+                              ? 'text-white bg-gradient-to-r from-primary to-primary/80 shadow-md'
+                              : 'text-foreground hover:text-primary hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:shadow-sm'
                           }`}
                           role="menuitem"
                           onClick={() => setMoreDropdownOpen(false)}
                           data-testid={`link-nav-more-${item.id}`}
                           tabIndex={index === 0 ? 0 : -1}
                         >
-                          {item.label[language]}
+                          <span className="relative z-10">{item.label[language]}</span>
+                          {location !== item.href && (
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:to-primary/10 transition-all duration-300" />
+                          )}
                         </Link>
                       ))}
                     </div>
@@ -160,10 +171,10 @@ const Header = () => {
                 <Input
                   type="search"
                   placeholder="Search articles, treatments..."
-                  className="pl-10 pr-4 py-2 rounded-full border-border bg-background/50 focus:ring-ring w-64"
+                  className="pl-11 pr-4 py-2.5 rounded-full border-border/30 bg-background/60 backdrop-blur-sm focus:ring-primary/20 focus:border-primary/30 w-72 transition-all duration-300 shadow-sm hover:shadow-md focus:shadow-md"
                   data-testid="input-search"
                 />
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 transition-colors duration-300" />
               </div>
 
               {/* Language Switcher */}
