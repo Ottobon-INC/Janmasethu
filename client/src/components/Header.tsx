@@ -131,19 +131,19 @@ const Header = () => {
             id="header-secondary-row"
             className={`nav-secondary hidden lg:block overflow-hidden transition-all duration-300 ease-in-out ${
               isExpanded 
-                ? 'max-h-20 opacity-100 pointer-events-auto' 
+                ? 'max-h-24 opacity-100 pointer-events-auto' 
                 : 'max-h-0 opacity-0 pointer-events-none'
             }`}
           >
-            <nav className="flex items-center justify-center space-x-6 pt-4 pb-2" role="navigation" aria-label="Secondary navigation">
+            <nav className="flex items-center justify-between w-full max-w-6xl mx-auto pt-6 pb-4 px-8" role="navigation" aria-label="Secondary navigation">
               {secondaryNavItems.map(({ key, href }) => (
                 <Link 
                   key={href}
                   href={href} 
-                  className={`font-medium text-sm tracking-wide transition-all duration-200 px-3 py-2 rounded-full ${
+                  className={`font-semibold text-base tracking-wide transition-all duration-200 px-4 py-3 rounded-md flex-1 text-center ${
                     location === href 
                       ? 'text-primary bg-primary/10' 
-                      : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                      : 'text-foreground hover:text-primary hover:bg-primary/5'
                   }`}
                   data-testid={`link-nav-secondary-${key.replace('nav_', '')}`}
                 >
