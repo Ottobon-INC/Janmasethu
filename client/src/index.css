@@ -8,6 +8,28 @@
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
 
+/* Header expandable navigation */
+.site-header {
+  transition: all 0.3s ease-in-out;
+}
+
+.site-header.is-expanded {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.nav-secondary {
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.chevron {
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Who We Serve hover effect */
+.hover\:scale-104:hover {
+  transform: scale(1.04);
+}
+
 :root {
   --background: hsl(221, 83%, 97%);
   --foreground: hsl(220, 14%, 11%);

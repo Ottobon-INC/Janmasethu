@@ -1,0 +1,127 @@
+Perfect — here’s a **ready-to-paste prompt for the Replit Assistant** to change the header so users always see **4 main sections**, and when they click a **down arrow** the header **expands vertically** to reveal the **rest of the sections in a second row** (same header, not a dropdown). This is optimized for **laptop/desktop**; mobile keeps your current menu.
+
+---
+
+## 📝 Prompt for Replit Assistant
+
+**Prompt:**
+Refactor the site header so that on **desktop (≥1024px)** only **4 main sections** are visible in the primary row. Add a **down-arrow toggle** in the header; when the user clicks it, the header **expands in height** and shows the **remaining sections** in a second row **inside the same header** (not a dropdown). Clicking the arrow again collapses it. On **mobile (<1024px)** keep the existing hamburger/full list.
+
+### Primary sections (always visible in top row)
+
+1. Home
+2. Knowledge Hub
+3. Treatments
+4. Sakhi
+
+### Secondary sections (hidden until expand; shown in second row)
+
+* Life Stages
+* Success Stories
+* Blog
+* Experts
+* Tools
+* Investors
+
+### Functional requirements
+
+* Add a **chevron button** (down arrow) at the end of the first row, **before the search bar**, labeled and localized:
+
+  * EN: “More”
+  * HI: “और”
+  * TE: “మరిన్ని”
+* On click:
+
+  * Header container gains an **expanded state** (e.g., `.is-expanded`).
+  * A **second row** (flex/grid) appears under the first row, listing the secondary items as regular nav links.
+  * The chevron rotates 180° and the label changes to:
+
+    * EN: “Less”
+    * HI: “कम”
+    * TE: “తక్కువ”
+* Animate expand/collapse with **max-height + opacity** (200–300ms, ease).
+
+### Layout & placement (desktop)
+
+* Order (left→right): **Logo | Primary (4) | Chevron (More/Less) | Search | Language toggle**.
+* The **second row** spans full header width, aligned with container grid. Use pill/ghost buttons for each secondary item to match your style.
+
+### Accessibility
+
+* Chevron is a **button** with:
+
+  * `aria-expanded="false|true"`
+  * `aria-controls="header-secondary-row"`
+* The secondary row container:
+
+  * `id="header-secondary-row"`
+  * hidden when collapsed (CSS `display:none` or `hidden` attribute)
+* Keyboard:
+
+  * Enter/Space toggles expand/collapse.
+  * Tab order continues into secondary links when expanded.
+  * ESC collapses the second row if focus is within it.
+
+### i18n (EN/HI/TE)
+
+* Read current language from your existing i18n or `localStorage.lang`.
+* Localize:
+
+  * Primary/secondary item labels.
+  * Chevron label (“More”/“Less”).
+* Provide default labels (use these if you need initial data):
+
+```json
+{
+  "nav": {
+    "more": { "en": "More", "hi": "और", "te": "మరిన్ని" },
+    "less": { "en": "Less", "hi": "कम", "te": "తక్కువ" },
+    "items": [
+      { "id": "home", "href": "/", "label": { "en": "Home", "hi": "होम", "te": "హోమ్" }, "priority": 1 },
+      { "id": "knowledge", "href": "/knowledge", "label": { "en": "Knowledge Hub", "hi": "नॉलेज हब", "te": "నాలెడ్జ్ హబ్" }, "priority": 2 },
+      { "id": "treatments", "href": "/treatments", "label": { "en": "Treatments", "hi": "ट्रीटमेंट्स", "te": "చికిత్సలు" }, "priority": 3 },
+      { "id": "sakhi", "href": "/sakhi", "label": { "en": "Sakhi", "hi": "सखी", "te": "సఖి" }, "priority": 4 },
+      { "id": "life", "href": "/life", "label": { "en": "Life Stages", "hi": "लाइफ स्टेजेस", "te": "జీవిత దశలు" }, "priority": 5 },
+      { "id": "stories", "href": "/stories", "label": { "en": "Success Stories", "hi": "कहानियाँ", "te": "విజయ కథలు" }, "priority": 6 },
+      { "id": "blog", "href": "/blog", "label": { "en": "Blog", "hi": "ब्लॉग", "te": "బ్లాగ్" }, "priority": 7 },
+      { "id": "experts", "href": "/experts", "label": { "en": "Experts", "hi": "एक्सपर्ट्स", "te": "నిపుణులు" }, "priority": 8 },
+      { "id": "tools", "href": "/tools", "label": { "en": "Tools", "hi": "टूल्स", "te": "సాధనాలు" }, "priority": 9 },
+      { "id": "investors", "href": "/investors", "label": { "en": "Investors", "hi": "इन्वेस्टर्स", "te": "ఇన్వెస్టర్లు" }, "priority": 10 }
+    ]
+  }
+}
+```
+
+### Implementation notes (React or plain HTML)
+
+* **Config-driven:** sort items by `priority`; render first 4 in row 1, remainder in row 2.
+* **CSS:**
+
+  * Header wrapper `.site-header` with an inner `.nav-primary` (row 1) and `.nav-secondary` (row 2).
+  * `.nav-secondary` transitions between collapsed and expanded:
+
+    * collapsed: `max-height:0; opacity:0; overflow:hidden; pointer-events:none;`
+    * expanded (`.is-expanded .nav-secondary`): `max-height:160px; opacity:1; pointer-events:auto;`
+  * Chevron rotation: `.chevron { transition: transform .2s }` + `.is-expanded .chevron { transform: rotate(180deg) }`
+* **State persistence:** Optionally remember expanded state in `sessionStorage` so page reload keeps the same state for that session.
+
+### Responsive rules
+
+* **Desktop (≥1024px):** two-row expandable header as described.
+* **Mobile (<1024px):** keep your existing hamburger/overlay; **do not** show the chevron or second row there.
+
+### Acceptance criteria
+
+* On desktop, header shows 4 main sections + a chevron/“More” button before the search; clicking it expands a second row with the rest of the sections; clicking again collapses.
+* All labels reflect current language (EN/HI/TE).
+* Keyboard and screen-reader behavior meets the accessibility notes.
+* No layout shift of search box and language toggle; both remain aligned to the right.
+* Mobile behavior unchanged.
+
+**After implementing, please reply with:**
+
+* Files edited/created (header component, styles, nav config).
+* How to change which items are in the first row (confirm via `priority` values).
+* The CSS classes controlling expand/collapse.
+
+

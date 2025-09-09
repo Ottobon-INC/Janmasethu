@@ -6,6 +6,7 @@ export const dict = {
     brand_tag: "Your fertility journey starts here",
     nav_home: "Home", nav_knowledge: "Knowledge Hub", nav_treatments: "Treatments", nav_life: "Life Stages", nav_success: "Success Stories", nav_blog: "Blog", nav_experts: "Experts", nav_tools: "Tools", nav_sakhi: "Sakhi", lang_label: "Language",
     nav_investors: "Investors",
+    nav_more: "More", nav_less: "Less",
 
     // Hero
     hero_title: "Nurture Every <span>Journey to Parenthood</span>",
@@ -124,6 +125,7 @@ export const dict = {
   hi: {
     brand_tag: "आपकी प्रजनन यात्रा यहीं से शुरू होती है",
     nav_home: "होम", nav_knowledge: "ज्ञान भंडार", nav_treatments: "उपचार", nav_life: "जीवन चरण", nav_success: "सफलता की कहानियाँ", nav_blog: "ब्लॉग", nav_experts: "विशेषज्ञ", nav_tools: "उपकरण", nav_sakhi: "सखी (साथी)", lang_label: "भाषा",
+    nav_more: "और", nav_less: "कम",
     nav_investors: "निवेशक",
     hero_title: "<span>मातृत्व</span> का सेतु।<br />यात्रा के हर कदम के लिए।",
     hero_sub: "भारत के लिए सरल, स्रोत‑आधारित मार्गदर्शिकाएँ।",
@@ -217,6 +219,7 @@ export const dict = {
   te: {
     brand_tag: "మీ ప్రజనన ప్రయాణం ఇక్కడ ప్రారంభమవుతుంది",
     nav_home: "హోమ్", nav_knowledge: "నాలెడ్జ్ హబ్", nav_treatments: "ట్రీట్‌మెంట్‌లు", nav_life: "లైఫ్ స్టేజెస్", nav_success: "సక్సెస్ స్టోరీస్", nav_blog: "బ్లాగ్", nav_experts: "నిపుణులు", nav_tools: "టూల్స్", nav_sakhi: "సఖి (సహచరి)", lang_label: "భాష",
+    nav_more: "మరిన్ని", nav_less: "తక్కువ",
     nav_investors: "పెట్టుబడిదారులు",
     hero_title: "<span>తల్లిదండ్రత్వానికి</span> వంతెన।<br />ప్రయాణంలోని ప్రతి అడుగుకు।", hero_sub: "భారతీయ సందర్భానికి సరళమైన, ఆధారాలతో కూడిన గైడ్లు.", trust_pill: "భారత్ అంతటా కుటుంబాల విశ్వాసం", cta_primary: "సాఖిని కలవండి", cta_secondary: "క్లినిక్‌ల కోసం",
     who_title: "మేము ఎవరికి సేవలు అందిస్తాము", who_body: "భారతీయుల కోసం రూపొందించిన జ్ఞాన వంతెన — మెడికల్, సామాజిక‑భావోద్వేగ, ఆర్థిక, పోషణ అనే నాలుగు కోణాలు. కఠిన సమయాల్లో 24/7 **సఖి** భావోద్వేగ సహాయం అందిస్తుంది.",

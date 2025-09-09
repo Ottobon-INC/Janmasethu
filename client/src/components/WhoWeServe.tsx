@@ -236,11 +236,6 @@ const WhoWeServe = () => {
         </div>
       )}
 
-      <style jsx>{`
-        .hover\\:scale-104:hover {
-          transform: scale(1.04);
-        }
-      `}</style>
     </>
   );
 };
