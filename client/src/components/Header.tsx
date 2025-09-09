@@ -56,18 +56,18 @@ const Header = () => {
               <img 
                 src="/JanmaSethu Logo.png" 
                 alt="Janma Sethu Logo" 
-                className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
+                className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain"
               />
             </Link>
 
             {/* Desktop Navigation - Primary Row */}
-            <div className="hidden lg:flex items-center">
-              <nav className="nav-primary flex items-center space-x-6 mr-6" role="navigation" aria-label="Main navigation">
+            <div className="hidden lg:flex items-center flex-1 justify-center">
+              <nav className="nav-primary flex items-center justify-center space-x-12" role="navigation" aria-label="Main navigation">
                 {primaryNavItems.map(({ key, href }) => (
                   <Link 
                     key={href}
                     href={href} 
-                    className={`font-semibold text-sm tracking-wide transition-all duration-200 px-3 py-2 rounded-md ${
+                    className={`font-semibold text-base tracking-wide transition-all duration-200 px-4 py-3 rounded-md ${
                       location === href 
                         ? 'text-primary bg-primary/10' 
                         : 'text-foreground hover:text-primary hover:bg-primary/5'
@@ -77,21 +77,21 @@ const Header = () => {
                     {t(key)}
                   </Link>
                 ))}
-              </nav>
 
-              {/* Expand/Collapse Button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="mr-6 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-200 hover:bg-primary/5"
-                aria-expanded={isExpanded}
-                aria-controls="header-secondary-row"
-                data-testid="button-nav-toggle"
-              >
-                <span className="mr-2">{isExpanded ? t('nav_less') : t('nav_more')}</span>
-                <ChevronDown className={`w-4 h-4 chevron transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
-              </Button>
+                {/* Expand/Collapse Button */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="px-4 py-3 rounded-md text-base font-semibold transition-all duration-200 hover:bg-primary/5"
+                  aria-expanded={isExpanded}
+                  aria-controls="header-secondary-row"
+                  data-testid="button-nav-toggle"
+                >
+                  <span className="mr-2">{isExpanded ? t('nav_less') : t('nav_more')}</span>
+                  <ChevronDown className={`w-4 h-4 chevron transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+                </Button>
+              </nav>
             </div>
 
             {/* Search & Language & Mobile Menu */}
