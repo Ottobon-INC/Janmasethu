@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Baby, Stethoscope, X, Check, Heart } from "lucide-react";
+import { Baby, Stethoscope, X, Check } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 
@@ -194,7 +194,7 @@ const WhoWeServe = () => {
               <div className="flex items-center space-x-4 mb-4">
                 <div className={`w-16 h-16 ${selectedCard === "patients" ? "bg-gradient-to-br from-purple-100 to-pink-100" : "bg-gradient-to-br from-blue-100 to-cyan-100"} rounded-xl flex items-center justify-center`}>
                   {selectedCard === "patients" ? (
-                    <Heart className="text-purple-600 text-2xl" />
+                    <Baby className="text-purple-600 text-2xl" />
                   ) : (
                     <Stethoscope className="text-blue-600 text-2xl" />
                   )}
