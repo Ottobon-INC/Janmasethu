@@ -101,7 +101,7 @@ const WhoWeServe = () => {
           <h2 className="text-4xl font-bold text-foreground font-serif mb-4">
             {lang === "en" && "Who We Serve"}
             {lang === "hi" && "हम किसकी सेवा करते हैं"}
-            {lang === "te" && "మేము ఎవరికి సేవ చేస్తాము"}
+            {lang === "te" && "ఎవరికోసం మేము సేవలందిస్తున్నాం"}
           </h2>
         </div>
 
