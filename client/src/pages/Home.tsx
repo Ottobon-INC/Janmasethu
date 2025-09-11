@@ -399,14 +399,14 @@ const Home = () => {
                   className="font-bold text-foreground"
                   data-testid="text-chat-preview-title"
                 >
-                  Chat with Sakhi
+                  {t("chat_title")}
                 </h4>
                 <p
                   className="text-sm text-muted-foreground"
                   data-testid="text-chat-preview-hint"
                 >
                   <span className="w-2 h-2 bg-green-500 rounded-full inline-block mr-2"></span>
-                  Sakhi is online and ready to help
+                  {t("chat_subtitle")}
                 </p>
               </div>
 
@@ -457,7 +457,7 @@ const Home = () => {
               <div className="flex space-x-2">
                 <Input
                   type="text"
-                  placeholder="Type your message..."
+                  placeholder={t("chat_placeholder")}
                   className="flex-1 rounded-full focus:ring-ring"
                   data-testid="input-chat-preview"
                 />
@@ -719,7 +719,7 @@ const Home = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {getTreatmentCards().map((treatment, index) => (
+          {getTreatmentCards(t).map((treatment, index) => (
             <Link
               key={treatment.slug}
               href={`/treatments/${treatment.slug}`}
@@ -832,45 +832,43 @@ const getStoryImage = (index: number) => {
   return images[index] || images[0];
 };
 
-const getTreatmentCards = () => [
+const getTreatmentCards = (t: any) => [
   {
     slug: "iui",
-    name: "IUI",
-    description:
-      "Intrauterine insemination process, success rates, and what to expect",
+    name: t("treatment_iui_title"),
+    description: t("treatment_iui_desc"),
     icon: Syringe,
     iconColor: "text-blue-600",
     bgColor: "bg-blue-100",
   },
   {
     slug: "ivf",
-    name: "IVF",
-    description:
-      "In vitro fertilization steps, timeline, and preparation guide",
+    name: t("treatment_ivf_title"),
+    description: t("treatment_ivf_desc"),
     icon: Microscope,
     iconColor: "text-purple-600",
     bgColor: "bg-purple-100",
   },
   {
     slug: "icsi",
-    name: "ICSI",
-    description: "Intracytoplasmic sperm injection for male factor infertility",
+    name: t("treatment_icsi_title"),
+    description: t("treatment_icsi_desc"),
     icon: Dna,
     iconColor: "text-green-600",
     bgColor: "bg-green-100",
   },
   {
     slug: "donor-options",
-    name: "Donor Options",
-    description: "Egg, sperm, and embryo donation processes and considerations",
+    name: t("treatment_donor_title"),
+    description: t("treatment_donor_desc"),
     icon: HeartHandshake,
     iconColor: "text-pink-600",
     bgColor: "bg-pink-100",
   },
   {
     slug: "fertility-preservation",
-    name: "Fertility Preservation",
-    description: "Egg and sperm freezing for future family planning",
+    name: t("treatment_preservation_title"),
+    description: t("treatment_preservation_desc"),
     icon: Snowflake,
     iconColor: "text-cyan-600",
     bgColor: "bg-cyan-100",
