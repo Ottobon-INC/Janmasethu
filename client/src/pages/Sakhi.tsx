@@ -153,7 +153,7 @@ const Sakhi = () => {
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               {t("sakhi_how_list")
-                .split(";")
+                .split("|")
                 .map((item: string, index: number) => (
                   <div
                     key={index}
