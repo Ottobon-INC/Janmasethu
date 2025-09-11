@@ -735,13 +735,13 @@ const Home = () => {
                     className="text-lg font-bold text-foreground font-serif mb-2"
                     data-testid={`text-article-title-${index}`}
                   >
-                    {article.title.en}
+                    {t(`k${index + 1}_title`)}
                   </h3>
                   <p
                     className="text-sm text-muted-foreground flex-grow"
                     data-testid={`text-article-summary-${index}`}
                   >
-                    {article.summary.en}
+                    {t(`k${index + 1}_desc`)}
                   </p>
                 </CardContent>
               </Card>

@@ -105,6 +105,12 @@ export const dict = {
     k4_title: "Safe Foods in Pregnancy: Eat / Limit / Avoid",
     k4_desc: "Simple India‑aware table for home and outside.",
 
+    // Additional article translations
+    article_overview_desc: "Overview from testing to transfer, with typical ranges.",
+    article_scan_desc: "What the 12‑week scan looks for and what to expect.",
+    article_scheme_desc: "Eligibility, documents, and step‑by‑step process.",
+    article_food_desc: "Simple India‑aware table for home and outside.",
+
     // Treatments
     treatment_iui_title: "IUI",
     treatment_iui_desc:
@@ -283,6 +289,12 @@ export const dict = {
     k3_desc: "पात्रता, दस्तावेज़, चरण।",
     k4_title: "गर्भावस्था में सुरक्षित भोजन: खाएँ/कम करें/परहेज़",
     k4_desc: "सरल तालिका",
+
+    // Additional article translations
+    article_overview_desc: "टेस्ट से ट्रांसफर तक का सरल सार।",
+    article_scan_desc: "12‑सप्ताह स्कैन के लक्ष्य।",
+    article_scheme_desc: "पात्रता, दस्तावेज़, चरण।",
+    article_food_desc: "सरल तालिका",
     // Treatments - Hindi
     treatment_iui_title: "IUI",
     treatment_iui_desc:
@@ -455,6 +467,12 @@ export const dict = {
     k3_desc: "అర్హతలు, పత్రాలు, దశలు",
     k4_title: "గర్భధారణలో సురక్షిత ఆహారం",
     k4_desc: "Eat/Limit/Avoid పట్టిక",
+
+    // Additional article translations
+    article_overview_desc: "టెస్టింగ్ నుంచి ట్రాన్స్‌ఫర్ వరకు",
+    article_scan_desc: "ఏమి చెక్ చేస్తారు",
+    article_scheme_desc: "అర్హతలు, పత్రాలు, దశలు",
+    article_food_desc: "Eat/Limit/Avoid పట్టిక",
     // Treatments - Telugu
     treatment_iui_title: "IUI",
     treatment_iui_desc:

@@ -133,10 +133,10 @@ const LifeStage = () => {
                   </div>
                   
                   <h3 className="text-lg font-bold text-foreground font-serif mb-2" data-testid={`text-stage-article-title-${index}`}>
-                    {article.title.en}
+                    {t(`k${index + 1}_title`)}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4" data-testid={`text-stage-article-summary-${index}`}>
-                    {article.summary.en}
+                    {t(`k${index + 1}_desc`)}
                   </p>
                   
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
