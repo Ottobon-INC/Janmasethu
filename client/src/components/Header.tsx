@@ -30,7 +30,7 @@ const Header = () => {
   // Split navigation into primary (first 4) and secondary (remaining)
   const primaryNavItems = navConfig.filter(item => item.priority <= 4);
   const secondaryNavItems = navConfig.filter(item => item.priority > 4);
-  
+
   // Mobile menu gets all items
   const allNavItems = navConfig.map(({ key, href }) => ({ key, href, label: t(key) }));
 
@@ -55,13 +55,13 @@ const Header = () => {
             <Link href="/" className="flex items-center" data-testid="link-home-logo">
               <img 
                 src="/JanmaSethu Logo.png" 
-                alt="Janma Sethu Logo" 
+                alt="JanmaSethu Logo" 
                 className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain"
               />
             </Link>
 
             {/* Desktop Navigation - Primary Row */}
-            <div className="hidden lg:flex items-center flex-1 justify-center">
+            <div className="hidden lg:flex items-center justify-center">
               <nav className="nav-primary flex items-center justify-center space-x-12" role="navigation" aria-label="Main navigation">
                 {primaryNavItems.map(({ key, href }) => (
                   <Link 
@@ -100,7 +100,7 @@ const Header = () => {
               <div className="hidden md:block relative">
                 <Input
                   type="search"
-                  placeholder="Search articles, treatments..."
+                  placeholder={t('search_placeholder')}
                   className="pl-10 pr-4 py-2 rounded-full border-border bg-background/50 focus:ring-ring w-64"
                   data-testid="input-search"
                 />

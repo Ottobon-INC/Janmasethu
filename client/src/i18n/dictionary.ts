@@ -174,6 +174,30 @@ export const dict = {
       "आपने साझा किया, धन्यवाद। घबराहट सामान्य है। 4‑4‑6 साँस (4 अंदर, 4 रोकें, 6 बाहर) तीन बार करें। फिर अपने नियंत्रण में एक छोटा कदम चुनें। यदि सीने में दर्द/चक्कर/आत्म‑हानि के विचार हों तो तुरंत मदद लें।",
     chat_reply_te:
       "మీరు పంచుకున్నందుకు ధన్యవాదాలు. ఆందోళన సహజం. 4‑4‑6 శ్వాస (4 లోపల, 4 ఆపి, 6 బయట) మూడు సార్లు చేయండి. తర్వాత మీరు నియంత్రించగల చిన్న మెట్టు ఎంచుకోండి. ఛాతి నొప్పి/తల తిరుగుడు/స్వీయహానీ ఆలోచనలు ఉంటే సహాయం పొందండి.",
+
+    // Investors page
+    investors_title: "Investors",
+    investors_intro:
+      "Scalable health infrastructure for underserved communities. Building trust through evidence-based knowledge and emotional support systems.",
+    investors_platform_title: "Platform",
+    investors_platform_desc:
+      "Preparedness levels in the parenthood journey; reusable components and content schema.",
+    investors_model_title: "Model",
+    investors_model_desc:
+      "Outcome-aligned pilots; Subscription + Usage pricing (future); No paid leadgen.",
+    investors_defensibility_title: "Defensibility",
+    investors_defensibility_desc:
+      "Clinician-reviewed knowledge, localized content, usage signals for continuous evaluation.",
+    investors_cta_onepager: "Download 1-Pager",
+    investors_cta_contact: "Contact Us",
+
+    // Search and other UI elements  
+    search_placeholder: "Search articles, treatments...",
+    coming_soon: "Coming Soon",
+    read_more: "Read More",
+    learn_more: "Learn More", 
+    get_started: "Get Started",
+    explore_more: "Explore More",
   },
   hi: {
     brand_tag: "आपकी प्रजनन यात्रा यहीं से शुरू होती है",
@@ -336,6 +360,13 @@ export const dict = {
       "चिकित्सक-समीक्षित ज्ञान, स्थानीयकृत सामग्री, निरंतर मूल्यांकन के लिए उपयोग संकेत।",
     investors_cta_onepager: "1-पेजर डाउनलोड करें",
     investors_cta_contact: "संपर्क करें",
+
+    search_placeholder: "लेख, उपचार खोजें...",
+    coming_soon: "जल्द आ रहा है",
+    read_more: "और पढ़ें",
+    learn_more: "और जानें",
+    get_started: "शुरू करें",
+    explore_more: "और अन्वेषण करें",
   },
   te: {
     brand_tag: "మీ ప్రజనన ప్రయాణం ఇక్కడ ప్రారంభమవుతుంది",
@@ -505,5 +536,12 @@ export const dict = {
       "వైద్యుల-సమీక్షిత జ్ఞానం, స్థానీకరించిన కంటెంట్, నిరంతర మూల్యాంకనాల కోసం వినియోగ సంకేతాలు।",
     investors_cta_onepager: "1-పేజర్ డౌన్‌లోడ్ చేయండి",
     investors_cta_contact: "మాతో సంప్రదించండి",
+
+    search_placeholder: "వ్యాసాలు, చికిత్సల కోసం శోధించండి...",
+    coming_soon: "త్వరలో వస్తుంది",
+    read_more: "మరింత చదవండి",
+    learn_more: "మరింత తెలుసుకోండి",
+    get_started: "ప్రారంభించండి",
+    explore_more: "మరింత అన్వేషించండి",
   },
 } as const;

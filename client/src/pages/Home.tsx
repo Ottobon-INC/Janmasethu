@@ -42,6 +42,49 @@ const Home = () => {
   const featuredArticles = articles.slice(0, 4);
   const featuredStories = stories.slice(0, 3);
 
+  const getTreatmentCards = () => [
+    {
+      slug: "iui",
+      name: t("treatment_iui_title"),
+      description: t("treatment_iui_desc"),
+      icon: Syringe,
+      iconColor: "text-blue-600",
+      bgColor: "bg-blue-100",
+    },
+    {
+      slug: "ivf",
+      name: t("treatment_ivf_title"),
+      description: t("treatment_ivf_desc"),
+      icon: Microscope,
+      iconColor: "text-purple-600",
+      bgColor: "bg-purple-100",
+    },
+    {
+      slug: "icsi",
+      name: t("treatment_icsi_title"),
+      description: t("treatment_icsi_desc"),
+      icon: Dna,
+      iconColor: "text-green-600",
+      bgColor: "bg-green-100",
+    },
+    {
+      slug: "donor-options",
+      name: t("treatment_donor_title"),
+      description: t("treatment_donor_desc"),
+      icon: HeartHandshake,
+      iconColor: "text-pink-600",
+      bgColor: "bg-pink-100",
+    },
+    {
+      slug: "fertility-preservation",
+      name: t("treatment_preservation_title"),
+      description: t("treatment_preservation_desc"),
+      icon: Snowflake,
+      iconColor: "text-cyan-600",
+      bgColor: "bg-cyan-100",
+    },
+  ];
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
@@ -831,50 +874,5 @@ const getStoryImage = (index: number) => {
   ];
   return images[index] || images[0];
 };
-
-const getTreatmentCards = () => [
-  {
-    slug: "iui",
-    name: "IUI",
-    description:
-      "Intrauterine insemination process, success rates, and what to expect",
-    icon: Syringe,
-    iconColor: "text-blue-600",
-    bgColor: "bg-blue-100",
-  },
-  {
-    slug: "ivf",
-    name: "IVF",
-    description:
-      "In vitro fertilization steps, timeline, and preparation guide",
-    icon: Microscope,
-    iconColor: "text-purple-600",
-    bgColor: "bg-purple-100",
-  },
-  {
-    slug: "icsi",
-    name: "ICSI",
-    description: "Intracytoplasmic sperm injection for male factor infertility",
-    icon: Dna,
-    iconColor: "text-green-600",
-    bgColor: "bg-green-100",
-  },
-  {
-    slug: "donor-options",
-    name: "Donor Options",
-    description: "Egg, sperm, and embryo donation processes and considerations",
-    icon: HeartHandshake,
-    iconColor: "text-pink-600",
-    bgColor: "bg-pink-100",
-  },
-  {
-    slug: "fertility-preservation",
-    name: "Fertility Preservation",
-    description: "Egg and sperm freezing for future family planning",
-    icon: Snowflake,
-    iconColor: "text-cyan-600",
-    bgColor: "bg-cyan-100",
-  },
-];
 
 export default Home;
