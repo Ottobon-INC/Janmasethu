@@ -493,80 +493,86 @@ const Home = () => {
 
         <div className="grid md:grid-cols-3 gap-8">
           {/* TTC Card */}
-          <Link href="/life-stages/ttc" className="group">
-            <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300">
-              <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Heart className="text-white text-2xl" />
-              </div>
-              <h3
-                className="text-2xl font-bold text-foreground font-serif mb-4"
-                data-testid="text-ttc-title"
-              >
-                {t("orient_ttc")}
-              </h3>
-              <p
-                className="text-muted-foreground mb-6"
-                data-testid="text-ttc-desc"
-              >
-                {t("orient_desc_ttc")}
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300"
-                alt="Couple walking together in park"
-                className="rounded-xl w-full h-32 object-cover"
-              />
+          <Link href="/life-stages/ttc" className="group h-full">
+            <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+              <CardContent className="p-0 flex flex-col h-full">
+                <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Heart className="text-white text-2xl" />
+                </div>
+                <h3
+                  className="text-2xl font-bold text-foreground font-serif mb-4"
+                  data-testid="text-ttc-title"
+                >
+                  {t("orient_ttc")}
+                </h3>
+                <p
+                  className="text-muted-foreground mb-6 flex-grow"
+                  data-testid="text-ttc-desc"
+                >
+                  {t("orient_desc_ttc")}
+                </p>
+                <img
+                  src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300"
+                  alt="Couple walking together in park"
+                  className="rounded-xl w-full h-32 object-cover mt-auto"
+                />
+              </CardContent>
             </Card>
           </Link>
 
           {/* Pregnancy Card */}
-          <Link href="/life-stages/pregnancy" className="group">
-            <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300">
-              <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Baby className="text-white text-2xl" />
-              </div>
-              <h3
-                className="text-2xl font-bold text-foreground font-serif mb-4"
-                data-testid="text-pregnancy-title"
-              >
-                {t("orient_preg")}
-              </h3>
-              <p
-                className="text-muted-foreground mb-6"
-                data-testid="text-pregnancy-desc"
-              >
-                {t("orient_desc_preg")}
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300"
-                alt="Pregnant woman in peaceful outdoor setting"
-                className="rounded-xl w-full h-32 object-cover"
-              />
+          <Link href="/life-stages/pregnancy" className="group h-full">
+            <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+              <CardContent className="p-0 flex flex-col h-full">
+                <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Baby className="text-white text-2xl" />
+                </div>
+                <h3
+                  className="text-2xl font-bold text-foreground font-serif mb-4"
+                  data-testid="text-pregnancy-title"
+                >
+                  {t("orient_preg")}
+                </h3>
+                <p
+                  className="text-muted-foreground mb-6 flex-grow"
+                  data-testid="text-pregnancy-desc"
+                >
+                  {t("orient_desc_preg")}
+                </p>
+                <img
+                  src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300"
+                  alt="Pregnant woman in peaceful outdoor setting"
+                  className="rounded-xl w-full h-32 object-cover mt-auto"
+                />
+              </CardContent>
             </Card>
           </Link>
 
           {/* New Parent Card */}
-          <Link href="/life-stages/newborn" className="group">
-            <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300">
-              <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Cat className="text-white text-2xl" />
-              </div>
-              <h3
-                className="text-2xl font-bold text-foreground font-serif mb-4"
-                data-testid="text-parent-title"
-              >
-                {t("orient_parent")}
-              </h3>
-              <p
-                className="text-muted-foreground mb-6"
-                data-testid="text-parent-desc"
-              >
-                {t("orient_desc_parent")}
-              </p>
-              <img
-                src="https://images.unsplash.com/photo-1566004100631-35d015d6a491?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300"
-                alt="Happy new parent holding newborn baby"
-                className="rounded-xl w-full h-32 object-cover"
-              />
+          <Link href="/life-stages/newborn" className="group h-full">
+            <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+              <CardContent className="p-0 flex flex-col h-full">
+                <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Cat className="text-white text-2xl" />
+                </div>
+                <h3
+                  className="text-2xl font-bold text-foreground font-serif mb-4"
+                  data-testid="text-parent-title"
+                >
+                  {t("orient_parent")}
+                </h3>
+                <p
+                  className="text-muted-foreground mb-6 flex-grow"
+                  data-testid="text-parent-desc"
+                >
+                  {t("orient_desc_parent")}
+                </p>
+                <img
+                  src="https://images.unsplash.com/photo-1566004100631-35d015d6a491?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300"
+                  alt="Happy new parent holding newborn baby"
+                  className="rounded-xl w-full h-32 object-cover mt-auto"
+                />
+              </CardContent>
             </Card>
           </Link>
         </div>
@@ -585,62 +591,70 @@ const Home = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Medical Lens */}
-          <Link href="/knowledge?lens=medical" className="group">
-            <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 text-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Stethoscope className="text-blue-600 text-xl" />
-              </div>
-              <h3
-                className="text-xl font-bold text-foreground font-serif mb-2"
-                data-testid="text-lens-medical"
-              >
-                {t("lens_medical")}
-              </h3>
+          <Link href="/knowledge?lens=medical" className="group h-full">
+            <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 text-center h-full flex flex-col">
+              <CardContent className="p-0 flex flex-col h-full justify-center">
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <Stethoscope className="text-blue-600 text-xl" />
+                </div>
+                <h3
+                  className="text-xl font-bold text-foreground font-serif mb-2"
+                  data-testid="text-lens-medical"
+                >
+                  {t("lens_medical")}
+                </h3>
+              </CardContent>
             </Card>
           </Link>
 
           {/* Social & Emotional Lens */}
-          <Link href="/knowledge?lens=social" className="group">
-            <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 text-center">
-              <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Users className="text-pink-600 text-xl" />
-              </div>
-              <h3
-                className="text-xl font-bold text-foreground font-serif mb-2"
-                data-testid="text-lens-social"
-              >
-                {t("lens_social")}
-              </h3>
+          <Link href="/knowledge?lens=social" className="group h-full">
+            <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 text-center h-full flex flex-col">
+              <CardContent className="p-0 flex flex-col h-full justify-center">
+                <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <Users className="text-pink-600 text-xl" />
+                </div>
+                <h3
+                  className="text-xl font-bold text-foreground font-serif mb-2"
+                  data-testid="text-lens-social"
+                >
+                  {t("lens_social")}
+                </h3>
+              </CardContent>
             </Card>
           </Link>
 
           {/* Financial Lens */}
-          <Link href="/knowledge?lens=financial" className="group">
-            <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <IndianRupee className="text-green-600 text-xl" />
-              </div>
-              <h3
-                className="text-xl font-bold text-foreground font-serif mb-2"
-                data-testid="text-lens-financial"
-              >
-                {t("lens_financial")}
-              </h3>
+          <Link href="/knowledge?lens=financial" className="group h-full">
+            <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 text-center h-full flex flex-col">
+              <CardContent className="p-0 flex flex-col h-full justify-center">
+                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <IndianRupee className="text-green-600 text-xl" />
+                </div>
+                <h3
+                  className="text-xl font-bold text-foreground font-serif mb-2"
+                  data-testid="text-lens-financial"
+                >
+                  {t("lens_financial")}
+                </h3>
+              </CardContent>
             </Card>
           </Link>
 
           {/* Nutrition Lens */}
-          <Link href="/knowledge?lens=nutrition" className="group">
-            <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 text-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Apple className="text-orange-600 text-xl" />
-              </div>
-              <h3
-                className="text-xl font-bold text-foreground font-serif mb-2"
-                data-testid="text-lens-nutrition"
-              >
-                {t("lens_nutrition")}
-              </h3>
+          <Link href="/knowledge?lens=nutrition" className="group h-full">
+            <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 text-center h-full flex flex-col">
+              <CardContent className="p-0 flex flex-col h-full justify-center">
+                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <Apple className="text-orange-600 text-xl" />
+                </div>
+                <h3
+                  className="text-xl font-bold text-foreground font-serif mb-2"
+                  data-testid="text-lens-nutrition"
+                >
+                  {t("lens_nutrition")}
+                </h3>
+              </CardContent>
             </Card>
           </Link>
         </div>
@@ -709,31 +723,33 @@ const Home = () => {
             <Link
               key={treatment.slug}
               href={`/treatments/${treatment.slug}`}
-              className="group"
+              className="group h-full"
             >
               <Card
-                className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300"
+                className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 h-full flex flex-col"
                 data-testid={`card-treatment-${index}`}
               >
-                <div
-                  className={`w-16 h-16 ${treatment.bgColor} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
-                >
-                  <treatment.icon
-                    className={`${treatment.iconColor} w-8 h-8`}
-                  />
-                </div>
-                <h3
-                  className="text-2xl font-bold text-foreground font-serif mb-4"
-                  data-testid={`text-treatment-name-${index}`}
-                >
-                  {treatment.name}
-                </h3>
-                <p
-                  className="text-muted-foreground"
-                  data-testid={`text-treatment-desc-${index}`}
-                >
-                  {treatment.description}
-                </p>
+                <CardContent className="p-0 flex flex-col h-full">
+                  <div
+                    className={`w-16 h-16 ${treatment.bgColor} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
+                  >
+                    <treatment.icon
+                      className={`${treatment.iconColor} w-8 h-8`}
+                    />
+                  </div>
+                  <h3
+                    className="text-2xl font-bold text-foreground font-serif mb-4"
+                    data-testid={`text-treatment-name-${index}`}
+                  >
+                    {treatment.name}
+                  </h3>
+                  <p
+                    className="text-muted-foreground flex-grow"
+                    data-testid={`text-treatment-desc-${index}`}
+                  >
+                    {treatment.description}
+                  </p>
+                </CardContent>
               </Card>
             </Link>
           ))}

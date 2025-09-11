@@ -122,10 +122,10 @@ const Sakhi = () => {
             return (
               <Card
                 key={index}
-                className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 text-center"
+                className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 text-center h-full flex flex-col"
                 data-testid={`card-sakhi-feature-${index}`}
               >
-                <CardContent className="p-0">
+                <CardContent className="p-0 flex flex-col h-full">
                   <Icon className={`w-12 h-12 ${feature.color} mx-auto mb-4`} />
                   <h3
                     className="text-lg font-bold text-foreground font-serif mb-2"
@@ -134,7 +134,7 @@ const Sakhi = () => {
                     {feature.title}
                   </h3>
                   <p
-                    className="text-sm text-muted-foreground"
+                    className="text-sm text-muted-foreground flex-grow"
                     data-testid={`text-feature-description-${index}`}
                   >
                     {feature.description}
@@ -191,10 +191,10 @@ const Sakhi = () => {
         {/* Privacy Features */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <Card
-            className="rounded-3xl p-4 card-shadow text-center"
+            className="rounded-3xl p-4 card-shadow text-center h-full flex flex-col"
             data-testid="card-privacy-feature-0"
           >
-            <CardContent className="p-0">
+            <CardContent className="p-0 flex flex-col h-full justify-center">
               <Shield className="w-8 h-8 text-green-600 mx-auto mb-3" />
               <h3
                 className="font-bold text-foreground mb-1"
@@ -211,10 +211,10 @@ const Sakhi = () => {
             </CardContent>
           </Card>
           <Card
-            className="rounded-3xl p-4 card-shadow text-center"
+            className="rounded-3xl p-4 card-shadow text-center h-full flex flex-col"
             data-testid="card-privacy-feature-1"
           >
-            <CardContent className="p-0">
+            <CardContent className="p-0 flex flex-col h-full justify-center">
               <MessageCircle className="w-8 h-8 text-blue-600 mx-auto mb-3" />
               <h3
                 className="font-bold text-foreground mb-1"
@@ -231,10 +231,10 @@ const Sakhi = () => {
             </CardContent>
           </Card>
           <Card
-            className="rounded-3xl p-4 card-shadow text-center"
+            className="rounded-3xl p-4 card-shadow text-center h-full flex flex-col"
             data-testid="card-privacy-feature-2"
           >
-            <CardContent className="p-0">
+            <CardContent className="p-0 flex flex-col h-full justify-center">
               <Clock className="w-8 h-8 text-purple-600 mx-auto mb-3" />
               <h3
                 className="font-bold text-foreground mb-1"
