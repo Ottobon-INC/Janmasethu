@@ -61,8 +61,6 @@ export const experts: Expert[] = [
     credentialsKey: 'expert_meera_credentials', 
     city: 'Hyderabad', 
     reviewedKeys: ['review_lab_techniques'], 
-    bioKey: 'expert_meera_bio'erabad', 
-    reviewed: ['Lab procedures','Grading'], 
-    bio: 'Advanced reproductive laboratory techniques.' 
+    bioKey: 'expert_meera_bio' 
   }
 ];
