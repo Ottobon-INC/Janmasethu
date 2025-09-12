@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { articles, type Lens, type Stage } from '@/data/articles';
 
 const Knowledge = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLens, setSelectedLens] = useState<Lens | null>(null);
   const [selectedStage, setSelectedStage] = useState<Stage | null>(null);
@@ -137,10 +137,10 @@ const Knowledge = () => {
                 </div>
                 
                 <h3 className="text-lg font-bold text-foreground font-serif mb-2" data-testid={`text-article-title-${index}`}>
-                  {t(`k${index + 1}_title`)}
+                  {article.title[lang as keyof typeof article.title] || article.title.en}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4" data-testid={`text-article-summary-${index}`}>
-                  {t(`k${index + 1}_desc`)}
+                  {article.summary[lang as keyof typeof article.summary] || article.summary.en}
                 </p>
                 
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
