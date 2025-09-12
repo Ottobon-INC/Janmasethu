@@ -112,8 +112,8 @@ export const dict = {
     blog_edited_by: "Edited by",
 
     // Experts page
-    experts_subtitle: "Meet the medical professionals, specialists, and advisors who review our content to ensure accuracy and relevance for Indian families.",
-    experts_reviews: "Reviews:",
+    experts_subtitle: "Meet the medical professionals, specialists, and counselors who guide our content with their expertise",
+    reviews: "reviews",
     experts_quality_trust: "Quality You Can Trust",
     experts_trust_desc: "All our content is reviewed by qualified professionals to ensure accuracy and relevance. However, this information is for educational purposes only and should not replace professional medical advice.",
     experts_browse_knowledge: "Browse Knowledge Hub",
@@ -393,8 +393,8 @@ export const dict = {
     blog_edited_by: "संपादित किया गया",
 
     // Experts page
-    experts_subtitle: "उन चिकित्सा पेशेवरों, विशेषज्ञों और सलाहकारों से मिलें जो हमारी सामग्री की समीक्षा करते हैं ताकि भारतीय परिवारों के लिए सटीकता और प्रासंगिकता सुनिश्चित की जा सके।",
-    experts_reviews: "समीक्षाएं:",
+    experts_subtitle: "उन चिकित्सा पेशेवरों, विशेषज्ञों और सलाहकारों से मिलें जो अपनी विशेषज्ञता के साथ हमारी सामग्री का मार्गदर्शन करते हैं",
+    reviews: "समीक्षाएं",
     experts_quality_trust: "भरोसेमंद गुणवत्ता",
     experts_trust_desc: "हमारी सभी सामग्री योग्य पेशेवरों द्वारा समीक्षित होती है ताकि सटीकता और प्रासंगिकता सुनिश्चित की जा सके। हालांकि, यह जानकारी केवल शैक्षिक उद्देश्यों के लिए है और पेशेवर चिकित्सा सलाह की जगह नहीं लेनी चाहिए।",
     experts_browse_knowledge: "नॉलेज हब ब्राउज़ करें",
@@ -409,7 +409,7 @@ export const dict = {
       "भारत‑केंद्रित ज्ञान सेतु — चिकित्सा, सामाजिक‑भावनात्मक, वित्तीय और पोषण चार दृष्टिकोणों से। सखी 24/7 भावनात्मक सहारा देती है।",
     why_title: "क्यों चुनें जनमा सेतु?",
     why_points:
-      "भारत‑समझ,सरल भाषा,जीवन‑चरण व दृष्टिकोण दोनों से खोज,कार्यान्वयन योग्य,विश्वसनीय स्रोत,देखभाल‑केंद्रित,गोपनीयता",
+      "India‑aware (schemes, rights, local foods),Plain language, 5‑minute reads,Browse by Life Stage and by Lens,Actionable checklists & 'ask your doctor' prompts,Source‑backed (WHO/NHS/ICMR) with last‑updated,Caring by design (Sakhi for emotions),Privacy & respect",
 
     // New About Cards
     about_patients_title: "मरीज़",
@@ -420,7 +420,7 @@ export const dict = {
 
     // Journey Strip
     journey_title: "आपकी संपूर्ण मातृत्व यात्रा",
-    journey_subtitle: "हर चरण में सखी करुणामय, साक्ष्य‑आधारित सहयोग देती है",
+    journey_subtitle: "हर चरण में सखी करुणामय, साक्ष्य-आधारित सहयोग देती है",
     journey_cta: "देखें कि सखी कैसे सहायता करती है",
 
     // Journey stages
@@ -654,8 +654,8 @@ export const dict = {
     blog_edited_by: "ద్వారా సవరించబడింది",
 
     // Experts page
-    experts_subtitle: "మీ కంటెంట్‌ని భారతీయ కుటుంబాలకు ఖచ్చితత్వం మరియు సంబంధితత్వాన్ని నిర్ధారించడానికి సమీక్షించే వైద్య నిపుణులు, నిపుణులు మరియు సలహాదారులను కలవండి.",
-    experts_reviews: "సమీక్షలు:",
+    experts_subtitle: "మా కంటెంట్‌కి వారి నైపుణ్యంతో మార్గనిర్దేశం చేసే వైద్య నిపుణులు, నిపుణులు మరియు సలహాదారులను కలవండి",
+    reviews: "సమీక్షలు",
     experts_quality_trust: "మీరు నమ్మగలిగే నాణ్యత",
     experts_trust_desc: "మా అన్ని కంటెంట్ అర్హత కలిగిన నిపుణులచే సమీక్షించబడుతుంది తద్వారా ఖచ్చితత్వం మరియు సంబంధితత్వం నిర్ధారించబడుతుంది. అయితే, ఈ సమాచారం విద్యా ప్రయోజనాల కోసం మాత్రమే మరియు వృత్తిపరమైన వైద్య సలహాను భర్తీ చేయకూడదు.",
     experts_browse_knowledge: "నాలెడ్జ్ హబ్ బ్రౌజ్ చేయండి",
