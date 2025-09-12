@@ -17,7 +17,7 @@ export const dict = {
     nav_investors: "Investors",
     nav_more: "More",
     nav_less: "Less",
-    
+
     // Sakhi page
     sakhi_hero: "Meet <span>Sakhi</span> - Your Compassionate Companion",
     sakhi_sub: "Sakhi understands the emotional challenges of fertility journeys and provides culturally-aware support",
@@ -28,7 +28,7 @@ export const dict = {
     sakhi_subtitle: "Sakhi understands the emotional challenges of fertility journeys and provides culturally-aware support",
     sakhi_feature_emotional_title: "Emotional Support",
     sakhi_feature_emotional_desc: "Compassionate responses for anxiety, fear, and overwhelming moments",
-    sakhi_feature_247_title: "24/7 Availability", 
+    sakhi_feature_247_title: "24/7 Availability",
     sakhi_feature_247_desc: "Support whenever you need it, day or night",
     sakhi_feature_private_title: "Private & Secure",
     sakhi_feature_private_desc: "All conversations stay on your device - completely private",
@@ -67,12 +67,12 @@ export const dict = {
     sakhi_learn_treatments: "Learn About Treatments",
     sakhi_important_notice: "Important Notice",
     sakhi_important_desc: "Sakhi provides emotional support and general guidance but is not a replacement for professional medical or mental health care. If you're experiencing thoughts of self-harm or severe distress, please contact a healthcare professional or emergency services immediately.",
-    
+
     // Tools page
     tools_subtitle: "Practical tools and calculators to help you navigate your fertility and parenting journey. All tools are designed with Indian healthcare contexts in mind.",
     tools_ovulation_calc: "Ovulation Calculator",
     tools_ovulation_desc: "Track your fertile window and ovulation dates",
-    tools_pregnancy_calc: "Pregnancy Due Date Calculator", 
+    tools_pregnancy_calc: "Pregnancy Due Date Calculator",
     tools_pregnancy_desc: "Calculate your estimated due date and track milestones",
     tools_cost_estimator: "Treatment Cost Estimator",
     tools_cost_desc: "Estimate costs for various fertility treatments in India",
@@ -95,14 +95,14 @@ export const dict = {
     tools_need_support: "Need More Support?",
     tools_support_desc: "While tools provide helpful calculations, emotional support is equally important. Sakhi is here for you 24/7.",
     tools_talk_sakhi: "Talk to Sakhi",
-    
+
     // Alt text for images
     alt_planning_fertility: "Planning and tracking fertility journey",
     alt_reading_parenting: "Reading and learning about parenting",
     alt_medical_consultation: "Medical consultation with healthcare professionals",
     alt_peaceful_meditation: "Peaceful meditation and wellness",
-    
-    // Blog page  
+
+    // Blog page
     blog_subtitle: "Insights, tips, and practical advice from our editorial team and expert contributors. Stay updated with the latest in fertility, pregnancy, and parenting.",
     blog_featured_post: "Featured Post",
     blog_all_posts: "All Posts",
@@ -110,7 +110,7 @@ export const dict = {
     blog_updates_desc: "Get the latest articles, guides, and insights delivered to your inbox. No spam, just helpful content for your parenting journey.",
     blog_get_updates: "Get Updates",
     blog_edited_by: "Edited by",
-    
+
     // Experts page
     experts_subtitle: "Meet the medical professionals, specialists, and advisors who review our content to ensure accuracy and relevance for Indian families.",
     experts_reviews: "Reviews:",
@@ -276,11 +276,11 @@ export const dict = {
     investors_cta_onepager: "Download 1-Pager",
     investors_cta_contact: "Contact Us",
 
-    // Search and other UI elements  
+    // Search and other UI elements
     search_placeholder: "Search articles, treatments...",
     coming_soon: "Coming Soon",
     read_more: "Read More",
-    learn_more: "Learn More", 
+    learn_more: "Learn More",
     get_started: "Get Started",
     explore_more: "Explore More",
     support_title: "Need Additional Support?",
@@ -303,7 +303,7 @@ export const dict = {
     nav_more: "और",
     nav_less: "कम",
     nav_investors: "निवेशक",
-    
+
     // Sakhi page
     sakhi_browse_knowledge: "नॉलेज हब ब्राउज़ करें",
     sakhi_subtitle: "सखी प्रजनन यात्रा की भावनात्मक चुनौतियों को समझती है और सांस्कृतिक रूप से जागरूक सहायता प्रदान करती है",
@@ -325,8 +325,9 @@ export const dict = {
     sakhi_multilang_short: "बहुभाषी",
     sakhi_multilang_short_desc: "अंग्रेजी, हिंदी या तेलुगू में जवाब देता है",
     sakhi_247_available: "24/7 उपलब्ध",
-    sakhi_247_available_desc: "जब भी आपको जरूरत हो सहारा",
-    sakhi_scenarios_title: "ये स्थितियां आजमाएं",
+    sakhi_247_available_desc: "जब भी आपको जरूरत हो, दिन हो या रात",
+    sakhi_how_list: "कठिन क्षणों में आपकी भावनात्मक स्थिति को समझना|चिंता और तनाव के लिए मुकाबला रणनीतियां प्रदान करना|सांस्कृतिक रूप से उपयुक्त मार्गदर्शन देना|जटिल भावनाओं को संसाधित करने में सहायता करना|प्रतीक्षा अवधि के दौरान सहायता करना|साथी संवाद में सहायता करना|भारी क्षणों के दौरान दृष्टिकोण प्रदान करना",
+    sakhi_scenarios_title: "ये परिस्थितियां आजमाएं",
     sakhi_scenario_anxiety_title: "स्कैन से पहले की चिंता",
     sakhi_scenario_anxiety_desc: "चिकित्सा अपॉइंटमेंट से पहले सहारा पाएं",
     sakhi_scenario_wait_title: "दो सप्ताह का इंतज़ार",
@@ -348,7 +349,7 @@ export const dict = {
     sakhi_learn_treatments: "उपचारों के बारे में जानें",
     sakhi_important_notice: "महत्वपूर्ण नोटिस",
     sakhi_important_desc: "सखी भावनात्मक सहारा और सामान्य मार्गदर्शन प्रदान करती है लेकिन पेशेवर चिकित्सा या मानसिक स्वास्थ्य देखभाल की जगह नहीं है। यदि आप आत्म-नुकसान के विचारों या गंभीर संकट का अनुभव कर रहे हैं, तो कृपया तुरंत स्वास्थ्य देखभाल पेशेवर या आपातकालीन सेवाओं से संपर्क करें।",
-    
+
     // Tools page
     tools_subtitle: "आपकी प्रजनन और पालन-पोषण यात्रा में मदद के लिए व्यावहारिक उपकरण और कैलकुलेटर। सभी उपकरण भारतीय स्वास्थ्य संदर्भों को ध्यान में रखकर डिज़ाइन किए गए हैं।",
     tools_ovulation_calc: "ओव्यूलेशन कैलकुलेटर",
@@ -376,13 +377,13 @@ export const dict = {
     tools_need_support: "अधिक सहारे की जरूरत?",
     tools_support_desc: "जबकि उपकरण सहायक गणना प्रदान करते हैं, भावनात्मक सहारा उतना ही महत्वपूर्ण है। सखी आपके लिए 24/7 यहाँ है।",
     tools_talk_sakhi: "सखी से बात करें",
-    
+
     // Alt text for images
     alt_planning_fertility: "प्रजनन यात्रा की योजना और ट्रैकिंग",
     alt_reading_parenting: "पेरेंटिंग के बारे में पढ़ना और सीखना",
     alt_medical_consultation: "स्वास्थ्य पेशेवरों के साथ चिकित्सा परामर्श",
-    
-    // Blog page  
+
+    // Blog page
     blog_subtitle: "हमारी संपादकीय टीम और विशेषज्ञ योगदानकर्ताओं से अंतर्दृष्टि, सुझाव और व्यावहारिक सलाह। प्रजनन, गर्भावस्था और पालन-पोषण में नवीनतम से अपडेट रहें।",
     blog_featured_post: "फीचर्ड पोस्ट",
     blog_all_posts: "सभी पोस्ट",
@@ -390,7 +391,7 @@ export const dict = {
     blog_updates_desc: "नवीनतम लेख, गाइड और अंतर्दृष्टि अपने इनबॉक्स में प्राप्त करें। कोई स्पैम नहीं, केवल आपकी पालन-पोषण यात्रा के लिए उपयोगी सामग्री।",
     blog_get_updates: "अपडेट प्राप्त करें",
     blog_edited_by: "संपादित किया गया",
-    
+
     // Experts page
     experts_subtitle: "उन चिकित्सा पेशेवरों, विशेषज्ञों और सलाहकारों से मिलें जो हमारी सामग्री की समीक्षा करते हैं ताकि भारतीय परिवारों के लिए सटीकता और प्रासंगिकता सुनिश्चित की जा सके।",
     experts_reviews: "समीक्षाएं:",
@@ -563,7 +564,7 @@ export const dict = {
     nav_more: "మరిన్ని",
     nav_less: "తక్కువ",
     nav_investors: "పెట్టుబడిదారులు",
-    
+
     // Sakhi page
     sakhi_browse_knowledge: "నాలెడ్జ్ హబ్ బ్రౌజ్ చేయండి",
     sakhi_subtitle: "సఖి ప్రజనన ప్రయాణం యొక్క భావోద్వేగ సవాళ్లను అర్థం చేసుకుంటుంది మరియు సాంస్కృతికంగా అవగాహనతో కూడిన సహాయం అందిస్తుంది",
@@ -585,8 +586,9 @@ export const dict = {
     sakhi_multilang_short: "బహుభాషా",
     sakhi_multilang_short_desc: "ఇంగ్లీష్, హిందీ లేదా తెలుగులో ప్రతిస్పందిస్తుంది",
     sakhi_247_available: "24/7 అందుబాటులో",
-    sakhi_247_available_desc: "మీకు ఎప్పుడు అవసరమైనా మద్దతు",
-    sakhi_scenarios_title: "ఈ పరిస్థితులను ప్రయత్నించండి",
+    sakhi_247_available_desc: "మీకు ఎప్పుడు అవసరమైనా, రాత్రి లేదా పగలు",
+    sakhi_how_list: "కష్టమైన క్షణాలలో మీ భావోద్వేగ స్థితిని అర్థం చేసుకోవడం|ఆందోళన మరియు ఒత్తిడికి కోపింగ్ వ్యూహాలను అందించడం|సాంస్కృతికంగా సరైన మార్గదర్శకత్వం అందించడం|సంక్లిష్ట భావనలను ప్రాసెస్ చేయడంలో సహాయం చేయడం|వేచి ఉండే కాలంలో మద్దతు ఇవ్వడం|భాగస్వామి కమ్యూనికేషన్‌లో సహాయం చేయడం|అధిక భారం ఉన్న సమయాలలో దృక్పథం అందించడం",
+    sakhi_scenarios_title: "ఈ దృశ్యాలను ప్రయత్నించండి",
     sakhi_scenario_anxiety_title: "స్కాన్ ముందు ఆందోళన",
     sakhi_scenario_anxiety_desc: "వైద్య అపాయింట్‌మెంట్‌లకు ముందు మద్దతు పొందండి",
     sakhi_scenario_wait_title: "రెండు వారాల వేచిచూపు",
@@ -608,7 +610,7 @@ export const dict = {
     sakhi_learn_treatments: "చికిత్సల గురించి తెలుసుకోండి",
     sakhi_important_notice: "ముఖ్యమైన నోటీస్",
     sakhi_important_desc: "సఖి భావోద్వేగ మద్దతు మరియు సాధారణ మార్గదర్శకత్వాన్ని అందిస్తుంది కానీ వృత్తిపరమైన వైద్య లేదా మానసిక ఆరోగ్య సంరక్షణకు ప్రత్యామ్నాయం కాదు. మీరు స్వీయ-హాని ఆలోచనలు లేదా తీవ్ర బాధను అనుభవిస్తున్నట్లయితే, దయచేసి తక్షణం ఆరోగ్య సంరక్షణ నిపుణుడిని లేదా అత్యవసర సేవలను సంప్రదించండి.",
-    
+
     // Tools page
     tools_subtitle: "మీ ప్రజనన మరియు పేరెంటింగ్ ప్రయాణంలో సహాయం చేయడానికి ఆచరణాత్మక సాధనాలు మరియు లెక్కలు. అన్ని సాధనాలు భారతీయ ఆరోగ్య సందర్భాలను దృష్టిలో ఉంచుకుని రూపొందించబడ్డాయి.",
     tools_ovulation_calc: "అండోత్పత్తి కాలిక్యులేటర్",
@@ -636,13 +638,13 @@ export const dict = {
     tools_need_support: "మరింత మద్దతు అవసరమా?",
     tools_support_desc: "సాధనాలు సహాయకరమైన లెక్కలను అందిస్తున్నప్పటికీ, భావోద్వేగ మద్దతు అంతే ముఖ్యం. సఖి 24/7 మీ కోసం ఇక్కడ ఉంది.",
     tools_talk_sakhi: "సఖితో మాట్లాడండి",
-    
+
     // Alt text for images
     alt_planning_fertility: "ప్రజనన ప్రయాణ ప్రణాళిక మరియు ట్రాకింగ్",
     alt_reading_parenting: "పేరెంటింగ్ గురించి చదవడం మరియు నేర్చుకోవడం",
     alt_medical_consultation: "ఆరోగ్య నిపుణులతో వైద్య సంప్రదింపు",
-    
-    // Blog page  
+
+    // Blog page
     blog_subtitle: "మా సంపాదకీయ బృందం మరియు నిపుణుల సహాయకుల నుండి అంతర్దృష్టులు, చిట్కాలు మరియు ఆచరణాత్మక సలహాలు. ప్రజనన, గర్భధారణ మరియు పేరెంటింగ్‌లో తాజా విషయాలతో అప్‌డేట్‌గా ఉండండి.",
     blog_featured_post: "ఫీచర్డ్ పోస్ట్",
     blog_all_posts: "అన్ని పోస్ట్‌లు",
@@ -650,7 +652,7 @@ export const dict = {
     blog_updates_desc: "తాజా కథనాలు, గైడ్‌లు మరియు అంతర్దృష్టులను మీ ఇన్‌బాక్స్‌లో పొందండి. స్పామ్ లేదు, మీ పేరెంటింగ్ ప్రయాణానికి సహాయకరమైన కంటెంట్ మాత్రమే.",
     blog_get_updates: "అప్‌డేట్‌లను పొందండి",
     blog_edited_by: "ద్వారా సవరించబడింది",
-    
+
     // Experts page
     experts_subtitle: "మీ కంటెంట్‌ని భారతీయ కుటుంబాలకు ఖచ్చితత్వం మరియు సంబంధితత్వాన్ని నిర్ధారించడానికి సమీక్షించే వైద్య నిపుణులు, నిపుణులు మరియు సలహాదారులను కలవండి.",
     experts_reviews: "సమీక్షలు:",
