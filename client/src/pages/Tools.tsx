@@ -10,51 +10,51 @@ const Tools = () => {
   const tools = [
     {
       slug: 'ovulation-calculator',
-      title: 'Ovulation Calculator',
-      description: 'Track your fertile window and ovulation dates',
+      title: 'tools_ovulation_calc',
+      description: 'tools_ovulation_desc',
       icon: Calendar,
       color: 'bg-purple-100 text-purple-600',
-      status: 'Available'
+      status: 'tools_available'
     },
     {
       slug: 'pregnancy-calculator',
-      title: 'Pregnancy Due Date Calculator',
-      description: 'Calculate your estimated due date and track milestones',
+      title: 'tools_pregnancy_calc',
+      description: 'tools_pregnancy_desc',
       icon: Baby,
       color: 'bg-pink-100 text-pink-600',
-      status: 'Available'
+      status: 'tools_available'
     },
     {
       slug: 'cost-estimator',
-      title: 'Treatment Cost Estimator',
-      description: 'Estimate costs for various fertility treatments in India',
+      title: 'tools_cost_estimator',
+      description: 'tools_cost_desc',
       icon: Calculator,
       color: 'bg-green-100 text-green-600',
-      status: 'Available'
+      status: 'tools_available'
     },
     {
       slug: 'fertility-tracker',
-      title: 'Fertility Journey Tracker',
-      description: 'Track appointments, medications, and progress',
+      title: 'tools_fertility_tracker',
+      description: 'tools_fertility_desc',
       icon: Heart,
       color: 'bg-blue-100 text-blue-600',
-      status: 'Coming Soon'
+      status: 'tools_coming_soon'
     },
     {
       slug: 'symptom-checker',
-      title: 'Pregnancy Symptom Guide',
-      description: 'Understand common pregnancy symptoms and when to call your doctor',
+      title: 'tools_symptom_guide',
+      description: 'tools_symptom_desc',
       icon: CheckCircle,
       color: 'bg-orange-100 text-orange-600',
-      status: 'Coming Soon'
+      status: 'tools_coming_soon'
     },
     {
       slug: 'appointment-prep',
-      title: 'Appointment Preparation Tool',
-      description: 'Generate questions to ask your doctor based on your situation',
+      title: 'tools_appointment_prep',
+      description: 'tools_appointment_desc',
       icon: Clock,
       color: 'bg-indigo-100 text-indigo-600',
-      status: 'Coming Soon'
+      status: 'tools_coming_soon'
     }
   ];
 
@@ -66,15 +66,14 @@ const Tools = () => {
           {t('nav_tools')}
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          Practical tools and calculators to help you navigate your fertility and parenting journey. 
-          All tools are designed with Indian healthcare contexts in mind.
+          {t('tools_subtitle')}
         </p>
 
         {/* Hero Background */}
         <div className="mt-12 relative">
           <img 
             src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400" 
-            alt="Planning and tracking fertility journey" 
+            alt={t('alt_planning_fertility')} 
             className="w-full h-64 object-cover rounded-3xl opacity-20"
           />
         </div>
@@ -84,7 +83,7 @@ const Tools = () => {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
         {tools.map((tool, index) => {
           const Icon = tool.icon;
-          const isAvailable = tool.status === 'Available';
+          const isAvailable = tool.status === 'tools_available';
           
           return (
             <Card 
@@ -103,30 +102,30 @@ const Tools = () => {
                 
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-bold text-foreground font-serif" data-testid={`text-tool-title-${index}`}>
-                    {tool.title}
+                    {t(tool.title)}
                   </h3>
                   <span className={`text-xs px-2 py-1 rounded-full ${
                     isAvailable 
                       ? 'bg-green-100 text-green-600' 
                       : 'bg-yellow-100 text-yellow-600'
                   }`} data-testid={`badge-tool-status-${index}`}>
-                    {tool.status}
+                    {t(tool.status)}
                   </span>
                 </div>
                 
                 <p className="text-muted-foreground mb-6" data-testid={`text-tool-description-${index}`}>
-                  {tool.description}
+                  {t(tool.description)}
                 </p>
 
                 {isAvailable ? (
                   <Link href={`/tools/${tool.slug}`}>
                     <Button className="gradient-button text-white rounded-full w-full" data-testid={`button-use-tool-${index}`}>
-                      Use Tool
+                      {t('tools_use_tool')}
                     </Button>
                   </Link>
                 ) : (
                   <Button disabled className="w-full rounded-full" data-testid={`button-tool-coming-soon-${index}`}>
-                    Coming Soon
+                    {t('tools_coming_soon')}
                   </Button>
                 )}
               </CardContent>
@@ -139,10 +138,10 @@ const Tools = () => {
       <section className="py-16">
         <div className="mb-12">
           <h2 className="text-3xl font-bold text-foreground font-serif mb-4 text-center">
-            Available Tools
+            {t('tools_available_tools')}
           </h2>
           <p className="text-muted-foreground text-center max-w-2xl mx-auto">
-            Start using these tools right now to support your journey
+            {t('tools_available_subtitle')}
           </p>
         </div>
 
@@ -151,13 +150,13 @@ const Tools = () => {
           <Card className="rounded-3xl p-6 card-shadow">
             <CardContent className="p-0">
               <Calendar className="w-12 h-12 text-purple-600 mb-4" />
-              <h3 className="text-lg font-bold text-foreground font-serif mb-2">Ovulation Calculator</h3>
+              <h3 className="text-lg font-bold text-foreground font-serif mb-2">{t('tools_ovulation_calc')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Enter your cycle length and last period date to find your fertile window
+                {t('tools_ovulation_detail')}
               </p>
               <Link href="/tools/ovulation-calculator">
                 <Button className="gradient-button text-white rounded-full w-full" data-testid="button-ovulation-calculator">
-                  Calculate Now
+                  {t('tools_calculate_now')}
                 </Button>
               </Link>
             </CardContent>
@@ -167,13 +166,13 @@ const Tools = () => {
           <Card className="rounded-3xl p-6 card-shadow">
             <CardContent className="p-0">
               <Baby className="w-12 h-12 text-pink-600 mb-4" />
-              <h3 className="text-lg font-bold text-foreground font-serif mb-2">Due Date Calculator</h3>
+              <h3 className="text-lg font-bold text-foreground font-serif mb-2">{t('tools_pregnancy_calc')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Calculate your estimated due date and pregnancy milestones
+                {t('tools_pregnancy_detail')}
               </p>
               <Link href="/tools/pregnancy-calculator">
                 <Button className="gradient-button text-white rounded-full w-full" data-testid="button-pregnancy-calculator">
-                  Calculate Now
+                  {t('tools_calculate_now')}
                 </Button>
               </Link>
             </CardContent>
@@ -183,13 +182,13 @@ const Tools = () => {
           <Card className="rounded-3xl p-6 card-shadow">
             <CardContent className="p-0">
               <Calculator className="w-12 h-12 text-green-600 mb-4" />
-              <h3 className="text-lg font-bold text-foreground font-serif mb-2">Cost Estimator</h3>
+              <h3 className="text-lg font-bold text-foreground font-serif mb-2">{t('tools_cost_estimator')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Get rough cost estimates for fertility treatments in your city
+                {t('tools_cost_detail')}
               </p>
               <Link href="/tools/cost-estimator">
                 <Button className="gradient-button text-white rounded-full w-full" data-testid="button-cost-estimator">
-                  Estimate Costs
+                  {t('tools_estimate_costs')}
                 </Button>
               </Link>
             </CardContent>

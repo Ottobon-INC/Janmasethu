@@ -19,33 +19,33 @@ const Sakhi = () => {
   const sakhiFeatures = [
     {
       icon: Heart,
-      title: "Emotional Support",
+      title: "sakhi_feature_emotional_title",
       description:
-        "Compassionate responses for anxiety, fear, and overwhelming moments",
+        "sakhi_feature_emotional_desc",
       color: "text-pink-600",
     },
     {
       icon: Clock,
-      title: "24/7 Availability",
-      description: "Support whenever you need it, day or night",
+      title: "sakhi_feature_247_title",
+      description: "sakhi_feature_247_desc",
       color: "text-blue-600",
     },
     {
       icon: Shield,
-      title: "Private & Secure",
-      description: "All conversations stay on your device - completely private",
+      title: "sakhi_feature_private_title",
+      description: "sakhi_feature_private_desc",
       color: "text-green-600",
     },
     {
       icon: Users,
-      title: "Partner Support",
-      description: "Guidance for both partners navigating the journey together",
+      title: "sakhi_feature_partner_title",
+      description: "sakhi_feature_partner_desc",
       color: "text-purple-600",
     },
     {
       icon: MessageCircle,
-      title: "Multi-language",
-      description: "Responds in English, Hindi, or Telugu based on your input",
+      title: "sakhi_feature_multilang_title",
+      description: "sakhi_feature_multilang_desc",
       color: "text-orange-600",
     },
   ];
@@ -85,7 +85,7 @@ const Sakhi = () => {
                 className="bg-white text-foreground px-8 py-4 rounded-full font-semibold text-lg border-border hover:shadow-lg transition-all duration-300"
                 data-testid="button-browse-knowledge"
               >
-                Browse Knowledge Hub
+                {t("sakhi_browse_knowledge")}
               </Button>
             </Link>
           </div>
@@ -94,7 +94,7 @@ const Sakhi = () => {
           <div className="absolute inset-0 -z-10 opacity-10">
             <img
               src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080"
-              alt="Peaceful meditation and wellness"
+              alt={t('alt_peaceful_meditation')}
               className="w-full h-full object-cover rounded-3xl"
             />
           </div>
@@ -111,8 +111,7 @@ const Sakhi = () => {
             {t("sakhi_how_title")}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Sakhi understands the emotional challenges of fertility journeys and
-            provides culturally-aware support
+            {t("sakhi_subtitle")}
           </p>
         </div>
 
@@ -131,13 +130,13 @@ const Sakhi = () => {
                     className="text-lg font-bold text-foreground font-serif mb-2"
                     data-testid={`text-feature-title-${index}`}
                   >
-                    {feature.title}
+                    {t(feature.title)}
                   </h3>
                   <p
                     className="text-sm text-muted-foreground flex-grow"
                     data-testid={`text-feature-description-${index}`}
                   >
-                    {feature.description}
+                    {t(feature.description)}
                   </p>
                 </CardContent>
               </Card>
@@ -149,7 +148,7 @@ const Sakhi = () => {
         <Card className="rounded-3xl p-8 card-shadow">
           <CardContent className="p-0">
             <h3 className="text-2xl font-bold text-foreground font-serif mb-6 text-center">
-              Specific Ways Sakhi Supports You
+              {t("sakhi_specific_ways")}
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               {t("sakhi_how_list")
@@ -176,15 +175,13 @@ const Sakhi = () => {
             className="text-4xl md:text-5xl font-bold text-foreground font-serif mb-6"
             data-testid="text-sakhi-try-title"
           >
-            Try Sakhi - Interactive Demo
+            {t("sakhi_try_demo_title")}
           </h2>
           <p
             className="text-lg text-muted-foreground max-w-3xl mx-auto"
             data-testid="text-sakhi-try-subtitle"
           >
-            Experience compassionate, culturally-aware support for your
-            fertility journey. Type in any language and Sakhi will respond
-            accordingly.
+            {t("sakhi_try_demo_subtitle")}
           </p>
         </div>
 
@@ -200,13 +197,13 @@ const Sakhi = () => {
                 className="font-bold text-foreground mb-1"
                 data-testid="text-privacy-title-0"
               >
-                Private & Local
+                {t("sakhi_private_local")}
               </h3>
               <p
                 className="text-sm text-muted-foreground"
                 data-testid="text-privacy-description-0"
               >
-                All conversations stay on your device
+                {t("sakhi_private_local_desc")}
               </p>
             </CardContent>
           </Card>
@@ -220,13 +217,13 @@ const Sakhi = () => {
                 className="font-bold text-foreground mb-1"
                 data-testid="text-privacy-title-1"
               >
-                Multi-language
+                {t("sakhi_multilang_short")}
               </h3>
               <p
                 className="text-sm text-muted-foreground"
                 data-testid="text-privacy-description-1"
               >
-                Responds in English, Hindi, or Telugu
+                {t("sakhi_multilang_short_desc")}
               </p>
             </CardContent>
           </Card>
@@ -240,13 +237,13 @@ const Sakhi = () => {
                 className="font-bold text-foreground mb-1"
                 data-testid="text-privacy-title-2"
               >
-                24/7 Available
+                {t("sakhi_247_available")}
               </h3>
               <p
                 className="text-sm text-muted-foreground"
                 data-testid="text-privacy-description-2"
               >
-                Support whenever you need it
+                {t("sakhi_247_available_desc")}
               </p>
             </CardContent>
           </Card>
@@ -264,7 +261,7 @@ const Sakhi = () => {
               <CardHeader>
                 <CardTitle className="text-lg font-bold text-foreground font-serif flex items-center">
                   <MessageCircle className="w-5 h-5 mr-2 text-pink-500" />
-                  Try These Scenarios
+                  {t("sakhi_scenarios_title")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -277,13 +274,13 @@ const Sakhi = () => {
                       className="font-semibold text-foreground text-sm mb-1"
                       data-testid="text-scenario-title-0"
                     >
-                      Pre-scan Anxiety
+                      {t("sakhi_scenario_anxiety_title")}
                     </h4>
                     <p
                       className="text-xs text-muted-foreground mb-2"
                       data-testid="text-scenario-description-0"
                     >
-                      Get support before medical appointments
+                      {t("sakhi_scenario_anxiety_desc")}
                     </p>
                     <p
                       className="text-xs text-primary font-medium italic"
@@ -300,13 +297,13 @@ const Sakhi = () => {
                       className="font-semibold text-foreground text-sm mb-1"
                       data-testid="text-scenario-title-1"
                     >
-                      Two-week Wait
+                      {t("sakhi_scenario_wait_title")}
                     </h4>
                     <p
                       className="text-xs text-muted-foreground mb-2"
                       data-testid="text-scenario-description-1"
                     >
-                      Manage anticipation and worry during waiting periods
+                      {t("sakhi_scenario_wait_desc")}
                     </p>
                     <p
                       className="text-xs text-primary font-medium italic"
@@ -323,13 +320,13 @@ const Sakhi = () => {
                       className="font-semibold text-foreground text-sm mb-1"
                       data-testid="text-scenario-title-2"
                     >
-                      Partner Support
+                      {t("sakhi_scenario_partner_title")}
                     </h4>
                     <p
                       className="text-xs text-muted-foreground mb-2"
                       data-testid="text-scenario-description-2"
                     >
-                      Help for partners dealing with diagnosis emotions
+                      {t("sakhi_scenario_partner_desc")}
                     </p>
                     <p
                       className="text-xs text-primary font-medium italic"
@@ -345,7 +342,7 @@ const Sakhi = () => {
             <Card className="rounded-3xl p-6 card-shadow">
               <CardHeader>
                 <CardTitle className="text-lg font-bold text-foreground font-serif">
-                  How It Works
+                  {t("sakhi_how_it_works")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -355,7 +352,7 @@ const Sakhi = () => {
                       1
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Type your message in English, Hindi, or Telugu
+                      {t("sakhi_step1")}
                     </p>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -363,7 +360,7 @@ const Sakhi = () => {
                       2
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Sakhi detects your language automatically
+                      {t("sakhi_step2")}
                     </p>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -371,7 +368,7 @@ const Sakhi = () => {
                       3
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Receive compassionate, culturally-aware support
+                      {t("sakhi_step3")}
                     </p>
                   </div>
                 </div>
@@ -382,7 +379,7 @@ const Sakhi = () => {
               <CardContent className="p-0 text-center">
                 <Shield className="w-10 h-10 text-blue-600 mx-auto mb-3" />
                 <h3 className="font-bold text-foreground mb-2">
-                  Privacy First
+                  {t("sakhi_privacy_first")}
                 </h3>
                 <p
                   className="text-xs text-muted-foreground mb-4"
@@ -391,7 +388,7 @@ const Sakhi = () => {
                   {t("chat_privacy")}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  No account needed, no data collected, completely anonymous.
+                  {t("sakhi_no_account")}
                 </p>
               </CardContent>
             </Card>
@@ -403,16 +400,14 @@ const Sakhi = () => {
           <CardContent className="p-0 text-center">
             <Heart className="w-12 h-12 text-orange-600 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-foreground font-serif mb-4">
-              Important: When to Seek Professional Help
+              {t("sakhi_help_notice_title")}
             </h3>
             <div className="max-w-3xl mx-auto text-muted-foreground space-y-3">
               <p>
-                Sakhi provides emotional support and coping strategies, but
-                cannot replace professional medical or mental health care.
+                {t("sakhi_help_notice_desc")}
               </p>
               <p className="font-medium text-foreground">
-                Please contact a healthcare professional or emergency services
-                immediately if you experience:
+                {t("sakhi_help_contact")}
               </p>
               <ul className="text-left max-w-xl mx-auto space-y-1">
                 <li>• Thoughts of self-harm or suicide</li>
@@ -429,11 +424,10 @@ const Sakhi = () => {
         {/* Continue Exploring */}
         <div className="bg-white rounded-3xl p-8 card-shadow text-center mt-16">
           <h2 className="text-2xl font-bold text-foreground font-serif mb-4">
-            Continue Your Journey
+            {t("sakhi_continue_journey")}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-            Explore our comprehensive knowledge hub for evidence-based
-            information on fertility, pregnancy, and parenting.
+            {t("sakhi_continue_desc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/knowledge">
@@ -441,7 +435,7 @@ const Sakhi = () => {
                 className="gradient-button text-white px-8 py-4 rounded-full font-semibold"
                 data-testid="button-explore-knowledge"
               >
-                Explore Knowledge Hub
+                {t("sakhi_explore_knowledge")}
               </Button>
             </Link>
             <Link href="/treatments">
@@ -450,7 +444,7 @@ const Sakhi = () => {
                 className="px-8 py-4 rounded-full font-semibold"
                 data-testid="button-learn-treatments"
               >
-                Learn About Treatments
+                {t("sakhi_learn_treatments")}
               </Button>
             </Link>
           </div>
@@ -463,14 +457,10 @@ const Sakhi = () => {
           <CardContent className="p-0 text-center">
             <Shield className="w-12 h-12 text-blue-600 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-foreground font-serif mb-4">
-              Important Notice
+              {t("sakhi_important_notice")}
             </h3>
             <p className="text-muted-foreground max-w-3xl mx-auto">
-              Sakhi provides emotional support and general guidance but is not a
-              replacement for professional medical or mental health care. If
-              you're experiencing thoughts of self-harm or severe distress,
-              please contact a healthcare professional or emergency services
-              immediately.
+              {t("sakhi_important_desc")}
             </p>
           </CardContent>
         </Card>

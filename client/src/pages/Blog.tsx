@@ -29,15 +29,14 @@ const Blog = () => {
           {t('nav_blog')}
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          Insights, tips, and practical advice from our editorial team and expert contributors. 
-          Stay updated with the latest in fertility, pregnancy, and parenting.
+          {t('blog_subtitle')}
         </p>
 
         {/* Hero Background */}
         <div className="mt-12 relative">
           <img 
             src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400" 
-            alt="Reading and learning about parenting" 
+            alt={t('alt_reading_parenting')} 
             className="w-full h-64 object-cover rounded-3xl opacity-20"
           />
         </div>
@@ -46,7 +45,7 @@ const Blog = () => {
       {/* Featured Post */}
       {posts.length > 0 && (
         <div className="mb-16">
-          <h2 className="text-2xl font-bold text-foreground font-serif mb-6">Featured Post</h2>
+          <h2 className="text-2xl font-bold text-foreground font-serif mb-6">{t('blog_featured_post')}</h2>
           <Link href={`/blog/${posts[0].slug}`}>
             <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-purple-50 to-pink-50" data-testid="card-featured-post">
               <CardContent className="p-0">
@@ -74,7 +73,7 @@ const Blog = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Calendar className="w-4 h-4" />
-                        <span>Edited by {posts[0].editedBy}</span>
+                        <span>{t('blog_edited_by')} {posts[0].editedBy}</span>
                       </div>
                     </div>
                   </div>
@@ -95,7 +94,7 @@ const Blog = () => {
 
       {/* All Posts */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-foreground font-serif mb-6">All Posts</h2>
+        <h2 className="text-2xl font-bold text-foreground font-serif mb-6">{t('blog_all_posts')}</h2>
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -126,7 +125,7 @@ const Blog = () => {
                 
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <span data-testid={`text-post-author-${index}`}>{post.author}</span>
-                  <span data-testid={`text-post-editor-${index}`}>Edited by {post.editedBy}</span>
+                  <span data-testid={`text-post-editor-${index}`}>{t('blog_edited_by')} {post.editedBy}</span>
                 </div>
               </CardContent>
             </Card>
@@ -138,15 +137,14 @@ const Blog = () => {
       <section className="py-16">
         <div className="bg-white rounded-3xl p-8 md:p-12 card-shadow text-center">
           <h2 className="text-3xl font-bold text-foreground font-serif mb-4">
-            Stay Updated
+            {t('blog_stay_updated')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Get the latest articles, guides, and insights delivered to your inbox. 
-            No spam, just helpful content for your parenting journey.
+            {t('blog_updates_desc')}
           </p>
           <Link href="/contact">
             <Button className="gradient-button text-white px-8 py-4 rounded-full font-semibold" data-testid="button-newsletter-signup">
-              Get Updates
+              {t('blog_get_updates')}
             </Button>
           </Link>
         </div>

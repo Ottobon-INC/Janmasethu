@@ -29,15 +29,14 @@ const Experts = () => {
           {t('nav_experts')}
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          Meet the medical professionals, specialists, and advisors who review our content 
-          to ensure accuracy and relevance for Indian families.
+          {t('experts_subtitle')}
         </p>
 
         {/* Hero Background */}
         <div className="mt-12 relative">
           <img 
             src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400" 
-            alt="Medical consultation with healthcare professionals" 
+            alt={t('alt_medical_consultation')} 
             className="w-full h-64 object-cover rounded-3xl opacity-20"
           />
         </div>
