@@ -1,65 +1,67 @@
 export type Expert = { 
   id: string; 
-  name: string; 
-  role: string; 
-  credentials: string; 
+  nameKey: string; 
+  roleKey: string; 
+  credentialsKey: string; 
   city: string; 
-  reviewed: string[]; 
-  bio: string 
+  reviewedKeys: string[]; 
+  bioKey: string 
 };
 
 export const experts: Expert[] = [
   { 
     id: 'ananya-obgyn', 
-    name: 'Dr. Ananya Sharma', 
-    role: 'OB‑GYN — Medical Reviewer', 
-    credentials: 'MBBS, MS (OBGYN)', 
+    nameKey: 'expert_ananya_name', 
+    roleKey: 'expert_ananya_role', 
+    credentialsKey: 'expert_ananya_credentials', 
     city: 'Delhi', 
-    reviewed: ['Pregnancy care','Safety'], 
-    bio: 'Respectful maternity care & patient education.' 
+    reviewedKeys: ['review_pregnancy_care','review_safety'], 
+    bioKey: 'expert_ananya_bio' 
   },
   { 
     id: 'raghav-repro', 
-    name: 'Dr. Raghav Iyer', 
-    role: 'Reproductive Medicine', 
-    credentials: 'MBBS, DNB', 
+    nameKey: 'expert_raghav_name', 
+    roleKey: 'expert_raghav_role', 
+    credentialsKey: 'expert_raghav_credentials', 
     city: 'Bengaluru', 
-    reviewed: ['IVF','IUI','Preservation'], 
-    bio: 'Evidence‑based fertility treatments.' 
+    reviewedKeys: ['review_ivf','review_iui','review_preservation'], 
+    bioKey: 'expert_raghav_bio' 
   },
   { 
     id: 'karan-psych', 
-    name: 'Dr. Karan Bedi', 
-    role: 'Perinatal Psychology', 
-    credentials: 'PhD Clinical Psychology', 
+    nameKey: 'expert_karan_name', 
+    roleKey: 'expert_karan_role', 
+    credentialsKey: 'expert_karan_credentials', 
     city: 'Mumbai', 
-    reviewed: ['Mental health','Support'], 
-    bio: 'Fertility‑aware mental health care.' 
+    reviewedKeys: ['review_mental_health','review_support'], 
+    bioKey: 'expert_karan_bio' 
   },
   { 
     id: 'ritu-nutrition', 
-    name: 'Ritu Malhotra', 
-    role: 'Nutrition Specialist', 
-    credentials: 'MSc Clinical Nutrition', 
+    nameKey: 'expert_ritu_name', 
+    roleKey: 'expert_ritu_role', 
+    credentialsKey: 'expert_ritu_credentials', 
     city: 'Chennai', 
-    reviewed: ['Nutrition','Supplements'], 
-    bio: 'Pregnancy & fertility nutrition expertise.' 
+    reviewedKeys: ['review_nutrition','review_supplements'], 
+    bioKey: 'expert_ritu_bio' 
   },
   { 
     id: 'arjun-finance', 
-    name: 'Arjun Menon', 
-    role: 'Health Finance Advisor', 
-    credentials: 'MBA Health Management', 
+    nameKey: 'expert_arjun_name', 
+    roleKey: 'expert_arjun_role', 
+    credentialsKey: 'expert_arjun_credentials', 
     city: 'Kochi', 
-    reviewed: ['Costs','Insurance','Schemes'], 
-    bio: 'Healthcare financing & policy specialist.' 
+    reviewedKeys: ['review_costs','review_insurance','review_schemes'], 
+    bioKey: 'expert_arjun_bio' 
   },
   { 
     id: 'meera-embryology', 
-    name: 'Meera N.', 
-    role: 'Clinical Embryologist', 
-    credentials: 'MSc Clinical Embryology', 
+    nameKey: 'expert_meera_name', 
+    roleKey: 'expert_meera_role', 
+    credentialsKey: 'expert_meera_credentials', 
     city: 'Hyderabad', 
+    reviewedKeys: ['review_lab_techniques'], 
+    bioKey: 'expert_meera_bio'erabad', 
     reviewed: ['Lab procedures','Grading'], 
     bio: 'Advanced reproductive laboratory techniques.' 
   }

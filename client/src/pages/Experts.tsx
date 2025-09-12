@@ -55,14 +55,14 @@ const Experts = () => {
                     className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
                   />
                   <h3 className="text-xl font-bold text-foreground font-serif mb-2" data-testid={`text-expert-name-${index}`}>
-                    {expert.name}
+                    {t(expert.nameKey)}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-2" data-testid={`text-expert-role-${index}`}>
-                    {expert.role}
+                    {t(expert.roleKey)}
                   </p>
                   <div className="flex items-center justify-center space-x-2 text-xs text-muted-foreground">
                     <GraduationCap className="w-3 h-3" />
-                    <span data-testid={`text-expert-credentials-${index}`}>{expert.credentials}</span>
+                    <span data-testid={`text-expert-credentials-${index}`}>{t(expert.credentialsKey)}</span>
                   </div>
                 </div>
 
@@ -73,16 +73,16 @@ const Experts = () => {
                   </div>
 
                   <p className="text-sm text-muted-foreground text-center" data-testid={`text-expert-bio-${index}`}>
-                    {expert.bio}
+                    {t(expert.bioKey)}
                   </p>
 
                   <div>
-                    <p className="text-xs font-medium text-foreground mb-2">Reviews:</p>
+                    <p className="text-xs font-medium text-foreground mb-2">{t('expert_reviews_label')}</p>
                     <div className="flex flex-wrap gap-1 justify-center">
-                      {expert.reviewed.map(area => (
-                        <Badge key={area} variant="outline" className="text-xs" data-testid={`badge-expert-review-${area}-${index}`}>
+                      {expert.reviewedKeys.map(areaKey => (
+                        <Badge key={areaKey} variant="outline" className="text-xs" data-testid={`badge-expert-review-${areaKey}-${index}`}>
                           <CheckCircle className="w-2 h-2 mr-1" />
-                          {area}
+                          {t(areaKey)}
                         </Badge>
                       ))}
                     </div>
@@ -98,21 +98,20 @@ const Experts = () => {
       <section className="py-16">
         <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-8 md:p-12 text-center">
           <h2 className="text-3xl font-bold text-foreground font-serif mb-4">
-            Quality You Can Trust
+            {t('expert_quality_trust_title')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            All our content is reviewed by qualified professionals to ensure accuracy and relevance. 
-            However, this information is for educational purposes only and should not replace professional medical advice.
+            {t('expert_quality_trust_desc')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/knowledge">
               <Button className="gradient-button text-white px-8 py-4 rounded-full font-semibold" data-testid="button-browse-knowledge">
-                Browse Knowledge Hub
+                {t('experts_browse_knowledge')}
               </Button>
             </Link>
             <Link href="/contact">
               <Button variant="outline" className="bg-white px-8 py-4 rounded-full font-semibold" data-testid="button-contact-experts">
-                Contact Us
+                {t('experts_contact_us')}
               </Button>
             </Link>
           </div>
