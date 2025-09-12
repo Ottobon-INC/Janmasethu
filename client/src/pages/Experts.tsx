@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { experts } from '@/data/experts';
 
 const Experts = () => {
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
 
   const getExpertImage = (index: number) => {
     const images = [
@@ -58,34 +58,31 @@ const Experts = () => {
                     {expert.name}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-2" data-testid={`text-expert-role-${index}`}>
-                    {typeof expert.role === 'string' ? expert.role : expert.role[lang as keyof typeof expert.role]}
+                    {expert.role}
                   </p>
-                  <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                  <div className="flex items-center justify-center space-x-2 text-xs text-muted-foreground">
                     <GraduationCap className="w-3 h-3" />
-                    <span data-testid={`text-expert-credentials-${index}`}>{typeof expert.credentials === 'string' ? expert.credentials : expert.credentials[lang as keyof typeof expert.credentials]}</span>
+                    <span data-testid={`text-expert-credentials-${index}`}>{expert.credentials}</span>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                  <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
                     <MapPin className="w-4 h-4" />
-                    <span data-testid={`text-expert-city-${index}`}>{typeof expert.location === 'string' ? expert.location : expert.location[lang as keyof typeof expert.location]}</span>
+                    <span data-testid={`text-expert-city-${index}`}>{expert.city}</span>
                   </div>
 
-                  <p
-                    className="text-sm text-muted-foreground mb-4"
-                    data-testid={`text-expert-bio-${index}`}
-                  >
-                    {typeof expert.bio === 'string' ? expert.bio : expert.bio[lang as keyof typeof expert.bio]}
+                  <p className="text-sm text-muted-foreground text-center" data-testid={`text-expert-bio-${index}`}>
+                    {expert.bio}
                   </p>
 
                   <div>
                     <p className="text-xs font-medium text-foreground mb-2">Reviews:</p>
                     <div className="flex flex-wrap gap-1 justify-center">
-                      {expert.reviews.map((review, reviewIndex) => (
-                        <Badge key={reviewIndex} variant="outline" className="text-xs" data-testid={`badge-expert-review-${review.category}-${index}`}>
+                      {expert.reviewed.map(area => (
+                        <Badge key={area} variant="outline" className="text-xs" data-testid={`badge-expert-review-${area}-${index}`}>
                           <CheckCircle className="w-2 h-2 mr-1" />
-                          {typeof review.category === 'string' ? review.category : review.category[lang as keyof typeof review.category]}
+                          {area}
                         </Badge>
                       ))}
                     </div>

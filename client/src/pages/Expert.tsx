@@ -9,8 +9,8 @@ import { articles } from '@/data/articles';
 
 const Expert = () => {
   const { id } = useParams();
-  const { t, lang } = useLanguage();
-
+  const { t } = useLanguage();
+  
   const expert = experts.find(e => e.id === id);
 
   if (!expert) {
@@ -42,7 +42,7 @@ const Expert = () => {
     return images[index];
   };
 
-  const reviewedArticles = articles.filter(article =>
+  const reviewedArticles = articles.filter(article => 
     article.reviewedBy.toLowerCase().includes(expert.name.toLowerCase().split(' ')[1]) ||
     article.reviewedBy.toLowerCase().includes(expert.name.toLowerCase().split(' ')[0])
   );
@@ -64,14 +64,14 @@ const Expert = () => {
         <CardContent className="p-0">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <img
-                src={getExpertImage()}
-                alt={expert.name}
+              <img 
+                src={getExpertImage()} 
+                alt={expert.name} 
                 className="w-40 h-40 rounded-full object-cover mx-auto mb-4"
               />
               <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4" />
-                <span data-testid="text-expert-city">{typeof expert.location === 'string' ? expert.location : expert.location[lang as keyof typeof expert.location]}</span>
+                <span data-testid="text-expert-city">{expert.city}</span>
               </div>
             </div>
 
@@ -79,25 +79,20 @@ const Expert = () => {
               <h1 className="text-3xl md:text-4xl font-bold text-foreground font-serif mb-4" data-testid="text-expert-name">
                 {expert.name}
               </h1>
+              
+              <p className="text-lg text-muted-foreground mb-4" data-testid="text-expert-role">
+                {expert.role}
+              </p>
 
-              <p
-                className="text-lg text-muted-foreground mb-2"
-                data-testid="text-expert-specialty"
-              >
-                {typeof expert.role === 'string' ? expert.role : expert.role[lang as keyof typeof expert.role]}
-              </p>
-              <p className="text-sm text-muted-foreground mb-4">
-                {expert.credentials}
-              </p>
-              <div className="flex items-center text-sm text-muted-foreground mb-6">
-                <MapPin className="w-4 h-4 mr-2" />
-                {typeof expert.location === 'string' ? expert.location : expert.location[lang as keyof typeof expert.location]}
+              <div className="flex items-center space-x-2 mb-6">
+                <GraduationCap className="w-5 h-5 text-primary" />
+                <span className="text-foreground font-medium" data-testid="text-expert-credentials">
+                  {expert.credentials}
+                </span>
               </div>
-              <p
-                className="text-muted-foreground mb-8"
-                data-testid="text-expert-bio"
-              >
-                {typeof expert.bio === 'string' ? expert.bio : expert.bio[lang as keyof typeof expert.bio]}
+
+              <p className="text-muted-foreground leading-relaxed mb-6" data-testid="text-expert-bio">
+                {expert.bio}
               </p>
 
               <div>
@@ -139,10 +134,10 @@ const Expert = () => {
                           ))}
                         </div>
                         <h4 className="font-semibold text-foreground mb-1">
-                          {article.title[lang as keyof typeof article.title]}
+                          {article.title.en}
                         </h4>
                         <p className="text-sm text-muted-foreground">
-                          {article.summary[lang as keyof typeof article.summary]}
+                          {article.summary.en}
                         </p>
                       </div>
                     </Link>
@@ -168,15 +163,15 @@ const Expert = () => {
               <div className="space-y-3">
                 <div>
                   <span className="font-medium text-foreground">Specialization:</span>
-                  <p className="text-muted-foreground" data-testid="text-expert-specialization">{typeof expert.role === 'string' ? expert.role : expert.role[lang as keyof typeof expert.role]}</p>
+                  <p className="text-muted-foreground" data-testid="text-expert-specialization">{expert.role}</p>
                 </div>
                 <div>
                   <span className="font-medium text-foreground">Credentials:</span>
-                  <p className="text-muted-foreground" data-testid="text-expert-credentials-detail">{typeof expert.credentials === 'string' ? expert.credentials : expert.credentials[lang as keyof typeof expert.credentials]}</p>
+                  <p className="text-muted-foreground" data-testid="text-expert-credentials-detail">{expert.credentials}</p>
                 </div>
                 <div>
                   <span className="font-medium text-foreground">Location:</span>
-                  <p className="text-muted-foreground" data-testid="text-expert-location">{typeof expert.location === 'string' ? expert.location : expert.location[lang as keyof typeof expert.location]}</p>
+                  <p className="text-muted-foreground" data-testid="text-expert-location">{expert.city}</p>
                 </div>
               </div>
             </CardContent>
@@ -199,7 +194,7 @@ const Expert = () => {
                           {otherExpert.name}
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                          {typeof otherExpert.role === 'string' ? otherExpert.role : otherExpert.role[lang as keyof typeof otherExpert.role]} • {typeof otherExpert.location === 'string' ? otherExpert.location : otherExpert.location[lang as keyof typeof otherExpert.location]}
+                          {otherExpert.role} • {otherExpert.city}
                         </p>
                       </div>
                     </Link>
