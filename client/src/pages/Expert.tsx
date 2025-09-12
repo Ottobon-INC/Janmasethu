@@ -10,7 +10,7 @@ import { articles } from '@/data/articles';
 const Expert = () => {
   const { id } = useParams();
   const { t } = useLanguage();
-
+  
   const expert = experts.find(e => e.id === id);
 
   if (!expert) {
@@ -71,28 +71,28 @@ const Expert = () => {
               />
               <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4" />
-                <span data-testid="text-expert-city">{t(expert.city)}</span>
+                <span data-testid="text-expert-city">{expert.city}</span>
               </div>
             </div>
 
             <div className="md:col-span-2">
               <h1 className="text-3xl md:text-4xl font-bold text-foreground font-serif mb-4" data-testid="text-expert-name">
-                {t(expert.name)}
+                {expert.name}
               </h1>
-
+              
               <p className="text-lg text-muted-foreground mb-4" data-testid="text-expert-role">
-                {t(expert.role)}
+                {expert.role}
               </p>
 
               <div className="flex items-center space-x-2 mb-6">
                 <GraduationCap className="w-5 h-5 text-primary" />
                 <span className="text-foreground font-medium" data-testid="text-expert-credentials">
-                  {t(expert.credentials)}
+                  {expert.credentials}
                 </span>
               </div>
 
               <p className="text-muted-foreground leading-relaxed mb-6" data-testid="text-expert-bio">
-                {t(expert.bio)}
+                {expert.bio}
               </p>
 
               <div>
@@ -101,7 +101,7 @@ const Expert = () => {
                   {expert.reviewed.map(area => (
                     <Badge key={area} variant="secondary" data-testid={`badge-expert-area-${area}`}>
                       <CheckCircle className="w-3 h-3 mr-1" />
-                      {t(area)}
+                      {area}
                     </Badge>
                   ))}
                 </div>
@@ -117,7 +117,7 @@ const Expert = () => {
           <Card className="rounded-3xl p-6 card-shadow">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-foreground font-serif">
-                Content Reviewed by {t(expert.name.split(' ')[1] || expert.name)}
+                Content Reviewed by {expert.name.split(' ')[1] || expert.name}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -129,15 +129,15 @@ const Expert = () => {
                         <div className="flex flex-wrap gap-1 mb-2">
                           {article.lens.map(lens => (
                             <Badge key={lens} variant="outline" className="text-xs">
-                              {t(lens)}
+                              {lens}
                             </Badge>
                           ))}
                         </div>
                         <h4 className="font-semibold text-foreground mb-1">
-                          {t(article.title.en)}
+                          {article.title.en}
                         </h4>
                         <p className="text-sm text-muted-foreground">
-                          {t(article.summary.en)}
+                          {article.summary.en}
                         </p>
                       </div>
                     </Link>
@@ -163,15 +163,15 @@ const Expert = () => {
               <div className="space-y-3">
                 <div>
                   <span className="font-medium text-foreground">Specialization:</span>
-                  <p className="text-muted-foreground" data-testid="text-expert-specialization">{t(expert.role)}</p>
+                  <p className="text-muted-foreground" data-testid="text-expert-specialization">{expert.role}</p>
                 </div>
                 <div>
                   <span className="font-medium text-foreground">Credentials:</span>
-                  <p className="text-muted-foreground" data-testid="text-expert-credentials-detail">{t(expert.credentials)}</p>
+                  <p className="text-muted-foreground" data-testid="text-expert-credentials-detail">{expert.credentials}</p>
                 </div>
                 <div>
                   <span className="font-medium text-foreground">Location:</span>
-                  <p className="text-muted-foreground" data-testid="text-expert-location">{t(expert.city)}</p>
+                  <p className="text-muted-foreground" data-testid="text-expert-location">{expert.city}</p>
                 </div>
               </div>
             </CardContent>
@@ -191,10 +191,10 @@ const Expert = () => {
                     <Link key={otherExpert.id} href={`/experts/${otherExpert.id}`}>
                       <div className="p-3 rounded-xl hover:bg-muted transition-colors" data-testid={`other-expert-${index}`}>
                         <h4 className="text-sm font-semibold text-foreground mb-1">
-                          {t(otherExpert.name)}
+                          {otherExpert.name}
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                          {t(otherExpert.role)} • {t(otherExpert.city)}
+                          {otherExpert.role} • {otherExpert.city}
                         </p>
                       </div>
                     </Link>
