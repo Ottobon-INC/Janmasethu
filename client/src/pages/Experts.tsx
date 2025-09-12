@@ -34,9 +34,9 @@ const Experts = () => {
 
         {/* Hero Background */}
         <div className="mt-12 relative">
-          <img 
-            src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400" 
-            alt={t('alt_medical_consultation')} 
+          <img
+            src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400"
+            alt={t('alt_medical_consultation')}
             className="w-full h-64 object-cover rounded-3xl opacity-20"
           />
         </div>
@@ -49,9 +49,9 @@ const Experts = () => {
             <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 h-full" data-testid={`card-expert-${index}`}>
               <CardContent className="p-0">
                 <div className="text-center mb-4">
-                  <img 
-                    src={getExpertImage(index)} 
-                    alt={expert.name} 
+                  <img
+                    src={getExpertImage(index)}
+                    alt={expert.name}
                     className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
                   />
                   <h3 className="text-xl font-bold text-foreground font-serif mb-2" data-testid={`text-expert-name-${index}`}>
@@ -72,17 +72,25 @@ const Experts = () => {
                     <span data-testid={`text-expert-city-${index}`}>{expert.city}</span>
                   </div>
 
-                  <p className="text-sm text-muted-foreground text-center" data-testid={`text-expert-bio-${index}`}>
-                    {expert.bio}
+                  <p className="text-sm text-muted-foreground mb-1">
+                    {t(expert.specialization)}
                   </p>
-
-                  <div>
-                    <p className="text-xs font-medium text-foreground mb-2">Reviews:</p>
-                    <div className="flex flex-wrap gap-1 justify-center">
-                      {expert.reviewed.map(area => (
-                        <Badge key={area} variant="outline" className="text-xs" data-testid={`badge-expert-review-${area}-${index}`}>
-                          <CheckCircle className="w-2 h-2 mr-1" />
-                          {area}
+                  <p className="text-xs text-muted-foreground mb-2">
+                    {t(expert.credentials)}
+                  </p>
+                  <div className="flex items-center text-xs text-muted-foreground mb-3">
+                    <MapPin className="w-3 h-3 mr-1" />
+                    {t(expert.location)}
+                  </div>
+                  <p className="text-sm text-foreground mb-4">
+                    {t(expert.bio)}
+                  </p>
+                  <div className="space-y-2">
+                    <p className="text-xs font-medium text-muted-foreground">{t("reviews")}:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {expert.reviewCategories.map((category, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {t(category)}
                         </Badge>
                       ))}
                     </div>
@@ -101,7 +109,7 @@ const Experts = () => {
             Quality You Can Trust
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            All our content is reviewed by qualified professionals to ensure accuracy and relevance. 
+            All our content is reviewed by qualified professionals to ensure accuracy and relevance.
             However, this information is for educational purposes only and should not replace professional medical advice.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
