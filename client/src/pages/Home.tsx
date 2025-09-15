@@ -205,7 +205,7 @@ const Home = () => {
               {t("cta_primary")}
             </Button>
           </Link>
-          <Link href="/knowledge">
+          <Link href="/clinic">
             <Button
               variant="outline"
               className="bg-white text-foreground px-8 py-4 rounded-full font-semibold text-lg border-border hover:shadow-lg transition-all duration-300"

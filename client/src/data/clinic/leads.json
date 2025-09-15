@@ -1,0 +1,54 @@
+[
+  {
+    "id": "L001",
+    "name": "Priya Sharma",
+    "email": "priya.sharma@email.com",
+    "phone": "+91 98765 43210",
+    "status": "new",
+    "source": "Website",
+    "interest": "IVF Consultation",
+    "lastContact": "2024-01-15",
+    "priority": "high",
+    "age": 32,
+    "location": "Mumbai"
+  },
+  {
+    "id": "L002",
+    "name": "Rajesh & Kavya Reddy",
+    "email": "rajesh.reddy@email.com",
+    "phone": "+91 98765 43211",
+    "status": "contacted",
+    "source": "Referral",
+    "interest": "Fertility Assessment",
+    "lastContact": "2024-01-14",
+    "priority": "medium",
+    "age": 29,
+    "location": "Hyderabad"
+  },
+  {
+    "id": "L003",
+    "name": "Anita Patel",
+    "email": "anita.patel@email.com",
+    "phone": "+91 98765 43212",
+    "status": "qualified",
+    "source": "Social Media",
+    "interest": "IUI Treatment",
+    "lastContact": "2024-01-13",
+    "priority": "high",
+    "age": 35,
+    "location": "Ahmedabad"
+  },
+  {
+    "id": "L004",
+    "name": "Vikram & Meera Singh",
+    "email": "vikram.singh@email.com",
+    "phone": "+91 98765 43213",
+    "status": "scheduled",
+    "source": "Google Ads",
+    "interest": "ICSI Treatment",
+    "lastContact": "2024-01-12",
+    "priority": "high",
+    "age": 31,
+    "location": "Delhi"
+  }
+]

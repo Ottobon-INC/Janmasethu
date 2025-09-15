@@ -1,0 +1,57 @@
+[
+  {
+    "id": "A001",
+    "patientName": "Priya Sharma",
+    "patientId": "P001",
+    "date": "2024-01-16",
+    "time": "10:00",
+    "type": "Initial Consultation",
+    "doctor": "Dr. Rao",
+    "status": "confirmed",
+    "notes": "First fertility consultation"
+  },
+  {
+    "id": "A002",
+    "patientName": "Rajesh & Kavya Reddy",
+    "patientId": "P002",
+    "date": "2024-01-16",
+    "time": "11:30",
+    "type": "Ultrasound Scan",
+    "doctor": "Dr. Mehta",
+    "status": "confirmed",
+    "notes": "Follicular monitoring"
+  },
+  {
+    "id": "A003",
+    "patientName": "Anita Patel",
+    "patientId": "P003",
+    "date": "2024-01-16",
+    "time": "14:00",
+    "type": "IUI Procedure",
+    "doctor": "Dr. Rao",
+    "status": "scheduled",
+    "notes": "IUI cycle 2"
+  },
+  {
+    "id": "A004",
+    "patientName": "Sita Gupta",
+    "patientId": "P004",
+    "date": "2024-01-17",
+    "time": "09:30",
+    "type": "Blood Test",
+    "doctor": "Lab Team",
+    "status": "pending",
+    "notes": "Beta HCG test"
+  },
+  {
+    "id": "A005",
+    "patientName": "Vikram & Meera Singh",
+    "patientId": "P005",
+    "date": "2024-01-17",
+    "time": "15:00",
+    "type": "Embryo Transfer",
+    "doctor": "Dr. Rao",
+    "status": "scheduled",
+    "notes": "Day 5 blastocyst transfer"
+  }
+]

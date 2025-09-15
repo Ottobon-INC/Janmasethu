@@ -1,0 +1,47 @@
+[
+  {
+    "id": "P001",
+    "name": "Priya Sharma",
+    "email": "priya.sharma@email.com",
+    "phone": "+91 98765 43210",
+    "age": 32,
+    "dateOfBirth": "1991-05-15",
+    "lastVisit": "2024-01-10",
+    "status": "active",
+    "treatmentType": "IVF",
+    "cycle": 1,
+    "doctor": "Dr. Rao",
+    "medicalHistory": "PCOS, Regular cycles",
+    "emergencyContact": "Husband - +91 98765 43220"
+  },
+  {
+    "id": "P002",
+    "name": "Kavya Reddy",
+    "email": "kavya.reddy@email.com",
+    "phone": "+91 98765 43211",
+    "age": 29,
+    "dateOfBirth": "1994-08-22",
+    "lastVisit": "2024-01-08",
+    "status": "active",
+    "treatmentType": "IUI",
+    "cycle": 3,
+    "doctor": "Dr. Mehta",
+    "medicalHistory": "Unexplained infertility",
+    "emergencyContact": "Husband - +91 98765 43221"
+  },
+  {
+    "id": "P003",
+    "name": "Anita Patel",
+    "email": "anita.patel@email.com",
+    "phone": "+91 98765 43212",
+    "age": 35,
+    "dateOfBirth": "1988-12-03",
+    "lastVisit": "2024-01-05",
+    "status": "completed",
+    "treatmentType": "IUI",
+    "cycle": 2,
+    "doctor": "Dr. Rao",
+    "medicalHistory": "Endometriosis, Previous surgery",
+    "emergencyContact": "Sister - +91 98765 43222"
+  }
+]

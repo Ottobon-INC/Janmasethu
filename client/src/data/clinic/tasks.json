@@ -1,0 +1,42 @@
+[
+  {
+    "id": "T001",
+    "title": "Follow up with 3 new leads",
+    "description": "Contact Priya Sharma, Rajesh Reddy, and Anita Patel for consultation scheduling",
+    "priority": "high",
+    "dueDate": "2024-01-16",
+    "assignedTo": "Reception Team",
+    "status": "pending",
+    "category": "lead_management"
+  },
+  {
+    "id": "T002",
+    "title": "Confirm tomorrow's scans",
+    "description": "Call all patients scheduled for ultrasound scans on January 17th",
+    "priority": "high",
+    "dueDate": "2024-01-16",
+    "assignedTo": "Nursing Team",
+    "status": "in_progress",
+    "category": "appointments"
+  },
+  {
+    "id": "T003",
+    "title": "Review lab results for IVF patients",
+    "description": "Analyze hormone levels and recommend next steps",
+    "priority": "medium",
+    "dueDate": "2024-01-17",
+    "assignedTo": "Dr. Rao",
+    "status": "pending",
+    "category": "medical"
+  },
+  {
+    "id": "T004",
+    "title": "Update patient portal with new content",
+    "description": "Add latest educational resources about fertility treatments",
+    "priority": "low",
+    "dueDate": "2024-01-20",
+    "assignedTo": "Admin Team",
+    "status": "pending",
+    "category": "content"
+  }
+]

@@ -23,11 +23,25 @@ import SakhiTry from "./pages/SakhiTry";
 import Investors from "./pages/Investors";
 import NotFound from "./pages/not-found";
 
+// Clinic Pages
+import ClinicLanding from "./pages/clinic/Landing";
+import ClinicDashboard from "./pages/clinic/Dashboard";
+import LeadManagement from "./pages/clinic/LeadManagement";
+import Appointments from "./pages/clinic/Appointments";
+import Patients from "./pages/clinic/Patients";
+import Reports from "./pages/clinic/Reports";
+
 function Router() {
   return (
     <Switch>
-      {/* Standalone route without Layout */}
+      {/* Standalone routes without Layout */}
       <Route path="/sakhi/try" component={SakhiTry} />
+      <Route path="/clinic" component={ClinicLanding} />
+      <Route path="/clinic/dashboard" component={ClinicDashboard} />
+      <Route path="/clinic/leads" component={LeadManagement} />
+      <Route path="/clinic/appointments" component={Appointments} />
+      <Route path="/clinic/patients" component={Patients} />
+      <Route path="/clinic/reports" component={Reports} />
 
       {/* All other routes with Layout */}
       <Route>
