@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { ArrowRight, CheckCircle, User } from 'lucide-react';
+import { ArrowRight, CheckCircle, User, Syringe, Microscope, Dna, HeartHandshake, Snowflake } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageProvider';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,11 +22,11 @@ const Treatments = () => {
 
 
   const treatmentIcons = {
-    'iui': { icon: 'fas fa-syringe', color: 'bg-blue-100 text-blue-600' },
-    'ivf': { icon: 'fas fa-microscope', color: 'bg-purple-100 text-purple-600' },
-    'icsi': { icon: 'fas fa-dna', color: 'bg-green-100 text-green-600' },
-    'donor-options': { icon: 'fas fa-hand-holding-heart', color: 'bg-pink-100 text-pink-600' },
-    'fertility-preservation': { icon: 'fas fa-snowflake', color: 'bg-orange-100 text-orange-600' }
+    'iui': { icon: Syringe, color: 'bg-blue-100 text-blue-600' },
+    'ivf': { icon: Microscope, color: 'bg-purple-100 text-purple-600' },
+    'icsi': { icon: Dna, color: 'bg-green-100 text-green-600' },
+    'donor-options': { icon: HeartHandshake, color: 'bg-pink-100 text-pink-600' },
+    'fertility-preservation': { icon: Snowflake, color: 'bg-orange-100 text-orange-600' }
   };
 
   return (
@@ -60,7 +60,7 @@ const Treatments = () => {
               <Card className="rounded-3xl p-8 card-shadow hover:shadow-xl transition-all duration-300 h-full" data-testid={`card-treatment-${index}`}>
                 <CardContent className="p-0">
                   <div className={`w-16 h-16 ${iconData.color.split(' ')[0]} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                    <i className={`${iconData.icon} ${iconData.color.split(' ')[1]} text-2xl`}></i>
+                    <iconData.icon className={`${iconData.color.split(' ')[1]} w-8 h-8`} />
                   </div>
 
                   <h3 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid={`text-treatment-name-${index}`}>
