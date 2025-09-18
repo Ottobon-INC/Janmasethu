@@ -86,6 +86,7 @@ const Home = () => {
   ];
 
   return (
+    <>
     {/* Video Hero Section */}
     <section className="relative w-full min-h-[80vh] lg:min-h-[90vh] overflow-hidden">
       {/* Video Background */}
@@ -1045,6 +1046,7 @@ const Home = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 
