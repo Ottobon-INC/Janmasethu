@@ -35,31 +35,12 @@ import { Input } from "../components/ui/input";
 import { articles } from "../data/articles";
 import { stories } from "../data/stories";
 import WhoWeServe from "../components/WhoWeServe";
-import { useEffect } from "react";
 
 const Home = () => {
   const { t, lang } = useLanguage();
 
   const featuredArticles = articles.slice(0, 4);
   const featuredStories = stories.slice(0, 3);
-
-  useEffect(() => {
-    // Debug video loading
-    const video = document.querySelector('[data-testid="hero-video"]') as HTMLVideoElement;
-    if (video) {
-      console.log('Video element found:', video);
-      console.log('Video src:', video.src);
-      console.log('Video readyState:', video.readyState);
-      
-      video.addEventListener('loadstart', () => console.log('Video: loadstart'));
-      video.addEventListener('loadeddata', () => console.log('Video: loadeddata'));
-      video.addEventListener('canplay', () => console.log('Video: canplay'));
-      video.addEventListener('error', (e) => console.error('Video error:', e));
-      
-      // Try to load the video manually
-      video.load();
-    }
-  }, []);
 
   const getTreatmentCards = () => [
     {
@@ -105,50 +86,9 @@ const Home = () => {
   ];
 
   return (
-    <>
-      {/* Video Section - Fullscreen Below Header */}
-      <section className="relative w-full bg-black">
-        <div className="relative w-full">
-          <video
-            className="w-full h-[60vh] md:h-[70vh] lg:h-[80vh] object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-            controls
-            preload="metadata"
-            data-testid="hero-video"
-            onError={(e) => {
-              console.error('Video failed to load:', e);
-              console.log('Trying alternative video path...');
-            }}
-            onLoadStart={() => console.log('Video loading started...')}
-            onCanPlay={() => console.log('Video can play')}
-          >
-            <source src="/janmasethu.mp4" type="video/mp4" />
-            <source src="/janmasethu%20(2).mp4" type="video/mp4" />
-            <source src="./janmasethu.mp4" type="video/mp4" />
-            <p className="text-white text-center p-8">
-              Your browser does not support the video tag or the video file could not be loaded.
-            </p>
-          </video>
-          
-          {/* Video overlay with gradient for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
-          
-          {/* Loading indicator */}
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50" id="video-loading">
-            <div className="text-white text-center">
-              <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin mb-4 mx-auto"></div>
-              <p>Loading video...</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="container mx-auto px-4 py-8">
-        {/* Hero Section */}
-        <section className="text-center py-16 relative">
+    <div className="container mx-auto px-4 py-8">
+      {/* Hero Section */}
+      <section className="text-center py-16 relative">
         {/* Trust Badge - Centered at top */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
@@ -1086,8 +1026,7 @@ const Home = () => {
           ))}
         </div>
       </section>
-      </div>
-    </>
+    </div>
   );
 };
 
