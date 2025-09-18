@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import ClinicNavigation from "@/components/clinic/ClinicNavigation";
 import { 
   Plus, 
@@ -29,6 +32,18 @@ const monthData = {
 export default function Appointments() {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedDate, setSelectedDate] = useState("2024-01-16");
+  const [appointmentsData, setAppointmentsData] = useState(appointments);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newAppointment, setNewAppointment] = useState({
+    patientName: "",
+    patientId: "",
+    date: "",
+    time: "",
+    type: "Initial Consultation",
+    doctor: "Dr. Rao",
+    status: "scheduled",
+    notes: ""
+  });
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -40,7 +55,33 @@ export default function Appointments() {
     }
   };
 
-  const todayAppointments = appointments.filter(apt => apt.date === selectedDate);
+  const handleAddAppointment = () => {
+    if (newAppointment.patientName && newAppointment.patientId && newAppointment.date && newAppointment.time) {
+      const appointmentToAdd = {
+        id: `A${String(appointmentsData.length + 1).padStart(3, '0')}`,
+        ...newAppointment
+      };
+      
+      setAppointmentsData([...appointmentsData, appointmentToAdd]);
+      setNewAppointment({
+        patientName: "",
+        patientId: "",
+        date: "",
+        time: "",
+        type: "Initial Consultation",
+        doctor: "Dr. Rao",
+        status: "scheduled",
+        notes: ""
+      });
+      setIsModalOpen(false);
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setNewAppointment(prev => ({ ...prev, [field]: value }));
+  };
+
+  const todayAppointments = appointmentsData.filter(apt => apt.date === selectedDate);
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -55,10 +96,138 @@ export default function Appointments() {
               <p className="text-gray-600">Manage patient appointments and scheduling</p>
             </div>
             
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-              <Plus className="w-4 h-4 mr-2" />
-              New Appointment
-            </Button>
+            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+                  <Plus className="w-4 h-4 mr-2" />
+                  New Appointment
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Schedule New Appointment</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="patientName">Patient Name *</Label>
+                    <Input
+                      id="patientName"
+                      value={newAppointment.patientName}
+                      onChange={(e) => handleInputChange("patientName", e.target.value)}
+                      placeholder="Enter patient name"
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="patientId">Patient ID *</Label>
+                    <Input
+                      id="patientId"
+                      value={newAppointment.patientId}
+                      onChange={(e) => handleInputChange("patientId", e.target.value)}
+                      placeholder="Enter patient ID"
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="date">Date *</Label>
+                      <Input
+                        id="date"
+                        type="date"
+                        value={newAppointment.date}
+                        onChange={(e) => handleInputChange("date", e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="time">Time *</Label>
+                      <Input
+                        id="time"
+                        type="time"
+                        value={newAppointment.time}
+                        onChange={(e) => handleInputChange("time", e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="type">Appointment Type</Label>
+                    <select 
+                      id="type"
+                      value={newAppointment.type}
+                      onChange={(e) => handleInputChange("type", e.target.value)}
+                      className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-md bg-white"
+                    >
+                      <option value="Initial Consultation">Initial Consultation</option>
+                      <option value="Follow-up">Follow-up</option>
+                      <option value="Ultrasound Scan">Ultrasound Scan</option>
+                      <option value="Blood Test">Blood Test</option>
+                      <option value="IUI Procedure">IUI Procedure</option>
+                      <option value="IVF Procedure">IVF Procedure</option>
+                      <option value="Embryo Transfer">Embryo Transfer</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="doctor">Doctor</Label>
+                    <select 
+                      id="doctor"
+                      value={newAppointment.doctor}
+                      onChange={(e) => handleInputChange("doctor", e.target.value)}
+                      className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-md bg-white"
+                    >
+                      <option value="Dr. Rao">Dr. Rao</option>
+                      <option value="Dr. Mehta">Dr. Mehta</option>
+                      <option value="Lab Team">Lab Team</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="status">Status</Label>
+                    <select 
+                      id="status"
+                      value={newAppointment.status}
+                      onChange={(e) => handleInputChange("status", e.target.value)}
+                      className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-md bg-white"
+                    >
+                      <option value="scheduled">Scheduled</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="pending">Pending</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="notes">Notes</Label>
+                    <Input
+                      id="notes"
+                      value={newAppointment.notes}
+                      onChange={(e) => handleInputChange("notes", e.target.value)}
+                      placeholder="Additional notes (optional)"
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  <div className="flex justify-end space-x-2 pt-4">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setIsModalOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button 
+                      onClick={handleAddAppointment}
+                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                      disabled={!newAppointment.patientName || !newAppointment.patientId || !newAppointment.date || !newAppointment.time}
+                    >
+                      Schedule Appointment
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </header>
 
@@ -99,7 +268,7 @@ export default function Appointments() {
                   {/* Calendar days */}
                   {monthData.days.map(day => {
                     const dayString = `2024-01-${day.toString().padStart(2, '0')}`;
-                    const dayAppointments = appointments.filter(apt => apt.date === dayString);
+                    const dayAppointments = appointmentsData.filter(apt => apt.date === dayString);
                     const isSelected = dayString === selectedDate;
                     const isToday = dayString === "2024-01-16";
                     
@@ -197,19 +366,19 @@ export default function Appointments() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-blue-600">{appointments.filter(a => a.status === "scheduled").length}</p>
+                  <p className="text-2xl font-bold text-blue-600">{appointmentsData.filter(a => a.status === "scheduled").length}</p>
                   <p className="text-sm text-gray-600">Scheduled</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-green-600">{appointments.filter(a => a.status === "confirmed").length}</p>
+                  <p className="text-2xl font-bold text-green-600">{appointmentsData.filter(a => a.status === "confirmed").length}</p>
                   <p className="text-sm text-gray-600">Confirmed</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-yellow-600">{appointments.filter(a => a.status === "pending").length}</p>
+                  <p className="text-2xl font-bold text-yellow-600">{appointmentsData.filter(a => a.status === "pending").length}</p>
                   <p className="text-sm text-gray-600">Pending</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-purple-600">{appointments.length}</p>
+                  <p className="text-2xl font-bold text-purple-600">{appointmentsData.length}</p>
                   <p className="text-sm text-gray-600">Total</p>
                 </div>
               </div>
