@@ -86,9 +86,41 @@ const Home = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Hero Section */}
-      <section className="text-center py-16 relative">
+    <>
+      {/* Video Section - Below Header */}
+      <section className="relative w-full bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
+        <div className="container mx-auto px-4 py-8">
+          <div className="relative w-full max-w-6xl mx-auto">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-black">
+              <video
+                className="w-full h-auto max-h-[50vh] md:max-h-[60vh] lg:max-h-[70vh] object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls={false}
+                data-testid="hero-video"
+              >
+                <source src="/janmasethu.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              {/* Video overlay for better visual appeal */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
+              
+              {/* Optional play button overlay for better UX */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+                  <PlayCircle className="w-8 h-8 text-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="container mx-auto px-4 py-8">
+        {/* Hero Section */}
+        <section className="text-center py-16 relative">
         {/* Trust Badge - Centered at top */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
@@ -1026,7 +1058,8 @@ const Home = () => {
           ))}
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 };
 

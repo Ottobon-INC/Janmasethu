@@ -416,3 +416,67 @@
 .backdrop-blur-sm {
   backdrop-filter: blur(4px);
 }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive Video Styles */
+@media (max-width: 768px) {
+  .hero-video-container {
+    margin: 0 -1rem;
+    border-radius: 1rem;
+  }
+
+  /* Mobile video optimization */
+  section video {
+    max-height: 40vh !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-video-container {
+    margin: 0 -0.5rem;
+    border-radius: 0.75rem;
+  }
+
+  /* Small mobile video optimization */
+  section video {
+    max-height: 35vh !important;
+    border-radius: 1rem !important;
+  }
+}
+
+/* Video container responsive styling */
+.video-container {
+  aspect-ratio: 16/9;
+  min-height: 300px;
+}
+
+@media (min-width: 1024px) {
+  .video-container {
+    min-height: 400px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .video-container {
+    min-height: 500px;
+  }
+}
+
+/* Smooth video loading */
+video {
+  background-color: #000;
+  transition: opacity 0.3s ease-in-out;
+}
+
+video:not([src]) {
+  opacity: 0;
+}
+
+video[src] {
+  opacity: 1;
+}
