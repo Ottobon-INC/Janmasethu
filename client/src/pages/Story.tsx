@@ -1,4 +1,5 @@
 import { useParams, Link } from 'wouter';
+import { useEffect } from 'react';
 import { ArrowLeft, MapPin, Heart, Calendar } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageProvider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,6 +12,11 @@ const Story = () => {
   const { t } = useLanguage();
 
   const story = stories.find(s => s.slug === slug);
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
 
   if (!story) {
     return (
