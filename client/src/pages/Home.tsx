@@ -88,8 +88,8 @@ const Home = () => {
   return (
     <>
       {/* Full-Width Video Section - Top of Page */}
-      <section className="w-full bg-black">
-        <div className="relative w-full">
+      <section className="w-full bg-black relative">
+        <div className="relative w-full overflow-hidden">
           <video
             className="w-full h-auto min-h-[40vh] md:min-h-[50vh] lg:min-h-[60vh] object-cover"
             autoPlay
@@ -97,14 +97,37 @@ const Home = () => {
             loop
             playsInline
             controls={false}
+            preload="auto"
             poster="/JanmaSethu Logo.png"
             onLoadStart={() => console.log('Video loading started...')}
             onCanPlay={() => console.log('Video can play')}
-            onError={(e) => console.error('Video error:', e)}
+            onError={(e) => {
+              console.error('Video error:', e);
+              // Fallback: hide video and show poster
+              const videoElement = e.target as HTMLVideoElement;
+              if (videoElement) {
+                videoElement.style.display = 'none';
+                const posterDiv = videoElement.nextElementSibling as HTMLElement;
+                if (posterDiv) {
+                  posterDiv.style.display = 'block';
+                }
+              }
+            }}
+            onLoadedData={() => console.log('Video data loaded')}
+            onPlay={() => console.log('Video started playing')}
           >
+            <source src="./janmasethu.mp4" type="video/mp4" />
             <source src="/janmasethu.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          
+          {/* Fallback poster image if video fails */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden"
+            style={{ backgroundImage: 'url(/JanmaSethu Logo.png)' }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+          </div>
           
           {/* Optional overlay for better visual appeal */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none"></div>
