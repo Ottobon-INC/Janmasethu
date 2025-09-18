@@ -973,32 +973,52 @@ const Home = () => {
               className="group h-full"
             >
               <Card
-                className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 h-full flex flex-col"
+                className="rounded-3xl p-6 card-shadow hover:shadow-2xl transition-all duration-500 h-full flex flex-col cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-pink-200 relative overflow-hidden bg-gradient-to-br from-white to-pink-50/30"
                 data-testid={`card-success-story-${index}`}
               >
                 <CardContent className="p-0 flex flex-col h-full">
+                  {/* Click indicator */}
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center">
+                      <ArrowRight className="w-4 h-4 text-pink-600" />
+                    </div>
+                  </div>
+                  
                   <img
                     src={getStoryImage(index)}
                     alt={story.title}
-                    className="rounded-xl w-full h-32 object-cover mb-4"
+                    className="rounded-xl w-full h-32 object-cover mb-4 group-hover:shadow-lg transition-shadow"
                   />
                   <h3
-                    className="text-lg font-bold text-foreground font-serif mb-2"
+                    className="text-lg font-bold text-foreground font-serif mb-2 group-hover:text-pink-600 transition-colors"
                     data-testid={`text-story-title-${index}`}
                   >
                     {story.title[lang]}
                   </h3>
                   <p
-                    className="text-sm text-muted-foreground mb-3 flex-grow"
+                    className="text-sm text-muted-foreground mb-4 flex-grow"
                     data-testid={`text-story-summary-${index}`}
                   >
                     {story.summary[lang]}
                   </p>
-                  <div className="flex items-center text-xs text-muted-foreground mt-auto">
-                    <i className="fas fa-map-marker-alt mr-1"></i>
-                    <span data-testid={`text-story-city-${index}`}>
-                      {story.city[lang]}
-                    </span>
+                  
+                  <div className="flex items-center justify-between mt-auto">
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <i className="fas fa-map-marker-alt mr-1"></i>
+                      <span data-testid={`text-story-city-${index}`}>
+                        {story.city[lang]}
+                      </span>
+                    </div>
+                    
+                    {/* Call to action */}
+                    <div className="flex items-center">
+                      <span className="text-xs text-pink-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-2">
+                        {lang === "en" && "Read story"}
+                        {lang === "hi" && "कहानी पढ़ें"}
+                        {lang === "te" && "కథ చదవండి"}
+                      </span>
+                      <ArrowRight className="w-4 h-4 text-pink-600 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
+                    </div>
                   </div>
                 </CardContent>
               </Card>
