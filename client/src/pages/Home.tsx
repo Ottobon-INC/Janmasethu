@@ -86,9 +86,34 @@ const Home = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Hero Section */}
-      <section className="text-center py-16 relative">
+    <>
+      {/* Full-Width Video Section - Top of Page */}
+      <section className="w-full bg-black">
+        <div className="relative w-full">
+          <video
+            className="w-full h-auto min-h-[40vh] md:min-h-[50vh] lg:min-h-[60vh] object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            controls={false}
+            poster="/JanmaSethu Logo.png"
+            onLoadStart={() => console.log('Video loading started...')}
+            onCanPlay={() => console.log('Video can play')}
+            onError={(e) => console.error('Video error:', e)}
+          >
+            <source src="/janmasethu.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          
+          {/* Optional overlay for better visual appeal */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none"></div>
+        </div>
+      </section>
+
+      <div className="container mx-auto px-4 py-8">
+        {/* Hero Section */}
+        <section className="text-center py-16 relative">
         {/* Trust Badge - Centered at top */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
@@ -1026,7 +1051,8 @@ const Home = () => {
           ))}
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 };
 
