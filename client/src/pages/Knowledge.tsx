@@ -127,26 +127,38 @@ const Knowledge = () => {
       {/* Articles Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredArticles.map((article, index) => (
-          <Link key={article.slug} href={`/knowledge/${article.slug}`}>
-            <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 h-full" data-testid={`card-article-${index}`}>
+          <Link key={article.slug} href={`/knowledge/${article.slug}`} className="group h-full">
+            <Card className="rounded-3xl p-6 card-shadow hover:shadow-2xl transition-all duration-500 h-full cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-purple-200 relative overflow-hidden bg-gradient-to-br from-white to-purple-50/30" data-testid={`card-article-${index}`}>
               <CardContent className="p-0">
+                {/* Click indicator */}
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Search className="w-4 h-4 text-purple-600" />
+                  </div>
+                </div>
+                
                 <div className="flex flex-wrap gap-1 mb-3">
                   {article.lens.map(lens => (
-                    <Badge key={lens} variant="secondary" className="text-xs" data-testid={`badge-lens-${lens}-${index}`}>
+                    <Badge key={lens} variant="secondary" className="text-xs group-hover:shadow-sm transition-shadow" data-testid={`badge-lens-${lens}-${index}`}>
                       {lensOptions.find(l => l.value === lens)?.label || lens}
                     </Badge>
                   ))}
                 </div>
                 
-                <h3 className="text-lg font-bold text-foreground font-serif mb-2" data-testid={`text-article-title-${index}`}>
+                <h3 className="text-lg font-bold text-foreground font-serif mb-2 group-hover:text-purple-600 transition-colors" data-testid={`text-article-title-${index}`}>
                   {article.title[lang as keyof typeof article.title] || article.title.en}
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4" data-testid={`text-article-summary-${index}`}>
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-3" data-testid={`text-article-summary-${index}`}>
                   {article.summary[lang as keyof typeof article.summary] || article.summary.en}
                 </p>
                 
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span data-testid={`text-read-time-${index}`}>{article.readMins} min read</span>
+                  <div className="flex items-center space-x-2">
+                    <span data-testid={`text-read-time-${index}`}>{article.readMins} min read</span>
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-purple-600 font-medium">
+                      • Click to read
+                    </span>
+                  </div>
                   <span data-testid={`text-reviewed-by-${index}`}>by {article.reviewedBy}</span>
                 </div>
               </CardContent>
