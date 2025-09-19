@@ -266,224 +266,30 @@
     }
   }
 
-  /* Hero Section with Video - Responsive Layout */
-  .hero-section {
-    position: relative;
-    min-height: 100vh;
-    overflow: hidden;
-  }
-
-  .video-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
-
-  .hero-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-    border-radius: 0 !important;
-  }
-
-  .video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(147, 51, 234, 0.7) 0%, rgba(236, 72, 153, 0.6) 50%, rgba(249, 115, 22, 0.7) 100%);
-    z-index: 2;
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    min-height: 100vh;
-    width: 100%;
-  }
-
-  /* Mobile Layout (max-width: 768px) - Stacked above content */
-  @media screen and (max-width: 768px) {
-    .hero-section {
-      min-height: 80vh;
-    }
-
-    .hero-video {
-      object-fit: cover;
-      object-position: center center;
-    }
-
-    .video-overlay {
-      background: linear-gradient(135deg, rgba(147, 51, 234, 0.8) 0%, rgba(236, 72, 153, 0.7) 50%, rgba(249, 115, 22, 0.8) 100%);
-    }
-
-    .hero-content {
-      min-height: 80vh;
-      padding: 2rem 0;
-    }
-
-    .hero-content .container {
-      padding: 2rem 1rem;
-    }
-
-    .hero-content h1 {
-      font-size: 2.5rem !important;
-      line-height: 1.2 !important;
-      margin-bottom: 1.5rem !important;
-    }
-
-    .hero-content p {
-      font-size: 1rem !important;
-      margin-bottom: 2rem !important;
-    }
-  }
-
-  /* Small Mobile (max-width: 480px) */
-  @media screen and (max-width: 480px) {
-    .hero-section {
-      min-height: 75vh;
-    }
-
-    .hero-content {
-      min-height: 75vh;
-    }
-
-    .hero-content h1 {
-      font-size: 2rem !important;
-      line-height: 1.3 !important;
-    }
-
-    .hero-content .animated-line {
-      height: 60px !important;
-    }
-
-    .hero-content .flex.flex-col.sm\\:flex-row {
-      flex-direction: column !important;
-      gap: 1rem !important;
-    }
-
-    .hero-content .flex.flex-col.sm\\:flex-row button {
-      width: 100% !important;
-      max-width: 280px !important;
-      margin: 0 auto !important;
-    }
-  }
-
-  /* Tablet Layout (769px-1024px) - Side-by-side with adjustments */
-  @media screen and (min-width: 769px) and (max-width: 1024px) {
-    .hero-section {
-      min-height: 90vh;
-    }
-
-    .hero-video {
-      object-fit: cover;
-      object-position: center center;
-    }
-
-    .video-overlay {
-      background: linear-gradient(135deg, rgba(147, 51, 234, 0.6) 0%, rgba(236, 72, 153, 0.5) 50%, rgba(249, 115, 22, 0.6) 100%);
-    }
-
-    .hero-content {
-      min-height: 90vh;
-    }
-
-    .hero-content h1 {
-      font-size: 3.5rem !important;
-    }
-
-    .hero-content p {
-      font-size: 1.125rem !important;
-    }
-  }
-
-  /* Desktop Layout (1025px+) - Full-width background */
-  @media screen and (min-width: 1025px) {
-    .hero-section {
-      min-height: 100vh;
-    }
-
-    .hero-video {
-      object-fit: cover;
-      object-position: center center;
-      width: 100%;
-      height: 100%;
-    }
-
-    .video-overlay {
-      background: linear-gradient(135deg, rgba(147, 51, 234, 0.5) 0%, rgba(236, 72, 153, 0.4) 50%, rgba(249, 115, 22, 0.5) 100%);
-    }
-
-    .hero-content {
-      min-height: 100vh;
-    }
-
-    .hero-content h1 {
-      font-size: 4rem !important;
-    }
-
-    .hero-content p {
-      font-size: 1.25rem !important;
-    }
-  }
-
-  /* Large Desktop (1440px+) */
-  @media screen and (min-width: 1440px) {
-    .hero-section {
-      min-height: 100vh;
-      max-height: 100vh;
-    }
-
-    .hero-content h1 {
-      font-size: 5rem !important;
-    }
-
-    .hero-content p {
-      font-size: 1.5rem !important;
-    }
-  }
-
-  /* Accessibility and Performance Enhancements */
-  @media (prefers-reduced-motion: reduce) {
-    .hero-video {
-      animation: none !important;
-    }
-    
-    .animated-line,
-    .morphing-line,
-    .morph-symbol {
-      animation: none !important;
-    }
-  }
-
-  /* High contrast mode support */
-  @media (prefers-contrast: high) {
-    .video-overlay {
-      background: rgba(0, 0, 0, 0.8) !important;
-    }
-  }
-
-  /* Enhanced video object fitting with better mobile handling - Legacy Support */
+  /* Enhanced video object fitting with better mobile handling */
   .responsive-video-container video {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center center;
+    /* Remove scaling to prevent content loss */
     transform: none;
   }
 
-  /* Mobile-specific video adjustments to prevent side cropping - Legacy Support */
+  /* Mobile-specific video adjustments to prevent side cropping */
   @media screen and (max-width: 768px) {
     .responsive-video-container video {
+      /* Use contain on mobile to show full video content */
+      object-fit: contain;
+      background: #000; /* Add black background for letterboxing if needed */
+    }
+  }
+
+  /* For very small screens, use cover but with careful positioning */
+  @media screen and (max-width: 480px) {
+    .responsive-video-container video {
       object-fit: cover;
-      background: #000;
+      object-position: center center;
     }
   }
 
