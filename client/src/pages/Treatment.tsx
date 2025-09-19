@@ -115,7 +115,18 @@ const Treatment = () => {
   // Get localized content with safety checks
   const summary = getSummaryByLanguage(processedData.summary, langKey);
   const reviewedBy = processedData.reviewedBy;
-  const sources = processedData.sources || [];
+  
+  // Handle sources - check if it's nested by language or a simple array
+  let sources: string[] = [];
+  if (processedData.sources) {
+    if (Array.isArray(processedData.sources)) {
+      sources = processedData.sources;
+    } else if (typeof processedData.sources === 'object') {
+      const langKey = lang === 'hi' ? 'Hindi' : lang === 'te' ? 'Telugu' : 'English';
+      const sourcesObj = processedData.sources as any;
+      sources = sourcesObj[langKey] || sourcesObj[lang] || sourcesObj.english || sourcesObj.English || [];
+    }
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -220,13 +231,38 @@ const Treatment = () => {
                 const stepsData = processedData.processSteps;
 
                 if (stepsData && typeof stepsData === 'object') {
-                  const steps = getContentByLanguage(stepsData, langKey);
+                  // Handle nested process steps structure
+                  const langKey = lang === 'hi' ? 'Hindi' : lang === 'te' ? 'Telugu' : 'English';
+                  const langSteps = (stepsData as any)[langKey] || (stepsData as any)[lang] || (stepsData as any).english || (stepsData as any).English;
                   
+                  if (langSteps && typeof langSteps === 'object') {
+                    // Check if it's a nested structure with categories
+                    const categories = Object.keys(langSteps);
+                    if (categories.length > 0) {
+                      return categories.map((category, categoryIndex) => {
+                        const categorySteps = (langSteps as any)[category];
+                        return (
+                          <div key={categoryIndex} className="border-l-4 border-purple-200 pl-4 mb-4">
+                            <h4 className="font-bold text-foreground mb-2">{category}</h4>
+                            <div className="space-y-2">
+                              {Array.isArray(categorySteps) ? categorySteps.map((step, stepIndex) => (
+                                <p key={stepIndex} className="text-sm text-muted-foreground">• {String(step)}</p>
+                              )) : <p className="text-sm text-muted-foreground">{String(categorySteps)}</p>}
+                            </div>
+                          </div>
+                        );
+                      });
+                    }
+                  }
+                  
+                  // Fallback to simple array handling
+                  const fallbackLangKey = lang === 'hi' ? 'hi' : lang === 'te' ? 'te' : 'en';
+                  const steps = getContentByLanguage(stepsData, fallbackLangKey);
                   if (Array.isArray(steps) && steps.length > 0) {
                     return steps.map((step, index) => (
                       <div key={index} className="border-l-4 border-purple-200 pl-4">
                         <div className="space-y-2">
-                          <p className="text-sm text-muted-foreground">{String(step)}</p>
+                          <p className="text-sm text-muted-foreground">• {String(step)}</p>
                         </div>
                       </div>
                     ));
