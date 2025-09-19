@@ -203,62 +203,83 @@
     scrollbar-color: rgba(139, 92, 246, 0.4) rgba(0, 0, 0, 0.1);
   }
 
-  /* Responsive video styles with optimized heights */
+  /* Responsive video styles with increased heights to prevent cropping */
   .responsive-video-container {
     position: relative;
     width: 100%;
-    height: 35vh; /* Reduced mobile height for better content visibility */
+    height: 60vh; /* Increased height for better video visibility */
     overflow: hidden;
-    min-height: 250px; /* Minimum height to ensure video is visible */
+    min-height: 400px; /* Increased minimum height */
   }
 
-  /* Small mobile devices */
+  /* Small mobile devices - Portrait orientation */
   @media screen and (max-width: 480px) {
     .responsive-video-container {
-      height: 30vh;
-      min-height: 200px;
+      height: 50vh; /* Increased mobile height */
+      min-height: 350px; /* Increased minimum height */
+    }
+  }
+
+  /* Small mobile devices - Landscape orientation */
+  @media screen and (max-width: 480px) and (orientation: landscape) {
+    .responsive-video-container {
+      height: 80vh; /* Much taller in landscape */
+      min-height: 300px;
     }
   }
 
   /* Large mobile devices */
   @media screen and (min-width: 480px) and (max-width: 767px) {
     .responsive-video-container {
-      height: 35vh;
-      min-height: 250px;
+      height: 55vh; /* Increased height */
+      min-height: 380px; /* Increased minimum height */
     }
   }
 
   /* Tablet */
   @media screen and (min-width: 768px) and (max-width: 1023px) {
     .responsive-video-container {
-      height: 40vh;
-      min-height: 300px;
+      height: 65vh; /* Increased height */
+      min-height: 450px; /* Increased minimum height */
     }
   }
 
   /* Desktop */
   @media screen and (min-width: 1024px) and (max-width: 1439px) {
     .responsive-video-container {
-      height: 45vh;
-      min-height: 350px;
+      height: 70vh; /* Increased height */
+      min-height: 500px; /* Increased minimum height */
     }
   }
 
   /* Large Desktop */
   @media screen and (min-width: 1440px) {
     .responsive-video-container {
-      height: 50vh;
-      min-height: 400px;
-      max-height: 500px; /* Cap the maximum height */
+      height: 75vh; /* Increased height */
+      min-height: 550px; /* Increased minimum height */
+      max-height: 800px; /* Increased max height */
     }
   }
 
-  /* Enhanced video object fitting */
+  /* Enhanced video object fitting with better positioning */
   .responsive-video-container video {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center center;
+    /* Ensure video scales properly without distortion */
+    transform: scale(1.02); /* Slight scale to ensure full coverage */
+  }
+
+  /* Additional mobile-specific adjustments */
+  @media screen and (max-width: 768px) {
+    .responsive-video-container video {
+      /* Ensure video fills the container completely on mobile */
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
   }
 
   /* Remove any border radius from video elements */
