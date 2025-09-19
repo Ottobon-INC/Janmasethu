@@ -120,25 +120,33 @@ const Article = () => {
     
     switch (content.type) {
       case 'paragraph':
+        const paragraphText = content.text?.[langKey] || content.text?.en || '';
+        if (!paragraphText) return null;
         return (
           <p className="text-muted-foreground leading-relaxed mb-4">
-            {content.text?.[langKey] || content.text?.en || ''}
+            {paragraphText}
           </p>
         );
       case 'subheading':
+        const subheadingText = content.text?.[langKey] || content.text?.en || '';
+        if (!subheadingText) return null;
         return (
           <h3 className="text-xl font-bold text-foreground font-serif mb-3 mt-6">
-            {content.text?.[langKey] || content.text?.en || ''}
+            {subheadingText}
           </h3>
         );
       case 'list':
+        if (!content.items || content.items.length === 0) return null;
         return (
           <ul className="list-disc pl-6 space-y-2 mb-4">
-            {content.items?.map((item, index) => (
-              <li key={index} className="text-muted-foreground leading-relaxed">
-                {item[langKey] || item.en || ''}
-              </li>
-            )) || []}
+            {content.items.map((item, index) => {
+              const itemText = typeof item === 'object' ? (item[langKey] || item.en || '') : item;
+              return (
+                <li key={index} className="text-muted-foreground leading-relaxed">
+                  {itemText}
+                </li>
+              );
+            })}
           </ul>
         );
       default:
@@ -218,7 +226,7 @@ const Article = () => {
       <div className="grid lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2">
           <div className="space-y-8">
-            {useJsonData ? (
+            {useJsonData && articleData ? (
               // Render new JSON structure with sections
               articleData.sections.map((section, index) => (
                 <Card key={section.id} className="rounded-3xl p-8 card-shadow" data-testid={`card-section-${index}`}>
@@ -239,9 +247,9 @@ const Article = () => {
                   </CardContent>
                 </Card>
               ))
-            ) : (
+            ) : legacyArticle ? (
               // Render legacy structure - only if no JSON data is available
-              legacyArticle?.body.map((section: string, index: number) => (
+              legacyArticle.body.map((section: string, index: number) => (
                 <Card key={index} className="rounded-3xl p-8 card-shadow" data-testid={`card-section-${index}`}>
                   <CardContent className="p-0">
                     <h2 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid={`text-section-title-${index}`}>
@@ -256,7 +264,17 @@ const Article = () => {
                     </p>
                   </CardContent>
                 </Card>
-              )) || []
+              ))
+            ) : (
+              <Card className="rounded-3xl p-8 card-shadow">
+                <CardContent className="p-0">
+                  <p className="text-muted-foreground leading-relaxed">
+                    {lang === 'hi' ? 'कोई सामग्री उपलब्ध नहीं है।' : 
+                     lang === 'te' ? 'కంటెంట్ అందుబాటులో లేదు.' : 
+                     'No content available.'}
+                  </p>
+                </CardContent>
+              </Card>
             )}
           </div>
         </div>
