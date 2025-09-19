@@ -99,41 +99,17 @@ const Treatment = () => {
     );
   }
 
-  // Extract treatment data from the nested structure
-  const treatmentKey = Object.keys(treatmentData)[0];
-  const treatment = treatmentData[treatmentKey];
-
-  if (!treatment || typeof treatment !== 'object') {
-    setError('Invalid treatment data structure');
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Card className="max-w-2xl mx-auto rounded-3xl p-8 card-shadow">
-          <CardContent>
-            <h1 className="text-2xl font-bold text-foreground font-serif mb-4">Invalid Data</h1>
-            <p className="text-muted-foreground mb-6">The treatment data is not structured correctly.</p>
-            <Link href="/treatments">
-              <Button className="gradient-button text-white rounded-full">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Treatments
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // Process the treatment data with proper fallbacks
+  // Process the treatment data with proper fallbacks (treatmentData is already normalized)
   const processedData = {
-    title: treatment.title || treatmentKey,
-    summary: treatment.summary || treatment.Summary || {},
-    reviewedBy: treatment['Reviewed by'] || treatment.reviewed_by || 'Dr. Raghav Iyer',
-    whoMightBenefit: treatment['Who Might Benefit'] || treatment.who_might_benefit || [],
-    processSteps: treatment['Process Steps'] || treatment.process_steps || {},
-    risksConsiderations: treatment['Risks & Considerations'] || treatment.risks_considerations || [],
-    costConsiderations: treatment['Cost Considerations'] || treatment.cost_considerations || [],
-    questionsToAsk: treatment['Questions to Ask Your Doctor'] || treatment.questions_to_ask || [],
-    sources: treatment['Sources'] || treatment.sources || []
+    title: treatmentData.title || treatmentMetadata.title,
+    summary: treatmentData.summary || {},
+    reviewedBy: treatmentData.reviewed_by || 'Dr. Raghav Iyer',
+    whoMightBenefit: treatmentData.who_might_benefit || [],
+    processSteps: treatmentData.process_steps || {},
+    risksConsiderations: treatmentData.risks_considerations || [],
+    costConsiderations: treatmentData.cost_considerations || [],
+    questionsToAsk: treatmentData.questions_to_ask || [],
+    sources: treatmentData.sources || []
   };
 
   // Get localized content with safety checks
@@ -202,7 +178,7 @@ const Treatment = () => {
                     <div key={index} className="flex items-start space-x-3">
                       <CheckCircle className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
                       <span className="text-muted-foreground">
-                        {typeof item === 'string' ? item : item[lang] || item.en || item}
+                        {typeof item === 'string' ? item : String(item)}
                       </span>
                     </div>
                   ));
@@ -210,10 +186,9 @@ const Treatment = () => {
 
                 // Handle object format with language keys
                 if (benefitData && typeof benefitData === 'object') {
-                  const langKey = lang === 'hi' ? 'Hindi' : lang === 'te' ? 'Telugu' : 'English';
-                  const items = benefitData[langKey] || benefitData[lang] || benefitData.en || benefitData.English || [];
-
-                  if (Array.isArray(items)) {
+                  const items = getContentByLanguage(benefitData, langKey);
+                  
+                  if (Array.isArray(items) && items.length > 0) {
                     return items.map((item, index) => (
                       <div key={index} className="flex items-start space-x-3">
                         <CheckCircle className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
@@ -245,17 +220,13 @@ const Treatment = () => {
                 const stepsData = processedData.processSteps;
 
                 if (stepsData && typeof stepsData === 'object') {
-                  const langKey = lang === 'hi' ? 'Hindi' : lang === 'te' ? 'Telugu' : 'English';
-                  const steps = stepsData[langKey] || stepsData[lang] || stepsData.en || stepsData.English || {};
-
-                  if (Object.keys(steps).length > 0) {
-                    return Object.entries(steps).map(([step, details], index) => (
+                  const steps = getContentByLanguage(stepsData, langKey);
+                  
+                  if (Array.isArray(steps) && steps.length > 0) {
+                    return steps.map((step, index) => (
                       <div key={index} className="border-l-4 border-purple-200 pl-4">
-                        <h4 className="font-bold text-foreground mb-2">{step}</h4>
                         <div className="space-y-2">
-                          {Array.isArray(details) ? details.map((detail, detailIndex) => (
-                            <p key={detailIndex} className="text-sm text-muted-foreground">{detail}</p>
-                          )) : <p className="text-sm text-muted-foreground">{details}</p>}
+                          <p className="text-sm text-muted-foreground">{String(step)}</p>
                         </div>
                       </div>
                     ));
@@ -291,17 +262,16 @@ const Treatment = () => {
                     <div key={index} className="flex items-start space-x-3">
                       <AlertTriangle className="w-5 h-5 text-orange-500 mt-1 flex-shrink-0" />
                       <span className="text-muted-foreground">
-                        {typeof risk === 'string' ? risk : risk[lang] || risk.en || risk}
+                        {typeof risk === 'string' ? risk : String(risk)}
                       </span>
                     </div>
                   ));
                 }
 
                 if (risksData && typeof risksData === 'object') {
-                  const langKey = lang === 'hi' ? 'Hindi' : lang === 'te' ? 'Telugu' : 'English';
-                  const items = risksData[langKey] || risksData[lang] || risksData.en || risksData.English || [];
-
-                  if (Array.isArray(items)) {
+                  const items = getContentByLanguage(risksData, langKey);
+                  
+                  if (Array.isArray(items) && items.length > 0) {
                     return items.map((risk, index) => (
                       <div key={index} className="flex items-start space-x-3">
                         <AlertTriangle className="w-5 h-5 text-orange-500 mt-1 flex-shrink-0" />
@@ -337,17 +307,16 @@ const Treatment = () => {
                     <div key={index} className="flex items-start space-x-3">
                       <DollarSign className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
                       <span className="text-muted-foreground">
-                        {typeof cost === 'string' ? cost : cost[lang] || cost.en || cost}
+                        {typeof cost === 'string' ? cost : String(cost)}
                       </span>
                     </div>
                   ));
                 }
 
                 if (costData && typeof costData === 'object') {
-                  const langKey = lang === 'hi' ? 'Hindi' : lang === 'te' ? 'Telugu' : 'English';
-                  const items = costData[langKey] || costData[lang] || costData.en || costData.English || [];
-
-                  if (Array.isArray(items)) {
+                  const items = getContentByLanguage(costData, langKey);
+                  
+                  if (Array.isArray(items) && items.length > 0) {
                     return items.map((cost, index) => (
                       <div key={index} className="flex items-start space-x-3">
                         <DollarSign className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
@@ -383,17 +352,16 @@ const Treatment = () => {
                     <div key={index} className="flex items-start space-x-3">
                       <HelpCircle className="w-5 h-5 text-blue-500 mt-1 flex-shrink-0" />
                       <span className="text-muted-foreground">
-                        {typeof question === 'string' ? question : question[lang] || question.en || question}
+                        {typeof question === 'string' ? question : String(question)}
                       </span>
                     </div>
                   ));
                 }
 
                 if (questionsData && typeof questionsData === 'object') {
-                  const langKey = lang === 'hi' ? 'Hindi' : lang === 'te' ? 'Telugu' : 'English';
-                  const items = questionsData[langKey] || questionsData[lang] || questionsData.en || questionsData.English || [];
-
-                  if (Array.isArray(items)) {
+                  const items = getContentByLanguage(questionsData, langKey);
+                  
+                  if (Array.isArray(items) && items.length > 0) {
                     return items.map((question, index) => (
                       <div key={index} className="flex items-start space-x-3">
                         <HelpCircle className="w-5 h-5 text-blue-500 mt-1 flex-shrink-0" />
@@ -421,7 +389,7 @@ const Treatment = () => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
-            {sources && sources.length > 0 ? sources.map((source, index) => (
+            {sources && sources.length > 0 ? sources.map((source: string, index: number) => (
               <Badge key={index} variant="outline" data-testid={`badge-source-${index}`}>
                 {source}
               </Badge>
