@@ -72,7 +72,7 @@ export const availableArticles = [
   'cost-planning-101', 
   'embryo-grading-guide',
   'first-trimester-scan',
-  'ivf-article-detailed',
+  'ivf-10-min',
   'iycf-after-6-months',
   'newborn-vaccines-timeline',
   'partner-playbook',

@@ -55,7 +55,7 @@ const Knowledge = () => {
 
   // Combine legacy and JSON articles for display
   const allArticles = useMemo(() => {
-    const legacyArticles = articles.map(article => ({
+    const legacyArticles = articles.map((article, index) => ({
       slug: article.slug,
       title: getLocalizedContent(article.title),
       summary: getLocalizedContent(article.summary),
@@ -63,10 +63,11 @@ const Knowledge = () => {
       stage: article.stage,
       readMins: article.readMins,
       reviewedBy: article.reviewedBy,
-      isLegacy: true
+      isLegacy: true,
+      key: `legacy-${article.slug}-${index}`
     }));
 
-    const newArticles = jsonArticles.map(article => ({
+    const newArticles = jsonArticles.map((article, index) => ({
       slug: article.slug,
       title: getLocalizedContent(article.title),
       summary: getLocalizedContent(article.overview),
@@ -74,7 +75,8 @@ const Knowledge = () => {
       stage: [] as Stage[],
       readMins: parseInt(getLocalizedContent(article.readTime).replace(/\D/g, '')) || 5,
       reviewedBy: getLocalizedContent(article.reviewer),
-      isLegacy: false
+      isLegacy: false,
+      key: `json-${article.slug}-${index}`
     }));
 
     return [...legacyArticles, ...newArticles];
@@ -208,7 +210,7 @@ const Knowledge = () => {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredArticles.map((article, index) => (
-            <Link key={article.slug} href={`/knowledge/${article.slug}`} className="group h-full">
+            <Link key={article.key || `article-${article.slug}-${index}`} href={`/knowledge/${article.slug}`} className="group h-full">
               <Card className="rounded-3xl p-6 card-shadow hover:shadow-2xl transition-all duration-500 h-full cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-purple-200 relative overflow-hidden bg-gradient-to-br from-white to-purple-50/30" data-testid={`card-article-${index}`}>
                 <CardContent className="p-0">
                   {/* Click indicator */}
