@@ -96,8 +96,9 @@ const Article = () => {
     );
   }
 
-  // Determine which data to use
+  // Determine which data to use - prioritize JSON data over legacy data
   const currentArticle = articleData || legacyArticle;
+  const useJsonData = !!articleData;  // Use JSON data if available
   
   if (!currentArticle) {
     return null; // Should not happen given our error handling above
@@ -164,8 +165,8 @@ const Article = () => {
 
       {/* Article Header */}
       <header className="mb-12">
-        {/* Show lens badges only for legacy articles */}
-        {legacyArticle && (
+        {/* Show lens badges only for legacy articles (when no JSON data is available) */}
+        {!useJsonData && legacyArticle && (
           <div className="flex flex-wrap gap-2 mb-4">
             {legacyArticle.lens.map((lens: string) => (
               <Badge key={lens} variant="secondary" className="rounded-full" data-testid={`badge-lens-${lens}`}>
@@ -179,13 +180,13 @@ const Article = () => {
         )}
 
         <h1 className="text-4xl md:text-5xl font-bold text-foreground font-serif mb-6" data-testid="text-article-title">
-          {articleData ? 
+          {useJsonData ? 
             getLocalizedContent(articleData.title) : 
             getLocalizedContent(legacyArticle?.title)}
         </h1>
 
         <p className="text-xl text-muted-foreground mb-8" data-testid="text-article-summary">
-          {articleData ? 
+          {useJsonData ? 
             getLocalizedContent(articleData.overview) : 
             getLocalizedContent(legacyArticle?.summary)}
         </p>
@@ -194,7 +195,7 @@ const Article = () => {
           <div className="flex items-center space-x-2">
             <Clock className="w-4 h-4" />
             <span data-testid="text-read-time">
-              {articleData ? 
+              {useJsonData ? 
                 getLocalizedContent(articleData.metadata?.readTime) : 
                 `${legacyArticle?.readMins || 0} ${lang === 'hi' ? 'मिनट पढ़ना' : lang === 'te' ? 'నిమిషాల రీడ్' : 'min read'}`}
             </span>
@@ -203,7 +204,7 @@ const Article = () => {
             <User className="w-4 h-4" />
             <span data-testid="text-reviewed-by">
               {lang === 'hi' ? 'द्वारा समीक्षित' : lang === 'te' ? 'సమీక్షించినవారు' : 'Reviewed by'} {
-                articleData ? 
+                useJsonData ? 
                   getLocalizedContent(articleData.metadata?.reviewer) : 
                   legacyArticle?.reviewedBy || ''
               }
@@ -216,14 +217,17 @@ const Article = () => {
       <div className="grid lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2">
           <div className="space-y-8">
-            {articleData ? (
+            {useJsonData ? (
               // Render new JSON structure with sections
               articleData.sections.map((section, index) => (
                 <Card key={section.id} className="rounded-3xl p-8 card-shadow" data-testid={`card-section-${index}`}>
                   <CardContent className="p-0">
-                    <h2 className="text-2xl font-bold text-foreground font-serif mb-6" data-testid={`text-section-title-${index}`}>
-                      {getLocalizedContent(section.title)}
-                    </h2>
+                    {/* Only show title if it's not empty */}
+                    {getLocalizedContent(section.title) && (
+                      <h2 className="text-2xl font-bold text-foreground font-serif mb-6" data-testid={`text-section-title-${index}`}>
+                        {getLocalizedContent(section.title)}
+                      </h2>
+                    )}
                     <div className="space-y-4">
                       {section.content.map((content, contentIndex) => (
                         <div key={contentIndex}>
@@ -235,7 +239,7 @@ const Article = () => {
                 </Card>
               ))
             ) : (
-              // Render legacy structure
+              // Render legacy structure - only if no JSON data is available
               legacyArticle?.body.map((section: string, index: number) => (
                 <Card key={index} className="rounded-3xl p-8 card-shadow" data-testid={`card-section-${index}`}>
                   <CardContent className="p-0">
@@ -267,7 +271,7 @@ const Article = () => {
             </CardHeader>
             <CardContent className="p-0">
               <div className="space-y-2">
-                {(articleData ? 
+                {(useJsonData ? 
                   articleData.metadata?.sources : 
                   legacyArticle?.sources || []
                 ).map((source: string, index: number) => (
@@ -280,8 +284,8 @@ const Article = () => {
             </CardContent>
           </Card>
 
-          {/* Related Articles - only show for legacy articles */}
-          {legacyArticle && relatedArticles.length > 0 && (
+          {/* Related Articles - only show for legacy articles when no JSON data */}
+          {!useJsonData && legacyArticle && relatedArticles.length > 0 && (
             <Card className="rounded-3xl p-6 card-shadow">
               <CardHeader className="p-0 pb-4">
                 <CardTitle className="text-lg font-semibold text-foreground">
