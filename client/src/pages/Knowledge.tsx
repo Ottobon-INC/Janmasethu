@@ -53,20 +53,9 @@ const Knowledge = () => {
     return content[langKey] || content.en || '';
   };
 
-  // Combine legacy and JSON articles for display
+  // Combine legacy and JSON articles for display, prioritizing JSON over legacy
   const allArticles = useMemo(() => {
-    const legacyArticles = articles.map((article, index) => ({
-      slug: article.slug,
-      title: getLocalizedContent(article.title),
-      summary: getLocalizedContent(article.summary),
-      lens: article.lens,
-      stage: article.stage,
-      readMins: article.readMins,
-      reviewedBy: article.reviewedBy,
-      isLegacy: true,
-      key: `legacy-${article.slug}-${index}`
-    }));
-
+    // First, process JSON articles
     const newArticles = jsonArticles.map((article, index) => ({
       slug: article.slug,
       title: getLocalizedContent(article.title),
@@ -79,7 +68,25 @@ const Knowledge = () => {
       key: `json-${article.slug}-${index}`
     }));
 
-    return [...legacyArticles, ...newArticles];
+    // Create a set of JSON article slugs to avoid duplicates
+    const jsonSlugs = new Set(jsonArticles.map(article => article.slug));
+
+    // Only include legacy articles that don't have JSON equivalents
+    const legacyArticles = articles
+      .filter(article => !jsonSlugs.has(article.slug))
+      .map((article, index) => ({
+        slug: article.slug,
+        title: getLocalizedContent(article.title),
+        summary: getLocalizedContent(article.summary),
+        lens: article.lens,
+        stage: article.stage,
+        readMins: article.readMins,
+        reviewedBy: article.reviewedBy,
+        isLegacy: true,
+        key: `legacy-${article.slug}-${index}`
+      }));
+
+    return [...newArticles, ...legacyArticles];
   }, [articles, jsonArticles, lang, getLocalizedContent]);
 
   const filteredArticles = useMemo(() => {
