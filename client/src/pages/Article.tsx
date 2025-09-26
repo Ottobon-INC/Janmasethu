@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { articles } from '@/data/articles';
-import { fetchArticleData, type ArticleData, type ArticleContent } from '@/data/knowledgeHub';
+import { getArticle } from '@/lib/khubClient';
+import { type ArticleData, type ArticleContent } from '@/data/knowledgeHub';
 
 const Article = () => {
   const { slug } = useParams();
@@ -16,7 +17,7 @@ const Article = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load article data from JSON
+  // Load article data from N8N API
   useEffect(() => {
     const loadArticle = async () => {
       if (!slug) return;
@@ -25,14 +26,16 @@ const Article = () => {
       setError(null);
       
       try {
-        const data = await fetchArticleData(slug);
-        if (data) {
-          setArticleData(data);
+        const response = await getArticle(slug);
+        console.log('N8N Article response:', response);
+        
+        if (response.found && response.article) {
+          setArticleData(response.article);
         } else {
           setError('Article not found');
         }
       } catch (err) {
-        console.error('Error loading article:', err);
+        console.error('Error loading article from N8N:', err);
         setError('Failed to load article');
       } finally {
         setLoading(false);
