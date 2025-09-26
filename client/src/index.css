@@ -159,7 +159,7 @@
     padding-bottom: 0.25rem;
   }
 
-  /* Custom Scrollbar Styles - Completely invisible by default, visible on hover */
+  /* Completely invisible scrollbar while maintaining scroll functionality */
   ::-webkit-scrollbar {
     width: 0px;
     height: 0px;
@@ -172,39 +172,29 @@
 
   ::-webkit-scrollbar-thumb {
     background: transparent;
-    border-radius: 0px;
-    transition: all 0.3s ease;
   }
 
-  /* Show scrollbar only when hovering over the page */
-  html:hover ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
 
-  html:hover ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
-  }
-
-  html:hover ::-webkit-scrollbar-thumb {
-    background: rgba(139, 92, 246, 0.4);
-    border-radius: 3px;
-  }
-
-  html:hover ::-webkit-scrollbar-thumb:hover {
-    background: rgba(139, 92, 246, 0.7);
-  }
-
-  /* Firefox scrollbar styles */
+  /* Firefox scrollbar styles - completely hidden */
   html {
     scrollbar-width: none;
     scrollbar-color: transparent transparent;
   }
 
-  html:hover {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(139, 92, 246, 0.4) rgba(0, 0, 0, 0.1);
+  /* Ensure scrolling still works on all elements */
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+    height: 0px;
+    background: transparent;
   }
 
   /* Responsive video styles with proper positioning to avoid header overlap */
