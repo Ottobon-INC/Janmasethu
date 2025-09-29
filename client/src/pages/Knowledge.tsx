@@ -85,8 +85,9 @@ const Knowledge = () => {
 
   // Show webhook results if available, otherwise show JSON articles
   const displayArticles = useMemo(() => {
-    if (webhookResults) {
+    if (webhookResults && webhookResults.items && webhookResults.items.length > 0) {
       // Use webhook results
+      console.log('Displaying webhook results:', webhookResults.items);
       return webhookResults.items.map((article, index) => {
         // Map lens from webhook to our format
         let mappedLens: Lens[] = [];
@@ -142,12 +143,14 @@ const Knowledge = () => {
     }
   }, [webhookResults, jsonArticles, lang, getLocalizedContent]);
 
-  // Apply local filters only if we don't have webhook results
+  // For webhook results, we don't need additional filtering since the API already filtered
   const filteredArticles = useMemo(() => {
-    if (webhookResults) {
+    if (webhookResults && webhookResults.items && webhookResults.items.length > 0) {
+      console.log('Using webhook results directly:', displayArticles);
       return displayArticles; // Webhook already filtered
     }
     
+    // Apply local filters for JSON articles
     return displayArticles.filter(article => {
       const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            article.summary.toLowerCase().includes(searchTerm.toLowerCase());
@@ -416,7 +419,7 @@ const Knowledge = () => {
       {filteredArticles.length === 0 && !loading && !searching && (
         <div className="text-center py-12">
           <p className="text-muted-foreground" data-testid="text-no-articles">
-            {webhookResults ? 'No articles found' : 'No articles found matching your criteria. Try adjusting your filters.'}
+            {(webhookResults && webhookResults.items) ? 'No articles found' : 'No articles found matching your criteria. Try adjusting your filters.'}
           </p>
         </div>
       )}
