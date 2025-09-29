@@ -87,17 +87,45 @@ const Knowledge = () => {
   const displayArticles = useMemo(() => {
     if (webhookResults) {
       // Use webhook results
-      return webhookResults.items.map((article, index) => ({
-        slug: article.slug,
-        title: article.title,
-        summary: article.summary,
-        lens: article.lens ? [article.lens.toLowerCase() as Lens] : [] as Lens[],
-        stage: article.life_stage ? [article.life_stage.toLowerCase().replace(' ', '-') as Stage] : [] as Stage[],
-        readMins: 5, // Default read time
-        reviewedBy: 'Expert Review', // Default reviewer
-        isLegacy: false,
-        key: `webhook-${article.slug}-${index}`
-      }));
+      return webhookResults.items.map((article, index) => {
+        // Map lens from webhook to our format
+        let mappedLens: Lens[] = [];
+        if (article.lens) {
+          const lensLower = article.lens.toLowerCase();
+          if (['medical', 'social', 'financial', 'nutrition'].includes(lensLower)) {
+            mappedLens = [lensLower as Lens];
+          }
+        }
+
+        // Map life_stage from webhook to our format
+        let mappedStages: Stage[] = [];
+        if (article.life_stage) {
+          const stageLower = article.life_stage.toLowerCase();
+          const stageMapping: Record<string, Stage> = {
+            'ttc': 'ttc',
+            'pregnancy': 'pregnancy',
+            'postpartum': 'postpartum',
+            'newborn': 'newborn',
+            'early years': 'early-years',
+            'early-years': 'early-years'
+          };
+          if (stageMapping[stageLower]) {
+            mappedStages = [stageMapping[stageLower]];
+          }
+        }
+
+        return {
+          slug: article.slug,
+          title: article.title,
+          summary: article.summary,
+          lens: mappedLens,
+          stage: mappedStages,
+          readMins: 5, // Default read time
+          reviewedBy: 'Reviewed by Expert', // Default reviewer
+          isLegacy: false,
+          key: `webhook-${article.slug}-${index}`
+        };
+      });
     } else {
       // Fallback to JSON articles
       return jsonArticles.map((article, index) => ({
@@ -207,7 +235,9 @@ const Knowledge = () => {
       if (response.ok) {
         const data: WebhookResponse = await response.json();
         console.log('Search results received:', data);
+        console.log('Number of articles:', data.items?.length || 0);
         setWebhookResults(data);
+        setSearchError(null); // Clear any previous errors
       } else {
         console.error('Failed to send search request:', response.statusText);
         setSearchError('Failed to load articles');
