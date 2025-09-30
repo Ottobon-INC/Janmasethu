@@ -399,12 +399,10 @@ const Sakhi = () => {
                 {t("sakhi_help_contact")}
               </p>
               <ul className="text-left max-w-xl mx-auto space-y-1">
-                <li>• Thoughts of self-harm or suicide</li>
-                <li>
-                  • Severe depression or anxiety that interferes with daily life
-                </li>
-                <li>• Panic attacks or overwhelming distress</li>
-                <li>• Any medical symptoms or concerns</li>
+                <li>• {t("sakhi_help_bullets_1")}</li>
+                <li>• {t("sakhi_help_bullets_2")}</li>
+                <li>• {t("sakhi_help_bullets_3")}</li>
+                <li>• {t("sakhi_help_bullets_4")}</li>
               </ul>
             </div>
           </CardContent>
