@@ -193,7 +193,7 @@ const Header = () => {
                 <Link 
                   key={href}
                   href={href} 
-                  className={`font-semibold text-base tracking-wide transition-all duration-300 px-4 py-3 rounded-md flex-1 text-center transform hover:scale-105 hover:-translate-y-1 ${
+                  className={`font-semibold text-base tracking-wide transition-all duration-300 px-4 py-3 flex-1 text-center transform hover:scale-105 hover:-translate-y-1 ${
                     location === href 
                       ? 'text-primary bg-primary/10 shadow-lg' 
                       : 'text-foreground hover:text-primary hover:bg-primary/5 hover:shadow-md'
