@@ -137,18 +137,25 @@ const Knowledge = () => {
     } else {
       // Fallback to JSON articles only when no webhook results
       console.log('Using fallback JSON articles:', jsonArticles.length);
-      return jsonArticles.map((article, index) => ({
-        slug: article.slug,
-        title: getLocalizedContent(article.title),
-        summary: getLocalizedContent(article.overview),
-        lens: [] as Lens[],
-        stage: [] as Stage[],
-        readMins: parseInt(getLocalizedContent(article.readTime).replace(/\D/g, '')) || 5,
-        reviewedBy: getLocalizedContent(article.reviewer),
-        isLegacy: false,
-        isWebhookResult: false,
-        key: `json-${article.slug}-${index}`
-      }));
+      
+      // Map article slugs to their lens and stage data from the articles.ts file
+      const articleMetaMap = new Map(articles.map(a => [a.slug, { lens: a.lens, stage: a.stage }]));
+      
+      return jsonArticles.map((article, index) => {
+        const meta = articleMetaMap.get(article.slug) || { lens: [], stage: [] };
+        return {
+          slug: article.slug,
+          title: getLocalizedContent(article.title),
+          summary: getLocalizedContent(article.overview),
+          lens: meta.lens as Lens[],
+          stage: meta.stage as Stage[],
+          readMins: parseInt(getLocalizedContent(article.readTime).replace(/\D/g, '')) || 5,
+          reviewedBy: getLocalizedContent(article.reviewer),
+          isLegacy: false,
+          isWebhookResult: false,
+          key: `json-${article.slug}-${index}`
+        };
+      });
     }
   }, [webhookResults, jsonArticles, lang, getLocalizedContent]);
 
@@ -193,6 +200,13 @@ const Knowledge = () => {
   const handleSearch = async () => {
     setSearching(true);
     setSearchError(null);
+    
+    // If no search term and no filters, just clear webhook results to show local articles
+    if (!searchTerm && !selectedLens && !selectedStage) {
+      setWebhookResults(null);
+      setSearching(false);
+      return;
+    }
     
     try {
       // Map lens values to proper format
@@ -409,6 +423,20 @@ const Knowledge = () => {
           >
             Search
           </Button>
+          {(webhookResults || selectedLens || selectedStage || searchTerm) && (
+            <Button 
+              variant="outline"
+              className="rounded-full px-6"
+              onClick={() => {
+                setSearchTerm('');
+                setSelectedLens(null);
+                setSelectedStage(null);
+                setWebhookResults(null);
+              }}
+            >
+              Clear All
+            </Button>
+          )}
         </div>
 
         {/* Lens Filters */}
