@@ -88,25 +88,27 @@ const Home = () => {
   return (
     <>
       {/* Responsive Video Section */}
-      <section className="w-full responsive-video-container relative overflow-hidden">
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          poster="/babyFeet.jpg"
-          webkit-playsinline="true"
-          x5-playsinline="true"
-          onLoadStart={() => console.log('Video loading started...')}
-          onLoadedData={() => console.log('Video data loaded')}
-          onCanPlay={() => console.log('Video can play')}
-          onPlay={() => console.log('Video started playing')}
-        >
-          <source src="/janmasethu.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+      <section className="w-full py-4 px-4 lg:py-8 lg:px-8">
+        <div className="responsive-video-container relative overflow-hidden">
+          <video
+            className="absolute inset-0 w-full h-full"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            poster="/babyFeet.jpg"
+            webkit-playsinline="true"
+            x5-playsinline="true"
+            onLoadStart={() => console.log('Video loading started...')}
+            onLoadedData={() => console.log('Video data loaded')}
+            onCanPlay={() => console.log('Video can play')}
+            onPlay={() => console.log('Video started playing')}
+          >
+            <source src="/janmasethu.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </section>
 
       <div className="container mx-auto px-4 py-8">
