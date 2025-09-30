@@ -124,6 +124,7 @@ const Knowledge = () => {
           readMins: 5, // Default read time
           reviewedBy: 'Reviewed by Expert', // Default reviewer
           isLegacy: false,
+          isWebhookResult: true,
           key: `webhook-${article.slug}-${index}`
         };
       });
@@ -138,6 +139,7 @@ const Knowledge = () => {
         readMins: parseInt(getLocalizedContent(article.readTime).replace(/\D/g, '')) || 5,
         reviewedBy: getLocalizedContent(article.reviewer),
         isLegacy: false,
+        isWebhookResult: false,
         key: `json-${article.slug}-${index}`
       }));
     }
@@ -241,6 +243,11 @@ const Knowledge = () => {
         console.log('Number of articles:', data.items?.length || 0);
         setWebhookResults(data);
         setSearchError(null); // Clear any previous errors
+        
+        // Show success message if articles found
+        if (data.items && data.items.length > 0) {
+          console.log(`Successfully loaded ${data.items.length} articles from webhook`);
+        }
       } else {
         console.error('Failed to send search request:', response.statusText);
         setSearchError('Failed to load articles');
@@ -407,7 +414,9 @@ const Knowledge = () => {
                         • Click to read
                       </span>
                     </div>
-                    <span data-testid={`text-reviewed-by-${index}`}>by {article.reviewedBy}</span>
+                    <span data-testid={`text-reviewed-by-${index}`}>
+                      {article.isWebhookResult ? 'Reviewed by Expert' : `by ${article.reviewedBy}`}
+                    </span>
                   </div>
                 </CardContent>
               </Card>
@@ -419,7 +428,7 @@ const Knowledge = () => {
       {filteredArticles.length === 0 && !loading && !searching && (
         <div className="text-center py-12">
           <p className="text-muted-foreground" data-testid="text-no-articles">
-            {(webhookResults && webhookResults.items) ? 'No articles found' : 'No articles found matching your criteria. Try adjusting your filters.'}
+            {webhookResults ? 'No articles found for your search.' : 'No articles found matching your criteria. Try adjusting your filters.'}
           </p>
         </div>
       )}
