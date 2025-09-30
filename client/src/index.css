@@ -20,12 +20,8 @@
 }
 
 .nav-secondary {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid hsl(var(--border));
   /* Add invisible padding to create a larger hover area */
   position: relative;
-  border-radius: 0;
 }
 
 .nav-secondary::before {
