@@ -233,7 +233,7 @@
       max-height: 300px;
       margin: 0 auto;
     }
-    
+
     .responsive-video-container video {
       object-fit: contain; /* Ensure full video is visible */
       border-radius: 12px;
@@ -248,7 +248,7 @@
       max-height: 400px;
       margin: 0 auto;
     }
-    
+
     .responsive-video-container video {
       object-fit: contain;
       border-radius: 16px;
@@ -263,7 +263,7 @@
       max-height: 500px;
       margin: 0 auto;
     }
-    
+
     .responsive-video-container video {
       object-fit: cover;
       border-radius: 20px;
@@ -279,7 +279,7 @@
       margin: 0 auto;
       border-radius: 24px;
     }
-    
+
     .responsive-video-container video {
       object-fit: cover;
       border-radius: 24px;
@@ -292,7 +292,7 @@
       height: 100vh;
       border-radius: 0;
     }
-    
+
     .responsive-video-container video {
       border-radius: 0;
     }
