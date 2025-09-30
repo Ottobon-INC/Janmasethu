@@ -87,16 +87,15 @@ const Home = () => {
 
   return (
     <>
-      {/* Responsive Hero Video Section */}
-      <section className="relative w-full h-[50vh] md:h-[70vh] lg:h-[80vh] overflow-hidden -mt-[64px] pt-[64px]">
+      {/* Responsive Video Section */}
+      <section className="w-full responsive-video-container relative overflow-hidden">
         <video
-          className="absolute top-0 left-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
-          style={{ objectFit: 'cover' }}
           onLoadStart={() => console.log('Video loading started...')}
           onLoadedData={() => console.log('Video data loaded')}
           onCanPlay={() => console.log('Video can play')}
@@ -105,159 +104,157 @@ const Home = () => {
           <source src="/janmasethu.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        {/* Overlay for content on top of video */}
-        <div className="absolute inset-0 flex items-center justify-center text-center text-white z-10">
-          {/* Hero Section Content */}
-          <section className="relative py-8 md:py-16">
-            {/* Trust Badge - Centered at top */}
-            <div className="flex justify-center mb-8">
-              <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
-                <CheckCircle className="w-4 h-4 text-green-500" />
-                <span
-                  className="text-sm font-medium text-foreground"
-                  data-testid="text-trust-badge"
-                >
-                  {t("trust_pill")}
-                </span>
-              </div>
-            </div>
-
-            {/* Hero Title - On its own line below */}
-            <h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text font-serif mb-6 leading-relaxed"
-              data-testid="text-hero-title"
-            >
-              <span dangerouslySetInnerHTML={{ __html: t("hero_title") }} />
-            </h1>
-
-            {/* Hero Subtitle */}
-            <p
-              className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto"
-              data-testid="text-hero-subtitle"
-            >
-              {t("hero_sub")}
-            </p>
-
-            {/* Animated Line Morphing Effect */}
-            <div className="relative mb-8">
-              <svg
-                className="w-full h-24 mx-auto animated-line"
-                viewBox="0 0 400 100"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <defs>
-                  <linearGradient
-                    id="lineGradient"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="0%"
-                  >
-                    <stop offset="0%" stopColor="#9333EA" />
-                    <stop offset="50%" stopColor="#EC4899" />
-                    <stop offset="100%" stopColor="#F97316" />
-                  </linearGradient>
-                  <filter id="glow">
-                    <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                    <feMerge>
-                      <feMergeNode in="coloredBlur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                </defs>
-
-                {/* Main morphing line */}
-                <path
-                  className="morphing-line"
-                  d="M20,50 Q100,30 200,50 Q300,70 380,50"
-                  stroke="url(#lineGradient)"
-                  strokeWidth="3"
-                  fill="none"
-                  filter="url(#glow)"
-                />
-
-                {/* Couple symbol */}
-                <circle
-                  className="morph-symbol couple"
-                  cx="60"
-                  cy="50"
-                  r="8"
-                  fill="url(#lineGradient)"
-                  opacity="0"
-                />
-                <circle
-                  className="morph-symbol couple"
-                  cx="80"
-                  cy="50"
-                  r="6"
-                  fill="url(#lineGradient)"
-                  opacity="0"
-                />
-
-                {/* Pregnancy symbol */}
-                <ellipse
-                  className="morph-symbol pregnancy"
-                  cx="200"
-                  cy="50"
-                  rx="12"
-                  ry="15"
-                  fill="url(#lineGradient)"
-                  opacity="0"
-                />
-
-                {/* Cradle symbol */}
-                <path
-                  className="morph-symbol cradle"
-                  d="M320,45 Q340,35 360,45 Q340,65 320,55 Z"
-                  fill="url(#lineGradient)"
-                  opacity="0"
-                />
-              </svg>
-            </div>
-
-            {/* CTA Buttons - Updated to match blueprint exactly */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link href="/sakhi/try">
-                <Button
-                  className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 group overflow-hidden relative"
-                  data-testid="button-cta-primary"
-                >
-                  <span className="relative z-10 transition-transform duration-300 group-hover:-translate-x-2">
-                    {t("cta_primary")}
-                  </span>
-                  <ArrowRight className="absolute right-4 w-5 h-5 opacity-0 transform translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 z-10" />
-                </Button>
-              </Link>
-              <Link href="/clinic">
-                <Button
-                  variant="outline"
-                  className="bg-white text-foreground px-8 py-4 rounded-full font-semibold text-lg border-border hover:shadow-lg transition-all duration-300 group overflow-hidden relative"
-                  data-testid="button-cta-secondary"
-                >
-                  <span className="relative z-10 transition-transform duration-300 group-hover:-translate-x-2">
-                    {t("cta_secondary")}
-                  </span>
-                  <ArrowRight className="absolute right-4 w-5 h-5 opacity-0 transform translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 z-10" />
-                </Button>
-              </Link>
-            </div>
-          </section>
-        </div>
       </section>
 
       <div className="container mx-auto px-4 py-8">
-      {/* Hero Background Image - Now placed after video and content */}
-      <div className="absolute inset-0 -z-10">
-        <div className="relative w-full h-full">
-          <img
-            src="/babyFeet.jpg"
-            alt="Baby feet - nurturing parenthood journey"
-            className="w-full h-full object-cover rounded-3xl opacity-60"
-          />
-          {/* Light gradient overlay to maintain text readability */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/90 via-purple-50/70 to-pink-50/70 rounded-3xl"></div>
+      {/* Hero Section */}
+      <section className="text-center py-16 relative">
+        {/* Trust Badge - Centered at top */}
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
+            <CheckCircle className="w-4 h-4 text-green-500" />
+            <span
+              className="text-sm font-medium text-foreground"
+              data-testid="text-trust-badge"
+            >
+              {t("trust_pill")}
+            </span>
+          </div>
         </div>
-      </div>
+
+        {/* Hero Title - On its own line below */}
+        <h1
+          className="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text font-serif mb-6 leading-relaxed"
+          data-testid="text-hero-title"
+        >
+          <span dangerouslySetInnerHTML={{ __html: t("hero_title") }} />
+        </h1>
+
+        {/* Hero Subtitle */}
+        <p
+          className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto"
+          data-testid="text-hero-subtitle"
+        >
+          {t("hero_sub")}
+        </p>
+
+        {/* Animated Line Morphing Effect */}
+        <div className="relative mb-8">
+          <svg
+            className="w-full h-24 mx-auto animated-line"
+            viewBox="0 0 400 100"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient
+                id="lineGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="0%"
+              >
+                <stop offset="0%" stopColor="#9333EA" />
+                <stop offset="50%" stopColor="#EC4899" />
+                <stop offset="100%" stopColor="#F97316" />
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            {/* Main morphing line */}
+            <path
+              className="morphing-line"
+              d="M20,50 Q100,30 200,50 Q300,70 380,50"
+              stroke="url(#lineGradient)"
+              strokeWidth="3"
+              fill="none"
+              filter="url(#glow)"
+            />
+
+            {/* Couple symbol */}
+            <circle
+              className="morph-symbol couple"
+              cx="60"
+              cy="50"
+              r="8"
+              fill="url(#lineGradient)"
+              opacity="0"
+            />
+            <circle
+              className="morph-symbol couple"
+              cx="80"
+              cy="50"
+              r="6"
+              fill="url(#lineGradient)"
+              opacity="0"
+            />
+
+            {/* Pregnancy symbol */}
+            <ellipse
+              className="morph-symbol pregnancy"
+              cx="200"
+              cy="50"
+              rx="12"
+              ry="15"
+              fill="url(#lineGradient)"
+              opacity="0"
+            />
+
+            {/* Cradle symbol */}
+            <path
+              className="morph-symbol cradle"
+              d="M320,45 Q340,35 360,45 Q340,65 320,55 Z"
+              fill="url(#lineGradient)"
+              opacity="0"
+            />
+          </svg>
+        </div>
+
+        {/* CTA Buttons - Updated to match blueprint exactly */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Link href="/sakhi/try">
+            <Button
+              className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 group overflow-hidden relative"
+              data-testid="button-cta-primary"
+            >
+              <span className="relative z-10 transition-transform duration-300 group-hover:-translate-x-2">
+                {t("cta_primary")}
+              </span>
+              <ArrowRight className="absolute right-4 w-5 h-5 opacity-0 transform translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 z-10" />
+            </Button>
+          </Link>
+          <Link href="/clinic">
+            <Button
+              variant="outline"
+              className="bg-white text-foreground px-8 py-4 rounded-full font-semibold text-lg border-border hover:shadow-lg transition-all duration-300 group overflow-hidden relative"
+              data-testid="button-cta-secondary"
+            >
+              <span className="relative z-10 transition-transform duration-300 group-hover:-translate-x-2">
+                {t("cta_secondary")}
+              </span>
+              <ArrowRight className="absolute right-4 w-5 h-5 opacity-0 transform translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 z-10" />
+            </Button>
+          </Link>
+        </div>
+
+        {/* Hero Background Image */}
+        <div className="absolute inset-0 -z-10">
+          <div className="relative w-full h-full">
+            <img
+              src="/babyFeet.jpg"
+              alt="Baby feet - nurturing parenthood journey"
+              className="w-full h-full object-cover rounded-3xl opacity-60"
+            />
+            {/* Light gradient overlay to maintain text readability */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/90 via-purple-50/70 to-pink-50/70 rounded-3xl"></div>
+          </div>
+        </div>
+      </section>
 
       {/* Who We Serve - Interactive Cards with Modal */}
       <WhoWeServe />
@@ -574,7 +571,7 @@ const Home = () => {
                     <ArrowRight className="w-4 h-4 text-purple-600" />
                   </div>
                 </div>
-
+                
                 <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Heart className="text-white text-2xl" />
                 </div>
@@ -595,7 +592,7 @@ const Home = () => {
                   alt="Couple walking together in park"
                   className="rounded-xl w-full h-32 object-cover mt-auto group-hover:shadow-lg transition-shadow"
                 />
-
+                
                 {/* Call to action */}
                 <div className="flex items-center justify-between mt-4">
                   <span className="text-sm text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -619,7 +616,7 @@ const Home = () => {
                     <ArrowRight className="w-4 h-4 text-pink-600" />
                   </div>
                 </div>
-
+                
                 <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Baby className="text-white text-2xl" />
                 </div>
@@ -640,7 +637,7 @@ const Home = () => {
                   alt="Pregnant woman in peaceful outdoor setting"
                   className="rounded-xl w-full h-32 object-cover mt-auto group-hover:shadow-lg transition-shadow"
                 />
-
+                
                 {/* Call to action */}
                 <div className="flex items-center justify-between mt-4">
                   <span className="text-sm text-pink-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -664,7 +661,7 @@ const Home = () => {
                     <ArrowRight className="w-4 h-4 text-orange-600" />
                   </div>
                 </div>
-
+                
                 <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Cat className="text-white text-2xl" />
                 </div>
@@ -685,7 +682,7 @@ const Home = () => {
                   alt="Happy new parent holding newborn baby"
                   className="rounded-xl w-full h-32 object-cover mt-auto group-hover:shadow-lg transition-shadow"
                 />
-
+                
                 {/* Call to action */}
                 <div className="flex items-center justify-between mt-4">
                   <span className="text-sm text-orange-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -723,7 +720,7 @@ const Home = () => {
                     <ArrowRight className="w-3 h-3 text-blue-600" />
                   </div>
                 </div>
-
+                
                 <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <Stethoscope className="text-blue-600 text-2xl" />
                 </div>
@@ -733,13 +730,13 @@ const Home = () => {
                 >
                   {t("lens_medical")}
                 </h3>
-
+                
                 {/* Call to action */}
                 <div className="flex items-center justify-center mt-auto">
                   <span className="text-sm text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {lang === "en" && "Browse topics"}
                     {lang === "hi" && "विषय ब्राउज़ करें"}
-                    {lang === "te" && "విషయాలను బ్రౌజ్ చేయండి"}
+                    {lang === "te" && "విषయాలను బ్రౌజ్ చేయండి"}
                   </span>
                 </div>
               </CardContent>
@@ -756,7 +753,7 @@ const Home = () => {
                     <ArrowRight className="w-3 h-3 text-pink-600" />
                   </div>
                 </div>
-
+                
                 <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <Users className="text-pink-600 text-2xl" />
                 </div>
@@ -766,13 +763,13 @@ const Home = () => {
                 >
                   {t("lens_social")}
                 </h3>
-
+                
                 {/* Call to action */}
                 <div className="flex items-center justify-center mt-auto">
                   <span className="text-sm text-pink-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {lang === "en" && "Browse topics"}
                     {lang === "hi" && "विषय ब्राउज़ करें"}
-                    {lang === "te" && "విషయాలను బ్రౌజ్ చేయండి"}
+                    {lang === "te" && "విषయాలను బ్రౌజ్ చేయండి"}
                   </span>
                 </div>
               </CardContent>
@@ -789,7 +786,7 @@ const Home = () => {
                     <ArrowRight className="w-3 h-3 text-green-600" />
                   </div>
                 </div>
-
+                
                 <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <IndianRupee className="text-green-600 text-2xl" />
                 </div>
@@ -799,13 +796,13 @@ const Home = () => {
                 >
                   {t("lens_financial")}
                 </h3>
-
+                
                 {/* Call to action */}
                 <div className="flex items-center justify-center mt-auto">
                   <span className="text-sm text-green-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {lang === "en" && "Browse topics"}
                     {lang === "hi" && "विषय ब्राउज़ करें"}
-                    {lang === "te" && "విషయాలను బ్రౌజ్ చేయండి"}
+                    {lang === "te" && "విषయాలను బ్రౌజ్ చేయండి"}
                   </span>
                 </div>
               </CardContent>
@@ -822,7 +819,7 @@ const Home = () => {
                     <ArrowRight className="w-3 h-3 text-orange-600" />
                   </div>
                 </div>
-
+                
                 <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <Apple className="text-orange-600 text-2xl" />
                 </div>
@@ -832,7 +829,7 @@ const Home = () => {
                 >
                   {t("lens_nutrition")}
                 </h3>
-
+                
                 {/* Call to action */}
                 <div className="flex items-center justify-center mt-auto">
                   <span className="text-sm text-orange-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -876,7 +873,7 @@ const Home = () => {
                       <ArrowRight className="w-4 h-4 text-purple-600" />
                     </div>
                   </div>
-
+                  
                   <img
                     src={getArticleImage(index)}
                     alt={article.title.en}
@@ -894,7 +891,7 @@ const Home = () => {
                   >
                     {article.summary[lang as keyof typeof article.summary] || article.summary.en}
                   </p>
-
+                  
                   {/* Call to action */}
                   <div className="flex items-center justify-between mt-auto">
                     <span className="text-xs text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -940,7 +937,7 @@ const Home = () => {
                       <ArrowRight className="w-4 h-4 text-purple-600" />
                     </div>
                   </div>
-
+                  
                   <div
                     className={`w-16 h-16 ${treatment.bgColor} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md`}
                   >
@@ -960,7 +957,7 @@ const Home = () => {
                   >
                     {treatment.description}
                   </p>
-
+                  
                   {/* Call to action */}
                   <div className="flex items-center justify-between mt-auto">
                     <span className="text-sm text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -1006,7 +1003,7 @@ const Home = () => {
                       <ArrowRight className="w-4 h-4 text-pink-600" />
                     </div>
                   </div>
-
+                  
                   <img
                     src={getStoryImage(index)}
                     alt={story.title}
@@ -1024,7 +1021,7 @@ const Home = () => {
                   >
                     {story.summary[lang]}
                   </p>
-
+                  
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex items-center text-xs text-muted-foreground">
                       <i className="fas fa-map-marker-alt mr-1"></i>
@@ -1032,7 +1029,7 @@ const Home = () => {
                         {story.city[lang]}
                       </span>
                     </div>
-
+                    
                     {/* Call to action */}
                     <div className="flex items-center">
                       <span className="text-xs text-pink-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-2">
@@ -1067,7 +1064,7 @@ const getArticleImage = (index: number) => {
 
 const getStoryImage = (index: number) => {
   const images = [
-    "https://images.unsplash.com/photo-1544367567-0f2fcb009b0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300",
+    "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300",
     "https://images.unsplash.com/photo-1566004100631-35d015d6a491?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300",
     "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300",
   ];

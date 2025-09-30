@@ -287,69 +287,6 @@
   video {
     border-radius: 0 !important;
   }
-
-  /* Full-width hero video styles */
-  .hero-video-container {
-    position: relative;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    margin-top: 80px; /* Header height offset */
-    overflow: hidden;
-    background: transparent;
-  }
-
-  .hero-video {
-    width: 100%;
-    height: calc(100vh - 80px); /* Full viewport minus header */
-    max-height: calc(100vh - 80px);
-    object-fit: contain;
-    object-position: center;
-    background-color: transparent;
-    display: block;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    outline: none;
-  }
-
-  /* Desktop responsive adjustments */
-  @media screen and (min-width: 1024px) {
-    .hero-video {
-      height: calc(80vh - 80px);
-      max-height: calc(100vh - 80px);
-    }
-  }
-
-  /* Tablet responsive adjustments */
-  @media screen and (min-width: 768px) and (max-width: 1023px) {
-    .hero-video {
-      height: calc(70vh - 80px);
-      min-height: 400px;
-    }
-  }
-
-  /* Mobile responsive adjustments */
-  @media screen and (max-width: 767px) {
-    .hero-video {
-      height: calc(60vh - 80px);
-      min-height: 300px;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    .hero-video {
-      height: calc(50vh - 80px);
-      min-height: 250px;
-    }
-  }
-
-  /* Remove any styling from video elements globally */
-  video {
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    border: none !important;
-    outline: none !important;
-  }
 }
 
 @layer components {
