@@ -201,10 +201,10 @@
   .responsive-video-container {
     position: relative;
     width: 100%;
-    /* Default mobile height - much smaller */
-    height: 50vh;
-    min-height: 300px;
-    max-height: 400px;
+    /* Default mobile height - smaller to fit screen */
+    height: 30vh;
+    min-height: 200px;
+    max-height: 250px;
     overflow: hidden;
     margin: 0 auto;
     border-radius: 16px;
@@ -228,9 +228,9 @@
   /* Very small mobile devices (≤ 480px) - prioritize content visibility */
   @media screen and (max-width: 480px) {
     .responsive-video-container {
-      height: 40vh;
-      min-height: 250px;
-      max-height: 300px;
+      height: 25vh;
+      min-height: 180px;
+      max-height: 220px;
       margin: 0 auto;
     }
 
@@ -243,9 +243,9 @@
   /* Medium mobile devices (481-768px) */
   @media screen and (min-width: 481px) and (max-width: 768px) {
     .responsive-video-container {
-      height: 50vh;
-      min-height: 300px;
-      max-height: 400px;
+      height: 35vh;
+      min-height: 220px;
+      max-height: 280px;
       margin: 0 auto;
     }
 
@@ -258,9 +258,9 @@
   /* Tablet devices (769-1024px) - start using more space */
   @media screen and (min-width: 769px) and (max-width: 1024px) {
     .responsive-video-container {
-      height: 60vh;
-      min-height: 400px;
-      max-height: 500px;
+      height: 45vh;
+      min-height: 300px;
+      max-height: 400px;
       margin: 0 auto;
     }
 
@@ -273,9 +273,9 @@
   /* Desktop and larger screens (≥ 1025px) - full hero treatment */
   @media screen and (min-width: 1025px) {
     .responsive-video-container {
-      height: 80vh;
-      min-height: 500px;
-      max-height: none;
+      height: 60vh;
+      min-height: 400px;
+      max-height: 600px;
       margin: 0 auto;
       border-radius: 24px;
     }
@@ -289,7 +289,7 @@
   /* Large desktop screens (≥ 1440px) - full viewport */
   @media screen and (min-width: 1440px) {
     .responsive-video-container {
-      height: 100vh;
+      height: 70vh;
       border-radius: 0;
     }
 
