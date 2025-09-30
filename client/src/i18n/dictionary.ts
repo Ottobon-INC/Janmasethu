@@ -73,16 +73,8 @@ export const dict = {
     sakhi_important_desc: "Sakhi provides emotional support and general guidance but is not a replacement for professional medical or mental health care. If you're experiencing thoughts of self-harm or severe distress, please contact a healthcare professional or emergency services immediately.",
 
     // Sakhi video section
-    sakhi_video_title: {
-      en: "See Sakhi in Action",
-      hi: "सखी को कार्य में देखें",
-      te: "సఖిని చర్యలో చూడండి"
-    },
-    sakhi_video_subtitle: {
-      en: "Watch how Sakhi provides compassionate support throughout your fertility journey",
-      hi: "देखें कि सखी आपकी प्रजनन यात्रा में कैसे दयालु सहायता प्रदान करती है",
-      te: "మీ సంతానోత్పత్తి ప్రయాణంలో సఖి ఎలా దయగల మద్దతును అందిస్తుందో చూడండి"
-    },
+    sakhi_video_title: "See Sakhi in Action",
+    sakhi_video_subtitle: "Watch how Sakhi provides compassionate support throughout your fertility journey",
 
     // Sakhi chat prompts
     chat_p1: {
@@ -408,16 +400,8 @@ export const dict = {
     sakhi_important_desc: "सखी भावनात्मक सहारा और सामान्य मार्गदर्शन प्रदान करती है लेकिन पेशेवर चिकित्सा या मानसिक स्वास्थ्य देखभाल की जगह नहीं है। यदि आप आत्म-नुकसान के विचारों या गंभीर संकट का अनुभव कर रहे हैं, तो कृपया तुरंत स्वास्थ्य देखभाल पेशेवर या आपातकालीन सेवाओं से संपर्क करें।",
 
     // Sakhi video section
-    sakhi_video_title: {
-      en: "See Sakhi in Action",
-      hi: "सखी को कार्य में देखें",
-      te: "సఖిని చర్యలో చూడండి"
-    },
-    sakhi_video_subtitle: {
-      en: "Watch how Sakhi provides compassionate support throughout your fertility journey",
-      hi: "देखें कि सखी आपकी प्रजनन यात्रा में कैसे दयालु सहायता प्रदान करती है",
-      te: "మీ సంతానోత్పత్తి ప్రయాణంలో సఖి ఎలా దయగల మద్దతును అందిస్తుందో చూడండి"
-    },
+    sakhi_video_title: "सखी को कार्य में देखें",
+    sakhi_video_subtitle: "देखें कि सखी आपकी प्रजनन यात्रा में कैसे दयालु सहायता प्रदान करती है",
 
     // Sakhi chat prompts
     chat_p1: {
@@ -748,16 +732,8 @@ export const dict = {
     sakhi_important_desc: "సఖి భావోద్వేగ మద్దతు మరియు సాధారణ మార్గదర్శకత్వాన్ని అందిస్తుంది కానీ వృత్తిపరమైన వైద్య లేదా మానసిక ఆరోగ్య సంరక్షణకు ప్రత్యామ్నాయం కాదు. మీరు స్వీయ-హాని ఆలోచనలు లేదా తీవ్ర బాధను అనుభవిస్తున్నట్లయితే, దయచేసి తక్షణం ఆరోగ్య సంరక్షణ నిపుణుడిని లేదా అత్యవసర సేవలను సంప్రదించండి.",
 
     // Sakhi video section
-    sakhi_video_title: {
-      en: "See Sakhi in Action",
-      hi: "सखी को कार्य में देखें",
-      te: "సఖిని చర్యలో చూడండి"
-    },
-    sakhi_video_subtitle: {
-      en: "Watch how Sakhi provides compassionate support throughout your fertility journey",
-      hi: "देखें कि सखी आपकी प्रजनन यात्रा में कैसे दयालु सहायता प्रदान करती है",
-      te: "మీ సంతానోత్పత్తి ప్రయాణంలో సఖి ఎలా దయగల మద్దతును అందిస్తుందో చూడండి"
-    },
+    sakhi_video_title: "సఖిని చర్యలో చూడండి",
+    sakhi_video_subtitle: "మీ సంతానోత్పత్తి ప్రయాణంలో సఖి ఎలా దయగల మద్దతును అందిస్తుందో చూడండి",
 
     // Sakhi chat prompts
     chat_p1: {

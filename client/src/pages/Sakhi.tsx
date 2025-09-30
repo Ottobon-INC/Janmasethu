@@ -132,10 +132,10 @@ const Sakhi = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent flex items-end justify-center p-8">
             <div className="text-center text-white max-w-2xl">
               <h3 className="text-2xl md:text-3xl font-bold mb-2 drop-shadow-lg">
-                {t("sakhi_video_title") || "See Sakhi in Action"}
+                See Sakhi in Action
               </h3>
               <p className="text-lg opacity-90 drop-shadow-md">
-                {t("sakhi_video_subtitle") || "Watch how Sakhi provides compassionate support throughout your fertility journey"}
+                Watch how Sakhi provides compassionate support throughout your fertility journey
               </p>
             </div>
           </div>
