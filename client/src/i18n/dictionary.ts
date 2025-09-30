@@ -72,7 +72,24 @@ export const dict = {
     sakhi_important_notice: "Important Notice",
     sakhi_important_desc: "Sakhi provides emotional support and general guidance but is not a replacement for professional medical or mental health care. If you're experiencing thoughts of self-harm or severe distress, please contact a healthcare professional or emergency services immediately.",
 
+    // Sakhi video section
+    sakhi_video_title: {
+      en: "See Sakhi in Action",
+      hi: "सखी को कार्य में देखें",
+      te: "సఖిని చర్యలో చూడండి"
+    },
+    sakhi_video_subtitle: {
+      en: "Watch how Sakhi provides compassionate support throughout your fertility journey",
+      hi: "देखें कि सखी आपकी प्रजनन यात्रा में कैसे दयालु सहायता प्रदान करती है",
+      te: "మీ సంతానోత్పత్తి ప్రయాణంలో సఖి ఎలా దయగల మద్దతును అందిస్తుందో చూడండి"
+    },
 
+    // Sakhi chat prompts
+    chat_p1: {
+      en: "I'm anxious about tomorrow's scan",
+      hi: "कल के स्कैन को लेकर मैं चिंतित हूं",
+      te: "రేపటి స్కాన్ గురించి నేను ఆందోళనగా ఉన్నాను"
+    },
 
     // Alt text for images
     alt_planning_fertility: "Planning and tracking fertility journey",
@@ -389,6 +406,25 @@ export const dict = {
     sakhi_learn_treatments: "उपचारों के बारे में जानें",
     sakhi_important_notice: "महत्वपूर्ण नोटिस",
     sakhi_important_desc: "सखी भावनात्मक सहारा और सामान्य मार्गदर्शन प्रदान करती है लेकिन पेशेवर चिकित्सा या मानसिक स्वास्थ्य देखभाल की जगह नहीं है। यदि आप आत्म-नुकसान के विचारों या गंभीर संकट का अनुभव कर रहे हैं, तो कृपया तुरंत स्वास्थ्य देखभाल पेशेवर या आपातकालीन सेवाओं से संपर्क करें।",
+
+    // Sakhi video section
+    sakhi_video_title: {
+      en: "See Sakhi in Action",
+      hi: "सखी को कार्य में देखें",
+      te: "సఖిని చర్యలో చూడండి"
+    },
+    sakhi_video_subtitle: {
+      en: "Watch how Sakhi provides compassionate support throughout your fertility journey",
+      hi: "देखें कि सखी आपकी प्रजनन यात्रा में कैसे दयालु सहायता प्रदान करती है",
+      te: "మీ సంతానోత్పత్తి ప్రయాణంలో సఖి ఎలా దయగల మద్దతును అందిస్తుందో చూడండి"
+    },
+
+    // Sakhi chat prompts
+    chat_p1: {
+      en: "I'm anxious about tomorrow's scan",
+      hi: "कल के स्कैन को लेकर मैं चिंतित हूं",
+      te: "రేపటి స్కాన్ గురించి నేను ఆందోళనగా ఉన్నాను"
+    },
 
     // Tools page
     tools_subtitle: "आपकी प्रजनन और पालन-पोषण यात्रा में मदद के लिए व्यावहारिक उपकरण और कैलकुलेटर। सभी उपकरण भारतीय स्वास्थ्य संदर्भों को ध्यान में रखकर डिज़ाइन किए गए हैं।",
@@ -711,6 +747,25 @@ export const dict = {
     sakhi_important_notice: "ముఖ్యమైన నోటీస్",
     sakhi_important_desc: "సఖి భావోద్వేగ మద్దతు మరియు సాధారణ మార్గదర్శకత్వాన్ని అందిస్తుంది కానీ వృత్తిపరమైన వైద్య లేదా మానసిక ఆరోగ్య సంరక్షణకు ప్రత్యామ్నాయం కాదు. మీరు స్వీయ-హాని ఆలోచనలు లేదా తీవ్ర బాధను అనుభవిస్తున్నట్లయితే, దయచేసి తక్షణం ఆరోగ్య సంరక్షణ నిపుణుడిని లేదా అత్యవసర సేవలను సంప్రదించండి.",
 
+    // Sakhi video section
+    sakhi_video_title: {
+      en: "See Sakhi in Action",
+      hi: "सखी को कार्य में देखें",
+      te: "సఖిని చర్యలో చూడండి"
+    },
+    sakhi_video_subtitle: {
+      en: "Watch how Sakhi provides compassionate support throughout your fertility journey",
+      hi: "देखें कि सखी आपकी प्रजनन यात्रा में कैसे दयालु सहायता प्रदान करती है",
+      te: "మీ సంతానోత్పత్తి ప్రయాణంలో సఖి ఎలా దయగల మద్దతును అందిస్తుందో చూడండి"
+    },
+
+    // Sakhi chat prompts
+    chat_p1: {
+      en: "I'm anxious about tomorrow's scan",
+      hi: "कल के स्कैन को लेकर मैं चिंतित हूं",
+      te: "రేపటి స్కాన్ గురించి నేను ఆందోళనగా ఉన్నాను"
+    },
+
     // Tools page
     tools_subtitle: "మీ ప్రజనన మరియు పేరెంటింగ్ ప్రయాణంలో సహాయం చేయడానికి ఆచరణాత్మక సాధనాలు మరియు లెక్కలు. అన్ని సాధనాలు భారతీయ ఆరోగ్య సందర్భాలను దృష్టిలో ఉంచుకుని రూపొందించబడ్డాయి.",
     tools_ovulation_calc: "అండోత్పత్తి కాలిక్యులేటర్",
@@ -771,7 +826,7 @@ export const dict = {
       "ఇండియన్ ఫ్యామిలీలకు స్పెషల్ - డాక్టర్ సలహా, మనసు మాట, డబ్బుల విషయాలు మరియు తింటూండే విషయాలు. సఖి 24/7 మీతో ఉంటుంది.",
     why_title: "జన్మ సేతు ఎందుకు ఎంచుకోవాలి?",
     why_points:
-      "ఇండియా అర్థం,సింపుల్ టాక్,అన్ని స్టేజ్ ఇన్ఫో,యూజ్‌ఫుల్ టిప్స్,నమ్మకమైనది,హార్ట్‌ఫుల్ కేర్,ప్రైవసీ",
+      "ఇండియా అర్థం,సింపుల్ టాక్,అన్ని స్టేజ్ ఇన్ఫో,యూజ్‌ఫుల్ టిప్స్,నమ్మకమైనది,హార్ట్‌ఫుల్ కేర్,ప్రైవేసీ",
 
     // New About Cards
     about_patients_title: "రోగులు",

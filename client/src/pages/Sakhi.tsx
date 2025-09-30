@@ -106,6 +106,42 @@ const Sakhi = () => {
         </div>
       </section>
 
+      {/* Responsive Video Section */}
+      <section className="w-full py-4 px-2 sm:px-4 lg:py-8 lg:px-8">
+        <div className="responsive-video-container relative overflow-hidden">
+          <video
+            className="absolute inset-0 w-full h-full"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            poster="/babyFeet.jpg"
+            webkit-playsinline="true"
+            x5-playsinline="true"
+            onLoadStart={() => console.log('Sakhi video loading started...')}
+            onLoadedData={() => console.log('Sakhi video data loaded')}
+            onCanPlay={() => console.log('Sakhi video can play')}
+            onPlay={() => console.log('Sakhi video started playing')}
+          >
+            <source src="/sakhi_1759250112713.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          
+          {/* Video Overlay with Context */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent flex items-end justify-center p-8">
+            <div className="text-center text-white max-w-2xl">
+              <h3 className="text-2xl md:text-3xl font-bold mb-2 drop-shadow-lg">
+                {t("sakhi_video_title") || "See Sakhi in Action"}
+              </h3>
+              <p className="text-lg opacity-90 drop-shadow-md">
+                {t("sakhi_video_subtitle") || "Watch how Sakhi provides compassionate support throughout your fertility journey"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How Sakhi Helps */}
       <section className="py-12">
         <div className="text-center mb-12">
