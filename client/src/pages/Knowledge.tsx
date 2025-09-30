@@ -86,9 +86,15 @@ const Knowledge = () => {
   // Show webhook results if available, otherwise show JSON articles
   const displayArticles = useMemo(() => {
     if (webhookResults && webhookResults.items && webhookResults.items.length > 0) {
-      // Use webhook results
-      console.log('Displaying webhook results:', webhookResults.items);
+      // Use webhook results - prioritize webhook data
+      console.log('Using webhook results:', webhookResults.items);
       return webhookResults.items.map((article, index) => {
+        console.log(`Webhook article ${index}:`, {
+          title: article.title,
+          summary: article.summary,
+          slug: article.slug
+        });
+
         // Map lens from webhook to our format
         let mappedLens: Lens[] = [];
         if (article.lens) {
@@ -117,19 +123,20 @@ const Knowledge = () => {
 
         return {
           slug: article.slug,
-          title: article.title,
-          summary: article.summary,
+          title: article.title, // Use webhook title directly
+          summary: article.summary, // Use webhook summary directly
           lens: mappedLens,
           stage: mappedStages,
-          readMins: 5, // Default read time
-          reviewedBy: 'Reviewed by Expert', // Default reviewer
+          readMins: 5,
+          reviewedBy: 'Reviewed by Expert',
           isLegacy: false,
           isWebhookResult: true,
           key: `webhook-${article.slug}-${index}`
         };
       });
     } else {
-      // Fallback to JSON articles
+      // Fallback to JSON articles only when no webhook results
+      console.log('Using fallback JSON articles:', jsonArticles.length);
       return jsonArticles.map((article, index) => ({
         slug: article.slug,
         title: getLocalizedContent(article.title),
@@ -145,14 +152,18 @@ const Knowledge = () => {
     }
   }, [webhookResults, jsonArticles, lang, getLocalizedContent]);
 
-  // For webhook results, we don't need additional filtering since the API already filtered
+  // For webhook results, use them directly since API already filtered
   const filteredArticles = useMemo(() => {
     if (webhookResults && webhookResults.items && webhookResults.items.length > 0) {
-      console.log('Using webhook results directly:', displayArticles);
-      return displayArticles; // Webhook already filtered
+      console.log('Displaying webhook articles directly:', displayArticles.length);
+      // Log each article title and summary for debugging
+      displayArticles.forEach((article, i) => {
+        console.log(`Article ${i}: "${article.title}" - "${article.summary}"`);
+      });
+      return displayArticles; // Webhook already filtered, use as-is
     }
     
-    // Apply local filters for JSON articles
+    // Apply local filters only for JSON articles
     return displayArticles.filter(article => {
       const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            article.summary.toLowerCase().includes(searchTerm.toLowerCase());
