@@ -96,6 +96,9 @@ const Home = () => {
           muted
           playsInline
           preload="auto"
+          poster="/babyFeet.jpg"
+          webkit-playsinline="true"
+          x5-playsinline="true"
           onLoadStart={() => console.log('Video loading started...')}
           onLoadedData={() => console.log('Video data loaded')}
           onCanPlay={() => console.log('Video can play')}

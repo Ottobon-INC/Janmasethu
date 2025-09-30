@@ -197,74 +197,119 @@
     background: transparent;
   }
 
-  /* Responsive video styles - full screen coverage */
+  /* Responsive video styles - fully responsive with iOS/Android support */
   .responsive-video-container {
     position: relative;
     width: 100%;
-    height: 100vh; /* Full viewport height */
+    /* Multiple viewport height fallbacks for iOS/Android address bar handling */
+    height: 100vh;
+    height: -webkit-fill-available;
+    height: 100dvh;
+    height: min(100svh, 100dvh);
     overflow: hidden;
     margin-top: 0;
+    /* Safe area padding for floating buttons */
+    padding-bottom: env(safe-area-inset-bottom, 0);
   }
 
   /* Enhanced video object fitting for all devices */
   .responsive-video-container video {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center center;
-    transform: translate(-50%, -50%);
     min-width: 100%;
     min-height: 100%;
+    /* Prevent iOS fullscreen takeover */
+    -webkit-playsinline: true;
   }
 
-  /* Mobile devices - maintain full coverage without cropping important content */
-  @media screen and (max-width: 768px) {
-    .responsive-video-container {
-      height: 100vh;
-    }
-    
+  /* Very small mobile devices (≤ 360px) - prevent text cropping */
+  @media screen and (max-width: 360px) {
     .responsive-video-container video {
-      /* Slightly adjust object position to ensure text visibility on mobile */
-      object-position: center 45%;
-      width: 100%;
-      height: 100%;
       object-fit: cover;
+      object-position: center 15%;
+      transform: scale(0.98);
+      transform-origin: center center;
     }
   }
 
-  /* Small mobile devices - Portrait */
-  @media screen and (max-width: 480px) and (orientation: portrait) {
+  /* Small mobile devices (361-480px) - Portrait orientation */
+  @media screen and (min-width: 361px) and (max-width: 480px) and (orientation: portrait) {
     .responsive-video-container video {
-      object-position: center 40%;
+      object-fit: cover;
+      object-position: center 20%;
+      transform: scale(0.96);
+      transform-origin: center center;
     }
   }
 
-  /* Small mobile devices - Landscape */
-  @media screen and (max-width: 480px) and (orientation: landscape) {
+  /* Small mobile devices (361-480px) - Landscape orientation */
+  @media screen and (min-width: 361px) and (max-width: 480px) and (orientation: landscape) {
     .responsive-video-container {
+      /* Ensure full coverage in landscape */
       height: 100vh;
+      height: 100dvh;
     }
     
     .responsive-video-container video {
-      object-position: center 50%;
+      object-fit: cover;
+      object-position: center center;
+      transform: none;
     }
   }
 
-  /* Tablet devices */
-  @media screen and (min-width: 769px) and (max-width: 1024px) {
+  /* Medium mobile devices (481-768px) */
+  @media screen and (min-width: 481px) and (max-width: 768px) {
     .responsive-video-container video {
-      object-position: center 45%;
+      object-fit: cover;
+      object-position: center 25%;
+      transform: none;
     }
   }
 
-  /* Desktop and larger screens */
-  @media screen and (min-width: 1025px) {
+  /* Medium mobile devices (481-768px) - Landscape */
+  @media screen and (min-width: 481px) and (max-width: 768px) and (orientation: landscape) {
     .responsive-video-container video {
       object-position: center center;
     }
+  }
+
+  /* Tablet devices (769-1024px) */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    .responsive-video-container video {
+      object-fit: cover;
+      object-position: center 35%;
+      transform: none;
+    }
+  }
+
+  /* Desktop and larger screens (≥ 1025px) - keep current behavior */
+  @media screen and (min-width: 1025px) {
+    .responsive-video-container video {
+      object-fit: cover;
+      object-position: center center;
+      transform: none;
+    }
+  }
+
+  /* Ensure floating buttons don't overlap video text */
+  .responsive-video-container.has-floating-buttons {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0));
+  }
+
+  /* Prevent layout shift during video loading */
+  .responsive-video-container::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #F5F7FF 0%, #FFECEF 100%);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
   }
 
   /* Remove any border radius from video elements */
