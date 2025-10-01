@@ -461,7 +461,18 @@
     transform: translateX(0);
   }
 
-  /* Floating language buttons are now handled inline in the component */
+  .floating-lang {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 50;
+  }
+
+  @media (min-width: 768px) {
+    .floating-lang {
+      display: none;
+    }
+  }
 
   .skip-link {
     position: absolute;
