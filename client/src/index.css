@@ -663,3 +663,99 @@
 .backdrop-blur-sm {
   backdrop-filter: blur(4px);
 }
+
+/* Clinic Navigation Mobile Styles */
+@media (max-width: 767px) {
+  .clinic-mobile-menu {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .clinic-mobile-menu.open {
+    transform: translateX(0);
+  }
+
+  /* Prevent body scroll when mobile menu is open */
+  .clinic-menu-open {
+    overflow: hidden;
+  }
+
+  /* Ensure mobile menu appears above other content */
+  .clinic-navigation-overlay {
+    z-index: 9999;
+  }
+
+  /* Mobile-specific spacing adjustments */
+  .clinic-dashboard-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Responsive chart containers */
+  .recharts-responsive-container {
+    min-height: 200px !important;
+  }
+
+  /* Mobile card adjustments */
+  .clinic-metric-card {
+    min-height: 120px;
+  }
+
+  /* Task list mobile optimization */
+  .clinic-task-item {
+    padding: 0.75rem !important;
+  }
+
+  .clinic-task-content {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  /* Text truncation for mobile */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Tablet-specific adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .clinic-dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .clinic-charts-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* Desktop optimizations */
+@media (min-width: 1024px) {
+  .clinic-dashboard-content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .clinic-navigation-desktop {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+}
+
+/* Safe area adjustments for mobile devices with notches */
+@supports (padding: max(0px)) {
+  .clinic-mobile-header {
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+  }
+
+  .clinic-mobile-menu {
+    padding-left: max(0px, env(safe-area-inset-left));
+  }
+}
