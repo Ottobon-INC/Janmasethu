@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +27,7 @@ export default function LeadManagement() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [leadsData, setLeadsData] = useState(leads);
+  const [isMobile, setIsMobile] = useState(false);
   const [newLead, setNewLead] = useState({
     name: "",
     email: "",
@@ -38,6 +39,17 @@ export default function LeadManagement() {
     age: "",
     location: ""
   });
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   const filteredLeads = leadsData.filter(lead => {
     const matchesSearch = lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -248,25 +260,25 @@ export default function LeadManagement() {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto p-3 md:p-6">
           {/* Filters and Search */}
-          <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between">
-            <div className="flex gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <div className="mb-4 md:mb-6 space-y-3 md:space-y-0 md:flex md:flex-row md:gap-4 md:justify-between">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+              <div className="relative flex-1 sm:flex-initial">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 md:w-5 md:h-5" />
                 <Input
                   type="search"
                   placeholder="Search leads..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 w-80"
+                  className="pl-9 md:pl-10 w-full sm:w-64 md:w-80 text-sm md:text-base"
                 />
               </div>
               
               <select 
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-3 py-2 border border-gray-200 rounded-md bg-white"
+                className="px-3 py-2 border border-gray-200 rounded-md bg-white text-sm md:text-base flex-1 sm:flex-initial min-w-0"
               >
                 <option value="all">All Status</option>
                 <option value="new">New</option>
@@ -276,43 +288,43 @@ export default function LeadManagement() {
               </select>
             </div>
             
-            <Button variant="outline">
+            <Button variant="outline" className="text-sm md:text-base px-3 md:px-4">
               <Filter className="w-4 h-4 mr-2" />
               More Filters
             </Button>
           </div>
 
           {/* Statistics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <Card>
-              <CardContent className="p-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
+            <Card className="hover:shadow-md transition-shadow">
+              <CardContent className="p-3 md:p-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-blue-600">{leadsData.filter(l => l.status === "new").length}</p>
-                  <p className="text-sm text-gray-600">New Leads</p>
+                  <p className="text-xl md:text-2xl font-bold text-blue-600">{leadsData.filter(l => l.status === "new").length}</p>
+                  <p className="text-xs md:text-sm text-gray-600">New Leads</p>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-4">
+            <Card className="hover:shadow-md transition-shadow">
+              <CardContent className="p-3 md:p-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-yellow-600">{leadsData.filter(l => l.status === "contacted").length}</p>
-                  <p className="text-sm text-gray-600">Contacted</p>
+                  <p className="text-xl md:text-2xl font-bold text-yellow-600">{leadsData.filter(l => l.status === "contacted").length}</p>
+                  <p className="text-xs md:text-sm text-gray-600">Contacted</p>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-4">
+            <Card className="hover:shadow-md transition-shadow">
+              <CardContent className="p-3 md:p-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-green-600">{leadsData.filter(l => l.status === "qualified").length}</p>
-                  <p className="text-sm text-gray-600">Qualified</p>
+                  <p className="text-xl md:text-2xl font-bold text-green-600">{leadsData.filter(l => l.status === "qualified").length}</p>
+                  <p className="text-xs md:text-sm text-gray-600">Qualified</p>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-4">
+            <Card className="hover:shadow-md transition-shadow">
+              <CardContent className="p-3 md:p-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-purple-600">{leadsData.filter(l => l.status === "scheduled").length}</p>
-                  <p className="text-sm text-gray-600">Scheduled</p>
+                  <p className="text-xl md:text-2xl font-bold text-purple-600">{leadsData.filter(l => l.status === "scheduled").length}</p>
+                  <p className="text-xs md:text-sm text-gray-600">Scheduled</p>
                 </div>
               </CardContent>
             </Card>
@@ -320,11 +332,68 @@ export default function LeadManagement() {
 
           {/* Leads Table */}
           <Card>
-            <CardHeader>
-              <CardTitle>All Leads ({filteredLeads.length})</CardTitle>
+            <CardHeader className="p-3 md:p-6">
+              <CardTitle className="text-base md:text-lg">All Leads ({filteredLeads.length})</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
+            <CardContent className="p-0 md:p-6">
+              {/* Mobile Card Layout */}
+              <div className="md:hidden">
+                {filteredLeads.map((lead) => (
+                  <div key={lead.id} className="border-b border-gray-100 p-4 hover:bg-gray-50">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-gray-900 truncate">{lead.name}</h3>
+                        <p className="text-sm text-gray-600">Age: {lead.age} • {lead.location}</p>
+                      </div>
+                      <div className="flex gap-2 ml-3">
+                        <Badge className={getStatusColor(lead.status)} >
+                          {lead.status}
+                        </Badge>
+                        <Badge className={getPriorityColor(lead.priority)}>
+                          {lead.priority}
+                        </Badge>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2 mb-3">
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">{lead.phone}</span>
+                      </div>
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Mail className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">{lead.email}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                      <div>
+                        <span className="text-gray-500">Interest: </span>
+                        <span className="text-gray-700">{lead.interest}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Source: </span>
+                        <span className="text-gray-700">{lead.source}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-end space-x-2">
+                      <Button variant="ghost" size="sm">
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Phone className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop Table Layout */}
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-200">

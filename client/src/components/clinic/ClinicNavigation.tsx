@@ -78,9 +78,9 @@ export default function ClinicNavigation({ collapsed = false, onCollapsedChange 
           variant="ghost"
           size="sm"
           onClick={handleToggleCollapse}
-          className="fixed top-4 left-4 z-50 p-2 bg-white shadow-lg rounded-lg md:hidden"
+          className="fixed top-4 right-4 z-50 p-2 bg-white shadow-lg rounded-lg md:hidden hover:bg-gray-50"
         >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          <Menu className="w-5 h-5" />
         </Button>
 
         {/* Mobile Navigation Overlay */}
@@ -89,7 +89,7 @@ export default function ClinicNavigation({ collapsed = false, onCollapsedChange 
             <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setMobileMenuOpen(false)} />
             <div className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 flex flex-col shadow-xl">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <div className="flex items-center p-4 border-b border-gray-200">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
                     <Heart className="w-5 h-5 text-white" />
