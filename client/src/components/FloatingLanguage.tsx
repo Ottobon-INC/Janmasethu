@@ -8,7 +8,7 @@ const FloatingLanguage = () => {
   const languages: Array<{ code: Lang; label: string }> = [
     { code: 'en', label: 'EN' },
     { code: 'hi', label: 'हिं' },
-    { code: 'te', label: 'తెలు' },
+    { code: 'te', label: 'తె' },
   ];
 
   return (
@@ -20,21 +20,31 @@ const FloatingLanguage = () => {
             variant="ghost"
             size="sm"
             onClick={() => setLang(code)}
-            className={`w-14 h-14 rounded-full bg-white card-shadow flex items-center justify-center text-xs font-bold shrink-0 border border-gray-100 hover:border-primary/30 transition-all duration-200 ${
+            className={`w-16 h-16 rounded-full bg-white card-shadow flex items-center justify-center text-sm font-bold shrink-0 border border-gray-100 hover:border-primary/30 transition-all duration-200 ${
               lang === code ? 'text-primary border-primary shadow-lg' : 'text-muted-foreground'
             }`}
             data-testid={`button-floating-language-${code}`}
             style={{ 
-              minWidth: '56px', 
-              minHeight: '56px',
-              padding: '0',
-              lineHeight: '1.2',
+              minWidth: '64px', 
+              minHeight: '64px',
+              padding: '4px',
+              lineHeight: code === 'te' ? '1.4' : '1.2',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              fontSize: code === 'te' ? '14px' : '12px'
             }}
           >
-            <span className="text-center leading-tight">{label}</span>
+            <span 
+              className="text-center block"
+              style={{
+                lineHeight: code === 'te' ? '1.4' : '1.2',
+                letterSpacing: code === 'te' ? '0.5px' : 'normal',
+                fontWeight: '600'
+              }}
+            >
+              {label}
+            </span>
           </Button>
         ))}
       </div>
