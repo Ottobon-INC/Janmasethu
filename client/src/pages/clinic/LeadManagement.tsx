@@ -193,50 +193,71 @@ export default function LeadManagement() {
                   
                   <div>
                     <Label htmlFor="interest">Interest</Label>
-                    <select 
-                      id="interest"
-                      value={newLead.interest}
-                      onChange={(e) => handleInputChange("interest", e.target.value)}
-                      className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-md bg-white"
-                    >
-                      <option value="">Select interest</option>
-                      <option value="IVF Consultation">IVF Consultation</option>
-                      <option value="Fertility Assessment">Fertility Assessment</option>
-                      <option value="IUI Treatment">IUI Treatment</option>
-                      <option value="ICSI Treatment">ICSI Treatment</option>
-                      <option value="Egg Freezing">Egg Freezing</option>
-                    </select>
+                    <div className="relative filter-dropdown mt-1">
+                      <select 
+                        id="interest"
+                        value={newLead.interest}
+                        onChange={(e) => handleInputChange("interest", e.target.value)}
+                        className="dropdown-trigger appearance-none cursor-pointer"
+                      >
+                        <option value="">Select interest</option>
+                        <option value="IVF Consultation">IVF Consultation</option>
+                        <option value="Fertility Assessment">Fertility Assessment</option>
+                        <option value="IUI Treatment">IUI Treatment</option>
+                        <option value="ICSI Treatment">ICSI Treatment</option>
+                        <option value="Egg Freezing">Egg Freezing</option>
+                      </select>
+                      <div className="dropdown-chevron">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                   
                   <div>
                     <Label htmlFor="source">Source</Label>
-                    <select 
-                      id="source"
-                      value={newLead.source}
-                      onChange={(e) => handleInputChange("source", e.target.value)}
-                      className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-md bg-white"
-                    >
-                      <option value="">Select source</option>
-                      <option value="Website">Website</option>
-                      <option value="Referral">Referral</option>
-                      <option value="Social Media">Social Media</option>
-                      <option value="Google Ads">Google Ads</option>
-                      <option value="Walk-in">Walk-in</option>
-                    </select>
+                    <div className="relative filter-dropdown mt-1">
+                      <select 
+                        id="source"
+                        value={newLead.source}
+                        onChange={(e) => handleInputChange("source", e.target.value)}
+                        className="dropdown-trigger appearance-none cursor-pointer"
+                      >
+                        <option value="">Select source</option>
+                        <option value="Website">Website</option>
+                        <option value="Referral">Referral</option>
+                        <option value="Social Media">Social Media</option>
+                        <option value="Google Ads">Google Ads</option>
+                        <option value="Walk-in">Walk-in</option>
+                      </select>
+                      <div className="dropdown-chevron">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                   
                   <div>
                     <Label htmlFor="priority">Priority</Label>
-                    <select 
-                      id="priority"
-                      value={newLead.priority}
-                      onChange={(e) => handleInputChange("priority", e.target.value)}
-                      className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-md bg-white"
-                    >
-                      <option value="low">Low</option>
-                      <option value="medium">Medium</option>
-                      <option value="high">High</option>
-                    </select>
+                    <div className="relative filter-dropdown mt-1">
+                      <select 
+                        id="priority"
+                        value={newLead.priority}
+                        onChange={(e) => handleInputChange("priority", e.target.value)}
+                        className="dropdown-trigger appearance-none cursor-pointer"
+                      >
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                      </select>
+                      <div className="dropdown-chevron">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                   
                   <div className="flex justify-end space-x-2 pt-4">
@@ -276,11 +297,11 @@ export default function LeadManagement() {
                 />
               </div>
               
-              <div className="relative flex-1 sm:flex-initial min-w-0">
+              <div className="relative flex-1 sm:flex-initial min-w-0 filter-dropdown">
                 <select 
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-md bg-white text-sm md:text-base appearance-none cursor-pointer focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="dropdown-trigger appearance-none cursor-pointer"
                 >
                   <option value="all">All Status</option>
                   <option value="new">New</option>
@@ -288,8 +309,8 @@ export default function LeadManagement() {
                   <option value="qualified">Qualified</option>
                   <option value="scheduled">Scheduled</option>
                 </select>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="dropdown-chevron">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
@@ -354,12 +375,12 @@ export default function LeadManagement() {
                         <p className="text-sm text-gray-600">Age: {lead.age} • {lead.location}</p>
                       </div>
                       <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 ml-3 flex-shrink-0">
-                        <Badge className={`${getStatusColor(lead.status)} text-xs px-2 py-1`} >
+                        <span className={`status-badge ${lead.status}`}>
                           {lead.status}
-                        </Badge>
-                        <Badge className={`${getPriorityColor(lead.priority)} text-xs px-2 py-1`}>
+                        </span>
+                        <span className={`priority-badge ${lead.priority}`}>
                           {lead.priority}
-                        </Badge>
+                        </span>
                       </div>
                     </div>
                     
@@ -436,14 +457,14 @@ export default function LeadManagement() {
                           </div>
                         </td>
                         <td className="py-4 px-4">
-                          <Badge className={getStatusColor(lead.status)}>
+                          <span className={`status-badge ${lead.status}`}>
                             {lead.status}
-                          </Badge>
+                          </span>
                         </td>
                         <td className="py-4 px-4">
-                          <Badge className={getPriorityColor(lead.priority)}>
+                          <span className={`priority-badge ${lead.priority}`}>
                             {lead.priority}
-                          </Badge>
+                          </span>
                         </td>
                         <td className="py-4 px-4">
                           <p className="text-sm text-gray-700">{lead.interest}</p>

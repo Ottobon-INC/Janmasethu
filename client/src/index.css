@@ -759,3 +759,196 @@
     padding-left: max(0px, env(safe-area-inset-left));
   }
 }
+
+/* Enhanced Dropdown Styling - Responsive and Theme Consistent */
+.dropdown-trigger {
+  @apply relative w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-left shadow-sm transition-all duration-200 hover:border-purple-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent;
+  background: linear-gradient(135deg, #ffffff 0%, #fafbff 100%);
+}
+
+.dropdown-trigger:hover {
+  background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+  transform: translateY(-1px);
+}
+
+.dropdown-trigger.open {
+  @apply border-purple-500 shadow-lg;
+  background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+}
+
+.dropdown-content {
+  @apply absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl backdrop-blur-sm;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.1), 0 4px 16px rgba(0, 0, 0, 0.08);
+  animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdown-item {
+  @apply px-4 py-3 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-all duration-150 cursor-pointer;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+
+.dropdown-item:first-child {
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.dropdown-item.selected {
+  @apply bg-purple-100 text-purple-700 font-medium;
+  background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+}
+
+.dropdown-item:hover {
+  background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+}
+
+.dropdown-chevron {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 transition-transform duration-200;
+}
+
+.dropdown-trigger.open .dropdown-chevron {
+  @apply rotate-180 text-purple-500;
+}
+
+/* Mobile-specific dropdown styling */
+@media (max-width: 767px) {
+  .dropdown-trigger {
+    @apply w-full px-4 py-3 text-base rounded-xl;
+    min-height: 48px;
+  }
+
+  .dropdown-content {
+    @apply rounded-2xl mt-3;
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown-item {
+    @apply px-5 py-4 text-base;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+  }
+
+  .dropdown-item:first-child {
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .dropdown-item:last-child {
+    border-radius: 0 0 1rem 1rem;
+  }
+}
+
+/* Desktop-specific dropdown styling */
+@media (min-width: 768px) {
+  .dropdown-trigger {
+    @apply px-3 py-2 text-sm rounded-lg;
+    min-width: 180px;
+  }
+
+  .dropdown-content {
+    @apply rounded-lg mt-1;
+    min-width: 200px;
+  }
+
+  .dropdown-item {
+    @apply px-3 py-2.5 text-sm;
+  }
+}
+
+/* Special styling for filter dropdowns */
+.filter-dropdown .dropdown-trigger {
+  @apply bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200;
+}
+
+.filter-dropdown .dropdown-trigger:hover {
+  @apply border-purple-300 shadow-md;
+  background: linear-gradient(135deg, #f3e8ff 0%, #e0f2fe 100%);
+}
+
+/* Button-style dropdowns (like Generate Report button) */
+.button-dropdown {
+  @apply bg-gradient-to-r from-purple-600 to-purple-700 text-white border-0 hover:from-purple-700 hover:to-purple-800 shadow-lg;
+}
+
+.button-dropdown:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.button-dropdown .dropdown-content {
+  @apply border-purple-200;
+  background: rgba(255, 255, 255, 0.98);
+}
+
+/* Export button styling */
+.export-buttons {
+  @apply flex flex-col sm:flex-row gap-2 w-full sm:w-auto;
+}
+
+.export-button {
+  @apply bg-white border border-gray-200 text-gray-700 hover:border-purple-300 hover:text-purple-700 hover:bg-purple-50 rounded-lg px-4 py-2.5 shadow-sm transition-all duration-200;
+}
+
+.export-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+}
+
+@media (max-width: 640px) {
+  .export-buttons {
+    @apply grid grid-cols-2 gap-2;
+  }
+  
+  .export-button {
+    @apply text-xs px-3 py-2.5 rounded-xl;
+  }
+}
+
+/* Status and priority badge enhancements */
+.status-badge, .priority-badge {
+  @apply rounded-full px-3 py-1 text-xs font-medium shadow-sm;
+}
+
+.status-badge.new {
+  @apply bg-blue-100 text-blue-700 border border-blue-200;
+}
+
+.status-badge.contacted {
+  @apply bg-yellow-100 text-yellow-700 border border-yellow-200;
+}
+
+.status-badge.qualified {
+  @apply bg-green-100 text-green-700 border border-green-200;
+}
+
+.status-badge.scheduled {
+  @apply bg-purple-100 text-purple-700 border border-purple-200;
+}
+
+.priority-badge.high {
+  @apply bg-red-100 text-red-700 border border-red-200;
+}
+
+.priority-badge.medium {
+  @apply bg-yellow-100 text-yellow-700 border border-yellow-200;
+}
+
+.priority-badge.low {
+  @apply bg-green-100 text-green-700 border border-green-200;
+}

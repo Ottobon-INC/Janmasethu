@@ -54,17 +54,17 @@ export default function Reports() {
               <p className="text-sm md:text-base text-gray-600 truncate">Track performance and generate insights</p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
-              <Button variant="outline" size="sm" className="text-xs md:text-sm">
+            <div className="export-buttons">
+              <button className="export-button">
                 <Download className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                 <span className="hidden xs:inline">Download PDF</span>
                 <span className="xs:hidden">PDF</span>
-              </Button>
-              <Button variant="outline" size="sm" className="text-xs md:text-sm">
+              </button>
+              <button className="export-button">
                 <FileText className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                 <span className="hidden xs:inline">Export Excel</span>
                 <span className="xs:hidden">Excel</span>
-              </Button>
+              </button>
             </div>
           </div>
         </header>
@@ -73,41 +73,55 @@ export default function Reports() {
         <main className="flex-1 overflow-auto p-3 md:p-6">
           {/* Filter Controls */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
-            <Card>
+            <Card className="overflow-visible">
               <CardContent className="p-3 md:p-4">
                 <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">Report Type</label>
-                <select 
-                  value={selectedReport}
-                  onChange={(e) => setSelectedReport(e.target.value)}
-                  className="w-full px-2 md:px-3 py-2 text-xs md:text-sm border border-gray-200 rounded-md bg-white"
-                >
-                  <option value="monthly">Monthly Overview</option>
-                  <option value="outcomes">Treatment Outcomes</option>
-                  <option value="financial">Financial Summary</option>
-                  <option value="patient">Patient Demographics</option>
-                </select>
+                <div className="relative filter-dropdown">
+                  <select 
+                    value={selectedReport}
+                    onChange={(e) => setSelectedReport(e.target.value)}
+                    className="dropdown-trigger appearance-none cursor-pointer"
+                  >
+                    <option value="monthly">Monthly Overview</option>
+                    <option value="outcomes">Treatment Outcomes</option>
+                    <option value="financial">Financial Summary</option>
+                    <option value="patient">Patient Demographics</option>
+                  </select>
+                  <div className="dropdown-chevron">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="overflow-visible">
               <CardContent className="p-3 md:p-4">
                 <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">Time Period</label>
-                <select 
-                  value={selectedPeriod}
-                  onChange={(e) => setSelectedPeriod(e.target.value)}
-                  className="w-full px-2 md:px-3 py-2 text-xs md:text-sm border border-gray-200 rounded-md bg-white"
-                >
-                  <option value="last3months">Last 3 Months</option>
-                  <option value="last6months">Last 6 Months</option>
-                  <option value="lastyear">Last Year</option>
-                  <option value="custom">Custom Range</option>
-                </select>
+                <div className="relative filter-dropdown">
+                  <select 
+                    value={selectedPeriod}
+                    onChange={(e) => setSelectedPeriod(e.target.value)}
+                    className="dropdown-trigger appearance-none cursor-pointer"
+                  >
+                    <option value="last3months">Last 3 Months</option>
+                    <option value="last6months">Last 6 Months</option>
+                    <option value="lastyear">Last Year</option>
+                    <option value="custom">Custom Range</option>
+                  </select>
+                  <div className="dropdown-chevron">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
             <Card className="sm:col-span-2 lg:col-span-1">
               <CardContent className="p-3 md:p-4 flex items-end">
-                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white text-xs md:text-sm">
+                <Button className="w-full button-dropdown text-xs md:text-sm">
                   <Filter className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                   Generate Report
                 </Button>
