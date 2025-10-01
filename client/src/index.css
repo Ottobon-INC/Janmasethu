@@ -464,16 +464,26 @@
   .floating-lang {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    right: 16px;
     z-index: 50;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    align-items: center;
+    padding: 8px;
   }
 
   @media (min-width: 768px) {
     .floating-lang {
       display: none;
+    }
+  }
+
+  /* Additional spacing for mobile safe area */
+  @media (max-width: 480px) {
+    .floating-lang {
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      right: 12px;
     }
   }
 
