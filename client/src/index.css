@@ -625,6 +625,14 @@
     border-radius: 0.75rem !important;
     padding: 0.75rem 1rem !important;
   }
+  
+  /* Fix focus ring to stay inside input boundaries */
+  [role="dialog"] input:focus-visible,
+  [role="dialog"] select:focus-visible,
+  [role="dialog"] textarea:focus-visible {
+    ring-offset-0 !important;
+    outline: none !important;
+  }
 
   /* Button adjustments in mobile dialog */
   [role="dialog"] button {
@@ -772,6 +780,29 @@
     top: 0;
     height: 100vh;
   }
+}
+
+/* Global Input Focus Ring Containment */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  ring-offset-width: 0px;
+  --tw-ring-offset-width: 0px;
+}
+
+/* Ensure focus ring stays within input boundaries */
+input[type="text"]:focus-visible,
+input[type="email"]:focus-visible,
+input[type="tel"]:focus-visible,
+input[type="number"]:focus-visible,
+input[type="date"]:focus-visible,
+input[type="time"]:focus-visible,
+input[type="password"]:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  box-shadow: inset 0 0 0 2px hsl(var(--ring)) !important;
+  border-color: transparent !important;
 }
 
 /* Safe area adjustments for mobile devices with notches */
