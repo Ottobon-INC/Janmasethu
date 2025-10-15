@@ -568,26 +568,31 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       console.log("Method: POST");
       console.log("Payload:", JSON.stringify(onboardingData, null, 2));
       
-      // Try with no-cors mode first to avoid CORS issues
+      // Use same fetch approach as signup/login (without no-cors)
       const webhookResponse = await fetch("https://n8n.ottobon.in/webhook/pp", {
         method: "POST",
-        mode: "no-cors",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(onboardingData),
       });
 
-      console.log("=== WEBHOOK REQUEST SENT ===");
-      console.log("Response type:", webhookResponse.type);
-      console.log("Response status:", webhookResponse.status);
+      console.log("=== WEBHOOK RESPONSE ===");
+      console.log("Status:", webhookResponse.status);
+      console.log("Status Text:", webhookResponse.statusText);
       
-      // With no-cors, we can't read the response but the request will be sent
-      if (webhookResponse.type === 'opaque') {
-        console.log("✅ Webhook request sent (no-cors mode - response not readable)");
+      if (webhookResponse.ok) {
+        console.log("✅ Webhook triggered successfully!");
         toast({
-          title: "Data submitted",
-          description: "Your information has been sent.",
+          title: "Data submitted successfully",
+          description: "Your information has been recorded.",
+        });
+      } else {
+        console.error("❌ Webhook failed with status:", webhookResponse.status);
+        toast({
+          title: "Warning",
+          description: "Data may not have been saved properly.",
+          variant: "destructive",
         });
       }
 
