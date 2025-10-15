@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link, navigate } from "wouter";
 import {
   ArrowRight,
   Heart,
@@ -35,12 +35,21 @@ import { Input } from "../components/ui/input";
 import { articles } from "../data/articles";
 import { stories } from "../data/stories";
 import WhoWeServe from "../components/WhoWeServe";
+import OnboardingQuestions from "../components/OnboardingQuestions"; // Assuming this is the correct path
+import AuthModal from "../components/AuthModal"; // Assuming this is the correct path
 
 const Home = () => {
   const { t, lang } = useLanguage();
+  const setLocation = navigate;
 
   const featuredArticles = articles.slice(0, 4);
   const featuredStories = stories.slice(0, 3);
+
+  const [showAuth, setShowAuth] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [selectedRelationship, setSelectedRelationship] = useState<string>();
+  const [userId, setUserId] = useState<string>();
+
 
   const getTreatmentCards = () => [
     {
@@ -84,6 +93,23 @@ const Home = () => {
       bgColor: "bg-cyan-100",
     },
   ];
+
+  const handleAuthSuccess = (isNewUser: boolean, relationship?: string, userIdParam?: string) => {
+    setShowAuth(false);
+    if (userIdParam) {
+      setUserId(userIdParam);
+    }
+    if (isNewUser && relationship) {
+      setSelectedRelationship(relationship);
+      setShowOnboarding(true);
+    } else if (isNewUser) {
+      // If relationship not provided yet, keep auth modal open for relationship selection
+      return;
+    } else {
+      // Existing user - go to sakhi
+      setLocation('/sakhi');
+    }
+  };
 
   return (
     <>
@@ -224,17 +250,16 @@ const Home = () => {
 
         {/* CTA Buttons - Mobile Responsive */}
         <div className="flex flex-col gap-4 items-center max-w-md mx-auto px-4 sm:max-w-none sm:flex-row sm:justify-center sm:gap-6">
-          <Link href="/sakhi/try" className="w-full sm:w-auto">
-            <Button
+          <Button
               className="gradient-button text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:shadow-lg transition-all duration-300 group overflow-hidden relative w-full sm:w-auto min-w-0 sm:min-w-[200px]"
               data-testid="button-cta-primary"
+              onClick={() => setShowAuth(true)}
             >
               <span className="relative z-10 transition-transform duration-300 group-hover:-translate-x-2 truncate">
                 {t("cta_primary")}
               </span>
               <ArrowRight className="absolute right-3 sm:right-4 w-4 h-4 sm:w-5 sm:h-5 opacity-0 transform translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 z-10" />
             </Button>
-          </Link>
           <Link href="/clinic" className="w-full sm:w-auto">
             <Button
               variant="outline"
@@ -404,15 +429,14 @@ const Home = () => {
 
         {/* CTA under strip - Mobile Responsive */}
         <div className="journey-mobile-cta text-center mt-12">
-          <Link href="/sakhi" className="inline-block w-full sm:w-auto">
-            <Button
+          <Button
               className="mobile-cta-fix gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-flex items-center"
               data-testid="button-sakhi-support"
+              onClick={() => setShowAuth(true)}
             >
               {t("journey_cta")}
               <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
-          </Link>
         </div>
       </section>
 
@@ -458,15 +482,14 @@ const Home = () => {
               </ul>
 
               <div className="flex justify-center lg:justify-start">
-                <Link href="/sakhi">
-                  <Button
+                <Button
                     className="mobile-cta-fix lg:inline-flex gradient-button-secondary text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 items-center"
                     data-testid="button-try-sakhi"
+                    onClick={() => setShowAuth(true)}
                   >
                     {t("sakhi_try")}
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
-                </Link>
               </div>
             </div>
 
@@ -580,7 +603,7 @@ const Home = () => {
                     <ArrowRight className="w-4 h-4 text-purple-600" />
                   </div>
                 </div>
-                
+
                 <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Heart className="text-white text-2xl" />
                 </div>
@@ -601,7 +624,7 @@ const Home = () => {
                   alt="Couple walking together in park"
                   className="rounded-xl w-full h-32 object-cover mt-auto group-hover:shadow-lg transition-shadow"
                 />
-                
+
                 {/* Call to action */}
                 <div className="flex items-center justify-between mt-4">
                   <span className="text-sm text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -625,7 +648,7 @@ const Home = () => {
                     <ArrowRight className="w-4 h-4 text-pink-600" />
                   </div>
                 </div>
-                
+
                 <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Baby className="text-white text-2xl" />
                 </div>
@@ -646,7 +669,7 @@ const Home = () => {
                   alt="Pregnant woman in peaceful outdoor setting"
                   className="rounded-xl w-full h-32 object-cover mt-auto group-hover:shadow-lg transition-shadow"
                 />
-                
+
                 {/* Call to action */}
                 <div className="flex items-center justify-between mt-4">
                   <span className="text-sm text-pink-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -670,7 +693,7 @@ const Home = () => {
                     <ArrowRight className="w-4 h-4 text-orange-600" />
                   </div>
                 </div>
-                
+
                 <div className="w-16 h-16 gradient-button rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Cat className="text-white text-2xl" />
                 </div>
@@ -691,7 +714,7 @@ const Home = () => {
                   alt="Happy new parent holding newborn baby"
                   className="rounded-xl w-full h-32 object-cover mt-auto group-hover:shadow-lg transition-shadow"
                 />
-                
+
                 {/* Call to action */}
                 <div className="flex items-center justify-between mt-4">
                   <span className="text-sm text-orange-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -729,7 +752,7 @@ const Home = () => {
                     <ArrowRight className="w-3 h-3 text-blue-600" />
                   </div>
                 </div>
-                
+
                 <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <Stethoscope className="text-blue-600 text-2xl" />
                 </div>
@@ -739,13 +762,13 @@ const Home = () => {
                 >
                   {t("lens_medical")}
                 </h3>
-                
+
                 {/* Call to action */}
                 <div className="flex items-center justify-center mt-auto">
                   <span className="text-sm text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {lang === "en" && "Browse topics"}
                     {lang === "hi" && "विषय ब्राउज़ करें"}
-                    {lang === "te" && "విषయాలను బ్రౌజ్ చేయండి"}
+                    {lang === "te" && "విషయాలను బ్రౌజ్ చేయండి"}
                   </span>
                 </div>
               </CardContent>
@@ -762,7 +785,7 @@ const Home = () => {
                     <ArrowRight className="w-3 h-3 text-pink-600" />
                   </div>
                 </div>
-                
+
                 <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <Users className="text-pink-600 text-2xl" />
                 </div>
@@ -772,13 +795,13 @@ const Home = () => {
                 >
                   {t("lens_social")}
                 </h3>
-                
+
                 {/* Call to action */}
                 <div className="flex items-center justify-center mt-auto">
                   <span className="text-sm text-pink-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {lang === "en" && "Browse topics"}
                     {lang === "hi" && "विषय ब्राउज़ करें"}
-                    {lang === "te" && "విषయాలను బ్రౌజ్ చేయండి"}
+                    {lang === "te" && "విషయాలను బ్రౌజ్ చేయండి"}
                   </span>
                 </div>
               </CardContent>
@@ -795,7 +818,7 @@ const Home = () => {
                     <ArrowRight className="w-3 h-3 text-green-600" />
                   </div>
                 </div>
-                
+
                 <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <IndianRupee className="text-green-600 text-2xl" />
                 </div>
@@ -805,13 +828,13 @@ const Home = () => {
                 >
                   {t("lens_financial")}
                 </h3>
-                
+
                 {/* Call to action */}
                 <div className="flex items-center justify-center mt-auto">
                   <span className="text-sm text-green-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {lang === "en" && "Browse topics"}
                     {lang === "hi" && "विषय ब्राउज़ करें"}
-                    {lang === "te" && "విषయాలను బ్రౌజ్ చేయండి"}
+                    {lang === "te" && "విషయాలను బ్రౌజ్ చేయండి"}
                   </span>
                 </div>
               </CardContent>
@@ -828,7 +851,7 @@ const Home = () => {
                     <ArrowRight className="w-3 h-3 text-orange-600" />
                   </div>
                 </div>
-                
+
                 <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <Apple className="text-orange-600 text-2xl" />
                 </div>
@@ -838,7 +861,7 @@ const Home = () => {
                 >
                   {t("lens_nutrition")}
                 </h3>
-                
+
                 {/* Call to action */}
                 <div className="flex items-center justify-center mt-auto">
                   <span className="text-sm text-orange-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -882,7 +905,7 @@ const Home = () => {
                       <ArrowRight className="w-4 h-4 text-purple-600" />
                     </div>
                   </div>
-                  
+
                   <img
                     src={getArticleImage(index)}
                     alt={article.title.en}
@@ -900,7 +923,7 @@ const Home = () => {
                   >
                     {article.summary[lang as keyof typeof article.summary] || article.summary.en}
                   </p>
-                  
+
                   {/* Call to action */}
                   <div className="flex items-center justify-between mt-auto">
                     <span className="text-xs text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -946,7 +969,7 @@ const Home = () => {
                       <ArrowRight className="w-4 h-4 text-purple-600" />
                     </div>
                   </div>
-                  
+
                   <div
                     className={`w-16 h-16 ${treatment.bgColor} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md`}
                   >
@@ -966,7 +989,7 @@ const Home = () => {
                   >
                     {treatment.description}
                   </p>
-                  
+
                   {/* Call to action */}
                   <div className="flex items-center justify-between mt-auto">
                     <span className="text-sm text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -1012,7 +1035,7 @@ const Home = () => {
                       <ArrowRight className="w-4 h-4 text-pink-600" />
                     </div>
                   </div>
-                  
+
                   <img
                     src={getStoryImage(index)}
                     alt={story.title}
@@ -1030,7 +1053,7 @@ const Home = () => {
                   >
                     {story.summary[lang]}
                   </p>
-                  
+
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex items-center text-xs text-muted-foreground">
                       <i className="fas fa-map-marker-alt mr-1"></i>
@@ -1038,7 +1061,7 @@ const Home = () => {
                         {story.city[lang]}
                       </span>
                     </div>
-                    
+
                     {/* Call to action */}
                     <div className="flex items-center">
                       <span className="text-xs text-pink-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-2">
@@ -1056,6 +1079,19 @@ const Home = () => {
         </div>
       </section>
       </div>
+
+      <AuthModal
+        open={showAuth}
+        onClose={() => setShowAuth(false)}
+        onSuccess={handleAuthSuccess}
+      />
+
+      <OnboardingQuestions
+        open={showOnboarding}
+        onClose={() => setShowOnboarding(false)}
+        relationship={selectedRelationship}
+        userId={userId}
+      />
     </>
   );
 };
