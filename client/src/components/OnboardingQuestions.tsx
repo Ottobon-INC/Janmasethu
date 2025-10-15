@@ -556,80 +556,45 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
     console.log("Webhook URL: https://n8n.ottobon.in/webhook/pp");
     console.log("Payload:", JSON.stringify(onboardingData, null, 2));
 
+    // Close modal first
+    onClose();
+
+    // Show loading toast
+    toast({
+      title: "Processing...",
+      description: "Preparing your personalized experience.",
+    });
+
     try {
       console.log("Sending POST request to webhook...");
       
-      // Send to webhook - try with CORS first
-      const response = await fetch("https://n8n.ottobon.in/webhook/pp", {
+      // Send to webhook - try with no-cors mode to avoid CORS issues
+      await fetch("https://n8n.ottobon.in/webhook/pp", {
         method: "POST",
+        mode: "no-cors",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(onboardingData),
       });
 
-      console.log("=== Webhook Response Received ===");
-      console.log("Status:", response.status);
-      console.log("Status Text:", response.statusText);
-
-      if (response.ok) {
-        console.log("Webhook call successful");
-        
-        toast({
-          title: "Welcome to Sakhi!",
-          description: "Let's begin your journey together.",
-        });
-
-        // Close onboarding modal
-        console.log("Closing onboarding modal...");
-        onClose();
-
-        // Navigate to Sakhi Try page
-        console.log("Navigating to /sakhi/try...");
-        setTimeout(() => {
-          console.log("Setting location to /sakhi/try");
-          setLocation("/sakhi/try");
-        }, 300);
-      } else {
-        throw new Error(`Webhook returned status: ${response.status}`);
-      }
+      console.log("Webhook request sent successfully");
 
     } catch (error) {
       console.error("=== Webhook Error ===");
-      console.error("Error type:", error instanceof Error ? error.constructor.name : typeof error);
-      console.error("Error message:", error instanceof Error ? error.message : error);
-      console.error("Full error:", error);
-      
-      // Try with no-cors as fallback
-      try {
-        console.log("Retrying with no-cors mode...");
-        await fetch("https://n8n.ottobon.in/webhook/pp", {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(onboardingData),
-        });
-        console.log("Fallback request sent");
-      } catch (fallbackError) {
-        console.error("Fallback also failed:", fallbackError);
-      }
-      
-      // Show success and navigate anyway
-      toast({
-        title: "Welcome to Sakhi!",
-        description: "Let's begin your journey together.",
-      });
-
-      console.log("Closing onboarding modal...");
-      onClose();
-
-      console.log("Navigating to /sakhi/try...");
-      setTimeout(() => {
-        setLocation("/sakhi/try");
-      }, 300);
+      console.error("Error:", error);
     }
+
+    // Navigate regardless of webhook success
+    console.log("Navigating to /sakhi/try...");
+    
+    toast({
+      title: "Welcome to Sakhi!",
+      description: "Let's begin your journey together.",
+    });
+
+    // Use window.location for more reliable navigation
+    window.location.href = "/sakhi/try";
   };
 
 
