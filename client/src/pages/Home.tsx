@@ -458,7 +458,7 @@ const Home = () => {
               </ul>
 
               <div className="flex justify-center lg:justify-start">
-                <Link href="/sakhi/try" className="w-full sm:w-auto max-w-xs lg:max-w-none">
+                <Link href="/sakhi">
                   <Button
                     className="mobile-cta-fix lg:inline-flex gradient-button-secondary text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 items-center"
                     data-testid="button-try-sakhi"

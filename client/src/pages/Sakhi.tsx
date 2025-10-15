@@ -1,5 +1,5 @@
-import { Link } from "wouter";
-import { useEffect } from "react";
+import { Link, useLocation } from "wouter";
+import { useEffect, useState } from "react";
 import {
   Heart,
   ArrowRight,
@@ -13,14 +13,49 @@ import { useLanguage } from "../i18n/LanguageProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ChatInterface from "@/components/ChatInterface";
+import AuthModal from "@/components/AuthModal";
+import OnboardingQuestions from "@/components/OnboardingQuestions";
 
 const Sakhi = () => {
   const { t } = useLanguage();
+  const [, setLocation] = useLocation();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleTrySakhiClick = () => {
+    const user = localStorage.getItem("user");
+    
+    if (user) {
+      const userData = JSON.parse(user);
+      if (userData.onboardingComplete) {
+        // Existing user with completed onboarding - go directly to Try Sakhi
+        setLocation("/sakhi/try");
+      } else {
+        // Existing user without completed onboarding - show questions
+        setShowOnboarding(true);
+      }
+    } else {
+      // No user - show auth modal
+      setShowAuthModal(true);
+    }
+  };
+
+  const handleAuthSuccess = (isNewUser: boolean) => {
+    setShowAuthModal(false);
+    
+    if (isNewUser) {
+      // New user - show onboarding questions
+      setShowOnboarding(true);
+    } else {
+      // Existing user - go directly to Try Sakhi
+      setLocation("/sakhi/try");
+    }
+  };
 
   const sakhiFeatures = [
     {
@@ -100,15 +135,14 @@ const Sakhi = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/sakhi/try">
-              <Button
-                className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-flex items-center"
-                data-testid="button-try-sakhi-hero"
-              >
-                {t("sakhi_try")}
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
+            <Button
+              onClick={handleTrySakhiClick}
+              className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-flex items-center"
+              data-testid="button-try-sakhi-hero"
+            >
+              {t("sakhi_try")}
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
             <Link href="/knowledge">
               <Button
                 variant="outline"
@@ -464,6 +498,19 @@ const Sakhi = () => {
       </section>
 
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal
+        open={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthSuccess={handleAuthSuccess}
+      />
+
+      {/* Onboarding Questions Modal */}
+      <OnboardingQuestions
+        open={showOnboarding}
+        onClose={() => setShowOnboarding(false)}
+      />
     </>
   );
 };
