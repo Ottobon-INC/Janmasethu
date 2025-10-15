@@ -26,6 +26,12 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
   const [userId, setUserId] = useState<string>("");
   const { toast } = useToast();
 
+  // Store userId in sessionStorage for persistence
+  const storeUserId = (id: string) => {
+    setUserId(id);
+    sessionStorage.setItem('janmasethu_user_id', id);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -63,12 +69,26 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
         // Capture the unique ID from the response
         if (data.id || data.userId || data.user_id) {
           const uniqueId = data.id || data.userId || data.user_id;
-          setUserId(uniqueId);
+          storeUserId(uniqueId);
           console.log("User ID captured:", uniqueId);
+          
+          toast({
+            title: "Account created!",
+            description: "Please tell us about yourself.",
+          });
+          
+          // Show relationship selection for new users
+          setShowRelationship(true);
+        } else {
+          console.error("No user ID in response:", data);
+          toast({
+            title: "Warning",
+            description: "Account created but user ID not found. Continuing...",
+          });
+          
+          // Still show relationship selection
+          setShowRelationship(true);
         }
-
-        // Show relationship selection for new users
-        setShowRelationship(true);
       } catch (error) {
         console.error("Sign-up error:", error);
         toast({
@@ -139,11 +159,10 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
       return;
     }
 
-    toast({
-      title: "Account created successfully!",
-      description: "Please complete the onboarding questions.",
-    });
+    console.log("Relationship selected:", relationship);
+    console.log("User ID:", userId || sessionStorage.getItem('janmasethu_user_id'));
     
+    // Close the auth modal and trigger onboarding
     onAuthSuccess(true, relationship); // New user - show onboarding
   };
 
