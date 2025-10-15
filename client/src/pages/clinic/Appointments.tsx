@@ -103,11 +103,11 @@ export default function Appointments() {
                   New Appointment
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-md mx-4 rounded-2xl">
-                <DialogHeader>
+              <DialogContent className="max-w-lg mx-4 rounded-2xl px-8 max-h-[85vh] sm:max-h-[80vh] overflow-hidden flex flex-col">
+                <DialogHeader className="flex-shrink-0">
                   <DialogTitle className="text-lg md:text-xl font-semibold">Schedule New Appointment</DialogTitle>
                 </DialogHeader>
-                <div className="space-y-4">
+                <div className="space-y-4 overflow-y-auto overflow-x-hidden pr-2 flex-1 scrollbar-hide">
                   <div>
                     <Label htmlFor="patientName" className="text-sm font-medium">Patient Name *</Label>
                     <Input

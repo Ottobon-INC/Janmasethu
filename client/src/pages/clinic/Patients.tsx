@@ -105,11 +105,11 @@ export default function Patients() {
                   Add New Patient
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-md">
-                <DialogHeader>
+              <DialogContent className="max-w-lg px-8 max-h-[85vh] sm:max-h-[80vh] overflow-hidden flex flex-col">
+                <DialogHeader className="flex-shrink-0">
                   <DialogTitle>Add New Patient</DialogTitle>
                 </DialogHeader>
-                <div className="space-y-4">
+                <div className="space-y-4 overflow-y-auto overflow-x-hidden pr-2 flex-1 scrollbar-hide">
                   <div>
                     <Label htmlFor="name">Full Name *</Label>
                     <Input
