@@ -28,61 +28,75 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
         return [
           {
             id: 1,
-            question: "Are you and your partner trying to have a baby?",
-            type: "radio",
-            field: "tryingForBaby",
-            options: [
-              "Yes, we are actively trying.",
-              "We are planning to start soon.",
-              "We are just exploring our options for now.",
-            ],
+            question: "What is your age?",
+            type: "number",
+            field: "age",
           },
           {
             id: 2,
-            question: "Do you have smoking and drinking habits?",
+            question: "How long have you been actively trying to conceive?",
             type: "radio",
-            field: "smokingDrinking",
+            field: "tryingDuration",
             options: [
-              "No, I do not smoke or drink.",
-              "I smoke occasionally or socially.",
-              "I drink occasionally or socially.",
-              "I smoke and/or drink regularly (most days).",
+              "Less than 6 months",
+              "6 - 12 months",
+              "1 - 2 years",
+              "More than 2 years",
             ],
           },
           {
             id: 3,
-            question: "Have you or your partner done any fertility tests?",
+            question: "Have you had any previous fertility treatments?",
             type: "radio",
-            field: "fertilityTests",
+            field: "previousTreatments",
             options: [
-              "No, neither of us has been tested yet.",
-              "Yes, my partner has had some tests.",
-              "Yes, I have had a semen analysis.",
-              "Yes, both of us have been tested.",
+              "No, this is my first time exploring options.",
+              "Yes, medications for ovulation only.",
+              "Yes, IUI (Intrauterine Insemination).",
+              "Yes, IVF (In Vitro Fertilization).",
             ],
           },
           {
             id: 4,
-            question: "Do you or your partner have any health problems?",
+            question: "Have you or your partner been diagnosed with any specific conditions?",
             type: "radio",
-            field: "healthProblems",
+            field: "diagnosis",
             options: [
-              "No, we have no known health problems.",
-              "Yes, I have a health condition.",
-              "Yes, my partner has a health condition.",
-              "Yes, we both have some health conditions.",
+              "Yes, a condition related to me (e.g., PCOS, Blocked Tubes).",
+              "Yes, a condition related to my partner (e.g., Low Sperm Count).",
+              "Yes, we both have contributing factors.",
+              "No, our infertility is unexplained.",
+              "We haven't been diagnosed with anything yet.",
             ],
           },
           {
             id: 5,
-            question: "Has your partner had any IVF treatments in the past?",
+            question: "If applicable, what is your partner's age?",
+            type: "number",
+            field: "partnerAge",
+            optional: true,
+          },
+          {
+            id: 6,
+            question: "Have you ever been pregnant before?",
             type: "radio",
-            field: "previousIVF",
+            field: "previousPregnancy",
             options: [
-              "No, this would be her first time.",
-              "Yes, she has had one IVF cycle before.",
-              "Yes, she has had more than one IVF cycle.",
-              "I'm not sure about her past treatment details.",
+              "No, I have never been pregnant.",
+              "Yes, I have had a child.",
+              "Yes, but the pregnancy ended in a loss (e.g., miscarriage).",
+            ],
+          },
+          {
+            id: 7,
+            question: "What is your biggest priority or concern right now?",
+            type: "radio",
+            field: "priority",
+            options: [
+              "Understanding the medical process and steps.",
+              "Managing emotional stress and anxiety.",
+              "Information on costs and financial planning.",
+              "Lifestyle, diet, and wellness advice.",
             ],
           },
         ];
@@ -470,10 +484,10 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
   const handleNext = () => {
     const currentField = currentQuestion.field;
     
-    if (!answers[currentField]) {
+    if (!currentQuestion.optional && !answers[currentField]) {
       toast({
         title: "Required",
-        description: "Please select an option to continue",
+        description: currentQuestion.type === "number" ? "Please enter a value to continue" : "Please select an option to continue",
         variant: "destructive",
       });
       return;
@@ -514,24 +528,58 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
           <div>
             <h3 className="text-lg font-semibold mb-4">{currentQuestion.question}</h3>
 
-            <RadioGroup
-              value={answers[currentQuestion.field]}
-              onValueChange={(value) =>
-                setAnswers({
-                  ...answers,
-                  [currentQuestion.field]: value,
-                })
-              }
-            >
-              {currentQuestion.options?.map((option, index) => (
-                <div key={index} className="flex items-center space-x-3 mb-3">
-                  <RadioGroupItem value={option} id={`option-${index}`} />
-                  <Label htmlFor={`option-${index}`} className="cursor-pointer flex-1">
-                    {option}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
+            {currentQuestion.type === "number" ? (
+              <div className="space-y-3">
+                <Input
+                  type="number"
+                  placeholder={currentQuestion.optional ? "Enter age (optional)" : "Enter age"}
+                  value={answers[currentQuestion.field] || ""}
+                  onChange={(e) =>
+                    setAnswers({
+                      ...answers,
+                      [currentQuestion.field]: e.target.value,
+                    })
+                  }
+                  className="text-base"
+                />
+                {currentQuestion.optional && (
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="not-applicable"
+                      checked={answers[currentQuestion.field] === "N/A"}
+                      onCheckedChange={(checked) =>
+                        setAnswers({
+                          ...answers,
+                          [currentQuestion.field]: checked ? "N/A" : "",
+                        })
+                      }
+                    />
+                    <Label htmlFor="not-applicable" className="cursor-pointer text-sm">
+                      Not Applicable
+                    </Label>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <RadioGroup
+                value={answers[currentQuestion.field]}
+                onValueChange={(value) =>
+                  setAnswers({
+                    ...answers,
+                    [currentQuestion.field]: value,
+                  })
+                }
+              >
+                {currentQuestion.options?.map((option, index) => (
+                  <div key={index} className="flex items-center space-x-3 mb-3">
+                    <RadioGroupItem value={option} id={`option-${index}`} />
+                    <Label htmlFor={`option-${index}`} className="cursor-pointer flex-1">
+                      {option}
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            )}
           </div>
 
           <div className="flex justify-between gap-4 pt-4">

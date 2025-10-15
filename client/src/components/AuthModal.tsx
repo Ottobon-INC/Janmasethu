@@ -104,14 +104,14 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
                   <RadioGroupItem value="herself" id="herself" />
                   <Label htmlFor="herself" className="cursor-pointer flex-1 font-normal">
-                    Herself (She is the patient)
+                    Herself
                   </Label>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
                   <RadioGroupItem value="himself" id="himself" />
                   <Label htmlFor="himself" className="cursor-pointer flex-1 font-normal">
-                    Himself (He is the patient)
+                    Himself
                   </Label>
                 </div>
                 
