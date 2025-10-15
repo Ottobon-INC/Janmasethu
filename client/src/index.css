@@ -630,7 +630,7 @@
   [role="dialog"] input:focus-visible,
   [role="dialog"] select:focus-visible,
   [role="dialog"] textarea:focus-visible {
-    ring-offset-0 !important;
+    --tw-ring-offset-width: 0px !important;
     outline: none !important;
   }
 
