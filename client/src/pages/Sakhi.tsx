@@ -39,7 +39,7 @@ const Sakhi = () => {
     
     if (isNewUser) {
       // New user - show onboarding questions
-      setUserRelationship(relationship || "myself");
+      setUserRelationship(relationship || "herself");
       setShowOnboarding(true);
     } else {
       // Existing user - go directly to Try Sakhi

@@ -102,9 +102,16 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
               
               <RadioGroup value={relationship} onValueChange={setRelationship}>
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
-                  <RadioGroupItem value="myself" id="myself" />
-                  <Label htmlFor="myself" className="cursor-pointer flex-1 font-normal">
-                    Myself (I am the patient)
+                  <RadioGroupItem value="herself" id="herself" />
+                  <Label htmlFor="herself" className="cursor-pointer flex-1 font-normal">
+                    Herself (She is the patient)
+                  </Label>
+                </div>
+                
+                <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
+                  <RadioGroupItem value="himself" id="himself" />
+                  <Label htmlFor="himself" className="cursor-pointer flex-1 font-normal">
+                    Himself (He is the patient)
                   </Label>
                 </div>
                 

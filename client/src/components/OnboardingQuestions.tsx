@@ -15,7 +15,7 @@ interface OnboardingQuestionsProps {
   relationship?: string;
 }
 
-export default function OnboardingQuestions({ open, onClose, relationship = "myself" }: OnboardingQuestionsProps) {
+export default function OnboardingQuestions({ open, onClose, relationship = "herself" }: OnboardingQuestionsProps) {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
@@ -24,7 +24,70 @@ export default function OnboardingQuestions({ open, onClose, relationship = "mys
   // Define questions based on relationship
   const getQuestions = () => {
     switch (relationship) {
-      case "myself":
+      case "herself":
+        return [
+          {
+            id: 1,
+            question: "Are you and your partner trying to have a baby?",
+            type: "radio",
+            field: "tryingForBaby",
+            options: [
+              "Yes, we are actively trying.",
+              "We are planning to start soon.",
+              "We are just exploring our options for now.",
+            ],
+          },
+          {
+            id: 2,
+            question: "Do you have smoking and drinking habits?",
+            type: "radio",
+            field: "smokingDrinking",
+            options: [
+              "No, I do not smoke or drink.",
+              "I smoke occasionally or socially.",
+              "I drink occasionally or socially.",
+              "I smoke and/or drink regularly (most days).",
+            ],
+          },
+          {
+            id: 3,
+            question: "Have you or your partner done any fertility tests?",
+            type: "radio",
+            field: "fertilityTests",
+            options: [
+              "No, neither of us has been tested yet.",
+              "Yes, my partner has had some tests.",
+              "Yes, I have had a semen analysis.",
+              "Yes, both of us have been tested.",
+            ],
+          },
+          {
+            id: 4,
+            question: "Do you or your partner have any health problems?",
+            type: "radio",
+            field: "healthProblems",
+            options: [
+              "No, we have no known health problems.",
+              "Yes, I have a health condition.",
+              "Yes, my partner has a health condition.",
+              "Yes, we both have some health conditions.",
+            ],
+          },
+          {
+            id: 5,
+            question: "Has your partner had any IVF treatments in the past?",
+            type: "radio",
+            field: "previousIVF",
+            options: [
+              "No, this would be her first time.",
+              "Yes, she has had one IVF cycle before.",
+              "Yes, she has had more than one IVF cycle.",
+              "I'm not sure about her past treatment details.",
+            ],
+          },
+        ];
+
+      case "himself":
         return [
           {
             id: 1,
