@@ -558,42 +558,41 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
 
     try {
       console.log("Sending POST request to webhook...");
-      console.log("Webhook URL: https://n8n.ottobon.in/webhook/pp");
-      console.log("Request body:", JSON.stringify(onboardingData, null, 2));
       
-      // Send to webhook with no-cors mode to bypass CORS issues
+      // Send to webhook - try with CORS first
       const response = await fetch("https://n8n.ottobon.in/webhook/pp", {
         method: "POST",
-        mode: "no-cors",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(onboardingData),
       });
 
-      console.log("=== Webhook Request Sent (no-cors mode) ===");
-      console.log("Response type:", response.type);
-      console.log("Note: In no-cors mode, response details are opaque");
+      console.log("=== Webhook Response Received ===");
+      console.log("Status:", response.status);
+      console.log("Status Text:", response.statusText);
 
-      // In no-cors mode, we can't read the response, but the request was sent
-      // Show success and navigate
-      console.log("=== Assuming webhook call successful ===");
+      if (response.ok) {
+        console.log("Webhook call successful");
+        
+        toast({
+          title: "Welcome to Sakhi!",
+          description: "Let's begin your journey together.",
+        });
 
-      toast({
-        title: "Welcome to Sakhi!",
-        description: "Let's begin your journey together.",
-      });
+        // Close onboarding modal
+        console.log("Closing onboarding modal...");
+        onClose();
 
-      // Close onboarding modal
-      console.log("Closing onboarding modal...");
-      onClose();
-
-      // Navigate to Sakhi page
-      console.log("Navigating to /sakhi...");
-      setTimeout(() => {
-        console.log("Setting location to /sakhi");
-        setLocation("/sakhi");
-      }, 300);
+        // Navigate to Sakhi page
+        console.log("Navigating to /sakhi...");
+        setTimeout(() => {
+          console.log("Setting location to /sakhi");
+          setLocation("/sakhi");
+        }, 300);
+      } else {
+        throw new Error(`Webhook returned status: ${response.status}`);
+      }
 
     } catch (error) {
       console.error("=== Webhook Error ===");
@@ -601,17 +600,32 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       console.error("Error message:", error instanceof Error ? error.message : error);
       console.error("Full error:", error);
       
-      // Even if webhook fails, show success and navigate
-      // The data was attempted to be sent
+      // Try with no-cors as fallback
+      try {
+        console.log("Retrying with no-cors mode...");
+        await fetch("https://n8n.ottobon.in/webhook/pp", {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(onboardingData),
+        });
+        console.log("Fallback request sent");
+      } catch (fallbackError) {
+        console.error("Fallback also failed:", fallbackError);
+      }
+      
+      // Show success and navigate anyway
       toast({
         title: "Welcome to Sakhi!",
         description: "Let's begin your journey together.",
       });
 
-      console.log("Closing onboarding modal after error...");
+      console.log("Closing onboarding modal...");
       onClose();
 
-      console.log("Navigating to /sakhi after error...");
+      console.log("Navigating to /sakhi...");
       setTimeout(() => {
         setLocation("/sakhi");
       }, 300);
@@ -701,18 +715,19 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
             </Button>
             <Button
               type="button"
-              onClick={(e) => {
+              onClick={async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 console.log("=== BUTTON CLICKED ===");
                 console.log("Button clicked! Current step:", currentStep, "Total questions:", questions.length);
                 console.log("Is last question:", currentStep === questions.length);
                 console.log("Current answers:", answers);
-                console.log("Current question:", currentQuestion);
+                console.log("Current question field:", currentQuestion.field);
+                console.log("Current question answer:", answers[currentQuestion.field]);
                 
                 if (currentStep === questions.length) {
-                  console.log("This is the last question - calling handleComplete directly");
-                  handleComplete();
+                  console.log("This is the last question - calling handleComplete");
+                  await handleComplete();
                 } else {
                   console.log("Not last question - calling handleNext");
                   handleNext();
