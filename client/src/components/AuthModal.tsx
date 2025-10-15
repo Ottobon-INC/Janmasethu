@@ -10,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 interface AuthModalProps {
   open: boolean;
   onClose: () => void;
-  onAuthSuccess: (isNewUser: boolean, relationship?: string) => void;
+  onAuthSuccess: (isNewUser: boolean, relationship?: string, userId?: string) => void;
 }
 
 export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalProps) {
@@ -26,10 +26,9 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
   const [userId, setUserId] = useState<string>("");
   const { toast } = useToast();
 
-  // Store userId in sessionStorage for persistence
+  // Store userId in state only
   const storeUserId = (id: string) => {
     setUserId(id);
-    sessionStorage.setItem('janmasethu_user_id', id);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -162,10 +161,10 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
     }
 
     console.log("Relationship selected:", relationship);
-    console.log("User ID:", userId || sessionStorage.getItem('janmasethu_user_id'));
+    console.log("User ID:", userId);
     
-    // Close the auth modal and trigger onboarding
-    onAuthSuccess(true, relationship); // New user - show onboarding
+    // Close the auth modal and trigger onboarding with userId
+    onAuthSuccess(true, relationship, userId);
   };
 
   const handleBack = () => {

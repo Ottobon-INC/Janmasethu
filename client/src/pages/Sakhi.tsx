@@ -34,13 +34,15 @@ const Sakhi = () => {
   };
 
   const [userRelationship, setUserRelationship] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
 
-  const handleAuthSuccess = (isNewUser: boolean, relationship?: string) => {
+  const handleAuthSuccess = (isNewUser: boolean, relationship?: string, userId?: string) => {
     setShowAuthModal(false);
     
     if (isNewUser) {
       // New user - show onboarding questions
       setUserRelationship(relationship || "herself");
+      setUserId(userId || "");
       setShowOnboarding(true);
     } else {
       // Existing user - go directly to Sakhi page (not /sakhi/try)
@@ -508,6 +510,7 @@ const Sakhi = () => {
         open={showOnboarding}
         onClose={() => setShowOnboarding(false)}
         relationship={userRelationship}
+        userId={userId}
       />
     </>
   );
