@@ -29,7 +29,7 @@ const BlogPost = () => {
             <Link href="/blog">
               <Button className="gradient-button text-white rounded-full">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Blog
+                Back to Blogs
               </Button>
             </Link>
           </CardContent>
@@ -66,7 +66,7 @@ const BlogPost = () => {
         <Link href="/blog">
           <Button variant="ghost" className="rounded-full" data-testid="button-back-blog">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Blog
+            Back to Blogs
           </Button>
         </Link>
       </div>

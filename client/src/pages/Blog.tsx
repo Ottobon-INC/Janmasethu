@@ -32,7 +32,7 @@ const Blog = () => {
       {/* Page Header */}
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-bold text-foreground font-serif mb-6" data-testid="text-blog-title">
-          {t('nav_blog')}
+          Blogs
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           {t('blog_subtitle')}
