@@ -1107,6 +1107,38 @@ textarea:focus-visible {
   }
 }
 
+/* Select Component Enhancements */
+@media (max-width: 767px) {
+  [data-radix-select-trigger] {
+    @apply h-14 rounded-2xl text-base px-5;
+    min-height: 56px;
+  }
+
+  [data-radix-select-content] {
+    @apply rounded-2xl;
+    max-height: 70vh !important;
+  }
+
+  [data-radix-select-item] {
+    @apply py-4 px-5 text-base rounded-xl;
+    min-height: 56px;
+  }
+}
+
+@media (min-width: 768px) {
+  [data-radix-select-trigger] {
+    @apply h-12 rounded-xl;
+  }
+
+  [data-radix-select-content] {
+    @apply rounded-2xl;
+  }
+
+  [data-radix-select-item] {
+    @apply rounded-xl;
+  }
+}
+
 /* Status and priority badge enhancements */
 .status-badge, .priority-badge {
   @apply rounded-full px-3 py-1 text-xs font-medium shadow-sm;
