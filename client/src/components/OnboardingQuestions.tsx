@@ -544,7 +544,7 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       return;
     }
 
-    // Prepare data to send to backend
+    // Prepare data to send to webhook
     const onboardingData = {
       userId: userId,
       relationship: relationship,
@@ -556,9 +556,6 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
     console.log("Webhook URL: https://n8n.ottobon.in/webhook/pp");
     console.log("Payload:", JSON.stringify(onboardingData, null, 2));
 
-    // Close modal first
-    onClose();
-
     // Show loading toast
     toast({
       title: "Processing...",
@@ -568,24 +565,29 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
     try {
       console.log("Sending POST request to webhook...");
       
-      // Send to webhook - try with no-cors mode to avoid CORS issues
-      await fetch("https://n8n.ottobon.in/webhook/pp", {
+      // Send to webhook
+      const webhookResponse = await fetch("https://n8n.ottobon.in/webhook/pp", {
         method: "POST",
-        mode: "no-cors",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(onboardingData),
       });
 
+      console.log("Webhook response status:", webhookResponse.status);
       console.log("Webhook request sent successfully");
 
     } catch (error) {
       console.error("=== Webhook Error ===");
       console.error("Error:", error);
+      // Continue with navigation even if webhook fails
     }
 
-    // Navigate regardless of webhook success
+    // Close modal
+    console.log("Closing onboarding modal...");
+    onClose();
+
+    // Navigate to /sakhi/try
     console.log("Navigating to /sakhi/try...");
     
     toast({
@@ -593,8 +595,10 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       description: "Let's begin your journey together.",
     });
 
-    // Use window.location for more reliable navigation
-    window.location.href = "/sakhi/try";
+    // Use setLocation from wouter for proper navigation
+    setTimeout(() => {
+      setLocation("/sakhi/try");
+    }, 100);
   };
 
 
@@ -680,19 +684,13 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
             </Button>
             <Button
               type="button"
-              onClick={async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+              onClick={() => {
                 console.log("=== BUTTON CLICKED ===");
-                console.log("Button clicked! Current step:", currentStep, "Total questions:", questions.length);
-                console.log("Is last question:", currentStep === questions.length);
-                console.log("Current answers:", answers);
-                console.log("Current question field:", currentQuestion.field);
-                console.log("Current question answer:", answers[currentQuestion.field]);
+                console.log("Current step:", currentStep, "Total questions:", questions.length);
                 
                 if (currentStep === questions.length) {
-                  console.log("This is the last question - calling handleComplete");
-                  await handleComplete();
+                  console.log("Last question - calling handleComplete");
+                  handleComplete();
                 } else {
                   console.log("Not last question - calling handleNext");
                   handleNext();
