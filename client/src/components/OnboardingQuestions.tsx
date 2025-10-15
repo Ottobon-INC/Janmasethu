@@ -568,18 +568,45 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       console.log("Method: POST");
       console.log("Payload:", JSON.stringify(onboardingData, null, 2));
       
-      // Use same fetch approach as signup/login (without no-cors)
+      // First, test if webhook is reachable with OPTIONS (CORS preflight)
+      console.log("Testing CORS preflight...");
+      const preflightResponse = await fetch("https://n8n.ottobon.in/webhook/pp", {
+        method: "OPTIONS",
+        headers: {
+          "Access-Control-Request-Method": "POST",
+          "Access-Control-Request-Headers": "Content-Type",
+        },
+      }).catch(e => {
+        console.error("Preflight failed:", e);
+        return null;
+      });
+
+      if (preflightResponse) {
+        console.log("Preflight status:", preflightResponse.status);
+        console.log("Preflight headers:", Object.fromEntries(preflightResponse.headers.entries()));
+      }
+      
+      // Now send the actual POST request
+      console.log("\nSending actual POST request...");
       const webhookResponse = await fetch("https://n8n.ottobon.in/webhook/pp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json",
         },
         body: JSON.stringify(onboardingData),
       });
 
-      console.log("=== WEBHOOK RESPONSE ===");
+      console.log("\n=== WEBHOOK RESPONSE ===");
       console.log("Status:", webhookResponse.status);
       console.log("Status Text:", webhookResponse.statusText);
+      console.log("OK:", webhookResponse.ok);
+      console.log("Type:", webhookResponse.type);
+      console.log("Headers:", Object.fromEntries(webhookResponse.headers.entries()));
+      
+      // Try to read response body
+      const responseText = await webhookResponse.text();
+      console.log("Response Body:", responseText);
       
       if (webhookResponse.ok) {
         console.log("✅ Webhook triggered successfully!");
@@ -589,15 +616,16 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
         });
       } else {
         console.error("❌ Webhook failed with status:", webhookResponse.status);
+        console.error("Response details:", responseText);
         toast({
           title: "Warning",
-          description: "Data may not have been saved properly.",
+          description: `Server returned status ${webhookResponse.status}`,
           variant: "destructive",
         });
       }
 
     } catch (error) {
-      console.error("=== WEBHOOK ERROR ===");
+      console.error("\n=== WEBHOOK ERROR ===");
       if (error instanceof Error) {
         console.error("Error name:", error.name);
         console.error("Error message:", error.message);
@@ -606,7 +634,12 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
         console.error("Error:", error);
       }
       
-      // Don't show error toast, continue anyway
+      toast({
+        title: "Connection Error",
+        description: "Could not reach the server. Please check n8n configuration.",
+        variant: "destructive",
+      });
+      
       console.log("Continuing despite error...");
     }
 
