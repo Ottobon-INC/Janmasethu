@@ -584,11 +584,11 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
         console.log("Closing onboarding modal...");
         onClose();
 
-        // Navigate to Sakhi page
-        console.log("Navigating to /sakhi...");
+        // Navigate to Sakhi Try page
+        console.log("Navigating to /sakhi/try...");
         setTimeout(() => {
-          console.log("Setting location to /sakhi");
-          setLocation("/sakhi");
+          console.log("Setting location to /sakhi/try");
+          setLocation("/sakhi/try");
         }, 300);
       } else {
         throw new Error(`Webhook returned status: ${response.status}`);
@@ -625,9 +625,9 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       console.log("Closing onboarding modal...");
       onClose();
 
-      console.log("Navigating to /sakhi...");
+      console.log("Navigating to /sakhi/try...");
       setTimeout(() => {
-        setLocation("/sakhi");
+        setLocation("/sakhi/try");
       }, 300);
     }
   };
