@@ -131,12 +131,6 @@ export default function OnboardingQuestions({ open, onClose }: OnboardingQuestio
     if (currentStep < questions.length) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Save onboarding data
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      user.onboardingComplete = true;
-      user.onboardingAnswers = answers;
-      localStorage.setItem("user", JSON.stringify(user));
-      
       toast({
         title: "Onboarding complete!",
         description: "Redirecting to Sakhi...",

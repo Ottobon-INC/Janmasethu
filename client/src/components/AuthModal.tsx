@@ -34,19 +34,12 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
         return;
       }
       
-      // Store user data in localStorage (in production, use proper backend)
-      localStorage.setItem("user", JSON.stringify({
-        fullName: formData.fullName,
-        email: formData.email,
-        isNewUser: true,
-      }));
-      
       toast({
         title: "Account created successfully!",
         description: "Please complete the onboarding questions.",
       });
       
-      onAuthSuccess(true); // New user
+      onAuthSuccess(true); // New user - show onboarding
     } else {
       if (!formData.email || !formData.password) {
         toast({
@@ -57,30 +50,12 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
         return;
       }
       
-      // Check if user exists
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        if (user.email === formData.email) {
-          toast({
-            title: "Welcome back!",
-            description: "Redirecting to Sakhi...",
-          });
-          onAuthSuccess(false); // Existing user
-        } else {
-          toast({
-            title: "Error",
-            description: "Invalid credentials",
-            variant: "destructive",
-          });
-        }
-      } else {
-        toast({
-          title: "Error",
-          description: "No account found. Please sign up first.",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Welcome back!",
+        description: "Redirecting to Sakhi...",
+      });
+      
+      onAuthSuccess(false); // Existing user - skip onboarding
     }
   };
 

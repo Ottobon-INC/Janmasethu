@@ -28,21 +28,8 @@ const Sakhi = () => {
   }, []);
 
   const handleTrySakhiClick = () => {
-    const user = localStorage.getItem("user");
-    
-    if (user) {
-      const userData = JSON.parse(user);
-      if (userData.onboardingComplete) {
-        // Existing user with completed onboarding - go directly to Try Sakhi
-        setLocation("/sakhi/try");
-      } else {
-        // Existing user without completed onboarding - show questions
-        setShowOnboarding(true);
-      }
-    } else {
-      // No user - show auth modal
-      setShowAuthModal(true);
-    }
+    // Always show auth modal for static demonstration
+    setShowAuthModal(true);
   };
 
   const handleAuthSuccess = (isNewUser: boolean) => {
