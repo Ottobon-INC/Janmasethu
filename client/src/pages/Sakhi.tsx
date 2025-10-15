@@ -32,13 +32,14 @@ const Sakhi = () => {
     setShowAuthModal(true);
   };
 
+  const [userRelationship, setUserRelationship] = useState<string>("");
+
   const handleAuthSuccess = (isNewUser: boolean, relationship?: string) => {
     setShowAuthModal(false);
     
     if (isNewUser) {
       // New user - show onboarding questions
-      // You can store the relationship value if needed
-      console.log("User relationship:", relationship);
+      setUserRelationship(relationship || "myself");
       setShowOnboarding(true);
     } else {
       // Existing user - go directly to Try Sakhi
@@ -499,6 +500,7 @@ const Sakhi = () => {
       <OnboardingQuestions
         open={showOnboarding}
         onClose={() => setShowOnboarding(false)}
+        relationship={userRelationship}
       />
     </>
   );
