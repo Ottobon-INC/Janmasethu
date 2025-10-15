@@ -87,7 +87,7 @@ const Header = () => {
       <header 
         className={`site-header sticky top-0 z-40 w-full bg-white/80 backdrop-blur-sm border-b border-border transition-all duration-300 ${isExpanded ? 'is-expanded' : ''}`}
       >
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-2">
           {/* Primary Row */}
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -95,7 +95,7 @@ const Header = () => {
               <img 
                 src="/JanmaSethu Logo.png" 
                 alt="JanmaSethu Logo" 
-                className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain"
+                className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 lg:w-22 lg:h-22 object-contain"
               />
             </Link>
 
@@ -106,7 +106,7 @@ const Header = () => {
                   <Link 
                     key={href}
                     href={href} 
-                    className={`font-semibold text-base tracking-wide transition-all duration-200 px-4 py-3 rounded-md ${
+                    className={`font-semibold text-sm tracking-wide transition-all duration-200 px-3 py-2 rounded-md ${
                       location === href 
                         ? 'text-primary bg-primary/10' 
                         : 'text-foreground hover:text-primary hover:bg-primary/5'
@@ -126,7 +126,7 @@ const Header = () => {
                     variant="ghost"
                     size="sm"
                     onClick={handleToggleExpanded}
-                    className={`px-4 py-3 rounded-md text-base font-semibold transition-all duration-200 hover:bg-primary/5 hover:scale-105 ${
+                    className={`px-3 py-2 rounded-md text-sm font-semibold transition-all duration-200 hover:bg-primary/5 hover:scale-105 ${
                       isExpanded ? 'bg-primary/10 text-primary' : 'hover:text-primary'
                     }`}
                     aria-expanded={isExpanded}
@@ -134,7 +134,7 @@ const Header = () => {
                     data-testid="button-nav-toggle"
                   >
                     <span className="mr-2">{isExpanded ? t('nav_less') : t('nav_more')}</span>
-                    <ChevronDown className={`w-4 h-4 chevron transition-transform duration-300 ease-in-out ${isExpanded ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-3 h-3 chevron transition-transform duration-300 ease-in-out ${isExpanded ? 'rotate-180' : ''}`} />
                   </Button>
                 </div>
               </nav>
@@ -156,10 +156,10 @@ const Header = () => {
                     type="search"
                     name="search"
                     placeholder={t('search_placeholder')}
-                    className="pl-10 pr-4 py-2 rounded-full border-border bg-background/50 focus:ring-ring w-64"
+                    className="pl-9 pr-3 py-1.5 text-sm rounded-full border-border bg-background/50 focus:ring-ring w-56"
                     data-testid="input-search"
                   />
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 pointer-events-none" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-3.5 h-3.5 pointer-events-none" />
                 </form>
               </div>
 
@@ -200,12 +200,12 @@ const Header = () => {
             }}
             onMouseLeave={handleMoreAreaMouseLeave}
           >
-            <nav className="flex items-center justify-between w-full max-w-6xl mx-auto pt-4 pb-6 px-8" role="navigation" aria-label="Secondary navigation">
+            <nav className="flex items-center justify-between w-full max-w-6xl mx-auto pt-2 pb-3 px-8" role="navigation" aria-label="Secondary navigation">
               {secondaryNavItems.map(({ key, href }, index) => (
                 <Link 
                   key={href}
                   href={href} 
-                  className={`font-semibold text-base tracking-wide transition-all duration-300 px-4 py-3 flex-1 text-center transform hover:scale-105 hover:-translate-y-1 ${
+                  className={`font-semibold text-sm tracking-wide transition-all duration-300 px-3 py-2 flex-1 text-center transform hover:scale-105 hover:-translate-y-1 ${
                     location === href 
                       ? 'text-primary' 
                       : 'text-foreground hover:text-primary'
