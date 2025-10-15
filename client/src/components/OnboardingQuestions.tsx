@@ -563,26 +563,65 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
     });
 
     try {
-      console.log("Sending POST request to webhook...");
-      console.log("Request payload:", JSON.stringify(onboardingData, null, 2));
+      console.log("=== SENDING WEBHOOK REQUEST ===");
+      console.log("URL: https://n8n.ottobon.in/webhook/pp");
+      console.log("Method: POST");
+      console.log("Headers:", { "Content-Type": "application/json" });
+      console.log("Payload:", JSON.stringify(onboardingData, null, 2));
       
-      // Send to webhook
+      // Send to webhook with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
       const webhookResponse = await fetch("https://n8n.ottobon.in/webhook/pp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(onboardingData),
+        signal: controller.signal,
       });
 
-      console.log("Webhook response status:", webhookResponse.status);
-      const responseData = await webhookResponse.text();
-      console.log("Webhook response:", responseData);
-      console.log("Webhook data sent successfully with userId:", userId);
+      clearTimeout(timeoutId);
+
+      console.log("=== WEBHOOK RESPONSE ===");
+      console.log("Status:", webhookResponse.status);
+      console.log("Status Text:", webhookResponse.statusText);
+      console.log("Headers:", Object.fromEntries(webhookResponse.headers.entries()));
+      
+      const responseText = await webhookResponse.text();
+      console.log("Response Body:", responseText);
+      
+      if (webhookResponse.ok) {
+        console.log("✅ Webhook triggered successfully!");
+        toast({
+          title: "Data sent successfully",
+          description: "Your information has been recorded.",
+        });
+      } else {
+        console.error("❌ Webhook failed with status:", webhookResponse.status);
+        toast({
+          title: "Warning",
+          description: "Data may not have been saved properly.",
+          variant: "destructive",
+        });
+      }
 
     } catch (error) {
-      console.error("=== Webhook Error ===");
-      console.error("Error:", error);
+      console.error("=== WEBHOOK ERROR ===");
+      if (error instanceof Error) {
+        console.error("Error name:", error.name);
+        console.error("Error message:", error.message);
+        console.error("Error stack:", error.stack);
+      } else {
+        console.error("Error:", error);
+      }
+      
+      toast({
+        title: "Network Error",
+        description: "Could not connect to server. Please check your connection.",
+        variant: "destructive",
+      });
       // Continue with navigation even if webhook fails
     }
 
