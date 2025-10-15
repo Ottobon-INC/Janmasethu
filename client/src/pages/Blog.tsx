@@ -37,15 +37,6 @@ const Blog = () => {
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           {t('blog_subtitle')}
         </p>
-
-        {/* Hero Background */}
-        <div className="mt-12 relative">
-          <img 
-            src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400" 
-            alt={t('alt_reading_parenting')} 
-            className="w-full h-64 object-cover rounded-3xl opacity-20"
-          />
-        </div>
       </div>
 
       {/* Featured Post */}

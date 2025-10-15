@@ -62,15 +62,6 @@ const Treatments = () => {
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           {pageSubtitle[lang as keyof typeof pageSubtitle] || pageSubtitle.en}
         </p>
-
-        {/* Hero Background Image */}
-        <div className="mt-12 relative">
-          <img
-            src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400"
-            alt="Medical consultation scene"
-            className="w-full h-64 object-cover rounded-3xl opacity-20"
-          />
-        </div>
       </div>
 
       {/* Treatments Grid */}

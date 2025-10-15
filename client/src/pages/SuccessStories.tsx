@@ -42,15 +42,6 @@ const SuccessStories = () => {
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           {t("success_preview_description")}
         </p>
-
-        {/* Hero Background */}
-        <div className="mt-12 relative">
-          <img
-            src="https://images.unsplash.com/photo-1609220136736-443140cffec6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400"
-            alt="Happy families with children"
-            className="w-full h-64 object-cover rounded-3xl opacity-20"
-          />
-        </div>
       </div>
 
       {/* Stories Grid */}
