@@ -12,6 +12,7 @@ import {
 import { useLanguage } from "../i18n/LanguageProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import ChatInterface from "@/components/ChatInterface";
 import AuthModal from "@/components/AuthModal";
 import OnboardingQuestions from "@/components/OnboardingQuestions";
@@ -42,10 +43,16 @@ const Sakhi = () => {
       setUserRelationship(relationship || "herself");
       setShowOnboarding(true);
     } else {
-      // Existing user - go directly to Try Sakhi
-      setLocation("/sakhi/try");
+      // Existing user - go directly to Sakhi page (not /sakhi/try)
+      // User is already on /sakhi page, just show success
+      toast({
+        title: "Welcome back!",
+        description: "You're all set to continue your journey.",
+      });
     }
   };
+  
+  const { toast } = useToast();
 
   const sakhiFeatures = [
     {

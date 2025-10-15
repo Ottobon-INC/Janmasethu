@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -483,7 +482,7 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
 
   const handleNext = () => {
     const currentField = currentQuestion.field;
-    
+
     if (!currentQuestion.optional && !answers[currentField]) {
       toast({
         title: "Required",
@@ -496,13 +495,7 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
     if (currentStep < questions.length) {
       setCurrentStep(currentStep + 1);
     } else {
-      toast({
-        title: "Onboarding complete!",
-        description: "Redirecting to Sakhi...",
-      });
-      
-      onClose();
-      setLocation("/sakhi/try");
+      handleComplete();
     }
   };
 
@@ -511,6 +504,81 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       setCurrentStep(currentStep - 1);
     }
   };
+
+  const handleComplete = async () => {
+    // Validate all questions are answered
+    const allAnswered = Object.keys(answers).length === getQuestions().length;
+
+    if (!allAnswered) {
+      toast({
+        title: "Please answer all questions",
+        description: "Complete all questions before proceeding.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Get userId from sessionStorage
+    const userId = sessionStorage.getItem('janmasethu_user_id');
+
+    if (!userId) {
+      console.error("No user ID found");
+      toast({
+        title: "Error",
+        description: "User ID not found. Please try signing up again.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Prepare data to send to backend
+    const onboardingData = {
+      userId: userId,
+      relationship: relationship,
+      answers: answers,
+      timestamp: new Date().toISOString(),
+    };
+
+    console.log("Sending onboarding data:", onboardingData);
+
+    try {
+      // Send to webhook
+      const response = await fetch("https://n8n.ottobon.in/webhook/pp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(onboardingData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit onboarding data");
+      }
+
+      const data = await response.json();
+      console.log("Onboarding response:", data);
+
+      toast({
+        title: "Welcome to Sakhi!",
+        description: "Let's begin your journey together.",
+      });
+
+      // Close onboarding modal and navigate to Sakhi page
+      onClose();
+
+      // Navigate to Sakhi page
+      window.location.href = "/sakhi";
+
+    } catch (error) {
+      console.error("Onboarding submission error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save your information. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
