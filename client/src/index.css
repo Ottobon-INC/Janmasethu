@@ -524,6 +524,16 @@
   transform: scale(1.04);
 }
 
+/* Invisible scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Modal animation */
 @keyframes modalFadeIn {
   from {
