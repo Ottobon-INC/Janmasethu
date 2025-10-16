@@ -92,13 +92,33 @@ const SakhiTry = () => {
   const [isMuted, setIsMuted] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Regenerate preview content when language changes
+  // Regenerate preview content AND update all messages when language changes
   useEffect(() => {
     if (lastUserMessage && previewContent) {
       const newContent = generatePreviewContent(lastUserMessage, lang);
       setPreviewContent(newContent);
+      
+      // Update all bot messages with new language content
+      setMessages(prevMessages => 
+        prevMessages.map(msg => {
+          if (!msg.isUser) {
+            const responses = {
+              en: "I understand your feelings, and they're completely valid. Let me share some strategies that might help you through this.",
+              hi: "मैं आपकी भावनाओं को समझती हूं, और वे पूर्णतः वैध हैं। मैं कुछ रणनीतियां साझा करती हूं जो इस दौरान आपकी मदद कर सकती हैं।",
+              te: "నేను మీ భావనలను అర్థం చేసుకుంటున్నాను, మరియు అవి పూర్ణంగా చెల్లుబాటు అయ్యేవి. ఈ సమయంలో మీకు సహాయపడే కొన్ని వ్యూహాలను పంచుకుంటాను."
+            };
+            
+            return {
+              ...msg,
+              text: responses[lang as keyof typeof responses] || responses.en,
+              previewContent: newContent
+            };
+          }
+          return msg;
+        })
+      );
     }
-  }, [lang]);
+  }, [lang, lastUserMessage, previewContent]);
 
   // Component is now ready to use any language from context
 
@@ -366,6 +386,7 @@ const SakhiTry = () => {
     { en: "How can I support my partner through this?", hi: "इसमें अपने साथी का समर्थन कैसे करूं?", te: "దీనిలో నా భాగస్వామికి ఎలా మద్దతు ఇవ్వాలి?" }
   ];
 
+  // Get current language prompts
   const currentPrompts = quickPrompts.map(p => p[lang as keyof typeof p]);
 
   return (
@@ -460,7 +481,7 @@ const SakhiTry = () => {
                     <div className="p-3 bg-green-50 border border-green-200 rounded-xl shadow-sm">
                       <h5 className="font-semibold text-green-800 mb-2 flex items-center">
                         <Shield className="w-4 h-4 mr-2 text-green-600" />
-                        Practical Tips
+                        {lang === 'hi' ? 'व्यावहारिक सुझाव' : lang === 'te' ? 'ఆచరణాత్మక చిట్కాలు' : 'Practical Tips'}
                       </h5>
                       <div className="space-y-2">
                         {message.previewContent.tips.slice(0, 3).map((tip, idx) => (
@@ -476,7 +497,7 @@ const SakhiTry = () => {
                     <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl shadow-sm">
                       <h5 className="font-semibold text-blue-800 mb-2 flex items-center">
                         <MessageCircle className="w-4 h-4 mr-2 text-blue-600" />
-                        Key Points to Remember
+                        {lang === 'hi' ? 'याद रखने योग्य मुख्य बातें' : lang === 'te' ? 'గుర్తుంచుకోవలసిన ముఖ్య విషయాలు' : 'Key Points to Remember'}
                       </h5>
                       <div className="space-y-2">
                         {message.previewContent.keyPoints.slice(0, 2).map((point, idx) => (
@@ -492,7 +513,7 @@ const SakhiTry = () => {
                     <div className="p-3 bg-orange-50 border border-orange-200 rounded-xl shadow-sm">
                       <h5 className="font-semibold text-orange-800 mb-2 flex items-center">
                         <Users className="w-4 h-4 mr-2 text-orange-600" />
-                        Helpful Resources
+                        {lang === 'hi' ? 'सहायक संसाधन' : lang === 'te' ? 'సహాయక వనరులు' : 'Helpful Resources'}
                       </h5>
                       <div className="space-y-2">
                         {message.previewContent.resources.slice(0, 2).map((resource, idx) => (
@@ -509,9 +530,16 @@ const SakhiTry = () => {
                       <div className="flex items-start space-x-2">
                         <Shield className="w-4 h-4 text-red-600 mt-1 flex-shrink-0" />
                         <div>
-                          <p className="font-semibold text-red-800 text-sm">Important Notice</p>
+                          <p className="font-semibold text-red-800 text-sm">
+                            {lang === 'hi' ? 'महत्वपूर्ण सूचना' : lang === 'te' ? 'ముఖ్యమైన నోటీసు' : 'Important Notice'}
+                          </p>
                           <p className="text-xs text-red-700 mt-1 leading-relaxed">
-                            If you're experiencing severe distress or emergency symptoms, please contact a healthcare professional immediately.
+                            {lang === 'hi' 
+                              ? 'यदि आप गंभीर संकट या आपातकालीन लक्षणों का अनुभव कर रहे हैं, तो कृपया तुरंत स्वास्थ्य पेशेवर से संपर्क करें।'
+                              : lang === 'te'
+                              ? 'మీరు తీవ్రమైన బాధ లేదా అత్యవసర లక్షణాలను అనుభవిస్తుంటే, దయచేసి వెంటనే ఆరోగ్య నిపుణుడిని సంప్రదించండి।'
+                              : 'If you\'re experiencing severe distress or emergency symptoms, please contact a healthcare professional immediately.'
+                            }
                           </p>
                         </div>
                       </div>
@@ -530,7 +558,7 @@ const SakhiTry = () => {
             <Input
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Type your message..."
+              placeholder={t("chat_type_message")}
               className="flex-1 rounded-full text-sm lg:text-base h-10 lg:h-auto"
               onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
             />
@@ -648,7 +676,7 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Heart className="w-5 h-5 text-pink-500" />
-              <span>Key Points to Remember</span>
+              <span>{lang === 'hi' ? 'याद रखने योग्य मुख्य बातें' : lang === 'te' ? 'గుర్తుంచుకోవలసిన ముఖ్య విషయాలు' : 'Key Points to Remember'}</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -666,7 +694,7 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Shield className="w-5 h-5 text-green-500" />
-              <span>Practical Tips</span>
+              <span>{lang === 'hi' ? 'व्यावहारिक सुझाव' : lang === 'te' ? 'ఆచరణాత్మక చిట్కాలు' : 'Practical Tips'}</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -683,7 +711,7 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Users className="w-5 h-5 text-blue-500" />
-              <span>Additional Resources</span>
+              <span>{lang === 'hi' ? 'अतिरिक्त संसाधन' : lang === 'te' ? 'అదనపు వనరులు' : 'Additional Resources'}</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -703,10 +731,16 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
             <div className="flex items-start space-x-3">
               <Shield className="w-5 h-5 text-orange-600 mt-1 flex-shrink-0" />
               <div>
-                <h4 className="font-semibold text-orange-900 mb-1">Important Notice</h4>
+                <h4 className="font-semibold text-orange-900 mb-1">
+                  {lang === 'hi' ? 'महत्वपूर्ण सूचना' : lang === 'te' ? 'ముఖ్యమైన నోటీసు' : 'Important Notice'}
+                </h4>
                 <p className="text-sm text-orange-800">
-                  If you're experiencing severe distress, thoughts of self-harm, or emergency symptoms,
-                  please contact a healthcare professional or emergency services immediately.
+                  {lang === 'hi' 
+                    ? 'यदि आप गंभीर संकट, आत्म-हानि के विचार, या आपातकालीन लक्षणों का अनुभव कर रहे हैं, तो कृपया तुरंत स्वास्थ्य पेशेवर या आपातकालीन सेवाओं से संपर्क करें।'
+                    : lang === 'te'
+                    ? 'మీరు తీవ్రమైన బాధ, స్వీయ-హాని ఆలోచనలు లేదా అత్యవసర లక్షణాలను అనుభవిస్తుంటే, దయచేసి వెంటనే ఆరోగ్య నిపుణుడిని లేదా అత్యవసర సేవలను సంప్రదించండి।'
+                    : 'If you\'re experiencing severe distress, thoughts of self-harm, or emergency symptoms, please contact a healthcare professional or emergency services immediately.'
+                  }
                 </p>
               </div>
             </div>
