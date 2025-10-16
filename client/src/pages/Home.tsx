@@ -648,7 +648,7 @@ const Home = () => {
                   {t("orient_desc_preg")}
                 </p>
                 <img
-                  src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300"
+                  src="https://images.unsplash.com/photo-1544787215259-38e31be8751f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300"
                   alt="Pregnant woman in peaceful outdoor setting"
                   className="rounded-xl w-full h-32 object-cover mt-auto group-hover:shadow-lg transition-shadow"
                 />
@@ -1022,7 +1022,7 @@ const Home = () => {
                   <img
                     src={getStoryImage(index)}
                     alt={story.title}
-                    className="rounded-xl w-full h-32 object-cover mb-4 group-hover:shadow-lg transition-shadow"
+                    className="rounded-xl w-full h-32 object-cover mb-4 group-hover:scale-105 group-hover:shadow-lg transition-all duration-300"
                   />
                   <h3
                     className="text-lg font-bold text-foreground font-serif mb-2 group-hover:text-pink-600 transition-colors"
