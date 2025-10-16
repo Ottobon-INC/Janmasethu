@@ -28,20 +28,76 @@ interface PreviewContent {
   keyPoints: string[];
 }
 
+// Dummy LanguageSwitcher component for demonstration
+const LanguageSwitcher = () => {
+  const { t, setLanguage } = useLanguage();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedLang, setSelectedLang] = useState('en'); // Default to English
+
+  const handleLanguageChange = (lang: string) => {
+    setSelectedLang(lang);
+    setLanguage(lang);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="relative">
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setIsOpen(!isOpen)}
+        className="text-white hover:bg-white/20 flex items-center space-x-1"
+      >
+        <Globe className="w-4 h-4" />
+        <span>{selectedLang.toUpperCase()}</span>
+      </Button>
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg py-1 z-50">
+          <button
+            onClick={() => handleLanguageChange('en')}
+            className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+          >
+            English
+          </button>
+          <button
+            onClick={() => handleLanguageChange('hi')}
+            className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Hindi
+          </button>
+          <button
+            onClick={() => handleLanguageChange('te')}
+            className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Telugu
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const SakhiTry = () => {
-  const { t } = useLanguage();
+  const { t, setLanguage } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isChatOpen, setIsChatOpen] = useState(true); // State to control chat panel visibility
 
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   const [inputText, setInputText] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState('te');
+  const [selectedLanguage, setSelectedLanguage] = useState('en'); // Default to English
   const [previewContent, setPreviewContent] = useState<PreviewContent | null>(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Set initial language to English
+  useEffect(() => {
+    setLanguage('en');
+  }, [setLanguage]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -244,8 +300,8 @@ const SakhiTry = () => {
     const message = userMessage.toLowerCase();
     let category = 'anxiety';
 
-    if (message.includes('wait') || message.includes('waiting') || message.includes('two week') || 
-        message.includes('प्रतीक्षा') || message.includes('इंतज़ार') || 
+    if (message.includes('wait') || message.includes('waiting') || message.includes('two week') ||
+        message.includes('प्रतीक्षा') || message.includes('इंतज़ार') ||
         message.includes('వేచిచూపు') || message.includes('వేచి')) {
       category = 'wait';
     } else if (message.includes('partner') || message.includes('husband') || message.includes('wife') ||
@@ -307,258 +363,206 @@ const SakhiTry = () => {
   const currentPrompts = quickPrompts.map(p => p[selectedLanguage as keyof typeof p]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      {/* Close Button - Desktop Only */}
-      <div className="hidden lg:block absolute top-4 right-4 z-50">
-        <Link href="/sakhi">
-          <Button variant="ghost" size="sm" className="rounded-full bg-white/80 backdrop-blur-sm hover:bg-white w-10 h-10 p-0">
-            <X className="w-4 h-4" />
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
+      {/* Full Width Header */}
+      <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 flex items-center justify-between z-40 shadow-lg">
+        <div className="flex items-center space-x-3">
+          <Heart className="w-6 h-6" />
+          <h3 className="font-bold text-lg">Sakhi</h3>
+        </div>
+        <div className="flex items-center space-x-4">
+          <LanguageSwitcher />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsChatOpen(false)}
+            className="text-white hover:bg-white/20 md:hidden"
+          >
+            <X className="w-5 h-5" />
           </Button>
-        </Link>
-      </div>
-
-      {/* Main Content */}
-      <div className="h-screen">
-        {/* Desktop Layout */}
-        <div className="hidden lg:block h-full">
-          <ResizablePanelGroup direction="horizontal">
-            <ResizablePanel defaultSize={30} minSize={25} maxSize={40}>
-              <ChatPanel 
-                messages={messages}
-                inputText={inputText}
-                setInputText={setInputText}
-                sendMessage={sendMessage}
-                currentPrompts={currentPrompts}
-                messagesEndRef={messagesEndRef}
-                selectedLanguage={selectedLanguage}
-                setSelectedLanguage={setSelectedLanguage}
-              />
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={70}>
-              <PreviewPanel 
-                previewContent={previewContent}
-                isVideoPlaying={isVideoPlaying}
-                setIsVideoPlaying={setIsVideoPlaying}
-                isMuted={isMuted}
-                setIsMuted={setIsMuted}
-                selectedLanguage={selectedLanguage}
-              />
-            </ResizablePanel>
-          </ResizablePanelGroup>
-        </div>
-
-        {/* Mobile Layout - Chat Panel Only */}
-        <div className="lg:hidden h-full">
-          <ChatPanel 
-            messages={messages}
-            inputText={inputText}
-            setInputText={setInputText}
-            sendMessage={sendMessage}
-            currentPrompts={currentPrompts}
-            messagesEndRef={messagesEndRef}
-            selectedLanguage={selectedLanguage}
-            setSelectedLanguage={setSelectedLanguage}
-          />
         </div>
       </div>
-    </div>
-  );
-};
 
-// Chat Panel Component
-const ChatPanel = ({ messages, inputText, setInputText, sendMessage, currentPrompts, messagesEndRef, selectedLanguage, setSelectedLanguage }: any) => {
-  return (
-    <div className="h-full flex flex-col bg-white">
-      {/* Chat Header */}
-      <div className="p-3 lg:p-4 border-b border-gray-200 bg-gradient-to-r from-purple-500 to-pink-500 text-white relative">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 lg:space-x-3 flex-1 min-w-0">
-            <div className="w-7 h-7 lg:w-10 lg:h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0">
-              <Heart className="w-3 h-3 lg:w-5 lg:h-5" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <h2 className="font-semibold text-xs lg:text-base truncate">Chat with Sakhi</h2>
-              <p className="text-xs opacity-90 truncate">
-                <span className="w-2 h-2 bg-green-400 rounded-full inline-block mr-1"></span>
-                Online and ready to help
+      {/* Chat Panel */}
+      <div className={`fixed top-16 left-0 h-[calc(100vh-4rem)] bg-white shadow-2xl transition-all duration-300 ease-in-out z-50 ${
+        isChatOpen ? 'w-full md:w-96' : 'w-0'
+      } overflow-hidden`}>
+
+        {/* Chat Header - Removed, now using full width header */}
+        <div className="hidden"></div>
+
+        {/* Messages Area */}
+        <div className="flex-1 overflow-y-auto p-3 lg:p-4 space-y-3 lg:space-y-4 h-[calc(100%-80px)]"> {/* Adjusted height */}
+          {messages.length === 0 && (
+            <div className="text-center py-4 lg:py-8 px-4">
+              <Heart className="w-8 h-8 lg:w-12 lg:h-12 text-purple-300 mx-auto mb-3 lg:mb-4" />
+              <h3 className="text-base lg:text-lg font-semibold text-gray-700 mb-2">Welcome to Sakhi</h3>
+              <p className="text-gray-500 text-xs lg:text-sm mb-3 lg:mb-4 leading-relaxed">
+                I'm here to provide compassionate support for your fertility journey.
+                Type in any language - I'll respond in the same language.
               </p>
-            </div>
-          </div>
-          {/* Header Controls - Language and Close Button */}
-          <div className="flex items-center space-x-2 flex-shrink-0">
-            {/* Language Selector */}
-            <div className="flex items-center space-x-1 bg-white/20 backdrop-blur-sm rounded-lg px-2 lg:px-3 py-1 lg:py-2 border border-white/30">
-              <Globe className="w-3 h-3 lg:w-4 lg:h-4 text-white" />
-              <select 
-                value={selectedLanguage} 
-                onChange={(e) => setSelectedLanguage(e.target.value)}
-                className="border-none bg-transparent text-xs lg:text-sm text-white focus:ring-0 focus:outline-none cursor-pointer min-w-0"
-              >
-                <option value="en" className="text-gray-900 bg-white">EN</option>
-                <option value="hi" className="text-gray-900 bg-white">हि</option>
-                <option value="te" className="text-gray-900 bg-white">తె</option>
-              </select>
-            </div>
-            {/* Close Button - Mobile Only */}
-            <div className="lg:hidden">
-              <Link href="/sakhi">
-                <Button variant="ghost" size="sm" className="rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 w-8 h-8 p-0 border border-white/30">
-                  <X className="w-3 h-3" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-3 lg:p-4 space-y-3 lg:space-y-4">
-        {messages.length === 0 && (
-          <div className="text-center py-4 lg:py-8 px-4">
-            <Heart className="w-8 h-8 lg:w-12 lg:h-12 text-purple-300 mx-auto mb-3 lg:mb-4" />
-            <h3 className="text-base lg:text-lg font-semibold text-gray-700 mb-2">Welcome to Sakhi</h3>
-            <p className="text-gray-500 text-xs lg:text-sm mb-3 lg:mb-4 leading-relaxed">
-              I'm here to provide compassionate support for your fertility journey. 
-              Type in any language - I'll respond in the same language.
-            </p>
-            <div className="space-y-2">
-              <p className="text-xs text-gray-400">Try asking about:</p>
-              {currentPrompts.map((prompt, index) => (
-                <button
-                  key={index}
-                  onClick={() => setInputText(prompt)}
-                  className="block w-full text-left p-2 lg:p-3 text-xs lg:text-sm bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200"
-                >
-                  "{prompt}"
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {messages.map((message) => (
-          <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} px-2 lg:px-0`}>
-            <div className={`max-w-[85%] lg:max-w-[80%] ${message.isUser ? 'order-2' : 'order-1'}`}>
-              <div className={`flex items-start space-x-2 ${message.isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                <div className={`w-6 h-6 lg:w-8 lg:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  message.isUser ? 'bg-purple-500 text-white' : 'bg-pink-100 text-pink-600'
-                }`}>
-                  {message.isUser ? <User className="w-3 h-3 lg:w-4 lg:h-4" /> : <Bot className="w-3 h-3 lg:w-4 lg:h-4" />}
-                </div>
-                <div className={`px-3 lg:px-4 py-2 rounded-2xl ${
-                  message.isUser 
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' 
-                    : 'bg-gray-100 text-gray-800'
-                }`}>
-                  <p className="text-sm leading-relaxed">{message.text}</p>
-                  <p className={`text-xs mt-1 ${message.isUser ? 'text-white opacity-70' : 'text-gray-500'}`}>
-                    {message.timestamp.toLocaleTimeString()}
-                  </p>
-                </div>
+              <div className="space-y-2">
+                <p className="text-xs text-gray-400">Try asking about:</p>
+                {currentPrompts.map((prompt, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setInputText(prompt)}
+                    className="block w-full text-left p-2 lg:p-3 text-xs lg:text-sm bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200"
+                  >
+                    "{prompt}"
+                  </button>
+                ))}
               </div>
-              {/* Render preview content for bot messages in mobile view only */}
-              {!message.isUser && message.previewContent && (
-                <div className="lg:hidden mt-3 space-y-3">
-                  {/* Title and Description */}
-                  <div className="p-3 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl shadow-sm">
-                    <h4 className="font-semibold text-purple-800 mb-2 flex items-center">
-                      <Heart className="w-4 h-4 mr-2 text-pink-500" />
-                      {message.previewContent.title}
-                    </h4>
-                    <p className="text-sm text-purple-700 leading-relaxed">{message.previewContent.description}</p>
-                  </div>
+            </div>
+          )}
 
-                  {/* Practical Tips */}
-                  <div className="p-3 bg-green-50 border border-green-200 rounded-xl shadow-sm">
-                    <h5 className="font-semibold text-green-800 mb-2 flex items-center">
-                      <Shield className="w-4 h-4 mr-2 text-green-600" />
-                      Practical Tips
-                    </h5>
-                    <div className="space-y-2">
-                      {message.previewContent.tips.slice(0, 3).map((tip, idx) => (
-                        <div key={idx} className="flex items-start space-x-2">
-                          <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                          <p className="text-sm text-green-700 leading-relaxed">{tip}</p>
-                        </div>
-                      ))}
+          {messages.map((message) => (
+            <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} px-2 lg:px-0`}>
+              <div className={`max-w-[85%] lg:max-w-[80%] ${message.isUser ? 'order-2' : 'order-1'}`}>
+                <div className={`flex items-start space-x-2 ${message.isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                  <div className={`w-6 h-6 lg:w-8 lg:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    message.isUser ? 'bg-purple-500 text-white' : 'bg-pink-100 text-pink-600'
+                  }`}>
+                    {message.isUser ? <User className="w-3 h-3 lg:w-4 lg:h-4" /> : <Bot className="w-3 h-3 lg:w-4 lg:h-4" />}
+                  </div>
+                  <div className={`px-3 lg:px-4 py-2 rounded-2xl ${
+                    message.isUser
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    <p className="text-sm leading-relaxed">{message.text}</p>
+                    <p className={`text-xs mt-1 ${message.isUser ? 'text-white opacity-70' : 'text-gray-500'}`}>
+                      {message.timestamp.toLocaleTimeString()}
+                    </p>
+                  </div>
+                </div>
+                {/* Render preview content for bot messages in mobile view only */}
+                {!message.isUser && message.previewContent && (
+                  <div className="lg:hidden mt-3 space-y-3">
+                    {/* Title and Description */}
+                    <div className="p-3 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl shadow-sm">
+                      <h4 className="font-semibold text-purple-800 mb-2 flex items-center">
+                        <Heart className="w-4 h-4 mr-2 text-pink-500" />
+                        {message.previewContent.title}
+                      </h4>
+                      <p className="text-sm text-purple-700 leading-relaxed">{message.previewContent.description}</p>
                     </div>
-                  </div>
 
-                  {/* Key Points */}
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl shadow-sm">
-                    <h5 className="font-semibold text-blue-800 mb-2 flex items-center">
-                      <MessageCircle className="w-4 h-4 mr-2 text-blue-600" />
-                      Key Points to Remember
-                    </h5>
-                    <div className="space-y-2">
-                      {message.previewContent.keyPoints.slice(0, 2).map((point, idx) => (
-                        <div key={idx} className="flex items-start space-x-2">
-                          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                          <p className="text-sm text-blue-700 leading-relaxed">{point}</p>
-                        </div>
-                      ))}
+                    {/* Practical Tips */}
+                    <div className="p-3 bg-green-50 border border-green-200 rounded-xl shadow-sm">
+                      <h5 className="font-semibold text-green-800 mb-2 flex items-center">
+                        <Shield className="w-4 h-4 mr-2 text-green-600" />
+                        Practical Tips
+                      </h5>
+                      <div className="space-y-2">
+                        {message.previewContent.tips.slice(0, 3).map((tip, idx) => (
+                          <div key={idx} className="flex items-start space-x-2">
+                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <p className="text-sm text-green-700 leading-relaxed">{tip}</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Resources */}
-                  <div className="p-3 bg-orange-50 border border-orange-200 rounded-xl shadow-sm">
-                    <h5 className="font-semibold text-orange-800 mb-2 flex items-center">
-                      <Users className="w-4 h-4 mr-2 text-orange-600" />
-                      Helpful Resources
-                    </h5>
-                    <div className="space-y-2">
-                      {message.previewContent.resources.slice(0, 2).map((resource, idx) => (
-                        <div key={idx} className="p-2 bg-white border border-orange-200 rounded-lg">
-                          <p className="font-medium text-orange-800 text-sm">{resource.title}</p>
-                          <p className="text-xs text-orange-700 mt-1">{resource.description}</p>
-                        </div>
-                      ))}
+                    {/* Key Points */}
+                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl shadow-sm">
+                      <h5 className="font-semibold text-blue-800 mb-2 flex items-center">
+                        <MessageCircle className="w-4 h-4 mr-2 text-blue-600" />
+                        Key Points to Remember
+                      </h5>
+                      <div className="space-y-2">
+                        {message.previewContent.keyPoints.slice(0, 2).map((point, idx) => (
+                          <div key={idx} className="flex items-start space-x-2">
+                            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <p className="text-sm text-blue-700 leading-relaxed">{point}</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Emergency Notice */}
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-xl shadow-sm">
-                    <div className="flex items-start space-x-2">
-                      <Shield className="w-4 h-4 text-red-600 mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold text-red-800 text-sm">Important Notice</p>
-                        <p className="text-xs text-red-700 mt-1 leading-relaxed">
-                          If you're experiencing severe distress or emergency symptoms, please contact a healthcare professional immediately.
-                        </p>
+                    {/* Resources */}
+                    <div className="p-3 bg-orange-50 border border-orange-200 rounded-xl shadow-sm">
+                      <h5 className="font-semibold text-orange-800 mb-2 flex items-center">
+                        <Users className="w-4 h-4 mr-2 text-orange-600" />
+                        Helpful Resources
+                      </h5>
+                      <div className="space-y-2">
+                        {message.previewContent.resources.slice(0, 2).map((resource, idx) => (
+                          <div key={idx} className="p-2 bg-white border border-orange-200 rounded-lg">
+                            <p className="font-medium text-orange-800 text-sm">{resource.title}</p>
+                            <p className="text-xs text-orange-700 mt-1">{resource.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Emergency Notice */}
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-xl shadow-sm">
+                      <div className="flex items-start space-x-2">
+                        <Shield className="w-4 h-4 text-red-600 mt-1 flex-shrink-0" />
+                        <div>
+                          <p className="font-semibold text-red-800 text-sm">Important Notice</p>
+                          <p className="text-xs text-red-700 mt-1 leading-relaxed">
+                            If you're experiencing severe distress or emergency symptoms, please contact a healthcare professional immediately.
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input Area */}
+        <div className="p-3 lg:p-4 border-t border-gray-200 bg-gray-50 absolute bottom-0 left-0 right-0 safe-area-padding-bottom">
+          <div className="flex space-x-2 mb-2">
+            <Input
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Type your message..."
+              className="flex-1 rounded-full text-sm lg:text-base h-10 lg:h-auto"
+              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+            />
+            <Button
+              onClick={sendMessage}
+              className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 h-10 w-10 lg:h-auto lg:w-auto lg:px-4"
+            >
+              <Send className="w-4 h-4" />
+            </Button>
           </div>
-        ))}
-        <div ref={messagesEndRef} />
+          <p className="text-xs text-gray-500 text-center">
+            <Shield className="w-3 h-3 inline mr-1" />
+            All conversations are private and stay on your device
+          </p>
+        </div>
       </div>
 
-      {/* Input Area */}
-      <div className="p-3 lg:p-4 border-t border-gray-200 bg-gray-50 safe-area-padding-bottom">
-        <div className="flex space-x-2 mb-2">
-          <Input
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-1 rounded-full text-sm lg:text-base h-10 lg:h-auto"
-            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+      {/* Main Content Area */}
+      <div className={`transition-all duration-300 pt-16 ${isChatOpen ? 'md:ml-96' : 'ml-0'}`}>
+        <div className="container mx-auto px-4 py-8">
+          <PreviewPanel
+            previewContent={previewContent}
+            isVideoPlaying={isVideoPlaying}
+            setIsVideoPlaying={setIsVideoPlaying}
+            isMuted={isMuted}
+            setIsMuted={setIsMuted}
+            selectedLanguage={selectedLanguage}
           />
-          <Button 
-            onClick={sendMessage}
-            className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 h-10 w-10 lg:h-auto lg:w-auto lg:px-4"
-          >
-            <Send className="w-4 h-4" />
-          </Button>
         </div>
-        <p className="text-xs text-gray-500 text-center">
-          <Shield className="w-3 h-3 inline mr-1" />
-          All conversations are private and stay on your device
-        </p>
       </div>
+
+      {/* Mobile Chat Toggle */}
+      {!isChatOpen && (
+        <Button
+          onClick={() => setIsChatOpen(true)}
+          className="fixed bottom-6 right-6 md:hidden gradient-button text-white rounded-full w-14 h-14 shadow-2xl z-30 flex items-center justify-center"
+        >
+          <MessageCircle className="w-6 h-6" />
+        </Button>
+      )}
     </div>
   );
 };
@@ -692,7 +696,7 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
               <div>
                 <h4 className="font-semibold text-orange-900 mb-1">Important Notice</h4>
                 <p className="text-sm text-orange-800">
-                  If you're experiencing severe distress, thoughts of self-harm, or emergency symptoms, 
+                  If you're experiencing severe distress, thoughts of self-harm, or emergency symptoms,
                   please contact a healthcare professional or emergency services immediately.
                 </p>
               </div>
