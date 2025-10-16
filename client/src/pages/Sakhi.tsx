@@ -45,8 +45,8 @@ const Sakhi = () => {
       setUserId(userId || "");
       setShowOnboarding(true);
     } else {
-      // Existing user - go directly to Sakhi page (not /sakhi/try)
-      // User is already on /sakhi page, just show success
+      // Existing user - redirect to /sakhi/try
+      setLocation("/sakhi/try");
       toast({
         title: "Welcome back!",
         description: "You're all set to continue your journey.",
