@@ -128,13 +128,14 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
 
         const data = await response.json();
         console.log("Login response:", data);
-
+        
+        // Close modal first, then trigger redirect
+        onAuthSuccess(false); // Existing user - skip onboarding
+        
         toast({
           title: "Welcome back!",
           description: "Redirecting to Sakhi...",
         });
-        
-        onAuthSuccess(false); // Existing user - skip onboarding
       } catch (error) {
         console.error("Sign-in error:", error);
         toast({
