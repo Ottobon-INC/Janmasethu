@@ -93,29 +93,30 @@ const Home = () => {
 
   return (
     <>
-      {/* Full-Screen Hero Video Section - Desktop only, behind header */}
-      <section className="hero-video-section">
-        <video
-          className="hero-video"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          poster="/babyFeet.jpg"
-          webkit-playsinline="true"
-          x5-playsinline="true"
-          onLoadStart={() => console.log("Video loading started...")}
-          onLoadedData={() => console.log("Video data loaded")}
-          onCanPlay={() => console.log("Video can play")}
-          onPlay={() => console.log("Video started playing")}
-        >
-          <source src="/Janmasethu1.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        
-        {/* Optional overlay gradient for better text readability */}
-        <div className="hero-video-overlay"></div>
+      {/* Responsive Video Section */}
+      <section className="w-full py-4 px-2 sm:px-4 lg:py-8 lg:px-8">
+        <div className="relative w-full mx-auto overflow-hidden rounded-2xl md:rounded-3xl">
+          <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+            <video
+              className="absolute top-0 left-0 w-full h-full object-contain md:object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              poster="/babyFeet.jpg"
+              webkit-playsinline="true"
+              x5-playsinline="true"
+              onLoadStart={() => console.log("Video loading started...")}
+              onLoadedData={() => console.log("Video data loaded")}
+              onCanPlay={() => console.log("Video can play")}
+              onPlay={() => console.log("Video started playing")}
+            >
+              <source src="/Janmasethu1.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
       </section>
 
       <div className="container mx-auto px-4 py-8">
