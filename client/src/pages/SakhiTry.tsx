@@ -76,7 +76,7 @@ const LanguageSwitcher = () => {
 };
 
 const SakhiTry = () => {
-  const { t, setLang } = useLanguage();
+  const { t, lang, setLang } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isChatOpen, setIsChatOpen] = useState(true); // State to control chat panel visibility
 
