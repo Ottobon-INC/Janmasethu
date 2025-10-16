@@ -1,0 +1,361 @@
+{
+  "name": "main sakhi flow",
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a multilingual AI assistant and a question refiner.\n\nTasks:\n1. Detect the language of the user's question. If it is Telugu, respond in Telugu. If it is English, respond in English.\n2. Identify the intent of the user's question clearly in a single short phrase (like \"Healthcare query\", \"Loan inquiry\", etc.).\n3. Rephrase/refine the user's question to remove filler words and make it concise, keeping the core meaning intact.\n\nReturn the result strictly in this JSON format:\n\n{\n  \"original_question\": \" {{ $json.body.message }}\",\n  \"refined_question\": \"<Refined version of the question>\",\n  \"intent\": \"<Intent of the question>\",\n}\n\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -2700,
+        260
+      ],
+      "id": "806f33f7-9bd1-4c02-8373-0798656a5da7",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "pEUYa8tYEElq7nEu",
+          "name": "janmasethu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1800,
+        680
+      ],
+      "id": "3b24468b-5c2a-44c8-ae19-f32f674f7b2c",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "pEUYa8tYEElq7nEu",
+          "name": "janmasethu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "janma",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -3000,
+        260
+      ],
+      "id": "203e8bbb-c106-4259-a2be-0339e60ae535",
+      "name": "Webhook",
+      "webhookId": "761e88c7-d932-47c4-b2d3-27e9b7840cd5"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the first item from the input\nconst item = items[0];\n\n// 1. The 'content' field is a string containing the final JSON.\n// We access it directly from the message object.\nconst contentString = item.json.message.content;\n\n// 2. We need to clean up the content string by removing the markdown backticks and \"json\" label.\nconst cleanedString = contentString.replace(/```json\\n|\\n```/g, '');\n\n// 3. Now, parse the cleaned string to get the final JSON object.\nconst finalData = JSON.parse(cleanedString);\n\n// 4. Extract the required questions.\nconst originalQuestion = finalData.original_question;\nconst refinedQuestion = finalData.refined_question;\n\n// 5. Return the extracted data as the output of this node.\nreturn {\n  json: {\n    original_question: originalQuestion,\n    refined_question: refinedQuestion\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2260,
+        260
+      ],
+      "id": "cd550369-092c-4f27-9e87-282868f81dab",
+      "name": "to fetch redefined question"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "selected_agent",
+              "value": "={{$json.domain.toLowerCase()}}\n\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ca3d5d62-2d69-415f-a3e2-87657a0f390b",
+      "name": "Set Final Agent (Search Path)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -2160,
+        3020
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1640,
+        680
+      ],
+      "id": "a8e284d5-b70f-491e-92c7-1fb1d6ff2d1f",
+      "name": "Embeddings OpenAI4",
+      "credentials": {
+        "openAiApi": {
+          "id": "pEUYa8tYEElq7nEu",
+          "name": "janmasethu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -1060,
+        260
+      ],
+      "id": "8ee16341-b61a-4cee-a885-f72205be2d8a",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Work with your postgresql database and give me relevant answer.",
+        "tableName": "healthcare_docs",
+        "includeDocumentMetadata": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        -1660,
+        500
+      ],
+      "id": "adcd5b5f-1303-4222-b002-195a8f85182c",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "sg7vsKVj9sQe1MXx",
+          "name": "Janmasethu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10ec68ae-f431-40fa-94e0-7733eaf6730b",
+              "name": "original_question",
+              "value": "={{ $json.original_question }}",
+              "type": "string"
+            },
+            {
+              "id": "26930080-a268-44a1-85f6-0bf82f35d6fc",
+              "name": "refined_question",
+              "value": "={{ $json.refined_question }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1980,
+        260
+      ],
+      "id": "1e4dd390-69ec-462d-8b7f-3eea540a6c8f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.refined_question }}\n\nYou are Sakhi, the AI assistant of the Janmasethu app.\n\nInstructions:\n1. If the user is asking for nearby IVF or fertility clinics, provide a clear, friendly list of clinics in Vizag (Visakhapatnam) with:  \n   - Clinic Name  \n   - Address / Area  \n   - Services offered (IVF, IUI, ICSI, Fertility tests, etc.)  \n   - Website or Contact link  \n\n   Use simple language that is easy for everyone to understand. Pull the actual clinic details from the database or static list; do not include placeholder names in this prompt.\n\n2. If the user asks any other question, answer normally without giving clinic information. Keep your answer friendly and helpful.",
+        "options": {
+          "systemMessage": "=You are Sakhi, a professional and compassionate healthcare expert specializing in the parenthood journey. Your function is to answer the user’s question ONLY based on the context from the knowledge base provided by your tool.\nRespond in the same language that the user asked the question in.** If the user asks in Telugu, respond in Telugu. If the user asks in English, respond in English.\nIf the knowledge base context is insufficient, state clearly that you cannot find the relevant information. **Do not guess or give advice that is not sourced from your knowledge base.**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -1760,
+        260
+      ],
+      "id": "332c767b-7a4d-442f-bd04-f680d99b22d3",
+      "name": "AI Agent1"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "connection": "upgrade",
+            "host": "n8n.ottobon.in",
+            "x-real-ip": "123.201.171.161",
+            "x-forwarded-for": "123.201.171.161",
+            "x-forwarded-proto": "https",
+            "content-length": "41",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0",
+            "sec-ch-ua": "\"Microsoft Edge\";v=\"141\", \"Not?A_Brand\";v=\"8\", \"Chromium\";v=\"141\"",
+            "content-type": "application/json",
+            "sec-ch-ua-mobile": "?0",
+            "accept": "*/*",
+            "origin": "https://b62e9dcc-0da8-4a8f-adb3-4fd9d0a60fc4-00-fu4ypmc9mz9u.janeway.replit.dev",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "referer": "https://b62e9dcc-0da8-4a8f-adb3-4fd9d0a60fc4-00-fu4ypmc9mz9u.janeway.replit.dev/",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,en-IN;q=0.8"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": "What is IVF",
+            "language": "en"
+          },
+          "webhookUrl": "https://n8n.ottobon.in/webhook/janma",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "to fetch redefined question",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "to fetch redefined question": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Final Agent (Search Path)": {
+      "main": [
+        []
+      ]
+    },
+    "Embeddings OpenAI4": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ],
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9154a467-86fb-4116-acb0-62eb8deec4b4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "59e10422e2cab43eea53cd528e77f00b03bfbaffc066053f53d54d30c906caa0"
+  },
+  "id": "9EmGW9pPlFXlS8vO",
+  "tags": []
+}
