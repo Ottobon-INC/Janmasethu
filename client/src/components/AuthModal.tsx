@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useToast } from "@/hooks/use-toast";
 
 interface AuthModalProps {
   open: boolean;
@@ -33,7 +32,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (isSignUp) {
       if (!formData.fullName || !formData.email || !formData.password) {
         toast({
@@ -43,7 +42,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
         });
         return;
       }
-      
+
       // Trigger webhook for sign-up
       setIsLoading(true);
       try {
@@ -64,31 +63,28 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
         }
 
         const data = await response.json();
-        
+
         // Capture the unique ID from the response
         if (data.id || data.userId || data.user_id) {
           const uniqueId = data.id || data.userId || data.user_id;
           storeUserId(uniqueId);
           console.log("User ID captured:", uniqueId);
-          
+
           toast({
             title: "Account created!",
             description: "Please tell us about yourself.",
           });
-          
-          // Call onAuthSuccess with userId
-          onAuthSuccess(true, undefined);
-          onClose();
+
+          // Show relationship selection
+          setShowRelationship(true);
+
         } else {
           console.error("No user ID in response:", data);
           toast({
             title: "Warning",
-            description: "Account created but user ID not found. Continuing...",
+            description: "Account created but user ID not found. Please try again.",
+            variant: "destructive",
           });
-          
-          // Still call onAuthSuccess
-          onAuthSuccess(true, undefined);
-          onClose();
         }
       } catch (error) {
         console.error("Sign-up error:", error);
@@ -109,7 +105,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
         });
         return;
       }
-      
+
       // Trigger webhook for sign-in
       setIsLoading(true);
       try {
@@ -135,8 +131,9 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           title: "Welcome back!",
           description: "Redirecting to Sakhi...",
         });
-        
+
         onAuthSuccess(false); // Existing user - skip onboarding
+        onClose();
       } catch (error) {
         console.error("Sign-in error:", error);
         toast({
@@ -162,9 +159,10 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
 
     console.log("Relationship selected:", relationship);
     console.log("User ID:", userId);
-    
+
     // Close the auth modal and trigger onboarding with userId
     onAuthSuccess(true, relationship, userId);
+    onClose();
   };
 
   const handleBack = () => {
@@ -184,13 +182,13 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
               This helps us personalize your experience
             </p>
           </DialogHeader>
-          
+
           <div className="space-y-6 mt-4 overflow-y-auto max-h-[50vh] pr-2">
             <div className="space-y-4">
               <Label className="text-base font-semibold">
                 Please select your relation to the patient
               </Label>
-              
+
               <RadioGroup value={relationship} onValueChange={setRelationship}>
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
                   <RadioGroupItem value="herself" id="herself" />
@@ -198,49 +196,49 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
                     Herself
                   </Label>
                 </div>
-                
+
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
                   <RadioGroupItem value="himself" id="himself" />
                   <Label htmlFor="himself" className="cursor-pointer flex-1 font-normal">
                     Himself
                   </Label>
                 </div>
-                
+
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
                   <RadioGroupItem value="mother" id="mother" />
                   <Label htmlFor="mother" className="cursor-pointer flex-1 font-normal">
                     Mother
                   </Label>
                 </div>
-                
+
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
                   <RadioGroupItem value="father" id="father" />
                   <Label htmlFor="father" className="cursor-pointer flex-1 font-normal">
                     Father
                   </Label>
                 </div>
-                
+
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
                   <RadioGroupItem value="mother-in-law" id="mother-in-law" />
                   <Label htmlFor="mother-in-law" className="cursor-pointer flex-1 font-normal">
                     Mother-in-law
                   </Label>
                 </div>
-                
+
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
                   <RadioGroupItem value="father-in-law" id="father-in-law" />
                   <Label htmlFor="father-in-law" className="cursor-pointer flex-1 font-normal">
                     Father-in-law
                   </Label>
                 </div>
-                
+
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
                   <RadioGroupItem value="sibling" id="sibling" />
                   <Label htmlFor="sibling" className="cursor-pointer flex-1 font-normal">
                     Sibling
                   </Label>
                 </div>
-                
+
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
                   <RadioGroupItem value="other" id="other" />
                   <Label htmlFor="other" className="cursor-pointer flex-1 font-normal">
@@ -249,7 +247,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
                 </div>
               </RadioGroup>
             </div>
-            
+
             <div className="flex gap-3 pt-2">
               <Button
                 type="button"
@@ -281,7 +279,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
             {isSignUp ? "Create Account" : "Sign In"}
           </DialogTitle>
         </DialogHeader>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           {isSignUp && (
             <div className="space-y-2">
@@ -295,7 +293,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
               />
             </div>
           )}
-          
+
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -306,7 +304,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input
@@ -317,18 +315,18 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
           </div>
-          
-          <Button 
-            type="submit" 
+
+          <Button
+            type="submit"
             className="w-full gradient-button text-white"
             disabled={isLoading}
           >
-            {isLoading 
-              ? (isSignUp ? "Creating Account..." : "Signing In...") 
+            {isLoading
+              ? (isSignUp ? "Creating Account..." : "Signing In...")
               : (isSignUp ? "Create Account" : "Sign In")
             }
           </Button>
-          
+
           <div className="text-center text-sm">
             <button
               type="button"
