@@ -191,56 +191,56 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
               
               <RadioGroup value={relationship} onValueChange={setRelationship}>
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
-                  <RadioGroupItem value="herself" id="herself" />
+                  <RadioGroupItem value="herself" id="herself" className="shrink-0" />
                   <Label htmlFor="herself" className="cursor-pointer flex-1 font-normal">
                     Herself
                   </Label>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
-                  <RadioGroupItem value="himself" id="himself" />
+                  <RadioGroupItem value="himself" id="himself" className="shrink-0" />
                   <Label htmlFor="himself" className="cursor-pointer flex-1 font-normal">
                     Himself
                   </Label>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
-                  <RadioGroupItem value="mother" id="mother" />
+                  <RadioGroupItem value="mother" id="mother" className="shrink-0" />
                   <Label htmlFor="mother" className="cursor-pointer flex-1 font-normal">
                     Mother
                   </Label>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
-                  <RadioGroupItem value="father" id="father" />
+                  <RadioGroupItem value="father" id="father" className="shrink-0" />
                   <Label htmlFor="father" className="cursor-pointer flex-1 font-normal">
                     Father
                   </Label>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
-                  <RadioGroupItem value="mother-in-law" id="mother-in-law" />
+                  <RadioGroupItem value="mother-in-law" id="mother-in-law" className="shrink-0" />
                   <Label htmlFor="mother-in-law" className="cursor-pointer flex-1 font-normal">
                     Mother-in-law
                   </Label>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
-                  <RadioGroupItem value="father-in-law" id="father-in-law" />
+                  <RadioGroupItem value="father-in-law" id="father-in-law" className="shrink-0" />
                   <Label htmlFor="father-in-law" className="cursor-pointer flex-1 font-normal">
                     Father-in-law
                   </Label>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
-                  <RadioGroupItem value="sibling" id="sibling" />
+                  <RadioGroupItem value="sibling" id="sibling" className="shrink-0" />
                   <Label htmlFor="sibling" className="cursor-pointer flex-1 font-normal">
                     Sibling
                   </Label>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
-                  <RadioGroupItem value="other" id="other" />
+                  <RadioGroupItem value="other" id="other" className="shrink-0" />
                   <Label htmlFor="other" className="cursor-pointer flex-1 font-normal">
                     Other family member
                   </Label>
