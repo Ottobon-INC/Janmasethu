@@ -44,7 +44,7 @@ const LanguageSwitcher = () => {
         variant="ghost"
         size="sm"
         onClick={() => setIsOpen(!isOpen)}
-        className="text-white hover:bg-white/20 flex items-center space-x-1"
+        className="text-white flex items-center space-x-1"
       >
         <Globe className="w-4 h-4" />
         <span>{lang.toUpperCase()}</span>
