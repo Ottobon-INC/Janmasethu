@@ -482,25 +482,8 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
   const currentQuestion = questions[currentStep - 1];
 
   const handleNext = () => {
-    const currentField = currentQuestion.field;
-
-    if (!currentQuestion.optional && !answers[currentField]) {
-      toast({
-        title: "Required",
-        description: currentQuestion.type === "number" ? "Please enter a value to continue" : "Please select an option to continue",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    console.log("Moving to next question. Current answers:", answers);
-    console.log("Current step:", currentStep, "Total questions:", questions.length);
-
     if (currentStep < questions.length) {
       setCurrentStep(currentStep + 1);
-    } else {
-      console.log("Last question answered. Calling handleComplete...");
-      handleComplete();
     }
   };
 
@@ -744,16 +727,28 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
             </Button>
             <Button
               type="button"
-              onClick={() => {
+              onClick={async () => {
                 console.log("=== BUTTON CLICKED ===");
                 console.log("Current step:", currentStep, "Total questions:", questions.length);
                 
+                const currentField = currentQuestion.field;
+
+                // Validate current question before proceeding
+                if (!currentQuestion.optional && !answers[currentField]) {
+                  toast({
+                    title: "Required",
+                    description: currentQuestion.type === "number" ? "Please enter a value to continue" : "Please select an option to continue",
+                    variant: "destructive",
+                  });
+                  return;
+                }
+                
                 if (currentStep === questions.length) {
                   console.log("Last question - calling handleComplete");
-                  handleComplete();
+                  await handleComplete();
                 } else {
-                  console.log("Not last question - calling handleNext");
-                  handleNext();
+                  console.log("Not last question - moving to next");
+                  setCurrentStep(currentStep + 1);
                 }
               }}
               className="flex-1 gradient-button text-white"
