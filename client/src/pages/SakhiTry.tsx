@@ -378,8 +378,38 @@ const SakhiTry = () => {
 
       const data = await response.json();
       
-      // Use backend response or fallback to default
-      const botResponseText = data.response || data.message || "I understand your feelings, and they're completely valid. Let me share some strategies that might help you through this.";
+      // Format backend response - handle both string and JSON object responses
+      let botResponseText = "";
+      
+      if (typeof data === 'string') {
+        botResponseText = data;
+      } else if (data.response) {
+        // If response is a JSON object with structured data
+        if (typeof data.response === 'object') {
+          // Format as a natural Sakhi response
+          const parts = [];
+          
+          if (data.response.greeting) parts.push(data.response.greeting);
+          if (data.response.message) parts.push(data.response.message);
+          if (data.response.advice) parts.push(`\n\n${data.response.advice}`);
+          if (data.response.tips && Array.isArray(data.response.tips)) {
+            parts.push(`\n\n💡 Here are some helpful tips:\n${data.response.tips.map((tip: string, i: number) => `${i + 1}. ${tip}`).join('\n')}`);
+          }
+          if (data.response.resources && Array.isArray(data.response.resources)) {
+            parts.push(`\n\n📚 You might find these resources helpful:\n${data.response.resources.map((res: any) => `• ${res.title || res}`).join('\n')}`);
+          }
+          if (data.response.warning) parts.push(`\n\n⚠️ ${data.response.warning}`);
+          
+          botResponseText = parts.join(' ');
+        } else {
+          botResponseText = String(data.response);
+        }
+      } else if (data.message) {
+        botResponseText = String(data.message);
+      } else {
+        // Fallback
+        botResponseText = "I understand your feelings, and they're completely valid. Let me share some strategies that might help you through this.";
+      }
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -499,87 +529,6 @@ const SakhiTry = () => {
                     </p>
                   </div>
                 </div>
-                {/* Render preview content for bot messages in mobile view only */}
-                {!message.isUser && message.previewContent && (
-                  <div className="lg:hidden mt-3 space-y-3">
-                    {/* Title and Description */}
-                    <div className="p-3 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl shadow-sm">
-                      <h4 className="font-semibold text-purple-800 mb-2 flex items-center">
-                        <Heart className="w-4 h-4 mr-2 text-pink-500" />
-                        {message.previewContent.title}
-                      </h4>
-                      <p className="text-sm text-purple-700 leading-relaxed">{message.previewContent.description}</p>
-                    </div>
-
-                    {/* Practical Tips */}
-                    <div className="p-3 bg-green-50 border border-green-200 rounded-xl shadow-sm">
-                      <h5 className="font-semibold text-green-800 mb-2 flex items-center">
-                        <Shield className="w-4 h-4 mr-2 text-green-600" />
-                        {lang === 'hi' ? 'व्यावहारिक सुझाव' : lang === 'te' ? 'ఆచరణాత్మక చిట్కాలు' : 'Practical Tips'}
-                      </h5>
-                      <div className="space-y-2">
-                        {message.previewContent.tips.slice(0, 3).map((tip, idx) => (
-                          <div key={idx} className="flex items-start space-x-2">
-                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                            <p className="text-sm text-green-700 leading-relaxed">{tip}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Key Points */}
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl shadow-sm">
-                      <h5 className="font-semibold text-blue-800 mb-2 flex items-center">
-                        <MessageCircle className="w-4 h-4 mr-2 text-blue-600" />
-                        {lang === 'hi' ? 'याद रखने योग्य मुख्य बातें' : lang === 'te' ? 'గుర్తుంచుకోవలసిన ముఖ్య విషయాలు' : 'Key Points to Remember'}
-                      </h5>
-                      <div className="space-y-2">
-                        {message.previewContent.keyPoints.slice(0, 2).map((point, idx) => (
-                          <div key={idx} className="flex items-start space-x-2">
-                            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                            <p className="text-sm text-blue-700 leading-relaxed">{point}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Resources */}
-                    <div className="p-3 bg-orange-50 border border-orange-200 rounded-xl shadow-sm">
-                      <h5 className="font-semibold text-orange-800 mb-2 flex items-center">
-                        <Users className="w-4 h-4 mr-2 text-orange-600" />
-                        {lang === 'hi' ? 'सहायक संसाधन' : lang === 'te' ? 'సహాయక వనరులు' : 'Helpful Resources'}
-                      </h5>
-                      <div className="space-y-2">
-                        {message.previewContent.resources.slice(0, 2).map((resource, idx) => (
-                          <div key={idx} className="p-2 bg-white border border-orange-200 rounded-lg">
-                            <p className="font-medium text-orange-800 text-sm">{resource.title}</p>
-                            <p className="text-xs text-orange-700 mt-1">{resource.description}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Emergency Notice */}
-                    <div className="p-3 bg-red-50 border border-red-200 rounded-xl shadow-sm">
-                      <div className="flex items-start space-x-2">
-                        <Shield className="w-4 h-4 text-red-600 mt-1 flex-shrink-0" />
-                        <div>
-                          <p className="font-semibold text-red-800 text-sm">
-                            {lang === 'hi' ? 'महत्वपूर्ण सूचना' : lang === 'te' ? 'ముఖ్యమైన నోటీసు' : 'Important Notice'}
-                          </p>
-                          <p className="text-xs text-red-700 mt-1 leading-relaxed">
-                            {lang === 'hi' 
-                              ? 'यदि आप गंभीर संकट या आपातकालीन लक्षणों का अनुभव कर रहे हैं, तो कृपया तुरंत स्वास्थ्य पेशेवर से संपर्क करें।'
-                              : lang === 'te'
-                              ? 'మీరు తీవ్రమైన బాధ లేదా అత్యవసర లక్షణాలను అనుభవిస్తుంటే, దయచేసి వెంటనే ఆరోగ్య నిపుణుడిని సంప్రదించండి।'
-                              : 'If you\'re experiencing severe distress or emergency symptoms, please contact a healthcare professional immediately.'
-                            }
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           ))}
