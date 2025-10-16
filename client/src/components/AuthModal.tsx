@@ -76,9 +76,8 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
             description: "Please tell us about yourself.",
           });
           
-          // Call onAuthSuccess with userId
-          onAuthSuccess(true, undefined);
-          onClose();
+          // Show relationship selection instead of closing
+          setShowRelationship(true);
         } else {
           console.error("No user ID in response:", data);
           toast({
@@ -86,9 +85,8 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
             description: "Account created but user ID not found. Continuing...",
           });
           
-          // Still call onAuthSuccess
-          onAuthSuccess(true, undefined);
-          onClose();
+          // Show relationship selection anyway
+          setShowRelationship(true);
         }
       } catch (error) {
         console.error("Sign-up error:", error);
