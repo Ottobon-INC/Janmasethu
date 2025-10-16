@@ -303,11 +303,6 @@ const Home = () => {
                 <p className="text-xs text-muted-foreground text-center max-w-[120px]">
                   {t("journey_stage_1_desc")}
                 </p>
-                <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
-                  <p className="text-xs text-center whitespace-nowrap">
-                    {t("journey_stage_tooltip")}
-                  </p>
-                </div>
               </div>
 
               {/* Connection Line 1 */}
@@ -327,11 +322,6 @@ const Home = () => {
                 <p className="text-xs text-muted-foreground text-center max-w-[120px]">
                   {t("journey_stage_2_desc")}
                 </p>
-                <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
-                  <p className="text-xs text-center whitespace-nowrap">
-                    {t("journey_stage_tooltip")}
-                  </p>
-                </div>
               </div>
 
               {/* Connection Line 2 */}
@@ -351,11 +341,6 @@ const Home = () => {
                 <p className="text-xs text-muted-foreground text-center max-w-[120px]">
                   {t("journey_stage_3_desc")}
                 </p>
-                <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
-                  <p className="text-xs text-center whitespace-nowrap">
-                    {t("journey_stage_tooltip")}
-                  </p>
-                </div>
               </div>
 
               {/* Connection Line 3 */}
@@ -375,11 +360,6 @@ const Home = () => {
                 <p className="text-xs text-muted-foreground text-center max-w-[120px]">
                   {t("journey_stage_4_desc")}
                 </p>
-                <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
-                  <p className="text-xs text-center whitespace-nowrap">
-                    {t("journey_stage_tooltip")}
-                  </p>
-                </div>
               </div>
 
               {/* Connection Line 4 */}
@@ -399,11 +379,6 @@ const Home = () => {
                 <p className="text-xs text-muted-foreground text-center max-w-[120px]">
                   {t("journey_stage_5_desc")}
                 </p>
-                <div className="hidden group-hover:block absolute top-20 bg-white rounded-lg shadow-lg p-2 z-10 mt-4">
-                  <p className="text-xs text-center whitespace-nowrap">
-                    {t("journey_stage_tooltip")}
-                  </p>
-                </div>
               </div>
             </div>
           </div>
