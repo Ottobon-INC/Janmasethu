@@ -99,59 +99,15 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
         setIsLoading(false);
       }
     } else {
-      if (!formData.email || !formData.password) {
-        toast({
-          title: "Error",
-          description: "Please fill in all fields",
-          variant: "destructive",
-        });
-        return;
-      }
+      // Static sign-in - skip authentication and go directly to SakhiTry
+      toast({
+        title: "Welcome back!",
+        description: "Redirecting to Sakhi...",
+      });
       
-      // Trigger webhook for sign-in
-      setIsLoading(true);
-      try {
-        const response = await fetch("https://n8n.ottobon.in/webhook/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to sign in");
-        }
-
-        const data = await response.json();
-        console.log("Login response:", data);
-        
-        // If response contains user ID (or is true), redirect to Sakhi
-        if (data === true || data.id || data.userId || data.user_id) {
-          toast({
-            title: "Welcome back!",
-            description: "Redirecting to Sakhi...",
-          });
-          
-          // Close modal and redirect to Sakhi page
-          onClose();
-          window.location.href = '/sakhi';
-        } else {
-          onAuthSuccess(false); // Fallback to existing flow
-        }
-      } catch (error) {
-        console.error("Sign-in error:", error);
-        toast({
-          title: "Error",
-          description: "Failed to sign in. Please check your credentials.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
+      // Close modal and redirect to SakhiTry page
+      onClose();
+      window.location.href = '/sakhi/try';
     }
   };
 
