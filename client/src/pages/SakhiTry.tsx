@@ -518,15 +518,98 @@ const SakhiTry = () => {
                   }`}>
                     {message.isUser ? <User className="w-3 h-3 lg:w-4 lg:h-4" /> : <Bot className="w-3 h-3 lg:w-4 lg:h-4" />}
                   </div>
-                  <div className={`px-3 lg:px-4 py-2 rounded-2xl ${
-                    message.isUser
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-                      : 'bg-gray-100 text-gray-800'
-                  }`}>
-                    <p className="text-sm leading-relaxed">{message.text}</p>
-                    <p className={`text-xs mt-1 ${message.isUser ? 'text-white opacity-70' : 'text-gray-500'}`}>
-                      {message.timestamp.toLocaleTimeString()}
-                    </p>
+                  <div className="flex-1">
+                    <div className={`px-3 lg:px-4 py-2 rounded-2xl ${
+                      message.isUser
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      <p className="text-sm leading-relaxed">{message.text}</p>
+                      <p className={`text-xs mt-1 ${message.isUser ? 'text-white opacity-70' : 'text-gray-500'}`}>
+                        {message.timestamp.toLocaleTimeString()}
+                      </p>
+                    </div>
+                    
+                    {/* Mobile Preview Content - Only shown on mobile for bot messages with preview content */}
+                    {!message.isUser && message.previewContent && (
+                      <div className="md:hidden mt-3 bg-white rounded-2xl shadow-lg p-4 space-y-4">
+                        {/* Header */}
+                        <div className="border-b border-gray-200 pb-3">
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">{message.previewContent.title}</h3>
+                          <p className="text-sm text-gray-600">{message.previewContent.description}</p>
+                        </div>
+
+                        {/* Video Section */}
+                        <div className="relative bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl h-32 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="w-12 h-12 bg-white bg-opacity-90 rounded-full flex items-center justify-center shadow-lg mx-auto mb-2">
+                              <Play className="w-5 h-5 text-purple-600" />
+                            </div>
+                            <p className="text-xs text-gray-600">Click to play: Guided Breathing Exercise</p>
+                          </div>
+                        </div>
+
+                        {/* Key Points */}
+                        <div>
+                          <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
+                            <Heart className="w-4 h-4 text-pink-500 mr-2" />
+                            Key Points to Remember
+                          </h4>
+                          <div className="space-y-2">
+                            {message.previewContent.keyPoints.map((point, index) => (
+                              <div key={index} className="flex items-start space-x-2">
+                                <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-1.5 flex-shrink-0" />
+                                <p className="text-xs text-gray-700">{point}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Tips */}
+                        <div>
+                          <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
+                            <Shield className="w-4 h-4 text-green-500 mr-2" />
+                            Practical Tips
+                          </h4>
+                          <div className="space-y-2">
+                            {message.previewContent.tips.map((tip, index) => (
+                              <div key={index} className="p-2 bg-green-50 rounded-lg border-l-2 border-green-400">
+                                <p className="text-xs text-gray-700">{tip}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Resources */}
+                        <div>
+                          <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
+                            <Users className="w-4 h-4 text-blue-500 mr-2" />
+                            Additional Resources
+                          </h4>
+                          <div className="space-y-2">
+                            {message.previewContent.resources.map((resource, index) => (
+                              <div key={index} className="p-2 border border-gray-200 rounded-lg">
+                                <h5 className="font-semibold text-gray-900 text-xs mb-0.5">{resource.title}</h5>
+                                <p className="text-xs text-gray-600">{resource.description}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Emergency Notice */}
+                        <div className="border border-orange-200 bg-orange-50 rounded-lg p-3">
+                          <div className="flex items-start space-x-2">
+                            <Shield className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <h5 className="font-semibold text-orange-900 text-xs mb-1">Important Notice</h5>
+                              <p className="text-xs text-orange-800">
+                                If you're experiencing severe distress, thoughts of self-harm, or emergency symptoms, please contact a healthcare professional immediately.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
