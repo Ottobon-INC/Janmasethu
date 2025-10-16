@@ -46,11 +46,14 @@ const Sakhi = () => {
       setShowOnboarding(true);
     } else {
       // Existing user - redirect to /sakhi/try
-      setLocation("/sakhi/try");
       toast({
         title: "Welcome back!",
         description: "You're all set to continue your journey.",
       });
+      // Use setTimeout to ensure toast is shown before navigation
+      setTimeout(() => {
+        setLocation("/sakhi/try");
+      }, 500);
     }
   };
   
