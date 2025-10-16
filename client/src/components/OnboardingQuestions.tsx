@@ -704,9 +704,13 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
                 }
               >
                 {currentQuestion.options?.map((option, index) => (
-                  <div key={index} className="flex items-center space-x-3 mb-3">
-                    <RadioGroupItem value={option} id={`option-${index}`} />
-                    <Label htmlFor={`option-${index}`} className="cursor-pointer flex-1">
+                  <div key={index} className="flex items-start space-x-3 mb-3 p-3 rounded-lg border hover:bg-accent transition-colors">
+                    <RadioGroupItem 
+                      value={option} 
+                      id={`option-${index}`}
+                      className="mt-0.5 shrink-0" 
+                    />
+                    <Label htmlFor={`option-${index}`} className="cursor-pointer flex-1 leading-relaxed">
                       {option}
                     </Label>
                   </div>
