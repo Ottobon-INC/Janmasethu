@@ -12,7 +12,7 @@ export default function ClinicLanding() {
 
   const handleLogin = async () => {
     if (!username || !password) return;
-    
+
     setIsLoading(true);
     // Simulate API call
     setTimeout(() => {
@@ -36,7 +36,9 @@ export default function ClinicLanding() {
               <Heart className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Samnada Clinic</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Janma Sethu Clinic
+          </h1>
           <p className="text-gray-600">Clinic Management Portal</p>
         </div>
 
@@ -52,7 +54,10 @@ export default function ClinicLanding() {
             >
               {/* Username Input */}
               <div className="space-y-2">
-                <label htmlFor="username" className="text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="username"
+                  className="text-sm font-medium text-gray-700"
+                >
                   Username
                 </label>
                 <div className="relative">
@@ -71,7 +76,10 @@ export default function ClinicLanding() {
 
               {/* Password Input */}
               <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium text-gray-700"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -117,7 +125,10 @@ export default function ClinicLanding() {
         {/* Back to Main Site */}
         <div className="text-center mt-6">
           <Link href="/">
-            <Button variant="ghost" className="text-gray-600 hover:text-purple-600">
+            <Button
+              variant="ghost"
+              className="text-gray-600 hover:text-purple-600"
+            >
               ← Back to Janma Sethu
             </Button>
           </Link>
