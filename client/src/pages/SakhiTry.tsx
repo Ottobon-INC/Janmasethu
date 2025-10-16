@@ -335,7 +335,7 @@ const SakhiTry = () => {
     return contentTemplates[category as keyof typeof contentTemplates][language as keyof typeof contentTemplates.anxiety] || contentTemplates.anxiety.en;
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!inputText.trim()) return;
 
     const detectedLanguage = detectScript(inputText);
@@ -356,8 +356,45 @@ const SakhiTry = () => {
     const preview = generatePreviewContent(inputText, lang);
     setPreviewContent(preview);
 
-    // Simulate Sakhi's response
-    setTimeout(() => {
+    // Clear input immediately
+    setInputText('');
+
+    try {
+      // Call backend webhook
+      const response = await fetch('https://n8n.ottobon.in/webhook/janma', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: newMessage.text,
+          language: detectedLanguage
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from backend');
+      }
+
+      const data = await response.json();
+      
+      // Use backend response or fallback to default
+      const botResponseText = data.response || data.message || "I understand your feelings, and they're completely valid. Let me share some strategies that might help you through this.";
+
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: botResponseText,
+        isUser: false,
+        timestamp: new Date(),
+        language: detectedLanguage,
+        previewContent: preview // Add preview content to bot message
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error calling webhook:', error);
+      
+      // Fallback response on error
       const responses = {
         en: "I understand your feelings, and they're completely valid. Let me share some strategies that might help you through this.",
         hi: "मैं आपकी भावनाओं को समझती हूं, और वे पूर्णतः वैध हैं। मैं कुछ रणनीतियां साझा करती हूं जो इस दौरान आपकी मदद कर सकती हैं।",
@@ -370,13 +407,11 @@ const SakhiTry = () => {
         isUser: false,
         timestamp: new Date(),
         language: detectedLanguage,
-        previewContent: preview // Add preview content to bot message
+        previewContent: preview
       };
 
       setMessages(prev => [...prev, botMessage]);
-    }, 1000);
-
-    setInputText('');
+    }
   };
 
   const quickPrompts = [
