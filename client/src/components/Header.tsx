@@ -90,13 +90,26 @@ const Header = () => {
         <div className="container mx-auto px-4 py-2">
           {/* Primary Row */}
           <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center" data-testid="link-home-logo">
-              <img 
-                src="/JanmaSethu Logo.png" 
-                alt="JanmaSethu Logo" 
-                className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 lg:w-22 lg:h-22 object-contain"
-              />
+            {/* Logo with Brand Text */}
+            <Link href="/" className="flex flex-col items-start gap-1" data-testid="link-home-logo">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <img 
+                  src="/JanmaSethu Logo.png" 
+                  alt="JanmaSethu Logo" 
+                  className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 object-contain"
+                />
+                <div className="flex items-baseline gap-1">
+                  <span className="text-black font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif">
+                    Janma
+                  </span>
+                  <span className="text-blue-600 font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif">
+                    Sethu
+                  </span>
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground font-medium text-center w-full pl-0 sm:pl-2">
+                Connecting Care & Parenthood
+              </p>
             </Link>
 
             {/* Desktop Navigation - Primary Row */}
