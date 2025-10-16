@@ -564,7 +564,7 @@ const SakhiTry = () => {
                             <iframe
                               width="100%"
                               height="100%"
-                              src="https://www.youtube.com/embed/g9WZwXSRcRU?si=ntMXZN6F7KO0i9M9&start=14"
+                              src="https://www.youtube.com/embed/jq_MxKVlDCU?si=D-TE7Ewsb1CCUJfS&start=10"
                               title="YouTube video player"
                               frameBorder="0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -754,7 +754,7 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
               <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/g9WZwXSRcRU?si=ntMXZN6F7KO0i9M9&start=14"
+                src="https://www.youtube.com/embed/jq_MxKVlDCU?si=D-TE7Ewsb1CCUJfS&start=10"
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
