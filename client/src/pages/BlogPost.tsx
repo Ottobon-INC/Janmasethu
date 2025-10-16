@@ -103,15 +103,6 @@ const BlogPost = () => {
         </CardContent>
       </Card>
 
-      {/* Featured Image */}
-      <div className="mb-8">
-        <img 
-          src={getBlogImage()} 
-          alt={postTitle} 
-          className="w-full h-64 md:h-80 object-cover rounded-3xl"
-        />
-      </div>
-
       {/* Post Content */}
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
