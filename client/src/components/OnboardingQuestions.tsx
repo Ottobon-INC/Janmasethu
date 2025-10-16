@@ -527,12 +527,17 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       return;
     }
 
-    // Prepare data to send to webhook
+    // Prepare data to send to webhook in the format n8n expects
     const onboardingData = {
-      userId: userId,
-      relationship: relationship,
-      answers: answers,
-      timestamp: new Date().toISOString(),
+      user_id: userId,
+      relationToPatient: relationship,
+      questions: {
+        durationTrying: answers.duration || "",
+        isUnderTreatment: answers.treatment || "",
+        hasHealthProblems: answers.healthIssues || "",
+        emotionalState: answers.emotionalState || "",
+        pastIVFTreatments: answers.previousIVF || ""
+      }
     };
 
     console.log("=== Preparing to send to webhook ===");
@@ -619,29 +624,26 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       
       toast({
         title: "Connection Error",
-        description: "Could not reach the server. Please check n8n configuration.",
+        description: "Could not reach the server. We'll still continue to Sakhi.",
         variant: "destructive",
       });
-      
-      console.log("Continuing despite error...");
+    } finally {
+      // Always close modal and navigate, regardless of webhook success
+      console.log("Closing onboarding modal...");
+      onClose();
+
+      // Navigate to /sakhi/try
+      console.log("Navigating to /sakhi/try...");
+      setTimeout(() => {
+        setLocation("/sakhi/try");
+        
+        // Show welcome toast after navigation
+        toast({
+          title: "Welcome to Sakhi!",
+          description: "Let's begin your journey together.",
+        });
+      }, 100);
     }
-
-    // Close modal first
-    console.log("Closing onboarding modal...");
-    onClose();
-
-    // Navigate to /sakhi/try with a small delay
-    console.log("Scheduling navigation to /sakhi/try...");
-    setTimeout(() => {
-      console.log("Executing navigation to /sakhi/try");
-      setLocation("/sakhi/try");
-      
-      // Show welcome toast after navigation
-      toast({
-        title: "Welcome to Sakhi!",
-        description: "Let's begin your journey together.",
-      });
-    }, 300);
   };
 
 
