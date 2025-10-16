@@ -93,10 +93,10 @@ const Home = () => {
 
   return (
     <>
-      {/* Full-Screen Hero Video Section */}
-      <section className="relative w-full h-screen overflow-hidden">
+      {/* Full-Screen Hero Video Section - Desktop only, behind header */}
+      <section className="hero-video-section">
         <video
-          className="absolute top-0 left-0 w-full h-full object-cover"
+          className="hero-video"
           autoPlay
           loop
           muted
@@ -114,8 +114,8 @@ const Home = () => {
           Your browser does not support the video tag.
         </video>
         
-        {/* Optional overlay gradient for better text readability if needed */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30 pointer-events-none"></div>
+        {/* Optional overlay gradient for better text readability */}
+        <div className="hero-video-overlay"></div>
       </section>
 
       <div className="container mx-auto px-4 py-8">
