@@ -91,39 +91,39 @@ const Header = () => {
       <header
         className={`site-header sticky top-0 z-40 w-full bg-white/80 backdrop-blur-sm border-b border-border transition-all duration-300 ${isExpanded ? "is-expanded" : ""}`}
       >
-        <div className="container mx-auto px-4 py-2">
+        <div className="container mx-auto px-3 md:px-4 py-2">
           {/* Primary Row */}
           <div className="flex items-center justify-between">
             {/* Logo with Brand Text */}
             <Link
               href="/"
-              className="flex flex-col items-start gap-0"
+              className="flex flex-col items-start gap-0 flex-shrink-0"
               data-testid="link-home-logo"
             >
               <div className="flex items-center gap-2 sm:gap-3">
                 <img
                   src="/JanmaSethu Logo.png"
                   alt="JanmaSethu Logo"
-                  className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 object-contain"
+                  className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 object-contain"
                 />
                 <div className="flex items-baseline gap-1">
-                  <span className="text-black font-bold text-lg sm:text-xl md:text-1xl lg:text-1xl font-serif mt-3">
+                  <span className="text-black font-bold text-base sm:text-lg md:text-xl lg:text-1xl font-serif mt-2 sm:mt-3">
                     Janma
                   </span>
-                  <span className="text-blue-600 font-bold text-lg sm:text-xl md:text-1xl lg:text-1xl font-serif mt-3">
+                  <span className="text-blue-600 font-bold text-base sm:text-lg md:text-xl lg:text-1xl font-serif mt-2 sm:mt-3">
                     Sethu
                   </span>
                 </div>
               </div>
-              <p className="text-[0.65rem] sm:text-xs md:text-sm text-muted-foreground font-small text-center w-full pl-0 sm:pl-2 -mt-3">
+              <p className="text-[0.6rem] sm:text-[0.65rem] md:text-xs text-muted-foreground font-small text-center w-full pl-0 sm:pl-2 -mt-2 sm:-mt-3">
                 Connecting Care & Parenthood
               </p>
             </Link>
 
             {/* Desktop Navigation - Primary Row */}
-            <div className="hidden lg:flex items-center justify-center">
+            <div className="hidden lg:flex items-center justify-center flex-grow">
               <nav
-                className="nav-primary flex items-center justify-center space-x-12"
+                className="nav-primary flex items-center justify-center space-x-6 xl:space-x-12"
                 role="navigation"
                 aria-label="Main navigation"
               >
@@ -172,7 +172,7 @@ const Header = () => {
             </div>
 
             {/* Search & Language & Mobile Menu */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 md:space-x-4 flex-shrink-0">
               {/* Search */}
               <div className="hidden md:block relative">
                 <form
@@ -189,7 +189,7 @@ const Header = () => {
                     type="search"
                     name="search"
                     placeholder={t("search_placeholder")}
-                    className="pl-9 pr-3 py-1.5 text-sm rounded-full border-border bg-background/50 focus:ring-ring w-56"
+                    className="pl-9 pr-3 py-1.5 text-sm rounded-full border-border bg-background/50 focus:ring-ring w-40 lg:w-56"
                     data-testid="input-search"
                   />
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-3.5 h-3.5 pointer-events-none" />
