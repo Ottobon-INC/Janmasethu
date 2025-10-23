@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect, createContext, useContext } from 'react';
 import { Link } from 'wouter';
-import { Send, MessageCircle, Heart, Shield, Clock, Users, Play, Volume2, VolumeX, Globe, User, Bot, X } from 'lucide-react';
+import { Send, MessageCircle, Heart, Shield, Clock, Users, Play, Volume2, VolumeX, Globe, User, Bot, X, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -96,6 +96,30 @@ const LanguageSwitcher = () => {
   );
 };
 
+// Custom hook for floating player
+const useFloatingPlayer = (videoRef: React.RefObject<HTMLDivElement>) => {
+  const [isFloating, setIsFloating] = useState(false);
+  const [showFloating, setShowFloating] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!videoRef.current) return;
+
+      const rect = videoRef.current.getBoundingClientRect();
+      const isOutOfView = rect.bottom < 0;
+
+      setIsFloating(isOutOfView);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial state
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [videoRef]);
+
+  return { isFloating, showFloating, setShowFloating };
+};
+
 const SakhiTry = () => {
   // Scoped language state for this page only
   const [sakhiLang, setSakhiLang] = useState<'en' | 'hi' | 'te'>('en');
@@ -113,6 +137,8 @@ const SakhiTry = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const { isFloating, showFloating, setShowFloating } = useFloatingPlayer(videoContainerRef);
 
   // Regenerate preview content when language changes
   useEffect(() => {
@@ -694,6 +720,8 @@ interface PreviewPanelProps {
 }
 
 const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMuted, setIsMuted, translations: t }: PreviewPanelProps) => {
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const { isFloating, showFloating, setShowFloating } = useFloatingPlayer(videoContainerRef);
   
   if (!previewContent) {
     return (
@@ -739,23 +767,49 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
         </div>
 
         {/* Video Section */}
-        <Card className="overflow-hidden border-0 shadow-lg">
-          <div className="relative bg-gradient-to-br from-purple-100 to-pink-100">
-            <div className="aspect-video">
-              <iframe
-                width="100%"
-                height="100%"
-                src={previewContent.videoUrl || "https://www.youtube.com/embed/jq_MxKVlDCU?si=D-TE7Ewsb1CCUJfS&start=10"}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-                className="w-full h-full"
-              ></iframe>
+        <div ref={videoContainerRef} className="w-full max-w-[900px] mx-auto">
+          <Card className="overflow-hidden border-0 shadow-lg">
+            <div className="relative bg-gradient-to-br from-purple-100 to-pink-100">
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full rounded-xl"
+                  src={previewContent.videoUrl || "https://www.youtube.com/embed/jq_MxKVlDCU?si=D-TE7Ewsb1CCUJfS&start=10&enablejsapi=1"}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Floating Mini Player */}
+        {isFloating && showFloating && (
+          <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[9999] floating-mini-player safe-area-padding-bottom">
+            <div className="relative bg-black rounded-2xl overflow-hidden shadow-2xl" style={{ width: '280px', maxWidth: 'calc(100vw - 2rem)' }}>
+              <button
+                onClick={() => setShowFloating(false)}
+                className="absolute top-2 right-2 z-10 bg-black/70 hover:bg-black/90 text-white rounded-full p-1.5 transition-all duration-200"
+                aria-label="Close mini player"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src={previewContent.videoUrl || "https://www.youtube.com/embed/jq_MxKVlDCU?si=D-TE7Ewsb1CCUJfS&start=10&enablejsapi=1"}
+                  title="YouTube video player (mini)"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </div>
             </div>
           </div>
-        </Card>
+        )}
 
         {/* Key Points */}
         <Card className="border border-gray-100 shadow-sm">

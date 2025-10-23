@@ -1128,6 +1128,116 @@ textarea:focus-visible {
     font-weight: 500;
   }
 
+/* Floating Mini Player Styles */
+.floating-mini-player {
+  animation: floatIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.floating-mini-player:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* Safe area adjustments for mobile devices with notches */
+@supports (padding: max(0px)) {
+  .safe-area-padding-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Responsive adjustments for mini player */
+@media (max-width: 640px) {
+  .floating-mini-player {
+    bottom: 1rem !important;
+    right: 1rem !important;
+  }
+  
+  .floating-mini-player > div {
+    width: 240px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .floating-mini-player > div {
+    width: 200px !important;
+  }
+}
+
+/* Ensure mini player stays above all elements */
+.floating-mini-player {
+  pointer-events: auto;
+}
+
+/* Responsive iframe container */
+.responsive-iframe-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.responsive-iframe-container::before {
+  content: '';
+  display: block;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+}
+
+.responsive-iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.75rem;
+}
+
+/* Mobile responsive video */
+@media (max-width: 768px) {
+  .responsive-iframe-container {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .responsive-iframe-container iframe {
+    border-radius: 0.5rem;
+  }
+}
+
+/* Prevent video overlap with chat elements on mobile */
+@media (max-width: 767px) {
+  .floating-mini-player {
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+    right: 1rem !important;
+    left: auto !important;
+  }
+  
+  /* Ensure it doesn't overlap with mobile chat button */
+  body:has(.floating-mini-player) .mobile-chat-toggle {
+    bottom: calc(6rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+/* Dark mode support for mini player */
+@media (prefers-color-scheme: dark) {
+  .floating-mini-player > div {
+    background: #1a1a1a;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  }
+}
+
+
   [data-radix-select-item]:last-child {
     margin-bottom: 0;
   }
