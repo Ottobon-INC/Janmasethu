@@ -2,7 +2,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";  // your in-memory user storage (unchanged)
-import { query } from "./db";         // our Postgres helper from server/db.ts
+import { query, pool } from "./db";   // our Postgres helper from server/db.ts
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // =========================
@@ -96,6 +96,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch {
       res.json({ has_DATABASE_URL: !!url, raw: url || "(empty)" });
     }
+  });
+
+  // --- DEBUG: confirm SSL options on the pool
+  app.get("/api/health/db/ssl", (_req, res) => {
+    // @ts-ignore access internal
+    const opts = (pool as any).options || {};
+    res.json({ hasSsl: !!opts.ssl, rejectUnauthorized: opts.ssl?.rejectUnauthorized ?? null });
   });
 
   // --- DEBUG: list public tables
