@@ -115,7 +115,7 @@ const Header = () => {
                   </span>
                 </div>
               </div>
-              <p className="text-[0.6rem] sm:text-[0.65rem] md:text-xs text-muted-foreground font-small text-center w-full pl-0 sm:pl-2 -mt-2 sm:-mt-3">
+              <p className="text-[0.6rem] sm:text-[0.65rem] md:text-xs text-muted-foreground font-small text-left w-full pl-0 sm:pl-2 -mt-2 sm:-mt-3">
                 Connecting Care & Parenthood
               </p>
             </Link>
