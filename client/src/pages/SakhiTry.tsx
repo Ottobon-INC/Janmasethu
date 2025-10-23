@@ -521,7 +521,7 @@ const SakhiTry = () => {
 
             {messages.map((message) => (
               <div key={message.id} className={`flex ${message.isUser ? 'justify-end sakhi-message-user' : 'justify-start sakhi-message-bot'} px-1`}>
-                <div className={`max-w-[85%] lg:max-w-[80%] ${message.isUser ? 'order-2' : 'order-1'}`}>
+                <div className={`max-w-[95%] lg:max-w-[80%] ${message.isUser ? 'order-2' : 'order-1'}`}>
                   <div className={`flex items-start space-x-3 ${message.isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
                     <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm ${
                       message.isUser 
@@ -544,7 +544,7 @@ const SakhiTry = () => {
                       
                       {/* Mobile Preview Content */}
                       {!message.isUser && message.previewContent && (
-                        <div className="md:hidden mt-4 bg-white rounded-2xl shadow-xl border border-purple-100 p-5 space-y-5 hover:shadow-2xl transition-shadow duration-300">
+                        <div className="md:hidden mt-4 bg-white rounded-2xl shadow-xl border border-purple-100 p-5 space-y-5 hover:shadow-2xl transition-shadow duration-300 w-[95%] max-w-full">
                           <div className="border-b border-gray-100 pb-4">
                             <h3 className="text-lg font-bold text-gray-900 mb-1.5">{message.previewContent.title}</h3>
                             <p className="text-sm text-gray-600 leading-relaxed">{message.previewContent.description}</p>
