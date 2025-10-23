@@ -494,7 +494,7 @@ const SakhiTry = () => {
         } overflow-hidden border-r border-gray-100`}>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 lg:space-y-5 h-[calc(100%-100px)] pt-8">
+          <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 lg:space-y-5 h-[calc(100%-100px)] pt-20">
             {messages.length === 0 && (
               <div className="text-center py-8 px-4">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -643,9 +643,9 @@ const SakhiTry = () => {
               />
               <Button
                 onClick={sendMessage}
-                className="rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 h-11 w-11 shadow-md hover:shadow-lg transition-all flex items-center justify-center group"
+                className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 h-12 w-12 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group hover:scale-105 active:scale-95"
               >
-                <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <Send className="w-5 h-5 transition-all duration-200" />
               </Button>
             </div>
             <p className="text-xs text-gray-500 text-center flex items-center justify-center">
