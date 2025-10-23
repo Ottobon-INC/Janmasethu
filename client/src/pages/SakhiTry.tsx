@@ -573,8 +573,7 @@ const SakhiTry = () => {
                             </h4>
                             <div className="space-y-2.5">
                               {message.previewContent.keyPoints.map((point, index) => (
-                                <div key={index} className="flex items-start space-x-2.5">
-                                  <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
+                                <div key={index} className="p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-100">
                                   <p className="text-xs text-gray-700 leading-relaxed">{point}</p>
                                 </div>
                               ))}
@@ -588,7 +587,7 @@ const SakhiTry = () => {
                             </h4>
                             <div className="space-y-2.5">
                               {message.previewContent.tips.map((tip, index) => (
-                                <div key={index} className="p-3 bg-green-50 rounded-lg border-l-3 border-green-400">
+                                <div key={index} className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
                                   <p className="text-xs text-gray-700 leading-relaxed">{tip}</p>
                                 </div>
                               ))}
@@ -643,9 +642,9 @@ const SakhiTry = () => {
               />
               <Button
                 onClick={sendMessage}
-                className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 h-12 w-12 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group hover:scale-105 active:scale-95"
+                className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 h-10 w-10 shadow-md flex items-center justify-center"
               >
-                <Send className="w-5 h-5 transition-all duration-200" />
+                <Send className="w-4 h-4" />
               </Button>
             </div>
             <p className="text-xs text-gray-500 text-center flex items-center justify-center">
@@ -765,10 +764,9 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
               <span>{t.keyPoints}</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             {previewContent.keyPoints.map((point, index) => (
-              <div key={index} className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
+              <div key={index} className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
                 <p className="text-gray-700 leading-relaxed">{point}</p>
               </div>
             ))}
@@ -783,9 +781,9 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
               <span>{t.practicalTips}</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             {previewContent.tips.map((tip, index) => (
-              <div key={index} className="p-4 bg-green-50 rounded-xl border-l-4 border-green-400">
+              <div key={index} className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
                 <p className="text-gray-700 leading-relaxed">{tip}</p>
               </div>
             ))}
