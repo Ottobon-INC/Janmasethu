@@ -3,6 +3,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";  // your in-memory user storage (unchanged)
 import { query } from "./db";         // our Postgres helper from server/db.ts
+import { runMedcyScrape } from "./scraper/medcy";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // =========================
@@ -96,6 +97,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ ok: true });
     } catch (e: any) {
       console.error("POST /api/dev/create-scraped-table error:", e);
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  });
+
+  // --- DEV: run scraper for medcyivf.in/blog (on-demand)
+  app.post("/api/dev/scrape/medcy", async (req, res) => {
+    try {
+      const max = Number(req.query.max ?? "8");
+      const out = await runMedcyScrape({ max: isNaN(max) ? 8 : max });
+      res.json({ ok: true, ...out });
+    } catch (e: any) {
       res.status(500).json({ ok: false, error: e.message });
     }
   });
