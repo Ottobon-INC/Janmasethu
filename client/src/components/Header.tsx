@@ -110,7 +110,7 @@ const Header = () => {
                   <span className="text-black font-bold text-base sm:text-lg md:text-xl lg:text-1xl font-serif mt-2 sm:mt-3">
                     Janma
                   </span>
-                  <span className="text-blue-600 font-bold text-base sm:text-lg md:text-xl lg:text-1xl font-serif mt-2 sm:mt-3">
+                  <span className="font-bold text-base sm:text-lg md:text-xl lg:text-1xl font-serif mt-2 sm:mt-3" style={{ color: '#60c4b8' }}>
                     Sethu
                   </span>
                 </div>
