@@ -27,6 +27,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ hasSsl: !!opts.ssl, rejectUnauthorized: opts.ssl?.rejectUnauthorized ?? null });
   });
 
+  // --- DEBUG: inspect DATABASE_URL environment variable
+  app.get("/api/health/db/env", (_req, res) => {
+    const url = process.env.DATABASE_URL || "";
+    try {
+      const u = new URL(url);
+      res.json({
+        has_DATABASE_URL: !!url,
+        protocol: u.protocol.replace(":", ""),
+        host: u.hostname,
+        port: u.port,
+        db: u.pathname.replace("/", ""),
+        user: u.username,
+      });
+    } catch {
+      res.json({ has_DATABASE_URL: !!url, raw: url || "(empty)" });
+    }
+  });
+
   // --- DEBUG: what DB am I connected to?
   app.get("/api/health/db/info", async (_req, res) => {
     try {
