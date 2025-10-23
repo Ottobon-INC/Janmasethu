@@ -466,7 +466,7 @@ const SakhiTry = () => {
     <SakhiLanguageContext.Provider value={{ lang: sakhiLang, setLang: setSakhiLang }}>
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
         {/* Enhanced Header */}
-        <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 text-white px-6 py-4 flex items-center justify-between z-40 shadow-xl border-b border-white/10">
+        <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 text-white px-6 py-4 flex items-center justify-between z-40 shadow-2xl border-b border-white/10 backdrop-blur-sm">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
               <Heart className="w-6 h-6" />
@@ -494,7 +494,7 @@ const SakhiTry = () => {
         } overflow-hidden border-r border-gray-100`}>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 lg:space-y-5 h-[calc(100%-100px)]">
+          <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 lg:space-y-5 h-[calc(100%-100px)] pt-6">
             {messages.length === 0 && (
               <div className="text-center py-8 px-4">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -520,7 +520,7 @@ const SakhiTry = () => {
             )}
 
             {messages.map((message) => (
-              <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} px-1`}>
+              <div key={message.id} className={`flex ${message.isUser ? 'justify-end sakhi-message-user' : 'justify-start sakhi-message-bot'} px-1`}>
                 <div className={`max-w-[85%] lg:max-w-[80%] ${message.isUser ? 'order-2' : 'order-1'}`}>
                   <div className={`flex items-start space-x-3 ${message.isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
                     <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm ${
@@ -531,10 +531,10 @@ const SakhiTry = () => {
                       {message.isUser ? <User className="w-4 h-4" /> : <Bot className="w-5 h-5" />}
                     </div>
                     <div className="flex-1">
-                      <div className={`px-4 py-3 rounded-2xl shadow-sm ${
+                      <div className={`px-4 py-3 rounded-2xl transition-all duration-200 hover:shadow-lg ${
                         message.isUser
-                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-                          : 'bg-white border border-gray-100 text-gray-800'
+                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md hover:shadow-purple-300/50'
+                          : 'bg-white border border-gray-100 text-gray-800 shadow-md hover:shadow-gray-300/50'
                       }`}>
                         <p className="text-sm leading-relaxed">{message.text}</p>
                         <p className={`text-xs mt-1.5 ${message.isUser ? 'text-white/80' : 'text-gray-400'}`}>
@@ -544,7 +544,7 @@ const SakhiTry = () => {
                       
                       {/* Mobile Preview Content */}
                       {!message.isUser && message.previewContent && (
-                        <div className="md:hidden mt-4 bg-white rounded-2xl shadow-lg border border-gray-100 p-5 space-y-5">
+                        <div className="md:hidden mt-4 bg-white rounded-2xl shadow-xl border border-purple-100 p-5 space-y-5 hover:shadow-2xl transition-shadow duration-300">
                           <div className="border-b border-gray-100 pb-4">
                             <h3 className="text-lg font-bold text-gray-900 mb-1.5">{message.previewContent.title}</h3>
                             <p className="text-sm text-gray-600 leading-relaxed">{message.previewContent.description}</p>

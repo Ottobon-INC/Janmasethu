@@ -1223,6 +1223,37 @@ textarea:focus-visible {
   }
 }
 
+/* Enhanced Chat Message Styling */
+.sakhi-message-user {
+  animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sakhi-message-bot {
+  animation: slideInLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* FAQ Accordion Hover Effect - Enhanced Professional Design */
 .faq-accordion-trigger {
   position: relative;
