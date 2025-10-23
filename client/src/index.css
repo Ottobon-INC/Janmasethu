@@ -1223,39 +1223,116 @@ textarea:focus-visible {
   }
 }
 
-/* FAQ Accordion Hover Effect */
+/* FAQ Accordion Hover Effect - Enhanced Professional Design */
 .faq-accordion-trigger {
-  transition: transform 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out, font-size 0.3s ease-in-out;
-  background-color: transparent;
-  padding: 1rem; /* Consistent padding */
-  border-radius: 0.5rem; /* Slightly rounded corners */
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, transparent 0%, transparent 100%);
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* Gradient background overlay on hover */
+.faq-accordion-trigger::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(236, 72, 153, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1rem;
+  z-index: -1;
+}
+
+.faq-accordion-trigger:hover::before {
+  opacity: 1;
+}
+
+/* Left accent border on hover */
+.faq-accordion-trigger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 0;
+  background: linear-gradient(180deg, #8B5CF6 0%, #EC4899 100%);
+  border-radius: 0 4px 4px 0;
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-accordion-trigger:hover::after {
+  height: 60%;
 }
 
 .faq-accordion-trigger:hover {
-  background-color: rgba(139, 92, 246, 0.05); /* Subtle background highlight */
-  color: #8B5CF6; /* Purple text color on hover */
-  transform: translateY(-2px); /* Slight lift effect */
-  box-shadow: 0 4px 10px rgba(139, 92, 246, 0.1); /* Soft shadow */
+  background: linear-gradient(135deg, rgba(248, 250, 255, 0.8) 0%, rgba(243, 232, 255, 0.6) 100%);
+  transform: translateX(8px);
+  box-shadow: 
+    0 4px 20px rgba(139, 92, 246, 0.12),
+    0 2px 8px rgba(139, 92, 246, 0.08);
+  padding-left: 2rem;
 }
 
+/* Active/Open state styling */
 .faq-accordion-trigger[data-state=open] {
-  background-color: rgba(139, 92, 246, 0.1); /* Slightly darker background when open */
+  background: linear-gradient(135deg, rgba(243, 232, 255, 0.9) 0%, rgba(251, 207, 232, 0.5) 100%);
   color: #8B5CF6;
-  font-weight: 500; /* Ensure bold when open */
+  font-weight: 500;
+  box-shadow: 
+    0 2px 12px rgba(139, 92, 246, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.faq-accordion-trigger[data-state=open]::after {
+  height: 70%;
+  background: linear-gradient(180deg, #7C3AED 0%, #DB2777 100%);
 }
 
 .faq-accordion-trigger[data-state=open]:hover {
-  background-color: rgba(139, 92, 246, 0.15); /* Darker on hover when open */
-  box-shadow: 0 6px 15px rgba(139, 92, 246, 0.15); /* Stronger shadow when open */
-  transform: translateY(-3px);
+  background: linear-gradient(135deg, rgba(237, 233, 254, 1) 0%, rgba(251, 207, 232, 0.7) 100%);
+  box-shadow: 
+    0 6px 24px rgba(139, 92, 246, 0.2),
+    0 3px 12px rgba(139, 92, 246, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transform: translateX(10px);
 }
 
-/* Smooth text size transition on hover */
+/* Text styling with smooth transitions */
 .faq-accordion-trigger .font-semibold {
-  transition: font-size 0.3s ease-in-out;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  z-index: 1;
 }
 
 .faq-accordion-trigger:hover .font-semibold {
-  text-decoration: none !important;
+  color: #7C3AED;
   font-size: 1.05em;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 2px rgba(139, 92, 246, 0.1);
+}
+
+.faq-accordion-trigger[data-state=open] .font-semibold {
+  color: #6D28D9;
+  font-size: 1.03em;
+}
+
+/* Chevron icon smooth rotation and color change */
+.faq-accordion-trigger svg {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-accordion-trigger:hover svg {
+  color: #8B5CF6;
+  transform: scale(1.1);
+}
+
+.faq-accordion-trigger[data-state=open] svg {
+  color: #7C3AED;
 }
