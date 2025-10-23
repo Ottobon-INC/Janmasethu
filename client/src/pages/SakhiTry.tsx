@@ -1,12 +1,28 @@
-import React, { useState, useRef, useEffect } from 'react';
+
+import React, { useState, useRef, useEffect, createContext, useContext } from 'react';
 import { Link } from 'wouter';
 import { Send, MessageCircle, Heart, Shield, Clock, Users, Play, Volume2, VolumeX, Globe, User, Bot, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useLanguage } from '../i18n/LanguageProvider';
 import { detectScript } from '@/utils/language';
+
+// Scoped Language Context for SakhiTry page only
+interface SakhiLanguageContextType {
+  lang: 'en' | 'hi' | 'te';
+  setLang: (lang: 'en' | 'hi' | 'te') => void;
+}
+
+const SakhiLanguageContext = createContext<SakhiLanguageContextType | undefined>(undefined);
+
+const useSakhiLanguage = () => {
+  const context = useContext(SakhiLanguageContext);
+  if (!context) {
+    throw new Error('useSakhiLanguage must be used within SakhiLanguageProvider');
+  }
+  return context;
+};
 
 interface Message {
   id: string;
@@ -14,7 +30,7 @@ interface Message {
   isUser: boolean;
   timestamp: Date;
   language: string;
-  previewContent?: PreviewContent; // Added to store preview content
+  previewContent?: PreviewContent;
 }
 
 interface PreviewContent {
@@ -29,7 +45,7 @@ interface PreviewContent {
 
 // Language Switcher component
 const LanguageSwitcher = () => {
-  const { lang, setLang } = useLanguage();
+  const { lang, setLang } = useSakhiLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLanguageChange = (newLang: 'en' | 'hi' | 'te') => {
@@ -43,28 +59,34 @@ const LanguageSwitcher = () => {
         variant="ghost"
         size="sm"
         onClick={() => setIsOpen(!isOpen)}
-        className="text-white hover:bg-white/20 flex items-center space-x-1"
+        className="text-white hover:bg-white/20 flex items-center space-x-2 px-3 py-2 rounded-lg transition-all"
       >
         <Globe className="w-4 h-4" />
-        <span>{lang.toUpperCase()}</span>
+        <span className="font-medium">{lang.toUpperCase()}</span>
       </Button>
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg py-1 z-50 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-28 bg-white rounded-xl shadow-xl py-2 z-50 border border-gray-100">
           <button
             onClick={() => handleLanguageChange('en')}
-            className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-purple-50 transition-colors"
+            className={`block w-full px-4 py-2.5 text-left text-sm transition-colors ${
+              lang === 'en' ? 'bg-purple-50 text-purple-700 font-medium' : 'text-gray-700 hover:bg-gray-50'
+            }`}
           >
             English
           </button>
           <button
             onClick={() => handleLanguageChange('hi')}
-            className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-purple-50 transition-colors"
+            className={`block w-full px-4 py-2.5 text-left text-sm transition-colors ${
+              lang === 'hi' ? 'bg-purple-50 text-purple-700 font-medium' : 'text-gray-700 hover:bg-gray-50'
+            }`}
           >
             हिंदी
           </button>
           <button
             onClick={() => handleLanguageChange('te')}
-            className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-purple-50 transition-colors"
+            className={`block w-full px-4 py-2.5 text-left text-sm transition-colors ${
+              lang === 'te' ? 'bg-purple-50 text-purple-700 font-medium' : 'text-gray-700 hover:bg-gray-50'
+            }`}
           >
             తెలుగు
           </button>
@@ -75,9 +97,10 @@ const LanguageSwitcher = () => {
 };
 
 const SakhiTry = () => {
-  const { t, lang, setLang } = useLanguage();
+  // Scoped language state for this page only
+  const [sakhiLang, setSakhiLang] = useState<'en' | 'hi' | 'te'>('en');
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isChatOpen, setIsChatOpen] = useState(true); // State to control chat panel visibility
+  const [isChatOpen, setIsChatOpen] = useState(true);
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -86,7 +109,7 @@ const SakhiTry = () => {
 
   const [inputText, setInputText] = useState('');
   const [previewContent, setPreviewContent] = useState<PreviewContent | null>(null);
-  const [lastUserMessage, setLastUserMessage] = useState<string>(''); // Store last user message for regenerating content
+  const [lastUserMessage, setLastUserMessage] = useState<string>('');
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -94,10 +117,9 @@ const SakhiTry = () => {
   // Regenerate preview content when language changes
   useEffect(() => {
     if (lastUserMessage) {
-      const newContent = generatePreviewContent(lastUserMessage, lang);
+      const newContent = generatePreviewContent(lastUserMessage, sakhiLang);
       setPreviewContent(newContent);
       
-      // Update all bot messages with new language content
       setMessages(prevMessages => 
         prevMessages.map(msg => {
           if (!msg.isUser && msg.previewContent) {
@@ -109,7 +131,7 @@ const SakhiTry = () => {
             
             return {
               ...msg,
-              text: responses[lang as keyof typeof responses] || responses.en,
+              text: responses[sakhiLang] || responses.en,
               previewContent: newContent
             };
           }
@@ -117,9 +139,7 @@ const SakhiTry = () => {
         })
       );
     }
-  }, [lang, lastUserMessage]); // Removed previewContent from dependencies
-
-  // Component is now ready to use any language from context
+  }, [sakhiLang, lastUserMessage]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -357,29 +377,23 @@ const SakhiTry = () => {
     };
 
     setMessages(prev => [...prev, newMessage]);
-
-    // Store the last user message for regenerating content when language changes
     setLastUserMessage(inputText.trim());
 
-    // Generate preview content based on the current UI language
-    const preview = generatePreviewContent(inputText, lang);
+    const preview = generatePreviewContent(inputText, sakhiLang);
     setPreviewContent(preview);
 
-    // Clear input immediately
     setInputText('');
 
-    // Use static responses based on language
     const responses = {
       en: "I understand your feelings, and they're completely valid. Let me share some strategies that might help you through this.",
       hi: "मैं आपकी भावनाओं को समझती हूं, और वे पूर्णतः वैध हैं। मैं कुछ रणनीतियां साझा करती हूं जो इस दौरान आपकी मदद कर सकती हैं।",
       te: "నేను మీ భావనలను అర్థం చేసుకుంటున్నాను, మరియు అవి పూర్ణంగా చెల్లుబాటు అయ్యేవి. ఈ సమయంలో మీకు సహాయపడే కొన్ని వ్యూహాలను పంచుకుంటాను."
     };
 
-    // Simulate a slight delay for a more natural feel
     setTimeout(() => {
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: responses[lang as keyof typeof responses] || responses.en,
+        text: responses[sakhiLang] || responses.en,
         isUser: false,
         timestamp: new Date(),
         language: detectedLanguage,
@@ -396,228 +410,276 @@ const SakhiTry = () => {
     { en: "How can I support my partner through this?", hi: "इसमें अपने साथी का समर्थन कैसे करूं?", te: "దీనిలో నా భాగస్వామికి ఎలా మద్దతు ఇవ్వాలి?" }
   ];
 
-  // Get current language prompts
-  const currentPrompts = quickPrompts.map(p => p[lang as keyof typeof p]);
+  const currentPrompts = quickPrompts.map(p => p[sakhiLang]);
+
+  const translations = {
+    en: {
+      welcome: "Welcome to Sakhi",
+      intro: "I'm here to provide compassionate support for your fertility journey. Type in any language - I'll respond in the same language.",
+      askAbout: "Try asking about:",
+      typeMessage: "Type your message...",
+      privateSecure: "All conversations are private and stay on your device",
+      startConversation: "Start a Conversation",
+      previewDesc: "Send a message to Sakhi and see personalized support content, tips, and resources appear here.",
+      keyPoints: "Key Points to Remember",
+      practicalTips: "Practical Tips",
+      additionalResources: "Additional Resources",
+      importantNotice: "Important Notice",
+      emergencyText: "If you're experiencing severe distress, thoughts of self-harm, or emergency symptoms, please contact a healthcare professional immediately.",
+      learnMore: "Learn More"
+    },
+    hi: {
+      welcome: "सखी में आपका स्वागत है",
+      intro: "मैं आपकी प्रजनन यात्रा के लिए करुणामय सहायता प्रदान करने यहाँ हूँ। किसी भी भाषा में लिखें - मैं उसी भाषा में जवाब दूंगी।",
+      askAbout: "इनके बारे में पूछें:",
+      typeMessage: "अपना संदेश लिखें...",
+      privateSecure: "सभी बातचीत निजी हैं और आपके डिवाइस पर रहती हैं",
+      startConversation: "बातचीत शुरू करें",
+      previewDesc: "सखी को संदेश भेजें और यहाँ व्यक्तिगत सहायता सामग्री, सुझाव और संसाधन देखें।",
+      keyPoints: "याद रखने योग्य मुख्य बातें",
+      practicalTips: "व्यावहारिक सुझाव",
+      additionalResources: "अतिरिक्त संसाधन",
+      importantNotice: "महत्वपूर्ण सूचना",
+      emergencyText: "यदि आप गंभीर संकट, आत्म-हानि के विचार, या आपातकालीन लक्षणों का अनुभव कर रहे हैं, तो कृपया तुरंत स्वास्थ्य पेशेवर से संपर्क करें।",
+      learnMore: "और जानें"
+    },
+    te: {
+      welcome: "సఖికి స్వాగతం",
+      intro: "మీ ప్రసవ ప్రయాణానికి దయగల మద్దతు అందించడానికి నేను ఇక్కడ ఉన్నాను। ఏ భాషలోనైనా టైప్ చేయండి - అదే భాషలో ప్రతిస్పందిస్తాను.",
+      askAbout: "వీటి గురించి అడగండి:",
+      typeMessage: "మీ సందేశాన్ని టైప్ చేయండి...",
+      privateSecure: "అన్ని సంభాషణలు ప్రైవేట్ మరియు మీ పరికరంలోనే ఉంటాయి",
+      startConversation: "సంభాషణ ప్రారంభించండి",
+      previewDesc: "సఖికి సందేశం పంపండి మరియు వ్యక్తిగత మద్దతు కంటెంట్, చిట్కాలు మరియు వనరులను ఇక్కడ చూడండి.",
+      keyPoints: "గుర్తుంచుకోవలసిన ముఖ్య విషయాలు",
+      practicalTips: "ఆచరణాత్మక చిట్కాలు",
+      additionalResources: "అదనపు వనరులు",
+      importantNotice: "ముఖ్యమైన నోటీసు",
+      emergencyText: "మీరు తీవ్రమైన బాధ, స్వీయ-హాని ఆలోచనలు లేదా అత్యవసర లక్షణాలను అనుభవిస్తుంటే, దయచేసి వెంటనే ఆరోగ్య నిపుణుడిని సంప్రదించండి।",
+      learnMore: "మరింత తెలుసుకోండి"
+    }
+  };
+
+  const t = translations[sakhiLang];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
-      {/* Full Width Header */}
-      <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-3 flex items-center justify-between z-40 shadow-lg h-16">
-        <div className="flex items-center space-x-3">
-          <Heart className="w-6 h-6" />
-          <h3 className="font-bold text-lg">Sakhi</h3>
-        </div>
-        <div className="flex items-center space-x-4">
-          <LanguageSwitcher />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              // Clear any stored data and redirect to Sakhi page
-              window.location.href = "/sakhi";
-            }}
-            className="text-white hover:bg-white/20 flex items-center space-x-2 px-3 py-2"
-          >
-            <span className="text-sm font-medium">Logout</span>
-          </Button>
-        </div>
-      </div>
-
-      {/* Chat Panel */}
-      <div className={`fixed top-16 left-0 h-[calc(100vh-4rem)] bg-white shadow-2xl transition-all duration-300 ease-in-out z-30 ${
-        isChatOpen ? 'w-full md:w-96' : 'w-0'
-      } overflow-hidden`}>
-
-        {/* Chat Header - Removed, now using full width header */}
-        <div className="hidden"></div>
-
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-3 lg:p-4 space-y-3 lg:space-y-4 h-[calc(100%-80px)]"> {/* Adjusted height */}
-          {messages.length === 0 && (
-            <div className="text-center py-4 lg:py-8 px-4">
-              <Heart className="w-8 h-8 lg:w-12 lg:h-12 text-purple-300 mx-auto mb-3 lg:mb-4" />
-              <h3 className="text-base lg:text-lg font-semibold text-gray-700 mb-2">{t("sakhi_try_welcome")}</h3>
-              <p className="text-gray-500 text-xs lg:text-sm mb-3 lg:mb-4 leading-relaxed">
-                {t("sakhi_try_intro")}
-              </p>
-              <div className="space-y-2">
-                <p className="text-xs text-gray-400">{t("sakhi_try_ask_about")}</p>
-                {currentPrompts.map((prompt, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setInputText(prompt)}
-                    className="block w-full text-left p-2 lg:p-3 text-xs lg:text-sm bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200"
-                  >
-                    "{prompt}"
-                  </button>
-                ))}
-              </div>
+    <SakhiLanguageContext.Provider value={{ lang: sakhiLang, setLang: setSakhiLang }}>
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
+        {/* Enhanced Header */}
+        <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 text-white px-6 py-4 flex items-center justify-between z-40 shadow-xl border-b border-white/10">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+              <Heart className="w-6 h-6" />
             </div>
-          )}
+            <h3 className="font-bold text-xl">Sakhi</h3>
+          </div>
+          <div className="flex items-center space-x-4">
+            <LanguageSwitcher />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                window.location.href = "/sakhi";
+              }}
+              className="text-white hover:bg-white/20 flex items-center space-x-2 px-4 py-2 rounded-lg transition-all"
+            >
+              <span className="text-sm font-medium">Logout</span>
+            </Button>
+          </div>
+        </div>
 
-          {messages.map((message) => (
-            <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} px-2 lg:px-0`}>
-              <div className={`max-w-[85%] lg:max-w-[80%] ${message.isUser ? 'order-2' : 'order-1'}`}>
-                <div className={`flex items-start space-x-2 ${message.isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                  <div className={`w-6 h-6 lg:w-8 lg:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    message.isUser ? 'bg-purple-500 text-white' : 'bg-pink-100 text-pink-600'
-                  }`}>
-                    {message.isUser ? <User className="w-3 h-3 lg:w-4 lg:h-4" /> : <Bot className="w-3 h-3 lg:w-4 lg:h-4" />}
-                  </div>
-                  <div className="flex-1">
-                    <div className={`px-3 lg:px-4 py-2 rounded-2xl ${
-                      message.isUser
-                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-                        : 'bg-gray-100 text-gray-800'
+        {/* Chat Panel */}
+        <div className={`fixed top-16 left-0 h-[calc(100vh-4rem)] bg-white shadow-2xl transition-all duration-300 ease-in-out z-30 ${
+          isChatOpen ? 'w-full md:w-[420px]' : 'w-0'
+        } overflow-hidden border-r border-gray-100`}>
+
+          {/* Messages Area */}
+          <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 lg:space-y-5 h-[calc(100%-100px)]">
+            {messages.length === 0 && (
+              <div className="text-center py-8 px-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Heart className="w-8 h-8 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t.welcome}</h3>
+                <p className="text-gray-600 text-sm mb-6 leading-relaxed max-w-sm mx-auto">
+                  {t.intro}
+                </p>
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{t.askAbout}</p>
+                  {currentPrompts.map((prompt, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setInputText(prompt)}
+                      className="block w-full text-left p-3 text-sm bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 rounded-xl transition-all border border-purple-100 hover:border-purple-200 hover:shadow-md"
+                    >
+                      <span className="text-gray-700">"{prompt}"</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {messages.map((message) => (
+              <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} px-1`}>
+                <div className={`max-w-[85%] lg:max-w-[80%] ${message.isUser ? 'order-2' : 'order-1'}`}>
+                  <div className={`flex items-start space-x-3 ${message.isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm ${
+                      message.isUser 
+                        ? 'bg-gradient-to-br from-purple-500 to-pink-500 text-white' 
+                        : 'bg-gradient-to-br from-purple-100 to-pink-100 text-purple-600'
                     }`}>
-                      <p className="text-sm leading-relaxed">{message.text}</p>
-                      <p className={`text-xs mt-1 ${message.isUser ? 'text-white opacity-70' : 'text-gray-500'}`}>
-                        {message.timestamp.toLocaleTimeString()}
-                      </p>
+                      {message.isUser ? <User className="w-4 h-4" /> : <Bot className="w-5 h-5" />}
                     </div>
-                    
-                    {/* Mobile Preview Content - Only shown on mobile for bot messages with preview content */}
-                    {!message.isUser && message.previewContent && (
-                      <div className="md:hidden mt-3 bg-white rounded-2xl shadow-lg p-4 space-y-4">
-                        {/* Header */}
-                        <div className="border-b border-gray-200 pb-3">
-                          <h3 className="text-lg font-bold text-gray-900 mb-1">{message.previewContent.title}</h3>
-                          <p className="text-sm text-gray-600">{message.previewContent.description}</p>
-                        </div>
-
-                        {/* Video Section */}
-                        <div className="relative bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl overflow-hidden">
-                          <div className="aspect-video">
-                            <iframe
-                              width="100%"
-                              height="100%"
-                              src={message.previewContent.videoUrl || "https://www.youtube.com/embed/jq_MxKVlDCU?si=D-TE7Ewsb1CCUJfS&start=10"}
-                              title="YouTube video player"
-                              frameBorder="0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                              referrerPolicy="strict-origin-when-cross-origin"
-                              allowFullScreen
-                              className="w-full h-full"
-                            ></iframe>
+                    <div className="flex-1">
+                      <div className={`px-4 py-3 rounded-2xl shadow-sm ${
+                        message.isUser
+                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                          : 'bg-white border border-gray-100 text-gray-800'
+                      }`}>
+                        <p className="text-sm leading-relaxed">{message.text}</p>
+                        <p className={`text-xs mt-1.5 ${message.isUser ? 'text-white/80' : 'text-gray-400'}`}>
+                          {message.timestamp.toLocaleTimeString()}
+                        </p>
+                      </div>
+                      
+                      {/* Mobile Preview Content */}
+                      {!message.isUser && message.previewContent && (
+                        <div className="md:hidden mt-4 bg-white rounded-2xl shadow-lg border border-gray-100 p-5 space-y-5">
+                          <div className="border-b border-gray-100 pb-4">
+                            <h3 className="text-lg font-bold text-gray-900 mb-1.5">{message.previewContent.title}</h3>
+                            <p className="text-sm text-gray-600 leading-relaxed">{message.previewContent.description}</p>
                           </div>
-                        </div>
 
-                        {/* Key Points */}
-                        <div>
-                          <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
-                            <Heart className="w-4 h-4 text-pink-500 mr-2" />
-                            Key Points to Remember
-                          </h4>
-                          <div className="space-y-2">
-                            {message.previewContent.keyPoints.map((point, index) => (
-                              <div key={index} className="flex items-start space-x-2">
-                                <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-1.5 flex-shrink-0" />
-                                <p className="text-xs text-gray-700">{point}</p>
+                          <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl overflow-hidden border border-purple-100">
+                            <div className="aspect-video">
+                              <iframe
+                                width="100%"
+                                height="100%"
+                                src={message.previewContent.videoUrl || "https://www.youtube.com/embed/jq_MxKVlDCU?si=D-TE7Ewsb1CCUJfS&start=10"}
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                allowFullScreen
+                                className="w-full h-full"
+                              ></iframe>
+                            </div>
+                          </div>
+
+                          <div>
+                            <h4 className="font-bold text-gray-900 text-sm mb-3 flex items-center">
+                              <Heart className="w-4 h-4 text-pink-500 mr-2" />
+                              {t.keyPoints}
+                            </h4>
+                            <div className="space-y-2.5">
+                              {message.previewContent.keyPoints.map((point, index) => (
+                                <div key={index} className="flex items-start space-x-2.5">
+                                  <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
+                                  <p className="text-xs text-gray-700 leading-relaxed">{point}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div>
+                            <h4 className="font-bold text-gray-900 text-sm mb-3 flex items-center">
+                              <Shield className="w-4 h-4 text-green-500 mr-2" />
+                              {t.practicalTips}
+                            </h4>
+                            <div className="space-y-2.5">
+                              {message.previewContent.tips.map((tip, index) => (
+                                <div key={index} className="p-3 bg-green-50 rounded-lg border-l-3 border-green-400">
+                                  <p className="text-xs text-gray-700 leading-relaxed">{tip}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div>
+                            <h4 className="font-bold text-gray-900 text-sm mb-3 flex items-center">
+                              <Users className="w-4 h-4 text-blue-500 mr-2" />
+                              {t.additionalResources}
+                            </h4>
+                            <div className="space-y-2.5">
+                              {message.previewContent.resources.map((resource, index) => (
+                                <div key={index} className="p-3 border border-gray-200 rounded-lg hover:border-purple-200 hover:bg-purple-50/30 transition-all">
+                                  <h5 className="font-semibold text-gray-900 text-xs mb-1">{resource.title}</h5>
+                                  <p className="text-xs text-gray-600 leading-relaxed">{resource.description}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="border border-orange-200 bg-orange-50 rounded-lg p-4">
+                            <div className="flex items-start space-x-2.5">
+                              <Shield className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                              <div>
+                                <h5 className="font-semibold text-orange-900 text-xs mb-1.5">{t.importantNotice}</h5>
+                                <p className="text-xs text-orange-800 leading-relaxed">
+                                  {t.emergencyText}
+                                </p>
                               </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Tips */}
-                        <div>
-                          <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
-                            <Shield className="w-4 h-4 text-green-500 mr-2" />
-                            Practical Tips
-                          </h4>
-                          <div className="space-y-2">
-                            {message.previewContent.tips.map((tip, index) => (
-                              <div key={index} className="p-2 bg-green-50 rounded-lg border-l-2 border-green-400">
-                                <p className="text-xs text-gray-700">{tip}</p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Resources */}
-                        <div>
-                          <h4 className="font-bold text-gray-900 text-sm mb-2 flex items-center">
-                            <Users className="w-4 h-4 text-blue-500 mr-2" />
-                            Additional Resources
-                          </h4>
-                          <div className="space-y-2">
-                            {message.previewContent.resources.map((resource, index) => (
-                              <div key={index} className="p-2 border border-gray-200 rounded-lg">
-                                <h5 className="font-semibold text-gray-900 text-xs mb-0.5">{resource.title}</h5>
-                                <p className="text-xs text-gray-600">{resource.description}</p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Emergency Notice */}
-                        <div className="border border-orange-200 bg-orange-50 rounded-lg p-3">
-                          <div className="flex items-start space-x-2">
-                            <Shield className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-semibold text-orange-900 text-xs mb-1">Important Notice</h5>
-                              <p className="text-xs text-orange-800">
-                                If you're experiencing severe distress, thoughts of self-harm, or emergency symptoms, please contact a healthcare professional immediately.
-                              </p>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Input Area */}
-        <div className="p-3 lg:p-4 border-t border-gray-200 bg-gray-50 absolute bottom-0 left-0 right-0 safe-area-padding-bottom">
-          <div className="flex space-x-2 mb-2">
-            <Input
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder={t("chat_type_message")}
-              className="flex-1 rounded-full text-sm lg:text-base h-10 lg:h-auto"
-              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-            />
-            <Button
-              onClick={sendMessage}
-              className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 h-10 w-10 lg:h-auto lg:w-auto lg:px-4"
-            >
-              <Send className="w-4 h-4" />
-            </Button>
+            ))}
+            <div ref={messagesEndRef} />
           </div>
-          <p className="text-xs text-gray-500 text-center">
-            <Shield className="w-3 h-3 inline mr-1" />
-            All conversations are private and stay on your device
-          </p>
-        </div>
-      </div>
 
-      {/* Main Content Area */}
-      <div className={`transition-all duration-300 pt-16 ${isChatOpen ? 'md:ml-96' : 'ml-0'}`}>
-        <div className="container mx-auto px-4 py-8">
-          <PreviewPanel
-            previewContent={previewContent}
-            isVideoPlaying={isVideoPlaying}
-            setIsVideoPlaying={setIsVideoPlaying}
-            isMuted={isMuted}
-            setIsMuted={setIsMuted}
-          />
+          {/* Input Area */}
+          <div className="p-4 lg:p-6 border-t border-gray-100 bg-white absolute bottom-0 left-0 right-0">
+            <div className="flex space-x-3 mb-3">
+              <Input
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder={t.typeMessage}
+                className="flex-1 rounded-xl border-gray-200 focus:border-purple-300 focus:ring-purple-200 text-sm h-11"
+                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+              />
+              <Button
+                onClick={sendMessage}
+                className="rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 h-11 w-11 shadow-md hover:shadow-lg transition-all"
+              >
+                <Send className="w-4 h-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-gray-500 text-center flex items-center justify-center">
+              <Shield className="w-3 h-3 inline mr-1.5" />
+              {t.privateSecure}
+            </p>
+          </div>
         </div>
-      </div>
 
-      {/* Mobile Chat Toggle */}
-      {!isChatOpen && (
-        <Button
-          onClick={() => setIsChatOpen(true)}
-          className="fixed bottom-6 right-6 md:hidden gradient-button text-white rounded-full w-14 h-14 shadow-2xl z-30 flex items-center justify-center"
-        >
-          <MessageCircle className="w-6 h-6" />
-        </Button>
-      )}
-    </div>
+        {/* Main Content Area */}
+        <div className={`transition-all duration-300 pt-16 ${isChatOpen ? 'md:ml-[420px]' : 'ml-0'}`}>
+          <div className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
+            <PreviewPanel
+              previewContent={previewContent}
+              isVideoPlaying={isVideoPlaying}
+              setIsVideoPlaying={setIsVideoPlaying}
+              isMuted={isMuted}
+              setIsMuted={setIsMuted}
+              translations={t}
+            />
+          </div>
+        </div>
+
+        {/* Mobile Chat Toggle */}
+        {!isChatOpen && (
+          <Button
+            onClick={() => setIsChatOpen(true)}
+            className="fixed bottom-6 right-6 md:hidden gradient-button text-white rounded-full w-14 h-14 shadow-2xl z-30 flex items-center justify-center hover:scale-110 transition-transform"
+          >
+            <MessageCircle className="w-6 h-6" />
+          </Button>
+        )}
+      </div>
+    </SakhiLanguageContext.Provider>
   );
 };
 
@@ -628,36 +690,38 @@ interface PreviewPanelProps {
   setIsVideoPlaying: (value: boolean) => void;
   isMuted: boolean;
   setIsMuted: (value: boolean) => void;
+  translations: any;
 }
 
-const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMuted, setIsMuted }: PreviewPanelProps) => {
-  const { t, lang } = useLanguage();
+const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMuted, setIsMuted, translations: t }: PreviewPanelProps) => {
   
   if (!previewContent) {
     return (
-      <div className="h-full bg-gray-50 flex items-center justify-center p-8">
-        <div className="text-center max-w-md">
-          <MessageCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-600 mb-2">{t("sakhi_try_start_conversation")}</h3>
-          <p className="text-gray-500">
-            {t("sakhi_try_preview_desc")}
+      <div className="h-full bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-100 flex items-center justify-center p-8 lg:p-12">
+        <div className="text-center max-w-lg">
+          <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <MessageCircle className="w-10 h-10 text-purple-600" />
+          </div>
+          <h3 className="text-2xl font-bold text-gray-800 mb-3">{t.startConversation}</h3>
+          <p className="text-gray-600 mb-8 leading-relaxed">
+            {t.previewDesc}
           </p>
-          <div className="mt-6 grid grid-cols-2 gap-4 text-sm">
-            <div className="flex items-center space-x-2 text-gray-600">
-              <Shield className="w-4 h-4 text-green-500" />
-              <span>{t("sakhi_try_private_secure")}</span>
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="flex flex-col items-center space-y-2 p-4 bg-white rounded-xl border border-gray-100">
+              <Shield className="w-6 h-6 text-green-500" />
+              <span className="text-gray-700 font-medium">Private & Secure</span>
             </div>
-            <div className="flex items-center space-x-2 text-gray-600">
-              <Clock className="w-4 h-4 text-blue-500" />
-              <span>{t("sakhi_247_available")}</span>
+            <div className="flex flex-col items-center space-y-2 p-4 bg-white rounded-xl border border-gray-100">
+              <Clock className="w-6 h-6 text-blue-500" />
+              <span className="text-gray-700 font-medium">24/7 Available</span>
             </div>
-            <div className="flex items-center space-x-2 text-gray-600">
-              <Users className="w-4 h-4 text-purple-500" />
-              <span>{t("sakhi_try_partner_support")}</span>
+            <div className="flex flex-col items-center space-y-2 p-4 bg-white rounded-xl border border-gray-100">
+              <Users className="w-6 h-6 text-purple-500" />
+              <span className="text-gray-700 font-medium">Partner Support</span>
             </div>
-            <div className="flex items-center space-x-2 text-gray-600">
-              <Globe className="w-4 h-4 text-pink-500" />
-              <span>{t("sakhi_try_multilanguage")}</span>
+            <div className="flex flex-col items-center space-y-2 p-4 bg-white rounded-xl border border-gray-100">
+              <Globe className="w-6 h-6 text-pink-500" />
+              <span className="text-gray-700 font-medium">Multi-language</span>
             </div>
           </div>
         </div>
@@ -666,16 +730,16 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
   }
 
   return (
-    <div className="h-full bg-white overflow-y-auto">
-      <div className="p-6 space-y-6">
+    <div className="h-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+      <div className="p-6 lg:p-8 space-y-6 lg:space-y-8">
         {/* Header */}
-        <div className="border-b border-gray-200 pb-4">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">{previewContent.title}</h1>
-          <p className="text-gray-600">{previewContent.description}</p>
+        <div className="border-b border-gray-100 pb-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">{previewContent.title}</h1>
+          <p className="text-gray-600 leading-relaxed">{previewContent.description}</p>
         </div>
 
         {/* Video Section */}
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden border-0 shadow-lg">
           <div className="relative bg-gradient-to-br from-purple-100 to-pink-100">
             <div className="aspect-video">
               <iframe
@@ -694,75 +758,72 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
         </Card>
 
         {/* Key Points */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Heart className="w-5 h-5 text-pink-500" />
-              <span>{lang === 'hi' ? 'याद रखने योग्य मुख्य बातें' : lang === 'te' ? 'గుర్తుంచుకోవలసిన ముఖ్య విషయాలు' : 'Key Points to Remember'}</span>
+        <Card className="border border-gray-100 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center space-x-2 text-xl">
+              <Heart className="w-6 h-6 text-pink-500" />
+              <span>{t.keyPoints}</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-4">
             {previewContent.keyPoints.map((point, index) => (
               <div key={index} className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-                <p className="text-gray-700">{point}</p>
+                <p className="text-gray-700 leading-relaxed">{point}</p>
               </div>
             ))}
           </CardContent>
         </Card>
 
         {/* Practical Tips */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Shield className="w-5 h-5 text-green-500" />
-              <span>{lang === 'hi' ? 'व्यावहारिक सुझाव' : lang === 'te' ? 'ఆచరణాత్మక చిట్కాలు' : 'Practical Tips'}</span>
+        <Card className="border border-gray-100 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center space-x-2 text-xl">
+              <Shield className="w-6 h-6 text-green-500" />
+              <span>{t.practicalTips}</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {previewContent.tips.map((tip, index) => (
-              <div key={index} className="p-3 bg-green-50 rounded-lg border-l-4 border-green-400">
-                <p className="text-gray-700">{tip}</p>
+              <div key={index} className="p-4 bg-green-50 rounded-xl border-l-4 border-green-400">
+                <p className="text-gray-700 leading-relaxed">{tip}</p>
               </div>
             ))}
           </CardContent>
         </Card>
 
         {/* Resources */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Users className="w-5 h-5 text-blue-500" />
-              <span>{lang === 'hi' ? 'अतिरिक्त संसाधन' : lang === 'te' ? 'అదనపు వనరులు' : 'Additional Resources'}</span>
+        <Card className="border border-gray-100 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center space-x-2 text-xl">
+              <Users className="w-6 h-6 text-blue-500" />
+              <span>{t.additionalResources}</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {previewContent.resources.map((resource, index) => (
-              <div key={index} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                <h4 className="font-semibold text-gray-900 mb-1">{resource.title}</h4>
-                <p className="text-sm text-gray-600">{resource.description}</p>
-                <Badge variant="secondary" className="mt-2">Learn More</Badge>
+              <div key={index} className="p-4 border border-gray-200 rounded-xl hover:bg-purple-50/50 hover:border-purple-200 transition-all cursor-pointer">
+                <h4 className="font-semibold text-gray-900 mb-1.5">{resource.title}</h4>
+                <p className="text-sm text-gray-600 leading-relaxed mb-3">{resource.description}</p>
+                <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">
+                  {t.learnMore}
+                </Badge>
               </div>
             ))}
           </CardContent>
         </Card>
 
         {/* Emergency Notice */}
-        <Card className="border-orange-200 bg-orange-50">
-          <CardContent className="p-4">
+        <Card className="border-orange-200 bg-orange-50 shadow-sm">
+          <CardContent className="p-5">
             <div className="flex items-start space-x-3">
-              <Shield className="w-5 h-5 text-orange-600 mt-1 flex-shrink-0" />
+              <Shield className="w-6 h-6 text-orange-600 mt-1 flex-shrink-0" />
               <div>
-                <h4 className="font-semibold text-orange-900 mb-1">
-                  {lang === 'hi' ? 'महत्वपूर्ण सूचना' : lang === 'te' ? 'ముఖ్యమైన నోటీసు' : 'Important Notice'}
+                <h4 className="font-semibold text-orange-900 mb-2">
+                  {t.importantNotice}
                 </h4>
-                <p className="text-sm text-orange-800">
-                  {lang === 'hi' 
-                    ? 'यदि आप गंभीर संकट, आत्म-हानि के विचार, या आपातकालीन लक्षणों का अनुभव कर रहे हैं, तो कृपया तुरंत स्वास्थ्य पेशेवर या आपातकालीन सेवाओं से संपर्क करें।'
-                    : lang === 'te'
-                    ? 'మీరు తీవ్రమైన బాధ, స్వీయ-హాని ఆలోచనలు లేదా అత్యవసర లక్షణాలను అనుభవిస్తుంటే, దయచేసి వెంటనే ఆరోగ్య నిపుణుడిని లేదా అత్యవసర సేవలను సంప్రదించండి।'
-                    : 'If you\'re experiencing severe distress, thoughts of self-harm, or emergency symptoms, please contact a healthcare professional or emergency services immediately.'
-                  }
+                <p className="text-sm text-orange-800 leading-relaxed">
+                  {t.emergencyText}
                 </p>
               </div>
             </div>
