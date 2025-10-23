@@ -98,7 +98,7 @@ const Home = () => {
         <div className="relative w-full mx-auto overflow-hidden rounded-2xl md:rounded-3xl">
           <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
             <video
-              className="absolute top-0 left-0 w-full h-full object-contain md:object-cover"
+              className="absolute top-0 left-0 w-full h-full object-cover"
               autoPlay
               loop
               muted
@@ -923,13 +923,6 @@ const Home = () => {
                   data-testid={`card-treatment-${index}`}
                 >
                   <CardContent className="p-0 flex flex-col h-full">
-                    {/* Click indicator */}
-                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                        <ArrowRight className="w-4 h-4 text-purple-600" />
-                      </div>
-                    </div>
-
                     <div
                       className={`w-16 h-16 ${treatment.bgColor} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md`}
                     >
@@ -1103,7 +1096,7 @@ const Home = () => {
                   >
                     <AccordionTrigger className="text-left hover:text-purple-600 transition-colors">
                       <span className="font-semibold text-foreground">
-                        Is JanmaSethu free to use?
+                        Is Sakhi free to use?
                       </span>
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground">
