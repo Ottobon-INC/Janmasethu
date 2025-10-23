@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect, createContext, useContext } from 'react';
 import { Link } from 'wouter';
 import { Send, MessageCircle, Heart, Shield, Clock, Users, Play, Volume2, VolumeX, Globe, User, Bot, X, Minimize2 } from 'lucide-react';
@@ -97,25 +96,26 @@ const LanguageSwitcher = () => {
 };
 
 // Custom hook for floating player
-const useFloatingPlayer = (videoRef: React.RefObject<HTMLDivElement>) => {
+const useFloatingPlayer = () => {
   const [isFloating, setIsFloating] = useState(false);
   const [showFloating, setShowFloating] = useState(true);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!videoRef.current) return;
+  // This hook is no longer used as the video is always in mini player mode.
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (!videoRef.current) return;
 
-      const rect = videoRef.current.getBoundingClientRect();
-      const isOutOfView = rect.bottom < 0;
+  //     const rect = videoRef.current.getBoundingClientRect();
+  //     const isOutOfView = rect.bottom < 0;
 
-      setIsFloating(isOutOfView);
-    };
+  //     setIsFloating(isOutOfView);
+  //   };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial state
+  //   window.addEventListener('scroll', handleScroll);
+  //   handleScroll(); // Check initial state
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [videoRef]);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, [videoRef]);
 
   return { isFloating, showFloating, setShowFloating };
 };
@@ -137,15 +137,14 @@ const SakhiTry = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const videoContainerRef = useRef<HTMLDivElement>(null);
-  const { isFloating, showFloating, setShowFloating } = useFloatingPlayer(videoContainerRef);
+  const [showFloating, setShowFloating] = useState(true);
 
   // Regenerate preview content when language changes
   useEffect(() => {
     if (lastUserMessage) {
       const newContent = generatePreviewContent(lastUserMessage, sakhiLang);
       setPreviewContent(newContent);
-      
+
       setMessages(prevMessages => 
         prevMessages.map(msg => {
           if (!msg.isUser && msg.previewContent) {
@@ -154,7 +153,7 @@ const SakhiTry = () => {
               hi: "मैं आपकी भावनाओं को समझती हूं, और वे पूर्णतः वैध हैं। मैं कुछ रणनीतियां साझा करती हूं जो इस दौरान आपकी मदद कर सकती हैं।",
               te: "నేను మీ భావనలను అర్థం చేసుకుంటున్నాను, మరియు అవి పూర్ణంగా చెల్లుబాటు అయ్యేవి. ఈ సమయంలో మీకు సహాయపడే కొన్ని వ్యూహాలను పంచుకుంటాను."
             };
-            
+
             return {
               ...msg,
               text: responses[sakhiLang] || responses.en,
@@ -567,7 +566,7 @@ const SakhiTry = () => {
                           {message.timestamp.toLocaleTimeString()}
                         </p>
                       </div>
-                      
+
                       {/* Mobile Preview Content */}
                       {!message.isUser && message.previewContent && (
                         <div className="md:hidden mt-4 bg-white rounded-2xl shadow-xl border border-purple-100 p-5 space-y-5 hover:shadow-2xl transition-shadow duration-300 w-[95%] max-w-full">
@@ -681,7 +680,7 @@ const SakhiTry = () => {
           </div>
         </div>
 
-        {/* Main Content Area */}
+        {/* Main Content Area - Now contains only the PreviewPanel which will render the mini-player */}
         <div className={`transition-all duration-300 pt-16 ${isChatOpen ? 'md:ml-[420px]' : 'ml-0'}`}>
           <div className="container mx-auto px-4 py-8 lg:px-8 lg:py-12">
             <PreviewPanel
@@ -691,6 +690,8 @@ const SakhiTry = () => {
               isMuted={isMuted}
               setIsMuted={setIsMuted}
               translations={t}
+              showFloating={showFloating}
+              setShowFloating={setShowFloating}
             />
           </div>
         </div>
@@ -717,12 +718,16 @@ interface PreviewPanelProps {
   isMuted: boolean;
   setIsMuted: (value: boolean) => void;
   translations: any;
+  showFloating: boolean;
+  setShowFloating: (value: boolean) => void;
 }
 
-const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMuted, setIsMuted, translations: t }: PreviewPanelProps) => {
-  const videoContainerRef = useRef<HTMLDivElement>(null);
-  const { isFloating, showFloating, setShowFloating } = useFloatingPlayer(videoContainerRef);
-  
+const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMuted, setIsMuted, translations: t, showFloating, setShowFloating }: PreviewPanelProps) => {
+
+  // The video is always displayed in mini-player mode, so scroll-based floating logic is removed.
+  // const videoContainerRef = useRef<HTMLDivElement>(null);
+  // const { isFloating, showFloating, setShowFloating } = useFloatingPlayer(videoContainerRef);
+
   if (!previewContent) {
     return (
       <div className="h-full bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-100 flex items-center justify-center p-8 lg:p-12">
@@ -766,28 +771,9 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
           <p className="text-gray-600 leading-relaxed">{previewContent.description}</p>
         </div>
 
-        {/* Video Section */}
-        <div ref={videoContainerRef} className="w-full max-w-[900px] mx-auto">
-          <Card className="overflow-hidden border-0 shadow-lg">
-            <div className="relative bg-gradient-to-br from-purple-100 to-pink-100">
-              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                <iframe
-                  className="absolute top-0 left-0 w-full h-full rounded-xl"
-                  src={previewContent.videoUrl || "https://www.youtube.com/embed/jq_MxKVlDCU?si=D-TE7Ewsb1CCUJfS&start=10&enablejsapi=1"}
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Floating Mini Player - appears when main video scrolls out of view */}
-        {isFloating && showFloating && previewContent && (
-          <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-[9999] floating-mini-player safe-area-padding-bottom pointer-events-auto">
+        {/* Floating Mini Player */}
+        {showFloating && previewContent && (
+          <div className="fixed bottom-4 right-4 z-[9999] floating-mini-player safe-area-padding-bottom pointer-events-auto">
             <div className="relative bg-black rounded-2xl overflow-hidden shadow-2xl" style={{ width: '280px', maxWidth: 'calc(100vw - 2rem)' }}>
               <button
                 onClick={() => setShowFloating(false)}
