@@ -169,36 +169,40 @@ async function scrapeDoctor(url: string): Promise<Doctor> {
     };
   }
 
-  // remove junk/interactive bits we don't want on our site
+  /* 1) Remove common interactive/noisy elements outright */
   content.find(`
     script, style, noscript,
     form, iframe, button, select, input, textarea,
     .appointment, [class*="appoint"], [id*="appoint"],
-    .elementor-widget-form, .wpcf7, .g-recaptcha, .grecaptcha-badge,
-    .wpforms-container, .booking, .book-appointment,
-    .hs-form, .mktoForm, .contact-form
+    .elementor-widget-form, .elementor-form, .wpcf7, .wpforms-container,
+    .g-recaptcha, .grecaptcha-badge,
+    .booking, .book-appointment, .contact-form, .mktoForm, .hs-form
   `).remove();
 
-  // Also: if there is any section whose heading contains "Appointment", drop that section
-  content.find("h2,h3,h4").each((_i, h) => {
-    const $h = $(h);
-    const t = $h.text().toLowerCase();
-    if (t.includes("appointment")) {
-      // remove the heading and everything until the next heading (common WP layout)
-      const toRemove = [$h.get(0)];
-      let next = $h.next();
-      while (next.length && !/H2|H3|H4/.test(next[0].tagName)) {
-        toRemove.push(next.get(0));
-        next = next.next();
-      }
-      toRemove.forEach(el => $(el).remove());
+  /* 2) If there's a heading that contains "Appointment",
+        remove that heading and EVERYTHING after it in the article */
+  const appHead = content.find("h1,h2,h3,h4,h5,h6").filter((_i, el) =>
+    $(el).text().trim().toLowerCase().includes("appointment")
+  );
+
+  if (appHead.length) {
+    // remove the heading and all following siblings until the end
+    let node = appHead.first();
+    while (node.length) {
+      const next = node.next();
+      node.remove();
+      node = next;
     }
+  }
+
+  /* 3) Safety: if any leftover element still contains inputs,
+        remove the nearest section-like wrapper */
+  content.find("input, select, textarea, button").each((_i, el) => {
+    const wrapper = $(el).closest("section, article, div");
+    if (wrapper.length) wrapper.remove();
   });
 
-  // final safety: drop any element that has a submit button inside
-  content.find(":has(button[type='submit']), :has(input[type='submit'])").remove();
-
-  // Finally remove any empty wrappers left behind
+  /* 4) Tidy up empty wrappers */
   content.find("*").each((_i, el) => {
     const $el = $(el);
     if (!$el.text().trim() && $el.children().length === 0 && !$el.is("img,figure")) {
