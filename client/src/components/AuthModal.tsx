@@ -70,9 +70,9 @@ export default function AuthModal({
 
         setShowRelationship(true);
       } else {
-        // Login - Call the login webhook
+        // Login - Call the login webhook with full error handling
         const response = await fetch(
-          "https://n8n.ottobon.in/webhook/sakhi/login",
+          "https://n8n.ottobon.in/webhook/login",
           {
             method: "POST",
             headers: {
@@ -88,21 +88,40 @@ export default function AuthModal({
         const data = await response.json();
         console.log("Login webhook response:", data);
 
-        // Close modal and navigate to Sakhi
-        onClose();
-        toast({
-          title: "Login successful",
-          description: "Redirecting to Sakhi...",
-        });
+        // Check if login was successful
+        if (data.success === true) {
+          // Extract user ID from response
+          const loginUserId = data.user_id || data.userId || data.id || `user_${Date.now()}`;
+          
+          // Close modal
+          onClose();
+          
+          // Show success message
+          toast({
+            title: "Login successful",
+            description: "Welcome back! Redirecting to Sakhi...",
+          });
+
+          // Navigate to Sakhi (existing user flow)
+          onAuthSuccess(false, undefined, loginUserId);
+        } else {
+          // Login failed - show error from backend
+          const errorMessage = data.error || data.message || "Login failed. Please check your credentials.";
+          
+          toast({
+            title: "Login Failed",
+            description: errorMessage,
+            variant: "destructive",
+          });
+        }
       }
     } catch (error) {
       console.error("Authentication error:", error);
+      
+      // Network or unexpected error
       toast({
-        title: "Error",
-        description:
-          error instanceof Error
-            ? error.message
-            : "An unexpected error occurred. Please try again.",
+        title: "Connection Error",
+        description: "Unable to connect to the server. Please check your internet connection and try again.",
         variant: "destructive",
       });
     } finally {
