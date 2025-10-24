@@ -138,18 +138,39 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           throw new Error("Failed to log in");
         }
 
-        toast({
-          title: "Welcome back!",
-          description: "Redirecting to Sakhi...",
-        });
-        
-        // Close modal and trigger success callback for existing user
-        onAuthSuccess(false);
+        // Parse response - n8n returns "True: {user_id}" or "False"
+        const textResponse = await response.text();
+        console.log("Login response:", textResponse);
+
+        // Check if login was successful
+        if (textResponse.startsWith("True:")) {
+          // Extract user_id from "True: {user_id}" format
+          const userId = textResponse.split("True:")[1]?.trim();
+          
+          if (userId) {
+            // Store user_id
+            storeUserId(userId);
+            console.log("User logged in with ID:", userId);
+          }
+
+          toast({
+            title: "Welcome back!",
+            description: "Redirecting to Sakhi...",
+          });
+          
+          // Close modal and trigger success callback for existing user
+          onAuthSuccess(false);
+        } else {
+          // Login failed - wrong password or user not found
+          throw new Error("Invalid credentials");
+        }
       } catch (error) {
         console.error("Login error:", error);
         toast({
           title: "Error",
-          description: "Failed to log in. Please try again.",
+          description: error instanceof Error && error.message === "Invalid credentials" 
+            ? "Invalid email or password. Please try again."
+            : "Failed to log in. Please try again.",
           variant: "destructive",
         });
       } finally {
