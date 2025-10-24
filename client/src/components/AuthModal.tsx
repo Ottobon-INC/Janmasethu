@@ -85,14 +85,14 @@ export default function AuthModal({
           },
         );
 
-        const data = await response.json();
-        console.log("Login webhook response:", data);
+        // Get response as text since n8n returns text format
+        const responseText = await response.text();
+        console.log("Login webhook response:", responseText);
 
-        // Check if login was successful
-        if (data.success === true) {
-          // Extract user ID from response
-          const loginUserId =
-            data.user_id || data.userId || data.id || `user_${Date.now()}`;
+        // Check if response starts with "True:" (successful login)
+        if (responseText.startsWith("True:")) {
+          // Extract user ID from response (format: "True: <user_id>")
+          const loginUserId = responseText.replace("True:", "").trim() || `user_${Date.now()}`;
 
           // Close modal
           onClose();
@@ -106,15 +106,10 @@ export default function AuthModal({
           // Navigate to Sakhi (existing user flow)
           onAuthSuccess(false, undefined, loginUserId);
         } else {
-          // Login failed - show error from backend
-          const errorMessage =
-            data.error ||
-            data.message ||
-            "Login failed. Please check your credentials.";
-
+          // Login failed - False response or any other response
           toast({
             title: "Login Failed",
-            description: errorMessage,
+            description: "Invalid email or password. Please check your credentials and try again.",
             variant: "destructive",
           });
         }
