@@ -198,7 +198,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
             description: errorMessage,
             variant: "destructive",
           });
-          return; // Don't throw error, just return
+          // Don't throw, let finally block reset loading state
         }
       } catch (error) {
         console.error("Login error:", error);
