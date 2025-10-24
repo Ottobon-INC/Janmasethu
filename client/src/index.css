@@ -1173,10 +1173,11 @@ textarea:focus-visible {
     font-weight: 500;
   }
 
-/* Floating Mini Player Styles */
+/* Floating Mini Player Styles - Draggable */
 .floating-mini-player {
   animation: floatIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  pointer-events: auto;
 }
 
 @keyframes floatIn {
@@ -1191,8 +1192,7 @@ textarea:focus-visible {
 }
 
 .floating-mini-player:hover {
-  transform: scale(1.02);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 /* Safe area adjustments for mobile devices with notches */
@@ -1204,25 +1204,21 @@ textarea:focus-visible {
 
 /* Responsive adjustments for mini player */
 @media (max-width: 640px) {
-  .floating-mini-player {
-    bottom: 1rem !important;
-    right: 1rem !important;
-  }
-
   .floating-mini-player > div {
-    width: 240px !important;
+    width: 350px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-mini-player > div {
+    width: 320px !important;
   }
 }
 
 @media (max-width: 380px) {
   .floating-mini-player > div {
-    width: 200px !important;
+    width: 280px !important;
   }
-}
-
-/* Ensure mini player stays above all elements */
-.floating-mini-player {
-  pointer-events: auto;
 }
 
 /* Responsive iframe container */

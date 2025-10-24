@@ -138,6 +138,11 @@ const SakhiTry = () => {
   const [isMuted, setIsMuted] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showFloating, setShowFloating] = useState(true);
+  
+  // Drag state for mini player
+  const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   // Regenerate preview content when language changes
   useEffect(() => {
@@ -165,6 +170,39 @@ const SakhiTry = () => {
       );
     }
   }, [sakhiLang, lastUserMessage]);
+
+  // Drag handlers for mini player
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setDragOffset({
+      x: e.clientX - playerPosition.x,
+      y: e.clientY - playerPosition.y
+    });
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (isDragging) {
+      setPlayerPosition({
+        x: e.clientX - dragOffset.x,
+        y: e.clientY - dragOffset.y
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, dragOffset]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -695,6 +733,9 @@ const SakhiTry = () => {
               translations={t}
               showFloating={showFloating}
               setShowFloating={setShowFloating}
+              playerPosition={playerPosition}
+              onMouseDown={handleMouseDown}
+              isDragging={isDragging}
             />
           </div>
         </div>
@@ -723,9 +764,12 @@ interface PreviewPanelProps {
   translations: any;
   showFloating: boolean;
   setShowFloating: (value: boolean) => void;
+  playerPosition: { x: number; y: number };
+  onMouseDown: (e: React.MouseEvent) => void;
+  isDragging: boolean;
 }
 
-const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMuted, setIsMuted, translations: t, showFloating, setShowFloating }: PreviewPanelProps) => {
+const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMuted, setIsMuted, translations: t, showFloating, setShowFloating, playerPosition, onMouseDown, isDragging }: PreviewPanelProps) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -781,17 +825,35 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
           <p className="text-gray-600 leading-relaxed">{previewContent.description}</p>
         </div>
 
-        {/* Mobile: Floating Mini Player */}
+        {/* Mobile: Floating Mini Player - Draggable */}
         {isMobile && showFloating && previewContent && (
-          <div className="fixed bottom-4 right-4 z-[9999] floating-mini-player safe-area-padding-bottom pointer-events-auto">
-            <div className="relative bg-black rounded-2xl overflow-hidden shadow-2xl" style={{ width: '280px', maxWidth: 'calc(100vw - 2rem)' }}>
-              <button
-                onClick={() => setShowFloating(false)}
-                className="absolute top-2 right-2 z-10 bg-black/70 hover:bg-black/90 text-white rounded-full p-1.5 transition-all duration-200"
-                aria-label="Close mini player"
+          <div 
+            className="fixed z-[9999] floating-mini-player safe-area-padding-bottom pointer-events-auto"
+            style={{
+              left: playerPosition.x || 'auto',
+              top: playerPosition.y || 'auto',
+              right: playerPosition.x ? 'auto' : '1rem',
+              bottom: playerPosition.y ? 'auto' : '1rem',
+              cursor: isDragging ? 'grabbing' : 'grab'
+            }}
+          >
+            <div className="relative bg-black rounded-2xl overflow-hidden shadow-2xl" style={{ width: '420px', maxWidth: 'calc(100vw - 2rem)' }}>
+              <div 
+                onMouseDown={onMouseDown}
+                className="absolute top-0 left-0 right-0 h-10 z-10 cursor-grab active:cursor-grabbing bg-gradient-to-b from-black/60 to-transparent flex items-center justify-between px-3"
               >
-                <X className="w-4 h-4" />
-              </button>
+                <div className="flex items-center space-x-2 text-white text-xs font-medium">
+                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                  <span>Drag to move</span>
+                </div>
+                <button
+                  onClick={() => setShowFloating(false)}
+                  className="bg-black/70 hover:bg-black/90 text-white rounded-full p-1.5 transition-all duration-200"
+                  aria-label="Close mini player"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
               <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
