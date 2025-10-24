@@ -4,6 +4,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";  // your in-memory user storage (unchanged)
 import { query } from "./db";         // our Postgres helper from server/db.ts
 import { runMedcyScrape } from "./scraper/medcy";
+import { runMedcyDoctorsScrape } from "./scraper/medcyDoctors";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // =========================
@@ -115,6 +116,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const out = await runMedcyScrape({ max: isNaN(max) ? 30 : max });
       res.json({ ok: true, ...out });
     } catch (e: any) {
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  });
+
+  // --- DEV: scrape medcy doctors now
+  app.get("/api/dev/scrape/medcy-doctors", requireKey, async (req, res) => {
+    try {
+      const max = Number(req.query.max ?? "50");
+      const out = await runMedcyDoctorsScrape({ max: isNaN(max) ? 50 : max });
+      res.json({ ok: true, ...out });
+    } catch (e: any) {
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  });
+
+  // =========================
+  // DOCTOR API ENDPOINTS
+  // =========================
+
+  // PUBLIC: list doctors (simplified card list for your Experts page)
+  app.get("/api/doctors", async (req, res) => {
+    try {
+      const { rows } = await query(
+        `SELECT id, source_site, slug, name, designation, image_url
+           FROM public.scraped_doctors
+          WHERE source_site = 'medcyivf.in'
+          ORDER BY name ASC`
+      );
+      res.json({ ok: true, results: rows });
+    } catch (e: any) {
+      console.error("GET /api/doctors error:", e);
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  });
+
+  // PUBLIC: doctor detail by slug
+  app.get("/api/doctors/:slug", async (req, res) => {
+    try {
+      const slug = req.params.slug;
+      const { rows } = await query(
+        `SELECT id, source_site, slug, name, designation, specialties, qualifications,
+                experience_years, languages, location, image_url, profile_url, about_html
+           FROM public.scraped_doctors
+          WHERE source_site = 'medcyivf.in' AND slug = $1
+          LIMIT 1`,
+        [slug]
+      );
+      if (rows.length === 0) return res.status(404).json({ ok: false, error: "not found" });
+      res.json({ ok: true, doctor: rows[0] });
+    } catch (e: any) {
+      console.error("GET /api/doctors/:slug error:", e);
       res.status(500).json({ ok: false, error: e.message });
     }
   });
