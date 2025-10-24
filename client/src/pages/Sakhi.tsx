@@ -37,21 +37,28 @@ const Sakhi = () => {
   const [userId, setUserId] = useState<string>("");
 
   const handleAuthSuccess = (isNewUser: boolean, relationship?: string, userId?: string) => {
+    console.log("=== handleAuthSuccess called ===");
+    console.log("isNewUser:", isNewUser);
+    console.log("userId:", userId);
+    
     setShowAuthModal(false);
     
     if (isNewUser) {
       // New user - show onboarding questions
+      console.log("New user - showing onboarding");
       setUserRelationship(relationship || "herself");
       setUserId(userId || "");
       setShowOnboarding(true);
     } else {
-      // Existing user - redirect to /sakhi/try
+      // Existing user - redirect to /sakhi/try immediately after login webhook success
+      console.log("Existing user - redirecting to /sakhi/try");
       toast({
         title: "Welcome back!",
         description: "You're all set to continue your journey.",
       });
-      // Use setTimeout to ensure toast is shown before navigation
+      // Navigate immediately after successful login
       setTimeout(() => {
+        console.log("Navigating to /sakhi/try");
         setLocation("/sakhi/try");
       }, 500);
     }
