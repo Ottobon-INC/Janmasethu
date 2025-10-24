@@ -1,10 +1,12 @@
 // server/routes.ts
 import type { Express } from "express";
+import { db } from "@db";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";  // your in-memory user storage (unchanged)
-import { query } from "./db";         // our Postgres helper from server/db.ts
-import { runMedcyScrape } from "./scraper/medcy";
+import { query } from "./db";
 import { runMedcyDoctorsScrape } from "./scraper/medcyDoctors";
+
+// Dev key for scraping - use environment variable in production
+const DEV_SCRAPE_KEY = process.env.DEV_SCRAPE_KEY || "dev-scrape-2025";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // =========================
