@@ -430,6 +430,45 @@ const SakhiTry = () => {
   const sendMessage = async () => {
     if (!inputText.trim()) return;
 
+    console.log('🔵 Send button clicked - triggering webhook...');
+
+    // Call the webhook when send button is clicked
+    try {
+      console.log('🔵 Sending request to: https://n8n.ottobon.in/webhook/sakhibot');
+      
+      const webhookResponse = await fetch("https://n8n.ottobon.in/webhook/sakhibot", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
+
+      if (!webhookResponse.ok) {
+        const errorText = await webhookResponse.text();
+        console.error('❌ Webhook failed:', webhookResponse.status, errorText);
+      } else {
+        const contentType = webhookResponse.headers.get('content-type');
+        let data;
+        
+        if (contentType && contentType.includes('application/json')) {
+          data = await webhookResponse.json();
+          console.log('✅ Webhook JSON response:', data);
+        } else {
+          data = await webhookResponse.text();
+          console.log('✅ Webhook text response:', data);
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error calling webhook:', error);
+      console.error('❌ Error details:', {
+        name: (error as Error).name,
+        message: (error as Error).message,
+        stack: (error as Error).stack
+      });
+    }
+
     const detectedLanguage = detectScript(inputText);
     const newMessage: Message = {
       id: Date.now().toString(),
