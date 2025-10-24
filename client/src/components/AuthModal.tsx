@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -67,6 +67,10 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
         setShowRelationship(true);
       } else {
         // Login - send to backend webhook
+        console.log("=== SENDING LOGIN REQUEST ===");
+        console.log("Email:", formData.email);
+        console.log("Webhook URL: https://n8n.ottobon.in/webhook/login");
+        
         const response = await fetch("https://n8n.ottobon.in/webhook/login", {
           method: "POST",
           headers: {
@@ -78,25 +82,36 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           }),
         });
 
+        console.log("=== RESPONSE RECEIVED ===");
+        console.log("Status:", response.status);
+        console.log("Status Text:", response.statusText);
+        console.log("Headers:", Object.fromEntries(response.headers.entries()));
+
         const responseText = await response.text();
+        console.log("Response Text:", responseText);
+
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        }
 
         if (!responseText || !responseText.trim()) {
-          // Handle cases where the webhook might not respond with anything
-          throw new Error("Server configuration error - webhook did not respond.");
+          throw new Error("Server returned empty response - check n8n workflow");
         }
 
         let data: any;
         try {
           data = JSON.parse(responseText);
+          console.log("Parsed Data:", data);
         } catch (parseError) {
-          console.error("Failed to parse JSON response:", parseError);
-          throw new Error("Server returned invalid data format.");
+          console.error("JSON Parse Error:", parseError);
+          console.error("Raw Response:", responseText);
+          throw new Error("Server returned invalid JSON format");
         }
 
-        // Backend determines success/failure
+        // Check backend response
         if (data.success === true) {
-          // Backend provides user_id on successful login
-          const userId = data.user_id || `user_${Date.now()}`; // Fallback if somehow user_id is missing
+          const userId = data.user_id || data.userId || `user_${Date.now()}`;
+          console.log("✅ Login successful, user_id:", userId);
 
           toast({
             title: "Welcome back!",
@@ -106,7 +121,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           onClose();
           onAuthSuccess(false, undefined, userId);
         } else {
-          // Backend explicitly indicates login failed
+          console.log("❌ Login failed:", data.error || "Unknown error");
           toast({
             title: "Login Failed",
             description: data.error || "Please check your credentials",
@@ -152,9 +167,9 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
             <DialogTitle className="text-2xl font-bold text-center">
               Tell us about yourself
             </DialogTitle>
-            <p className="text-sm text-muted-foreground text-center mt-2">
+            <DialogDescription className="text-sm text-muted-foreground text-center mt-2">
               This helps us personalize your experience
-            </p>
+            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-6 mt-4 overflow-y-auto max-h-[50vh] pr-2">
@@ -252,6 +267,9 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           <DialogTitle className="text-2xl font-bold text-center">
             {isSignUp ? "Create Account" : "Sign In"}
           </DialogTitle>
+          <DialogDescription className="text-sm text-muted-foreground text-center">
+            {isSignUp ? "Join JanmaSethu to get personalized support" : "Welcome back to JanmaSethu"}
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
