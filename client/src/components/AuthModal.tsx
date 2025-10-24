@@ -184,6 +184,9 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
             description: "Login successful.",
           });
 
+          // Close modal first
+          onClose();
+
           // Call onAuthSuccess with isNewUser = false for existing users
           // This will trigger navigation to /sakhi/try
           onAuthSuccess(false, undefined, userId);
