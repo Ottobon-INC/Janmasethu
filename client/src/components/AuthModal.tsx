@@ -25,27 +25,13 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
   const [userId, setUserId] = useState<string>("");
   const { toast } = useToast();
 
-  // Store userId in state only
-  const storeUserId = (id: string) => {
-    setUserId(id);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    if (isSignUp) {
-      if (!formData.fullName || !formData.email || !formData.password) {
-        toast({
-          title: "Error",
-          description: "Please fill in all fields",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Trigger webhook for sign-up
-      setIsLoading(true);
-      try {
+    try {
+      if (isSignUp) {
+        // Sign up - send to backend webhook
         const response = await fetch("https://n8n.ottobon.in/webhook/start", {
           method: "POST",
           headers: {
@@ -58,77 +44,29 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           }),
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to create account");
-        }
-
-        // Try to parse JSON, but handle non-JSON responses
-        let data: any = {};
         const contentType = response.headers.get("content-type");
+        let data: any = {};
 
-        try {
-          if (contentType && contentType.includes("application/json")) {
-            data = await response.json();
-          } else {
-            // Handle non-JSON response (like "True")
-            const textResponse = await response.text();
-            console.log("Non-JSON response received:", textResponse);
-            data = { success: true };
-          }
-        } catch (parseError) {
-          console.log("Response parsing handled:", parseError);
+        if (contentType && contentType.includes("application/json")) {
+          data = await response.json();
+        } else {
+          const textResponse = await response.text();
+          // Assuming a non-JSON response indicates success if no error is thrown by fetch
           data = { success: true };
         }
 
-        // Capture the unique ID from the response if available
-        if (data.id || data.userId || data.user_id) {
-          const uniqueId = data.id || data.userId || data.user_id;
-          storeUserId(uniqueId);
-          console.log("User ID captured:", uniqueId);
-        } else {
-          // Generate a temporary ID if none provided
-          const tempId = `user_${Date.now()}`;
-          storeUserId(tempId);
-          console.log("Generated temporary user ID:", tempId);
-        }
-
-        console.log("Account created successfully, showing relationship selection");
+        // Capture user ID from response, or generate a temporary one
+        const uniqueId = data.id || data.userId || data.user_id || `user_${Date.now()}`;
+        setUserId(uniqueId);
 
         toast({
           title: "Account created!",
           description: "Please tell us about yourself.",
         });
 
-        // Show relationship selection
         setShowRelationship(true);
-        console.log("showRelationship state set to:", true);
-      } catch (error) {
-        console.error("Sign-up error:", error);
-        toast({
-          title: "Error",
-          description: "Failed to create account. Please try again.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      // Handle login
-      if (!formData.email || !formData.password) {
-        toast({
-          title: "Error",
-          description: "Please fill in all fields",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        console.log("=== SENDING LOGIN REQUEST ===");
-        console.log("Email:", formData.email);
-        console.log("Password length:", formData.password.length);
-        
+      } else {
+        // Login - send to backend webhook
         const response = await fetch("https://n8n.ottobon.in/webhook/login", {
           method: "POST",
           headers: {
@@ -140,87 +78,55 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           }),
         });
 
-        console.log("Login webhook response status:", response.status);
-
-        if (!response.ok) {
-          throw new Error("Login failed");
-        }
-
-        // Read response as text first
         const responseText = await response.text();
-        console.log("Login response text:", responseText);
 
-        // Check if response is empty
         if (!responseText || !responseText.trim()) {
-          console.error("=== EMPTY RESPONSE FROM N8N ===");
-          console.error("The n8n webhook returned an empty response");
-          console.error("This means your n8n workflow needs a 'Respond to Webhook' node");
-          throw new Error("Server configuration error - please contact support");
+          // Handle cases where the webhook might not respond with anything
+          throw new Error("Server configuration error - webhook did not respond.");
         }
 
-        // Try to parse as JSON
         let data: any;
         try {
           data = JSON.parse(responseText);
-          console.log("Login response data:", data);
         } catch (parseError) {
           console.error("Failed to parse JSON response:", parseError);
-          console.error("Raw response was:", responseText);
-          throw new Error("Server returned invalid data format");
+          throw new Error("Server returned invalid data format.");
         }
 
-        // Check if login was successful
+        // Backend determines success/failure
         if (data.success === true) {
-          if (!data.user_id) {
-            console.error("Login succeeded but no user_id in response:", data);
-            throw new Error("Server error: No user ID returned");
-          }
-
-          const userId = data.user_id;
-          console.log("✅ Login successful, user_id:", userId);
+          // Backend provides user_id on successful login
+          const userId = data.user_id || `user_${Date.now()}`; // Fallback if somehow user_id is missing
 
           toast({
             title: "Welcome back!",
             description: "Login successful.",
           });
 
-          // Close modal first
           onClose();
-
-          // Call onAuthSuccess with isNewUser = false for existing users
-          // This will trigger navigation to /sakhi/try
           onAuthSuccess(false, undefined, userId);
         } else {
-          // Login failed - show error from webhook or default message
-          const errorMessage = data.error || "Invalid email or password";
-          console.error("❌ Login failed:", errorMessage);
-          console.error("Full response:", data);
-          
+          // Backend explicitly indicates login failed
           toast({
             title: "Login Failed",
-            description: errorMessage,
+            description: data.error || "Please check your credentials",
             variant: "destructive",
           });
-          // Don't throw, let finally block reset loading state
         }
-      } catch (error) {
-        console.error("Login error:", error);
-        const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        toast({
-          title: "Error",
-          description: errorMessage,
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
       }
+    } catch (error) {
+      console.error("Authentication error:", error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleRelationshipSubmit = () => {
-    console.log("=== handleRelationshipSubmit called ===");
-    console.log("Selected relationship:", relationship);
-
     if (!relationship) {
       toast({
         title: "Required",
@@ -230,11 +136,6 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
       return;
     }
 
-    console.log("Relationship selected:", relationship);
-    console.log("User ID:", userId);
-    console.log("Calling onAuthSuccess with isNewUser=true");
-
-    // Close the auth modal and trigger onboarding with userId
     onAuthSuccess(true, relationship, userId);
   };
 
@@ -400,32 +301,19 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
             }
           </Button>
 
-          <div className="space-y-3">
-            <div className="text-center text-sm">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsSignUp(!isSignUp);
-                  setFormData({ fullName: "", email: "", password: "" });
-                }}
-                className="text-primary hover:underline font-medium"
-              >
-                {isSignUp
-                  ? "Already have an account? Sign in"
-                  : "Don't have an account? Sign up"}
-              </button>
-            </div>
-            
-            {!isSignUp && (
-              <div className="space-y-2">
-                <div className="text-center text-xs text-muted-foreground bg-blue-50 p-3 rounded-lg border border-blue-100">
-                  💡 <strong>Tip:</strong> Make sure you've signed up first. The email and password must match exactly (case-sensitive).
-                </div>
-                <div className="text-center text-xs text-muted-foreground bg-amber-50 p-3 rounded-lg border border-amber-100">
-                  ⚠️ <strong>Common issue:</strong> If you just signed up, use the <strong>exact same password</strong> you entered during signup. Passwords are case-sensitive.
-                </div>
-              </div>
-            )}
+          <div className="text-center text-sm">
+            <button
+              type="button"
+              onClick={() => {
+                setIsSignUp(!isSignUp);
+                setFormData({ fullName: "", email: "", password: "" });
+              }}
+              className="text-primary hover:underline font-medium"
+            >
+              {isSignUp
+                ? "Already have an account? Sign in"
+                : "Don't have an account? Sign up"}
+            </button>
           </div>
         </form>
       </DialogContent>
