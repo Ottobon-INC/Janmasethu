@@ -55,40 +55,10 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
 
         setShowRelationship(true);
       } else {
-        // Login - send to backend webhook and let workflow decide everything
-        const response = await fetch("https://n8n.ottobon.in/webhook/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
-        });
-
-        // Just parse response - no validation or checking
-        const data = await response.json();
-
-        // Let the workflow response determine what happens
-        // If workflow sends success=true, proceed to Sakhi
-        // If workflow sends success=false, it should handle the error itself
-        if (data.success === true) {
-          const userId = data.user_id || data.userId || `user_${Date.now()}`;
-          onClose();
-          onAuthSuccess(false, undefined, userId);
-        } else {
-          // If success is false, workflow should handle showing error
-          // Frontend does nothing, as per instruction
-          // If the workflow returns success: false, it's expected to provide an error message
-          // that will be handled by the generic catch block if it's a network error,
-          // or if the response is malformed, it will also fall into the catch block.
-          // For the case where n8n returns valid JSON with `success: false` and an `error` field,
-          // we don't explicitly handle it here anymore, relying on the workflow to provide user feedback.
-        }
+        // Login - Static UI only, no backend call
+        // Do nothing
       }
     } catch (error) {
-      // Only catch network errors or malformed JSON responses from the server
       console.error("Authentication error:", error);
       toast({
         title: "Error",
