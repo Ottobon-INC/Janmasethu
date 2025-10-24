@@ -125,6 +125,9 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
 
       setIsLoading(true);
       try {
+        console.log("=== SENDING LOGIN REQUEST ===");
+        console.log("Email:", formData.email);
+        
         const response = await fetch("https://n8n.ottobon.in/webhook/login", {
           method: "POST",
           headers: {
@@ -142,13 +145,15 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           throw new Error("Login failed");
         }
 
-        const data = await response.json();
-        console.log("Login response data:", data);
+        // n8n returns plain text: "True: <user_id>" or "False"
+        const responseText = await response.text();
+        console.log("Login response text:", responseText);
 
-        // Check if login was successful based on webhook response
-        if (data.user_id || data.status === "success") {
-          const userId = data.user_id || data.userId;
-
+        // Check if response starts with "True:"
+        if (responseText.startsWith("True:")) {
+          // Extract user_id from "True: <user_id>"
+          const userId = responseText.split(":")[1].trim();
+          
           console.log("Login successful, user_id:", userId);
 
           toast({
@@ -160,6 +165,8 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           // This will trigger navigation to /sakhi/try
           onAuthSuccess(false, undefined, userId);
         } else {
+          // Response is "False" or something else - login failed
+          console.error("Login failed - response:", responseText);
           throw new Error("Invalid login credentials");
         }
       } catch (error) {
