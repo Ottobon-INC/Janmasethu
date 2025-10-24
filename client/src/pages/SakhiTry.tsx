@@ -430,17 +430,37 @@ const SakhiTry = () => {
   const sendMessage = async () => {
     if (!inputText.trim()) return;
 
-    console.log('🔵 Send button clicked - triggering webhook...');
+    const userQuestion = inputText.trim();
+    const detectedLanguage = detectScript(userQuestion);
+    
+    // Add user message to chat immediately
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      text: userQuestion,
+      isUser: true,
+      timestamp: new Date(),
+      language: detectedLanguage
+    };
 
-    // Call the webhook when send button is clicked
+    setMessages(prev => [...prev, newMessage]);
+    setLastUserMessage(userQuestion);
+    setInputText('');
+
+    console.log('🔵 Send button clicked - triggering webhook with question:', userQuestion);
+
+    // Call the webhook with the user's question
     try {
-      console.log('🔵 Sending request to: https://n8n.ottobon.in/webhook/sakhibot');
+      console.log('🔵 Sending POST request to: https://n8n.ottobon.in/webhook/sakhibot');
       
       const webhookResponse = await fetch("https://n8n.ottobon.in/webhook/sakhibot", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json"
-        }
+        },
+        body: JSON.stringify({
+          question: userQuestion,
+          language: sakhiLang
+        })
       });
 
       console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
@@ -448,54 +468,40 @@ const SakhiTry = () => {
       if (!webhookResponse.ok) {
         const errorText = await webhookResponse.text();
         console.error('❌ Webhook failed:', webhookResponse.status, errorText);
-      } else {
-        const contentType = webhookResponse.headers.get('content-type');
-        let data;
         
-        if (contentType && contentType.includes('application/json')) {
-          data = await webhookResponse.json();
-          console.log('✅ Webhook JSON response:', data);
-        } else {
-          data = await webhookResponse.text();
-          console.log('✅ Webhook text response:', data);
-        }
+        // Show error message to user
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: "Sorry, I'm having trouble connecting right now. Please try again.",
+          isUser: false,
+          timestamp: new Date(),
+          language: detectedLanguage
+        };
+        setMessages(prev => [...prev, errorMessage]);
+        return;
       }
-    } catch (error) {
-      console.error('❌ Error calling webhook:', error);
-      console.error('❌ Error details:', {
-        name: (error as Error).name,
-        message: (error as Error).message,
-        stack: (error as Error).stack
-      });
-    }
 
-    const detectedLanguage = detectScript(inputText);
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      text: inputText.trim(),
-      isUser: true,
-      timestamp: new Date(),
-      language: detectedLanguage
-    };
+      const contentType = webhookResponse.headers.get('content-type');
+      let botResponseText;
+      
+      if (contentType && contentType.includes('application/json')) {
+        const data = await webhookResponse.json();
+        console.log('✅ Webhook JSON response:', data);
+        // Extract the answer from the response (adjust based on your webhook's response structure)
+        botResponseText = data.answer || data.response || data.text || JSON.stringify(data);
+      } else {
+        botResponseText = await webhookResponse.text();
+        console.log('✅ Webhook text response:', botResponseText);
+      }
 
-    setMessages(prev => [...prev, newMessage]);
-    setLastUserMessage(inputText.trim());
+      // Generate preview content based on the question
+      const preview = generatePreviewContent(userQuestion, sakhiLang);
+      setPreviewContent(preview);
 
-    const preview = generatePreviewContent(inputText, sakhiLang);
-    setPreviewContent(preview);
-
-    setInputText('');
-
-    const responses = {
-      en: "I understand your feelings, and they're completely valid. Let me share some strategies that might help you through this.",
-      hi: "मैं आपकी भावनाओं को समझती हूं, और वे पूर्णतः वैध हैं। मैं कुछ रणनीतियां साझा करती हूं जो इस दौरान आपकी मदद कर सकती हैं।",
-      te: "నేను మీ భావనలను అర్థం చేసుకుంటున్నాను, మరియు అవి పూర్ణంగా చెల్లుబాటు అయ్యేవి. ఈ సమయంలో మీకు సహాయపడే కొన్ని వ్యూహాలను పంచుకుంటాను."
-    };
-
-    setTimeout(() => {
+      // Add bot response to chat
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: responses[sakhiLang] || responses.en,
+        text: botResponseText,
         isUser: false,
         timestamp: new Date(),
         language: detectedLanguage,
@@ -503,7 +509,25 @@ const SakhiTry = () => {
       };
 
       setMessages(prev => [...prev, botMessage]);
-    }, 500);
+      
+    } catch (error) {
+      console.error('❌ Error calling webhook:', error);
+      console.error('❌ Error details:', {
+        name: (error as Error).name,
+        message: (error as Error).message,
+        stack: (error as Error).stack
+      });
+      
+      // Show error message to user
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "Sorry, I encountered an error. Please try again later.",
+        isUser: false,
+        timestamp: new Date(),
+        language: detectedLanguage
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    }
   };
 
   const quickPrompts = [
