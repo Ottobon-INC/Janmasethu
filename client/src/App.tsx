@@ -58,7 +58,7 @@ function Router() {
             <Route path="/blog" component={Blog} />
             <Route path="/blog/:slug" component={BlogPost} />
             <Route path="/experts" component={Experts} />
-            <Route path="/experts/:id" component={Expert} />
+            <Route path="/experts/:slug" component={Expert} />
             <Route path="/sakhi" component={Sakhi} />
             <Route path="/investors" component={Investors} />
             {/* Catch-all route to redirect to home instead of 404 */}
