@@ -541,8 +541,29 @@ const SakhiTry = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => {
-                window.location.href = "/sakhi";
+              onClick={async () => {
+                try {
+                  const response = await fetch("https://n8n.ottobon.in/webhook/sakhibot", {
+                    method: "GET",
+                    headers: {
+                      "Content-Type": "application/json"
+                    }
+                  });
+
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                  }
+
+                  const data = await response.json();
+                  console.log('Webhook response:', data);
+                  
+                  // After successful webhook call, redirect to sakhi page
+                  window.location.href = "/sakhi";
+                } catch (error) {
+                  console.error('Error calling webhook:', error);
+                  // Still redirect even if webhook fails
+                  window.location.href = "/sakhi";
+                }
               }}
               className="text-white hover:bg-white/20 flex items-center space-x-2 px-4 py-2 rounded-lg transition-all"
             >
