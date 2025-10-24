@@ -125,10 +125,14 @@ const SakhiTry = () => {
   const [sakhiLang, setSakhiLang] = useState<'en' | 'hi' | 'te'>('en');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isChatOpen, setIsChatOpen] = useState(true);
+  const [userName, setUserName] = useState<string>('');
 
-  // Scroll to top when component mounts
+  // Scroll to top when component mounts and get username
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Retrieve username from localStorage
+    const storedUserName = localStorage.getItem('userName') || localStorage.getItem('userEmail') || 'Anonymous';
+    setUserName(storedUserName);
   }, []);
 
   const [inputText, setInputText] = useState('');
@@ -459,7 +463,8 @@ const SakhiTry = () => {
         },
         body: JSON.stringify({
           question: userQuestion,
-          language: sakhiLang
+          language: sakhiLang,
+          username: userName
         })
       });
 

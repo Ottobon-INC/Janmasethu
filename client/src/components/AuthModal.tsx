@@ -65,6 +65,11 @@ export default function AuthModal({
           data.id || data.userId || data.user_id || `user_${Date.now()}`;
         setUserId(uniqueId);
 
+        // Store username/email in localStorage
+        localStorage.setItem('userName', formData.fullName);
+        localStorage.setItem('userEmail', formData.email);
+        localStorage.setItem('userId', uniqueId);
+
         toast({
           title: "Account created!",
           description: "Please tell us about yourself.",
@@ -95,6 +100,14 @@ export default function AuthModal({
         if (responseText.startsWith("True:")) {
           // Extract user ID from response (format: "True: <user_id>")
           const loginUserId = responseText.replace("True:", "").trim() || `user_${Date.now()}`;
+
+          // Store username/email in localStorage
+          localStorage.setItem('userEmail', formData.email);
+          localStorage.setItem('userId', loginUserId);
+          // If fullName is available, store it too
+          if (formData.fullName) {
+            localStorage.setItem('userName', formData.fullName);
+          }
 
           // Close modal
           onClose();
