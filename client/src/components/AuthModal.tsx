@@ -145,14 +145,13 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           throw new Error("Login failed");
         }
 
-        // n8n returns plain text: "True: <user_id>" or "False"
-        const responseText = await response.text();
-        console.log("Login response text:", responseText);
+        // n8n returns JSON response
+        const data = await response.json();
+        console.log("Login response data:", data);
 
-        // Check if response starts with "True:"
-        if (responseText.startsWith("True:")) {
-          // Extract user_id from "True: <user_id>"
-          const userId = responseText.split(":")[1].trim();
+        // Check if login was successful
+        if (data.success === true && data.user_id) {
+          const userId = data.user_id;
           
           console.log("Login successful, user_id:", userId);
 
@@ -165,9 +164,10 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           // This will trigger navigation to /sakhi/try
           onAuthSuccess(false, undefined, userId);
         } else {
-          // Response is "False" or something else - login failed
-          console.error("Login failed - response:", responseText);
-          throw new Error("Invalid login credentials");
+          // Login failed - show error from webhook or default message
+          const errorMessage = data.error || "Invalid login credentials";
+          console.error("Login failed - response:", data);
+          throw new Error(errorMessage);
         }
       } catch (error) {
         console.error("Login error:", error);
