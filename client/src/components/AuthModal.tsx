@@ -149,19 +149,23 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
         const responseText = await response.text();
         console.log("Login response text:", responseText);
 
+        // Check if response is empty
+        if (!responseText || !responseText.trim()) {
+          console.error("=== EMPTY RESPONSE FROM N8N ===");
+          console.error("The n8n webhook returned an empty response");
+          console.error("This means your n8n workflow needs a 'Respond to Webhook' node");
+          throw new Error("Server configuration error - please contact support");
+        }
+
         // Try to parse as JSON
         let data: any;
         try {
-          if (responseText.trim()) {
-            data = JSON.parse(responseText);
-            console.log("Login response data:", data);
-          } else {
-            console.error("Empty response from webhook");
-            throw new Error("Server returned empty response");
-          }
+          data = JSON.parse(responseText);
+          console.log("Login response data:", data);
         } catch (parseError) {
-          console.error("Failed to parse response:", parseError);
-          throw new Error("Invalid response from server");
+          console.error("Failed to parse JSON response:", parseError);
+          console.error("Raw response was:", responseText);
+          throw new Error("Server returned invalid data format");
         }
 
         // Check if login was successful
