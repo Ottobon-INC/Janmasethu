@@ -44,18 +44,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           }),
         });
 
-        const contentType = response.headers.get("content-type");
-        let data: any = {};
-
-        if (contentType && contentType.includes("application/json")) {
-          data = await response.json();
-        } else {
-          const textResponse = await response.text();
-          // Assuming a non-JSON response indicates success if no error is thrown by fetch
-          data = { success: true };
-        }
-
-        // Capture user ID from response, or generate a temporary one
+        const data = await response.json();
         const uniqueId = data.id || data.userId || data.user_id || `user_${Date.now()}`;
         setUserId(uniqueId);
 
@@ -66,11 +55,7 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
 
         setShowRelationship(true);
       } else {
-        // Login - send to backend webhook
-        console.log("=== SENDING LOGIN REQUEST ===");
-        console.log("Email:", formData.email);
-        console.log("Webhook URL: https://n8n.ottobon.in/webhook/login");
-        
+        // Login - send to backend webhook and let workflow decide everything
         const response = await fetch("https://n8n.ottobon.in/webhook/login", {
           method: "POST",
           headers: {
@@ -82,58 +67,32 @@ export default function AuthModal({ open, onClose, onAuthSuccess }: AuthModalPro
           }),
         });
 
-        console.log("=== RESPONSE RECEIVED ===");
-        console.log("Status:", response.status);
-        console.log("Status Text:", response.statusText);
-        console.log("Headers:", Object.fromEntries(response.headers.entries()));
+        // Just parse response - no validation or checking
+        const data = await response.json();
 
-        const responseText = await response.text();
-        console.log("Response Text:", responseText);
-
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status} ${response.statusText}`);
-        }
-
-        if (!responseText || !responseText.trim()) {
-          throw new Error("Server returned empty response - check n8n workflow");
-        }
-
-        let data: any;
-        try {
-          data = JSON.parse(responseText);
-          console.log("Parsed Data:", data);
-        } catch (parseError) {
-          console.error("JSON Parse Error:", parseError);
-          console.error("Raw Response:", responseText);
-          throw new Error("Server returned invalid JSON format");
-        }
-
-        // Check backend response
+        // Let the workflow response determine what happens
+        // If workflow sends success=true, proceed to Sakhi
+        // If workflow sends success=false, it should handle the error itself
         if (data.success === true) {
           const userId = data.user_id || data.userId || `user_${Date.now()}`;
-          console.log("✅ Login successful, user_id:", userId);
-
-          toast({
-            title: "Welcome back!",
-            description: "Login successful.",
-          });
-
           onClose();
           onAuthSuccess(false, undefined, userId);
         } else {
-          console.log("❌ Login failed:", data.error || "Unknown error");
-          toast({
-            title: "Login Failed",
-            description: data.error || "Please check your credentials",
-            variant: "destructive",
-          });
+          // If success is false, workflow should handle showing error
+          // Frontend does nothing, as per instruction
+          // If the workflow returns success: false, it's expected to provide an error message
+          // that will be handled by the generic catch block if it's a network error,
+          // or if the response is malformed, it will also fall into the catch block.
+          // For the case where n8n returns valid JSON with `success: false` and an `error` field,
+          // we don't explicitly handle it here anymore, relying on the workflow to provide user feedback.
         }
       }
     } catch (error) {
+      // Only catch network errors or malformed JSON responses from the server
       console.error("Authentication error:", error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "An unexpected error occurred.",
+        description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {
