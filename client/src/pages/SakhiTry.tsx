@@ -723,10 +723,17 @@ interface PreviewPanelProps {
 }
 
 const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMuted, setIsMuted, translations: t, showFloating, setShowFloating }: PreviewPanelProps) => {
+  const [isMobile, setIsMobile] = useState(false);
 
-  // The video is always displayed in mini-player mode, so scroll-based floating logic is removed.
-  // const videoContainerRef = useRef<HTMLDivElement>(null);
-  // const { isFloating, showFloating, setShowFloating } = useFloatingPlayer(videoContainerRef);
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   if (!previewContent) {
     return (
@@ -771,8 +778,8 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
           <p className="text-gray-600 leading-relaxed">{previewContent.description}</p>
         </div>
 
-        {/* Floating Mini Player */}
-        {showFloating && previewContent && (
+        {/* Mobile: Floating Mini Player */}
+        {isMobile && showFloating && previewContent && (
           <div className="fixed bottom-4 right-4 z-[9999] floating-mini-player safe-area-padding-bottom pointer-events-auto">
             <div className="relative bg-black rounded-2xl overflow-hidden shadow-2xl" style={{ width: '280px', maxWidth: 'calc(100vw - 2rem)' }}>
               <button
@@ -793,6 +800,25 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
                   allowFullScreen
                 ></iframe>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Desktop/Tablet: Full-screen Video */}
+        {!isMobile && (
+          <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl overflow-hidden border border-purple-100">
+            <div className="aspect-video">
+              <iframe
+                width="100%"
+                height="100%"
+                src={previewContent.videoUrl || "https://www.youtube.com/embed/jq_MxKVlDCU?si=D-TE7Ewsb1CCUJfS&start=10"}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                className="w-full h-full"
+              ></iframe>
             </div>
           </div>
         )}
