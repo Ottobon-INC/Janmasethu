@@ -26,9 +26,12 @@ export default function Patients() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [patientsData, setPatientsData] = useState(patients);
   const [newPatient, setNewPatient] = useState({
+    firstName: "",
+    lastName: "",
     name: "",
     email: "",
     phone: "",
+    gender: "Female",
     age: "",
     dateOfBirth: "",
     status: "active",
@@ -45,20 +48,58 @@ export default function Patients() {
     patient.id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleAddPatient = () => {
-    if (newPatient.name && newPatient.email && newPatient.phone) {
+  const handleAddPatient = async () => {
+    if (newPatient.firstName && newPatient.lastName && newPatient.email && newPatient.phone && newPatient.dateOfBirth) {
       const patientToAdd = {
         id: `P${String(patientsData.length + 1).padStart(3, '0')}`,
+        name: `${newPatient.firstName} ${newPatient.lastName}`,
         ...newPatient,
         age: parseInt(newPatient.age) || 25,
         lastVisit: new Date().toISOString().split('T')[0]
       };
       
+      try {
+        console.log('🔵 Triggering patient webhook...');
+        
+        const webhookPayload = {
+          first_name: newPatient.firstName,
+          last_name: newPatient.lastName,
+          gender: newPatient.gender,
+          birth_date: newPatient.dateOfBirth,
+          phone: newPatient.phone,
+          email: newPatient.email
+        };
+
+        const webhookResponse = await fetch('https://n8n.ottobon.in/webhook/patient-details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: {},
+            body: webhookPayload
+          })
+        });
+
+        console.log('📤 Sent to webhook:', webhookPayload);
+        console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
+
+        if (webhookResponse.ok) {
+          const responseData = await webhookResponse.json();
+          console.log('✅ Patient response:', responseData);
+        }
+      } catch (error) {
+        console.error('❌ Error triggering patient webhook:', error);
+      }
+      
       setPatientsData([...patientsData, patientToAdd]);
       setNewPatient({
+        firstName: "",
+        lastName: "",
         name: "",
         email: "",
         phone: "",
+        gender: "Female",
         age: "",
         dateOfBirth: "",
         status: "active",
@@ -110,15 +151,27 @@ export default function Patients() {
                   <DialogTitle>Add New Patient</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 overflow-y-auto overflow-x-hidden pr-2 flex-1 scrollbar-hide">
-                  <div>
-                    <Label htmlFor="name">Full Name *</Label>
-                    <Input
-                      id="name"
-                      value={newPatient.name}
-                      onChange={(e) => handleInputChange("name", e.target.value)}
-                      placeholder="Enter full name"
-                      className="mt-1"
-                    />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="firstName">First Name *</Label>
+                      <Input
+                        id="firstName"
+                        value={newPatient.firstName}
+                        onChange={(e) => handleInputChange("firstName", e.target.value)}
+                        placeholder="Enter first name"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lastName">Last Name *</Label>
+                      <Input
+                        id="lastName"
+                        value={newPatient.lastName}
+                        onChange={(e) => handleInputChange("lastName", e.target.value)}
+                        placeholder="Enter last name"
+                        className="mt-1"
+                      />
+                    </div>
                   </div>
                   
                   <div>
@@ -144,7 +197,31 @@ export default function Patients() {
                     />
                   </div>
                   
+                  <div>
+                    <Label htmlFor="gender">Gender *</Label>
+                    <select
+                      id="gender"
+                      value={newPatient.gender}
+                      onChange={(e) => handleInputChange("gender", e.target.value)}
+                      className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+                    >
+                      <option value="Female">Female</option>
+                      <option value="Male">Male</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  
                   <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+                      <Input
+                        id="dateOfBirth"
+                        type="date"
+                        value={newPatient.dateOfBirth}
+                        onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
                     <div>
                       <Label htmlFor="age">Age</Label>
                       <Input
@@ -153,16 +230,6 @@ export default function Patients() {
                         value={newPatient.age}
                         onChange={(e) => handleInputChange("age", e.target.value)}
                         placeholder="Age"
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="dateOfBirth">Date of Birth</Label>
-                      <Input
-                        id="dateOfBirth"
-                        type="date"
-                        value={newPatient.dateOfBirth}
-                        onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
                         className="mt-1"
                       />
                     </div>
@@ -218,7 +285,7 @@ export default function Patients() {
                     <Button 
                       onClick={handleAddPatient}
                       className="bg-purple-600 hover:bg-purple-700 text-white"
-                      disabled={!newPatient.name || !newPatient.email || !newPatient.phone}
+                      disabled={!newPatient.firstName || !newPatient.lastName || !newPatient.email || !newPatient.phone || !newPatient.dateOfBirth}
                     >
                       Add Patient
                     </Button>
