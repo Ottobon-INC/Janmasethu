@@ -111,7 +111,10 @@ export default function LeadManagement() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(webhookPayload)
+          body: JSON.stringify({
+            query: {},
+            body: webhookPayload
+          })
         });
 
         console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
