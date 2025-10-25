@@ -14,11 +14,48 @@ export default function ClinicLanding() {
     if (!username || !password) return;
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    
+    try {
+      console.log('🔵 Triggering clinic login webhook...');
+      
+      const webhookResponse = await fetch('https://n8n.ottobon.in/webhook/clinic_details', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password
+        })
+      });
+
+      console.log('📤 Sent to webhook:', { username, password });
+      console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
+
+      if (webhookResponse.ok) {
+        const responseData = await webhookResponse.json();
+        console.log('✅ Login response:', responseData);
+        
+        // Store any data from response if needed
+        if (responseData.clinic_id) {
+          localStorage.setItem('clinicId', responseData.clinic_id);
+        }
+        if (responseData.clinic_name) {
+          localStorage.setItem('clinicName', responseData.clinic_name);
+        }
+        
+        // Redirect to dashboard
+        window.location.href = "/clinic/dashboard";
+      } else {
+        console.error('❌ Login failed:', webhookResponse.statusText);
+        alert('Login failed. Please check your credentials.');
+      }
+    } catch (error) {
+      console.error('❌ Error during login:', error);
+      alert('An error occurred during login. Please try again.');
+    } finally {
       setIsLoading(false);
-      window.location.href = "/clinic/dashboard";
-    }, 1000);
+    }
   };
 
   const isFormValid = username.trim() && password.trim();
