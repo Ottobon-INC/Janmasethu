@@ -78,28 +78,77 @@ export default function LeadManagement() {
     }
   };
 
-  const handleAddLead = () => {
+  const handleAddLead = async () => {
     if (newLead.name && newLead.email && newLead.phone) {
-      const leadToAdd = {
-        id: `L${String(leadsData.length + 1).padStart(3, '0')}`,
-        ...newLead,
-        lastContact: new Date().toISOString().split('T')[0],
-        age: parseInt(newLead.age) || 0
-      };
-      
-      setLeadsData([...leadsData, leadToAdd]);
-      setNewLead({
-        name: "",
-        email: "",
-        phone: "",
-        status: "new",
-        source: "",
-        interest: "",
-        priority: "medium",
-        age: "",
-        location: ""
-      });
-      setIsModalOpen(false);
+      try {
+        console.log('🔵 Triggering lead creation webhook...');
+        
+        // Split the name into first_name and last_name
+        const nameParts = newLead.name.trim().split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+        
+        // Prepare webhook payload
+        const webhookPayload = {
+          first_name: firstName,
+          last_name: lastName,
+          email: newLead.email,
+          phone: newLead.phone,
+          age: parseInt(newLead.age) || 0,
+          source: newLead.source || '',
+          campaign: '',
+          utm_source: '',
+          utm_medium: '',
+          utm_campaign: '',
+          inquiry_type: newLead.interest || '',
+          priority: newLead.priority || 'medium'
+        };
+
+        console.log('📤 Sending lead to webhook:', webhookPayload);
+
+        const webhookResponse = await fetch('https://n8n.ottobon.in/webhook/lead_details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(webhookPayload)
+        });
+
+        console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
+
+        if (webhookResponse.ok) {
+          const responseData = await webhookResponse.json();
+          console.log('✅ Lead created successfully:', responseData);
+
+          // Add to local state
+          const leadToAdd = {
+            id: `L${String(leadsData.length + 1).padStart(3, '0')}`,
+            ...newLead,
+            lastContact: new Date().toISOString().split('T')[0],
+            age: parseInt(newLead.age) || 0
+          };
+          
+          setLeadsData([...leadsData, leadToAdd]);
+          setNewLead({
+            name: "",
+            email: "",
+            phone: "",
+            status: "new",
+            source: "",
+            interest: "",
+            priority: "medium",
+            age: "",
+            location: ""
+          });
+          setIsModalOpen(false);
+        } else {
+          console.error('❌ Lead creation failed:', webhookResponse.statusText);
+          alert('Failed to create lead. Please try again.');
+        }
+      } catch (error) {
+        console.error('❌ Error during lead creation:', error);
+        alert('An error occurred while creating the lead. Please try again.');
+      }
     }
   };
 
