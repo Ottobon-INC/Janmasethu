@@ -85,23 +85,23 @@ export default function LeadManagement() {
         
         // Split the name into first_name and last_name
         const nameParts = newLead.name.trim().split(' ');
-        const firstName = nameParts[0] || '';
-        const lastName = nameParts.slice(1).join(' ') || '';
+        const first_name = nameParts[0] || '';
+        const last_name = nameParts.slice(1).join(' ') || '';
         
-        // Prepare webhook payload
+        // Prepare webhook payload matching the exact format from the image
         const webhookPayload = {
-          first_name: firstName,
-          last_name: lastName,
+          first_name: first_name,
+          last_name: last_name,
           email: newLead.email,
           phone: newLead.phone,
-          age: parseInt(newLead.age) || 0,
-          source: newLead.source || '',
-          campaign: '',
-          utm_source: '',
-          utm_medium: '',
-          utm_campaign: '',
-          inquiry_type: newLead.interest || '',
-          priority: newLead.priority || 'medium'
+          age: newLead.age ? parseInt(newLead.age) : 0,
+          source: newLead.source || 'Chatbot',
+          campaign: 'Parenthood_Awareness',
+          utm_source: 'Facebook',
+          utm_medium: 'Ad',
+          utm_campaign: 'IVF_Journey_2025',
+          inquiry_type: newLead.interest || 'IVF_Consultation',
+          priority: newLead.priority || 'High'
         };
 
         console.log('📤 Sending lead to webhook:', webhookPayload);
