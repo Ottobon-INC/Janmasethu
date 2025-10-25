@@ -88,33 +88,33 @@ export default function LeadManagement() {
         const first_name = nameParts[0] || '';
         const last_name = nameParts.slice(1).join(' ') || '';
         
-        // Prepare webhook payload matching the exact format from the image
-        const webhookPayload = {
-          first_name: first_name,
-          last_name: last_name,
-          email: newLead.email,
-          phone: newLead.phone,
-          age: newLead.age ? parseInt(newLead.age) : 0,
-          source: newLead.source || 'Chatbot',
-          campaign: 'Parenthood_Awareness',
-          utm_source: 'Facebook',
-          utm_medium: 'Ad',
-          utm_campaign: 'IVF_Journey_2025',
-          inquiry_type: newLead.interest || 'IVF_Consultation',
-          priority: newLead.priority || 'High'
+        // Prepare the payload in the exact format required
+        const payload = {
+          query: {},
+          body: {
+            first_name: first_name,
+            last_name: last_name,
+            email: newLead.email,
+            phone: newLead.phone,
+            age: newLead.age ? parseInt(newLead.age) : 29,
+            source: newLead.source || 'Chatbot',
+            campaign: 'Parenthood_Awareness',
+            utm_source: 'Facebook',
+            utm_medium: 'Ad',
+            utm_campaign: 'IVF_Journey_2025',
+            inquiry_type: newLead.interest || 'IVF_Consultation',
+            priority: newLead.priority === 'high' ? 'High' : newLead.priority === 'medium' ? 'Medium' : 'Low'
+          }
         };
 
-        console.log('📤 Sending lead to webhook:', webhookPayload);
+        console.log('📤 Sending lead to webhook:', payload);
 
         const webhookResponse = await fetch('https://n8n.ottobon.in/webhook/lead_details', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            query: {},
-            body: webhookPayload
-          })
+          body: JSON.stringify(payload)
         });
 
         console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
