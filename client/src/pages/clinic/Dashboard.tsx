@@ -71,37 +71,37 @@ export default function ClinicDashboard() {
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-3 shadow-sm">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 max-w-7xl mx-auto">
+        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-2 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 max-w-7xl mx-auto">
             <div>
-              <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">Welcome back, Dr. Rao</h1>
-              <p className="text-sm md:text-base text-gray-600 mt-1">Here's what's happening at your clinic today</p>
+              <h1 className="text-xl md:text-2xl font-semibold text-gray-900">Welcome back, Dr. Rao</h1>
+              <p className="text-xs md:text-sm text-gray-600">Here's what's happening at your clinic today</p>
             </div>
             
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               {/* Search */}
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
                   type="search"
                   placeholder="Search patients..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-11 pr-4 py-2.5 w-full sm:w-64 md:w-80 rounded-lg border-gray-300 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="pl-9 pr-3 py-1.5 w-full sm:w-56 md:w-64 rounded-lg border-gray-300 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
               
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2">
                 {/* Notifications */}
-                <Button variant="ghost" size="sm" className="relative p-2.5 hover:bg-gray-100 rounded-lg">
-                  <Bell className="w-5 h-5 text-gray-600" />
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                <Button variant="ghost" size="sm" className="relative p-2 hover:bg-gray-100 rounded-lg">
+                  <Bell className="w-4 h-4 text-gray-600" />
+                  <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
                 </Button>
                 
                 {/* Profile */}
-                <Button variant="ghost" size="sm" className="flex items-center space-x-2 px-3 py-2.5 hover:bg-gray-100 rounded-lg">
-                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                    <User className="w-4 h-4 text-purple-600" />
+                <Button variant="ghost" size="sm" className="flex items-center space-x-2 px-2 py-1.5 hover:bg-gray-100 rounded-lg">
+                  <div className="w-7 h-7 bg-purple-100 rounded-full flex items-center justify-center">
+                    <User className="w-3.5 h-3.5 text-purple-600" />
                   </div>
                   <span className="font-medium text-sm hidden sm:block text-gray-700">Dr. Rao</span>
                 </Button>

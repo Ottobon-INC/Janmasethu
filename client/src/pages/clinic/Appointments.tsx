@@ -219,17 +219,17 @@ export default function Appointments() {
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-5 shadow-sm">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-7xl mx-auto">
+        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-2 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 max-w-7xl mx-auto">
             <div className="min-w-0 flex-1">
-              <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">Appointments</h1>
-              <p className="text-sm md:text-base text-gray-600 mt-1">Manage patient appointments and scheduling</p>
+              <h1 className="text-xl md:text-2xl font-semibold text-gray-900">Appointments</h1>
+              <p className="text-xs md:text-sm text-gray-600">Manage patient appointments and scheduling</p>
             </div>
             
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-purple-600 hover:bg-purple-700 text-white text-sm md:text-base px-4 md:px-6 py-2.5 md:py-3 w-full sm:w-auto rounded-lg shadow-md hover:shadow-lg transition-all">
-                  <Plus className="w-4 h-4 mr-2" />
+                <Button className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-3 md:px-4 py-2 w-full sm:w-auto rounded-lg shadow-md hover:shadow-lg transition-all">
+                  <Plus className="w-4 h-4 mr-1.5" />
                   <span>New Appointment</span>
                 </Button>
               </DialogTrigger>
