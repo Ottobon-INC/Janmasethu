@@ -461,8 +461,8 @@ export default function LeadManagement() {
                 <CardTitle className="text-lg font-semibold text-gray-900">All Leads ({filteredLeads.length})</CardTitle>
               </CardHeader>
               <CardContent className="p-0 md:p-6">
-              {/* Mobile Card Layout */}
-              <div className="md:hidden">
+                {/* Mobile Card Layout */}
+                <div className="md:hidden">
                 {isLoading ? (
                   <div className="p-8 text-center text-gray-500">Loading leads...</div>
                 ) : filteredLeads.length === 0 ? (
@@ -531,10 +531,10 @@ export default function LeadManagement() {
                     </div>
                   ))
                 )}
-              </div>
+                </div>
 
-              {/* Desktop Table Layout */}
-              <div className="hidden md:block overflow-x-auto">
+                {/* Desktop Table Layout */}
+                <div className="hidden md:block overflow-x-auto">
                 {isLoading ? (
                   <div className="p-8 text-center text-gray-500">Loading leads...</div>
                 ) : filteredLeads.length === 0 ? (
@@ -615,9 +615,10 @@ export default function LeadManagement() {
                     </tbody>
                   </table>
                 )}
-              </div>
-            </CardContent>
-          </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </main>
       </div>
     </div>
