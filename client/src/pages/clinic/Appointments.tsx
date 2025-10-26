@@ -219,11 +219,11 @@ export default function Appointments() {
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-2 shadow-sm">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 max-w-7xl mx-auto">
+        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-3 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 max-w-7xl mx-auto">
             <div className="min-w-0 flex-1">
-              <h1 className="text-xl md:text-2xl font-semibold text-gray-900">Appointments</h1>
-              <p className="text-xs md:text-sm text-gray-600">Manage patient appointments and scheduling</p>
+              <h1 className="text-[28px] md:text-[32px] font-bold text-gray-900 leading-tight mb-2">Appointments</h1>
+              <p className="text-sm md:text-base text-gray-600">Manage patient appointments and scheduling</p>
             </div>
             
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

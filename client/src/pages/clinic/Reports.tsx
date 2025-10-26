@@ -47,11 +47,11 @@ export default function Reports() {
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-3 md:px-6 py-2">
+        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-3 shadow-sm">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900 truncate">Reports & Analytics</h1>
-              <p className="text-sm md:text-base text-gray-600 truncate">Track performance and generate insights</p>
+              <h1 className="text-[28px] md:text-[32px] font-bold text-gray-900 leading-tight mb-2">Reports & Analytics</h1>
+              <p className="text-sm md:text-base text-gray-600">Track performance and generate insights</p>
             </div>
             
             <div className="flex gap-2">

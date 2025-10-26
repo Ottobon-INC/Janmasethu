@@ -71,23 +71,23 @@ export default function ClinicDashboard() {
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-2 shadow-sm">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 max-w-7xl mx-auto">
+        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-3 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 max-w-7xl mx-auto">
             <div>
-              <h1 className="text-xl md:text-2xl font-semibold text-gray-900">Welcome back, Dr. Rao</h1>
-              <p className="text-xs md:text-sm text-gray-600">Here's what's happening at your clinic today</p>
+              <h1 className="text-[28px] md:text-[32px] font-bold text-gray-900 leading-tight mb-2">Welcome back, Dr. Rao</h1>
+              <p className="text-sm md:text-base text-gray-600">Here's what's happening at your clinic today</p>
             </div>
             
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               {/* Search */}
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <Input
                   type="search"
                   placeholder="Search patients..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-3 py-1.5 w-full sm:w-56 md:w-64 rounded-lg border-gray-300 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="pl-11 pr-4 h-[40px] w-full min-w-[240px] md:min-w-[320px] rounded-lg border-gray-300 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
               
@@ -114,62 +114,72 @@ export default function ClinicDashboard() {
         <main className="flex-1 overflow-auto bg-gray-50">
           <div className="max-w-7xl mx-auto p-4 md:p-8">
             {/* Key Metrics */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
-              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow bg-white">
-                <CardContent className="p-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
+              <Card className="border-0 shadow-[0_2px_8px_rgba(139,92,246,0.08)] hover:shadow-[0_4px_16px_rgba(139,92,246,0.12)] transition-all duration-200 hover:scale-[1.02] bg-white">
+                <CardContent className="p-5 md:p-6 h-[140px] flex flex-col justify-center">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className="text-gray-600 text-sm font-medium mb-2">New Leads</p>
-                      <p className="text-3xl font-bold text-gray-900 mb-1">{newLeads}</p>
-                      <p className="text-green-600 text-xs font-medium">↑ 12% from last week</p>
+                      <p className="text-[42px] md:text-[48px] font-extrabold text-gray-900 leading-none mb-2">{newLeads}</p>
+                      <div className="flex items-center gap-1 text-green-600 text-sm font-medium">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        </svg>
+                        <span>12% from last week</span>
+                      </div>
                     </div>
-                    <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
-                      <TrendingUp className="w-6 h-6 text-blue-600" />
+                    <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center p-2">
+                      <TrendingUp className="w-full h-full text-blue-600" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow bg-white">
-                <CardContent className="p-6">
+              <Card className="border-0 shadow-[0_2px_8px_rgba(139,92,246,0.08)] hover:shadow-[0_4px_16px_rgba(139,92,246,0.12)] transition-all duration-200 hover:scale-[1.02] bg-white">
+                <CardContent className="p-5 md:p-6 h-[140px] flex flex-col justify-center">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className="text-gray-600 text-sm font-medium mb-2">Appointments Today</p>
-                      <p className="text-3xl font-bold text-gray-900 mb-1">{todayAppointments}</p>
-                      <p className="text-gray-500 text-xs font-medium">3 pending confirmation</p>
+                      <p className="text-[42px] md:text-[48px] font-extrabold text-gray-900 leading-none mb-2">{todayAppointments}</p>
+                      <p className="text-gray-500 text-sm font-medium">3 pending confirmation</p>
                     </div>
-                    <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
-                      <Calendar className="w-6 h-6 text-green-600" />
+                    <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center p-2">
+                      <Calendar className="w-full h-full text-green-600" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow bg-white">
-                <CardContent className="p-6">
+              <Card className="border-0 shadow-[0_2px_8px_rgba(139,92,246,0.08)] hover:shadow-[0_4px_16px_rgba(139,92,246,0.12)] transition-all duration-200 hover:scale-[1.02] bg-white">
+                <CardContent className="p-5 md:p-6 h-[140px] flex flex-col justify-center">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className="text-gray-600 text-sm font-medium mb-2">Conversion Rate</p>
-                      <p className="text-3xl font-bold text-gray-900 mb-1">{conversionRate}%</p>
-                      <p className="text-green-600 text-xs font-medium">↑ 5% from last month</p>
+                      <p className="text-[42px] md:text-[48px] font-extrabold text-gray-900 leading-none mb-2">{conversionRate}%</p>
+                      <div className="flex items-center gap-1 text-green-600 text-sm font-medium">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        </svg>
+                        <span>5% from last month</span>
+                      </div>
                     </div>
-                    <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
-                      <Target className="w-6 h-6 text-purple-600" />
+                    <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center p-2">
+                      <Target className="w-full h-full text-purple-600" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow bg-white">
-                <CardContent className="p-6">
+              <Card className="border-0 shadow-[0_2px_8px_rgba(139,92,246,0.08)] hover:shadow-[0_4px_16px_rgba(139,92,246,0.12)] transition-all duration-200 hover:scale-[1.02] bg-white">
+                <CardContent className="p-5 md:p-6 h-[140px] flex flex-col justify-center">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className="text-gray-600 text-sm font-medium mb-2">Active Patients</p>
-                      <p className="text-3xl font-bold text-gray-900 mb-1">{activePatients}</p>
-                      <p className="text-gray-500 text-xs font-medium">8 new this week</p>
+                      <p className="text-[42px] md:text-[48px] font-extrabold text-gray-900 leading-none mb-2">{activePatients}</p>
+                      <p className="text-gray-500 text-sm font-medium">8 new this week</p>
                     </div>
-                    <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
-                      <Users className="w-6 h-6 text-orange-600" />
+                    <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center p-2">
+                      <Users className="w-full h-full text-orange-600" />
                     </div>
                   </div>
                 </CardContent>
