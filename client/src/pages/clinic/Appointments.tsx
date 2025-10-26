@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import ClinicNavigation from "@/components/clinic/ClinicNavigation";
 import { 
   Calendar as CalendarIcon,
@@ -30,6 +33,18 @@ export default function Appointments() {
   const [isMobile, setIsMobile] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date(2024, 0, 16)); // January 16, 2024
   const [selectedDate, setSelectedDate] = useState(16);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [newAppointment, setNewAppointment] = useState({
+    patientName: "",
+    patientId: "",
+    date: "",
+    time: "",
+    type: "",
+    doctor: "Dr. Rao",
+    notes: ""
+  });
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -42,38 +57,120 @@ export default function Appointments() {
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  const todayAppointments: Appointment[] = [
-    {
-      id: "P001",
-      patientName: "Priya Sharma",
-      patientId: "P001",
-      time: "10:00",
-      doctor: "Dr. Rao",
-      type: "Initial Consultation",
-      status: "confirmed",
-      notes: "First fertility consultation"
-    },
-    {
-      id: "P002",
-      patientName: "Rajesh & Kavya Reddy",
-      patientId: "P002",
-      time: "11:30",
-      doctor: "Dr. Mehta",
-      type: "Ultrasound Scan",
-      status: "confirmed",
-      notes: "Follicular monitoring"
-    },
-    {
-      id: "P003",
-      patientName: "Anita Patel",
-      patientId: "P003",
-      time: "14:00",
-      doctor: "Dr. Rao",
-      type: "IUI Procedure",
-      status: "scheduled",
-      notes: "IUI cycle 2"
+  useEffect(() => {
+    // Initialize with default appointments
+    setAppointments([
+      {
+        id: "P001",
+        patientName: "Priya Sharma",
+        patientId: "P001",
+        time: "10:00",
+        doctor: "Dr. Rao",
+        type: "Initial Consultation",
+        status: "confirmed",
+        notes: "First fertility consultation"
+      },
+      {
+        id: "P002",
+        patientName: "Rajesh & Kavya Reddy",
+        patientId: "P002",
+        time: "11:30",
+        doctor: "Dr. Mehta",
+        type: "Ultrasound Scan",
+        status: "confirmed",
+        notes: "Follicular monitoring"
+      },
+      {
+        id: "P003",
+        patientName: "Anita Patel",
+        patientId: "P003",
+        time: "14:00",
+        doctor: "Dr. Rao",
+        type: "IUI Procedure",
+        status: "scheduled",
+        notes: "IUI cycle 2"
+      }
+    ]);
+  }, []);
+
+  const todayAppointments = appointments;
+
+  const handleAddAppointment = async () => {
+    if (newAppointment.patientName && newAppointment.date && newAppointment.time && newAppointment.type) {
+      try {
+        setIsLoading(true);
+        console.log('🔵 Triggering appointment webhook...');
+        
+        const webhookPayload = {
+          patient_name: newAppointment.patientName,
+          patient_id: newAppointment.patientId,
+          appointment_date: newAppointment.date,
+          appointment_time: newAppointment.time,
+          appointment_type: newAppointment.type,
+          doctor: newAppointment.doctor,
+          notes: newAppointment.notes
+        };
+
+        console.log('📤 Sending to webhook:', webhookPayload);
+
+        const webhookResponse = await fetch('https://n8n.ottobon.in/webhook/appointment-details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: {},
+            body: webhookPayload
+          })
+        });
+
+        console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
+
+        if (webhookResponse.ok) {
+          const responseData = await webhookResponse.json();
+          console.log('✅ Appointment response:', responseData);
+
+          // Add the new appointment to the list
+          const newAppointmentData: Appointment = {
+            id: responseData.appointment_id || `A${Date.now()}`,
+            patientName: newAppointment.patientName,
+            patientId: newAppointment.patientId,
+            time: newAppointment.time,
+            doctor: newAppointment.doctor,
+            type: newAppointment.type,
+            status: "scheduled",
+            notes: newAppointment.notes
+          };
+
+          setAppointments([newAppointmentData, ...appointments]);
+          
+          // Reset form
+          setNewAppointment({
+            patientName: "",
+            patientId: "",
+            date: "",
+            time: "",
+            type: "",
+            doctor: "Dr. Rao",
+            notes: ""
+          });
+          setIsModalOpen(false);
+        } else {
+          console.error('❌ Appointment creation failed:', webhookResponse.statusText);
+          alert('Failed to create appointment. Please try again.');
+        }
+      } catch (error) {
+        console.error('❌ Error triggering appointment webhook:', error);
+        alert('An error occurred while creating the appointment. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
     }
-  ];
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setNewAppointment(prev => ({ ...prev, [field]: value }));
+  };
 
   const weekStats = {
     scheduled: 2,
@@ -129,10 +226,141 @@ export default function Appointments() {
               <p className="text-sm md:text-base text-gray-600 mt-1">Manage patient appointments and scheduling</p>
             </div>
             
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white text-sm md:text-base px-4 md:px-6 py-2.5 md:py-3 w-full sm:w-auto rounded-lg shadow-md hover:shadow-lg transition-all">
-              <Plus className="w-4 h-4 mr-2" />
-              <span>New Appointment</span>
-            </Button>
+            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-purple-600 hover:bg-purple-700 text-white text-sm md:text-base px-4 md:px-6 py-2.5 md:py-3 w-full sm:w-auto rounded-lg shadow-md hover:shadow-lg transition-all">
+                  <Plus className="w-4 h-4 mr-2" />
+                  <span>New Appointment</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md max-h-[85vh] sm:max-h-[80vh] overflow-hidden flex flex-col">
+                <DialogHeader className="flex-shrink-0">
+                  <DialogTitle>Schedule New Appointment</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 overflow-y-auto overflow-x-hidden pr-1 flex-1 scrollbar-hide">
+                  <div>
+                    <Label htmlFor="patientName">Patient Name *</Label>
+                    <Input
+                      id="patientName"
+                      value={newAppointment.patientName}
+                      onChange={(e) => handleInputChange("patientName", e.target.value)}
+                      placeholder="Enter patient name"
+                      className="mt-1 px-4 py-3"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="patientId">Patient ID</Label>
+                    <Input
+                      id="patientId"
+                      value={newAppointment.patientId}
+                      onChange={(e) => handleInputChange("patientId", e.target.value)}
+                      placeholder="e.g., P001"
+                      className="mt-1 px-4 py-3"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="date">Date *</Label>
+                      <Input
+                        id="date"
+                        type="date"
+                        value={newAppointment.date}
+                        onChange={(e) => handleInputChange("date", e.target.value)}
+                        className="mt-1 px-4 py-3"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="time">Time *</Label>
+                      <Input
+                        id="time"
+                        type="time"
+                        value={newAppointment.time}
+                        onChange={(e) => handleInputChange("time", e.target.value)}
+                        className="mt-1 px-4 py-3"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="type">Appointment Type *</Label>
+                    <div className="relative filter-dropdown mt-1">
+                      <select 
+                        id="type"
+                        value={newAppointment.type}
+                        onChange={(e) => handleInputChange("type", e.target.value)}
+                        className="dropdown-trigger appearance-none cursor-pointer"
+                      >
+                        <option value="">Select type</option>
+                        <option value="Initial Consultation">Initial Consultation</option>
+                        <option value="Ultrasound Scan">Ultrasound Scan</option>
+                        <option value="IUI Procedure">IUI Procedure</option>
+                        <option value="IVF Procedure">IVF Procedure</option>
+                        <option value="Blood Test">Blood Test</option>
+                        <option value="Embryo Transfer">Embryo Transfer</option>
+                        <option value="Follow-up">Follow-up</option>
+                      </select>
+                      <div className="dropdown-chevron">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="doctor">Assigned Doctor</Label>
+                    <div className="relative filter-dropdown mt-1">
+                      <select 
+                        id="doctor"
+                        value={newAppointment.doctor}
+                        onChange={(e) => handleInputChange("doctor", e.target.value)}
+                        className="dropdown-trigger appearance-none cursor-pointer"
+                      >
+                        <option value="Dr. Rao">Dr. Rao</option>
+                        <option value="Dr. Mehta">Dr. Mehta</option>
+                        <option value="Dr. Singh">Dr. Singh</option>
+                        <option value="Lab Team">Lab Team</option>
+                      </select>
+                      <div className="dropdown-chevron">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="notes">Notes</Label>
+                    <Input
+                      id="notes"
+                      value={newAppointment.notes}
+                      onChange={(e) => handleInputChange("notes", e.target.value)}
+                      placeholder="Additional notes"
+                      className="mt-1 px-4 py-3"
+                    />
+                  </div>
+                  
+                  <div className="flex justify-end space-x-2 pt-4">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setIsModalOpen(false)}
+                      disabled={isLoading}
+                    >
+                      Cancel
+                    </Button>
+                    <Button 
+                      onClick={handleAddAppointment}
+                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                      disabled={!newAppointment.patientName || !newAppointment.date || !newAppointment.time || !newAppointment.type || isLoading}
+                    >
+                      {isLoading ? 'Scheduling...' : 'Schedule Appointment'}
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </header>
 
