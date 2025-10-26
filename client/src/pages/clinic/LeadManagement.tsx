@@ -202,23 +202,25 @@ export default function LeadManagement() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <ClinicNavigation collapsed={collapsed} onCollapsedChange={setCollapsed} />
+      {!isMobile && (
+        <ClinicNavigation collapsed={collapsed} onCollapsedChange={setCollapsed} />
+      )}
+      {isMobile && <ClinicNavigation />}
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-3 md:px-6 py-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-5 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-7xl mx-auto">
             <div className="min-w-0 flex-1">
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900 truncate">Lead Management</h1>
-              <p className="text-sm md:text-base text-gray-600 truncate">Track and manage potential patients</p>
+              <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">Lead Management</h1>
+              <p className="text-sm md:text-base text-gray-600 mt-1">Track and manage potential patients</p>
             </div>
             
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-purple-600 hover:bg-purple-700 text-white text-sm md:text-base px-3 md:px-4 py-2 w-full sm:w-auto">
-                  <Plus className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
-                  <span className="hidden xs:inline">Add New Lead</span>
-                  <span className="xs:hidden">Add Lead</span>
+                <Button className="bg-purple-600 hover:bg-purple-700 text-white text-sm md:text-base px-4 md:px-6 py-2.5 md:py-3 w-full sm:w-auto rounded-lg shadow-md hover:shadow-lg transition-all">
+                  <Plus className="w-4 h-4 mr-2" />
+                  <span>Add New Lead</span>
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-md max-h-[85vh] sm:max-h-[80vh] overflow-hidden flex flex-col">
@@ -375,89 +377,90 @@ export default function LeadManagement() {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-auto p-3 md:p-6">
-          {/* Filters and Search */}
-          <div className="mb-4 md:mb-6 space-y-3 md:space-y-0 md:flex md:flex-row md:gap-4 md:justify-between">
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-              <div className="relative flex-1 sm:flex-initial">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 md:w-5 md:h-5" />
-                <Input
-                  type="search"
-                  placeholder="Search leads..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 md:pl-10 w-full sm:w-64 md:w-80 text-sm md:text-base"
-                />
+        <main className="flex-1 overflow-auto bg-gray-50">
+          <div className="max-w-7xl mx-auto p-4 md:p-8">
+            {/* Filters and Search */}
+            <div className="mb-6 flex flex-col md:flex-row gap-4 md:justify-between">
+              <div className="flex flex-col sm:flex-row gap-3 flex-1">
+                <div className="relative flex-1 sm:max-w-md">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <Input
+                    type="search"
+                    placeholder="Search leads..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-11 pr-4 py-2.5 w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                </div>
+                
+                <div className="relative min-w-0 sm:w-48">
+                  <select 
+                    value={filterStatus}
+                    onChange={(e) => setFilterStatus(e.target.value)}
+                    className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none cursor-pointer text-sm font-medium"
+                  >
+                    <option value="all">All Status</option>
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="qualified">Qualified</option>
+                    <option value="scheduled">Scheduled</option>
+                  </select>
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
               </div>
               
-              <div className="relative flex-1 sm:flex-initial min-w-0 filter-dropdown">
-                <select 
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                  className="dropdown-trigger appearance-none cursor-pointer"
-                >
-                  <option value="all">All Status</option>
-                  <option value="new">New</option>
-                  <option value="contacted">Contacted</option>
-                  <option value="qualified">Qualified</option>
-                  <option value="scheduled">Scheduled</option>
-                </select>
-                <div className="dropdown-chevron">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
+              <Button variant="outline" className="px-4 py-2.5 rounded-lg border-gray-300 hover:bg-gray-100 transition-colors">
+                <Filter className="w-4 h-4 mr-2" />
+                More Filters
+              </Button>
             </div>
-            
-            <Button variant="outline" className="text-sm md:text-base px-3 md:px-4">
-              <Filter className="w-4 h-4 mr-2" />
-              More Filters
-            </Button>
-          </div>
 
           {/* Statistics Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
-            <Card className="hover:shadow-md transition-shadow">
-              <CardContent className="p-3 md:p-4">
-                <div className="text-center">
-                  <p className="text-lg md:text-2xl font-bold text-blue-600">{leadsData.filter(l => l.status === "new").length}</p>
-                  <p className="text-xs md:text-sm text-gray-600 truncate">New Leads</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="hover:shadow-md transition-shadow">
-              <CardContent className="p-3 md:p-4">
-                <div className="text-center">
-                  <p className="text-lg md:text-2xl font-bold text-yellow-600">{leadsData.filter(l => l.status === "contacted").length}</p>
-                  <p className="text-xs md:text-sm text-gray-600 truncate">Contacted</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="hover:shadow-md transition-shadow">
-              <CardContent className="p-3 md:p-4">
-                <div className="text-center">
-                  <p className="text-lg md:text-2xl font-bold text-green-600">{leadsData.filter(l => l.status === "qualified").length}</p>
-                  <p className="text-xs md:text-sm text-gray-600 truncate">Qualified</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="hover:shadow-md transition-shadow">
-              <CardContent className="p-3 md:p-4">
-                <div className="text-center">
-                  <p className="text-lg md:text-2xl font-bold text-purple-600">{leadsData.filter(l => l.status === "scheduled").length}</p>
-                  <p className="text-xs md:text-sm text-gray-600 truncate">Scheduled</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
+              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow bg-white">
+                <CardContent className="p-6">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-blue-600 mb-1">{leadsData.filter(l => l.status === "new").length}</p>
+                    <p className="text-sm text-gray-600 font-medium">New Leads</p>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow bg-white">
+                <CardContent className="p-6">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-yellow-600 mb-1">{leadsData.filter(l => l.status === "contacted").length}</p>
+                    <p className="text-sm text-gray-600 font-medium">Contacted</p>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow bg-white">
+                <CardContent className="p-6">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-green-600 mb-1">{leadsData.filter(l => l.status === "qualified").length}</p>
+                    <p className="text-sm text-gray-600 font-medium">Qualified</p>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="border-0 shadow-md hover:shadow-lg transition-shadow bg-white">
+                <CardContent className="p-6">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-purple-600 mb-1">{leadsData.filter(l => l.status === "scheduled").length}</p>
+                    <p className="text-sm text-gray-600 font-medium">Scheduled</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
           {/* Leads Table */}
-          <Card>
-            <CardHeader className="p-3 md:p-6">
-              <CardTitle className="text-base md:text-lg">All Leads ({filteredLeads.length})</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0 md:p-6">
+            <Card className="border-0 shadow-md">
+              <CardHeader className="p-6">
+                <CardTitle className="text-lg font-semibold text-gray-900">All Leads ({filteredLeads.length})</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0 md:p-6">
               {/* Mobile Card Layout */}
               <div className="md:hidden">
                 {isLoading ? (

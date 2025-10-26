@@ -113,29 +113,37 @@ export default function ClinicNavigation({
 
         {/* Mobile Navigation Overlay */}
         {mobileMenuOpen && (
-          <div className="fixed inset-0 z-40 md:hidden">
+          <div className="fixed inset-0 z-50 md:hidden">
             <div
-              className="fixed inset-0 bg-black bg-opacity-50"
+              className="fixed inset-0 bg-black bg-opacity-60"
               onClick={() => setMobileMenuOpen(false)}
             />
-            <div className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 flex flex-col shadow-xl">
+            <div className="fixed left-0 top-0 h-full w-72 bg-white border-r border-gray-200 flex flex-col shadow-2xl">
               {/* Header */}
-              <div className="flex items-center p-4 border-b border-gray-200">
+              <div className="flex items-center justify-between p-5 border-b border-gray-200">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
-                    <Heart className="w-5 h-5 text-white" />
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                    <Heart className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="font-semibold text-gray-900">
+                    <h2 className="font-semibold text-gray-900 text-base">
                       Janma Sethu Clinic
                     </h2>
                     <p className="text-xs text-gray-500">Management Portal</p>
                   </div>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg"
+                >
+                  <X className="w-5 h-5 text-gray-600" />
+                </Button>
               </div>
 
               {/* Navigation Items */}
-              <div className="flex-1 p-2 space-y-1">
+              <div className="flex-1 p-3 space-y-2">
                 {navigationItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = location === item.href;
@@ -148,15 +156,15 @@ export default function ClinicNavigation({
                     >
                       <Button
                         variant="ghost"
-                        className={`w-full justify-start p-3 h-auto transition-all duration-200 ${
+                        className={`w-full justify-start p-3.5 h-auto rounded-xl transition-all duration-200 ${
                           isActive
-                            ? "bg-purple-50 text-purple-700 border-r-2 border-purple-600"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                            ? "bg-purple-50 text-purple-700 shadow-sm"
+                            : "text-gray-700 hover:bg-gray-50"
                         }`}
                         data-testid={`nav-${item.key}`}
                       >
-                        <Icon className="w-5 h-5 mr-3" />
-                        <span className="font-medium">{item.label}</span>
+                        <Icon className={`w-5 h-5 mr-3 ${isActive ? "text-purple-600" : ""}`} />
+                        <span className="font-medium text-sm">{item.label}</span>
                       </Button>
                     </Link>
                   );
@@ -164,15 +172,15 @@ export default function ClinicNavigation({
               </div>
 
               {/* Footer */}
-              <div className="p-2 border-t border-gray-200">
+              <div className="p-3 border-t border-gray-200">
                 <Button
                   variant="ghost"
                   onClick={handleLogout}
-                  className="w-full justify-start p-3 h-auto text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors duration-200"
+                  className="w-full justify-start p-3.5 h-auto rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200"
                   data-testid="nav-logout"
                 >
                   <LogOut className="w-5 h-5 mr-3" />
-                  <span className="font-medium">Logout</span>
+                  <span className="font-medium text-sm">Logout</span>
                 </Button>
               </div>
             </div>
@@ -185,41 +193,44 @@ export default function ClinicNavigation({
   // Desktop Navigation
   return (
     <div
-      className={`h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ${
-        collapsed ? "w-16" : "w-64"
+      className={`h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 shadow-sm ${
+        collapsed ? "w-20" : "w-72"
       }`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+      <div className="flex items-center justify-between p-5 border-b border-gray-200">
         {!collapsed && (
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
-              <Heart className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-500 rounded-xl flex items-center justify-center shadow-md">
+              <Heart className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="font-semibold text-gray-900">
+              <h2 className="font-semibold text-gray-900 text-base">
                 Janma Sethu Clinic
               </h2>
               <p className="text-xs text-gray-500">Management Portal</p>
             </div>
           </div>
         )}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleToggleCollapse}
-          className="p-1.5 hover:bg-gray-100"
-        >
-          {collapsed ? (
-            <ChevronRight className="w-4 h-4" />
-          ) : (
-            <ChevronLeft className="w-4 h-4" />
-          )}
-        </Button>
+        {collapsed && (
+          <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-500 rounded-xl flex items-center justify-center shadow-md mx-auto">
+            <Heart className="w-6 h-6 text-white" />
+          </div>
+        )}
+        {!collapsed && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleToggleCollapse}
+            className="p-2 hover:bg-gray-100 rounded-lg"
+          >
+            <ChevronLeft className="w-4 h-4 text-gray-600" />
+          </Button>
+        )}
       </div>
 
       {/* Navigation Items */}
-      <div className="flex-1 p-2 space-y-1">
+      <div className="flex-1 p-3 space-y-2">
         {navigationItems.map((item) => {
           const Icon = item.icon;
           const isActive = location === item.href;
@@ -228,16 +239,16 @@ export default function ClinicNavigation({
             <Link key={item.key} href={item.href}>
               <Button
                 variant="ghost"
-                className={`w-full justify-start p-3 h-auto transition-all duration-200 ${
+                className={`w-full justify-start p-3.5 h-auto rounded-xl transition-all duration-200 ${
                   isActive
-                    ? "bg-purple-50 text-purple-700 border-r-2 border-purple-600"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                } ${collapsed ? "px-2" : ""}`}
+                    ? "bg-purple-50 text-purple-700 shadow-sm"
+                    : "text-gray-700 hover:bg-gray-50"
+                } ${collapsed ? "justify-center px-2" : ""}`}
                 data-testid={`nav-${item.key}`}
               >
-                <Icon className={`w-5 h-5 ${collapsed ? "" : "mr-3"}`} />
+                <Icon className={`w-5 h-5 ${collapsed ? "" : "mr-3"} ${isActive ? "text-purple-600" : ""}`} />
                 {!collapsed && (
-                  <span className="font-medium">{item.label}</span>
+                  <span className="font-medium text-sm">{item.label}</span>
                 )}
               </Button>
             </Link>
@@ -245,18 +256,32 @@ export default function ClinicNavigation({
         })}
       </div>
 
+      {/* Collapse Button (when collapsed) */}
+      {collapsed && (
+        <div className="p-3 border-t border-gray-200">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleToggleCollapse}
+            className="w-full p-2 hover:bg-gray-100 rounded-lg"
+          >
+            <ChevronRight className="w-4 h-4 text-gray-600" />
+          </Button>
+        </div>
+      )}
+
       {/* Footer */}
-      <div className="p-2 border-t border-gray-200">
+      <div className="p-3 border-t border-gray-200">
         <Button
           variant="ghost"
           onClick={handleLogout}
-          className={`w-full justify-start p-3 h-auto text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 ${
-            collapsed ? "px-2" : ""
+          className={`w-full justify-start p-3.5 h-auto rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 ${
+            collapsed ? "justify-center px-2" : ""
           }`}
           data-testid="nav-logout"
         >
           <LogOut className={`w-5 h-5 ${collapsed ? "" : "mr-3"}`} />
-          {!collapsed && <span className="font-medium">Logout</span>}
+          {!collapsed && <span className="font-medium text-sm">Logout</span>}
         </Button>
       </div>
     </div>
