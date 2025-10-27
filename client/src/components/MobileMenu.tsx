@@ -30,14 +30,9 @@ const MobileMenu = ({ isOpen, onClose, navItems }: MobileMenuProps) => {
           {/* Header Section */}
           <div className="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-pink-50">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-md">
-                  <span className="text-white font-bold text-lg">JS</span>
-                </div>
-                <div>
-                  <h2 className="text-base font-semibold text-gray-900">JanmaSethu</h2>
-                  <p className="text-xs text-gray-500">Your Fertility Journey</p>
-                </div>
+              <div>
+                <h2 className="text-lg font-bold text-gray-900">JanmaSethu</h2>
+                <p className="text-sm text-gray-600 mt-0.5">Your Fertility Journey</p>
               </div>
               <Button
                 variant="ghost"
