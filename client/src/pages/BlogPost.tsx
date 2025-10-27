@@ -1,4 +1,3 @@
-
 import { useParams, Link } from "wouter";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
@@ -82,14 +81,19 @@ const BlogPost = () => {
 
   if (!post) return null;
 
-  const hero = post.image_url || fallbackImages[post.slug.length % fallbackImages.length];
+  const hero =
+    post.image_url || fallbackImages[post.slug.length % fallbackImages.length];
 
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Back Navigation */}
       <div className="mb-8">
         <Link href="/blog">
-          <Button variant="ghost" className="rounded-full" data-testid="button-back-blog">
+          <Button
+            variant="ghost"
+            className="rounded-full"
+            data-testid="button-back-blog"
+          >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blogs
           </Button>
@@ -131,7 +135,13 @@ const BlogPost = () => {
         <div className="lg:col-span-2">
           <Card className="rounded-3xl p-8 card-shadow">
             <CardContent className="p-0">
-              {hero && <img src={hero} alt={post.title} className="rounded-xl mb-6 w-full" />}
+              {hero && (
+                <img
+                  src={hero}
+                  alt={post.title}
+                  className="rounded-xl mb-6 w-full"
+                />
+              )}
               <div
                 className="prose prose-lg max-w-none"
                 data-testid="section-post-content"
@@ -145,7 +155,9 @@ const BlogPost = () => {
         <div className="space-y-6">
           <Card className="rounded-3xl p-6 card-shadow">
             <CardContent className="p-0">
-              <h3 className="text-lg font-bold text-foreground font-serif mb-4">About the Author</h3>
+              <h3 className="text-lg font-bold text-foreground font-serif mb-4">
+                About the Author
+              </h3>
               <div className="space-y-2">
                 <p className="font-medium text-foreground">Editorial Team</p>
                 <p className="text-sm text-muted-foreground">
@@ -157,9 +169,14 @@ const BlogPost = () => {
 
           <Card className="rounded-3xl p-6 card-shadow">
             <CardContent className="p-0">
-              <h3 className="text-lg font-bold text-foreground font-serif mb-4">Tags</h3>
+              <h3 className="text-lg font-bold text-foreground font-serif mb-4">
+                Tags
+              </h3>
               <div className="flex flex-wrap gap-2">
-                <Badge variant="outline" className="cursor-pointer hover:bg-muted">
+                <Badge
+                  variant="outline"
+                  className="cursor-pointer hover:bg-muted"
+                >
                   <Tag className="w-3 h-3 mr-1" />
                   Blog
                 </Badge>
@@ -170,7 +187,9 @@ const BlogPost = () => {
           {post.source_url && (
             <Card className="rounded-3xl p-6 card-shadow">
               <CardContent className="p-0">
-                <h3 className="text-lg font-bold text-foreground font-serif mb-4">Source</h3>
+                <h3 className="text-lg font-bold text-foreground font-serif mb-4">
+                  Source
+                </h3>
                 <a
                   href={post.source_url}
                   target="_blank"
