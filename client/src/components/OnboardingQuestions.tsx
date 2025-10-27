@@ -21,6 +21,12 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
   const [currentStep, setCurrentStep] = useState(1);
   const [answers, setAnswers] = useState<Record<string, any>>({});
 
+  // Log when component receives props
+  console.log("=== OnboardingQuestions Component ===");
+  console.log("open:", open);
+  console.log("relationship:", relationship);
+  console.log("userId:", userId);
+
   // Define questions based on relationship
   const getQuestions = () => {
     switch (relationship) {

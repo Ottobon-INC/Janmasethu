@@ -69,21 +69,28 @@ export default function AuthModal({
         const uniqueId =
           data.id || data.userId || data.user_id || `user_${Date.now()}`;
         
+        console.log("✅ Signup successful! User ID:", uniqueId);
+        
         // Store data first
         setUserId(uniqueId);
         localStorage.setItem('userName', formData.fullName);
         localStorage.setItem('userEmail', formData.email);
         localStorage.setItem('userId', uniqueId);
 
+        // IMPORTANT: Set loading to false FIRST
+        setIsLoading(false);
+        
         // Show success toast
         toast({
           title: "Account created!",
           description: "Please tell us about yourself.",
         });
 
-        // Set loading to false and show relationship form
-        setIsLoading(false);
-        setShowRelationship(true);
+        // Use setTimeout to ensure state updates properly
+        setTimeout(() => {
+          console.log("Showing relationship form...");
+          setShowRelationship(true);
+        }, 100);
         
         // IMPORTANT: Return here to prevent any further execution
         return;
@@ -173,8 +180,12 @@ export default function AuthModal({
     console.log("Relationship:", relationship);
     console.log("User ID:", userId);
     
+    // Store relationship in localStorage for persistence
+    localStorage.setItem('userRelationship', relationship);
+    
     // Trigger onboarding immediately with the relationship and userId
     // The parent component will handle closing this modal and opening onboarding
+    console.log("Calling onAuthSuccess with isNewUser=true");
     onAuthSuccess(true, relationship, userId);
   };
 
