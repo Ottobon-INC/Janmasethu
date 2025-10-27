@@ -60,22 +60,32 @@ export default function AuthModal({
           }),
         });
 
+        if (!response.ok) {
+          throw new Error("Signup failed");
+        }
+
         const data = await response.json();
         const uniqueId =
           data.id || data.userId || data.user_id || `user_${Date.now()}`;
+        
+        // Store data first
         setUserId(uniqueId);
-
-        // Store username/email in localStorage
         localStorage.setItem('userName', formData.fullName);
         localStorage.setItem('userEmail', formData.email);
         localStorage.setItem('userId', uniqueId);
 
+        // Show success toast
         toast({
           title: "Account created!",
           description: "Please tell us about yourself.",
         });
 
+        // Important: Set loading to false before showing relationship form
+        setIsLoading(false);
+        
+        // Show relationship selection form
         setShowRelationship(true);
+        return; // Exit early to prevent further execution
       } else {
         // Login - Call the login webhook with full error handling
         const response = await fetch(
@@ -141,7 +151,7 @@ export default function AuthModal({
           "Unable to connect to the server. Please check your internet connection and try again.",
         variant: "destructive",
       });
-    } finally {
+      
       setIsLoading(false);
     }
   };
