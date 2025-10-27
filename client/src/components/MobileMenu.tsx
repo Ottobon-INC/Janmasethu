@@ -1,5 +1,6 @@
+
 import { Link } from 'wouter';
-import { X } from 'lucide-react';
+import { X, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageProvider';
 import { Button } from '@/components/ui/button';
 
@@ -17,39 +18,67 @@ const MobileMenu = ({ isOpen, onClose, navItems }: MobileMenuProps) => {
       {/* Backdrop */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
           onClick={onClose}
           data-testid="backdrop-mobile-menu"
         />
       )}
 
       {/* Menu */}
-      <div className={`mobile-menu fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl lg:hidden ${isOpen ? 'open' : ''}`}>
-        <div className="p-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="mb-6 p-2"
-            aria-label="Close menu"
-            data-testid="button-close-menu"
-          >
-            <X className="text-xl" />
-          </Button>
-
-          <nav className="space-y-4" role="navigation" aria-label="Mobile navigation">
-            {navItems.map(({ key, href }) => (
-              <Link 
-                key={href}
-                href={href} 
-                className="block py-2 text-foreground hover:text-primary font-medium"
+      <div className={`mobile-menu fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-2xl lg:hidden ${isOpen ? 'open' : ''}`}>
+        <div className="flex flex-col h-full">
+          {/* Header Section */}
+          <div className="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-pink-50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-md">
+                  <span className="text-white font-bold text-lg">JS</span>
+                </div>
+                <div>
+                  <h2 className="text-base font-semibold text-gray-900">JanmaSethu</h2>
+                  <p className="text-xs text-gray-500">Your Fertility Journey</p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={onClose}
-                data-testid={`link-mobile-${key.replace('nav_', '')}`}
+                className="p-2 hover:bg-white/80 rounded-lg transition-colors"
+                aria-label="Close menu"
+                data-testid="button-close-menu"
               >
-                {t(key)}
-              </Link>
-            ))}
+                <X className="w-5 h-5 text-gray-600" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="flex-1 overflow-y-auto py-4 px-3" role="navigation" aria-label="Mobile navigation">
+            <div className="space-y-1">
+              {navItems.map(({ key, href }, index) => (
+                <Link 
+                  key={href}
+                  href={href} 
+                  className="group block"
+                  onClick={onClose}
+                  data-testid={`link-mobile-${key.replace('nav_', '')}`}
+                >
+                  <div className="flex items-center justify-between px-4 py-3.5 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 hover:text-purple-700 transition-all duration-200 hover:shadow-sm">
+                    <span className="font-medium text-[15px]">{t(key)}</span>
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all duration-200" />
+                  </div>
+                </Link>
+              ))}
+            </div>
           </nav>
+
+          {/* Footer Section */}
+          <div className="px-6 py-4 border-t border-gray-100 bg-gradient-to-r from-gray-50 to-purple-50">
+            <div className="flex items-center space-x-2 text-xs text-gray-500">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+              <span>Secure & Private</span>
+            </div>
+          </div>
         </div>
       </div>
     </>
