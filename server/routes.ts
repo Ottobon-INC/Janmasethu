@@ -227,7 +227,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         throw new Error(`n8n webhook failed: ${webhookResponse.statusText}`);
       }
 
-      const leadData = await webhookResponse.json();
+      // Check if response has content before parsing
+      const responseText = await webhookResponse.text();
+      console.log('📥 Raw n8n response:', responseText);
+      
+      if (!responseText || responseText.trim() === '') {
+        throw new Error('n8n webhook returned empty response');
+      }
+
+      const leadData = JSON.parse(responseText);
       console.log('✅ n8n response:', leadData);
 
       // Store in database
