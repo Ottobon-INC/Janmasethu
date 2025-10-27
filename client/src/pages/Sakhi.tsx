@@ -48,11 +48,16 @@ const Sakhi = () => {
       setUserRelationship(relationship || "herself");
       setUserId(userId || "");
       
-      // Close auth modal and open onboarding immediately
+      // Close auth modal first
       setShowAuthModal(false);
-      setShowOnboarding(true);
       
-      console.log("Onboarding modal should be visible now");
+      // Small delay to ensure modal transition completes
+      setTimeout(() => {
+        console.log("Opening onboarding modal...");
+        setShowOnboarding(true);
+      }, 100);
+      
+      console.log("Onboarding modal should open shortly");
     } else {
       // Existing user - redirect to /sakhi/try immediately after login webhook success
       console.log("Existing user - redirecting to /sakhi/try");

@@ -61,6 +61,7 @@ export default function AuthModal({
         });
 
         if (!response.ok) {
+          setIsLoading(false);
           throw new Error("Signup failed");
         }
 
@@ -80,12 +81,12 @@ export default function AuthModal({
           description: "Please tell us about yourself.",
         });
 
-        // Important: Set loading to false before showing relationship form
+        // Set loading to false and show relationship form
         setIsLoading(false);
-        
-        // Show relationship selection form
         setShowRelationship(true);
-        return; // Exit early to prevent further execution
+        
+        // IMPORTANT: Return here to prevent any further execution
+        return;
       } else {
         // Login - Call the login webhook with full error handling
         const response = await fetch(
@@ -146,12 +147,14 @@ export default function AuthModal({
 
       // Network or unexpected error
       toast({
-        title: "Connection Error",
-        description:
-          "Unable to connect to the server. Please check your internet connection and try again.",
+        title: isSignUp ? "Signup Failed" : "Connection Error",
+        description: isSignUp 
+          ? "Unable to create account. Please try again."
+          : "Unable to connect to the server. Please check your internet connection and try again.",
         variant: "destructive",
       });
       
+      // Always reset loading state on error
       setIsLoading(false);
     }
   };
@@ -166,6 +169,10 @@ export default function AuthModal({
       return;
     }
 
+    console.log("=== Relationship submitted ===");
+    console.log("Relationship:", relationship);
+    console.log("User ID:", userId);
+    
     // Trigger onboarding immediately with the relationship and userId
     // The parent component will handle closing this modal and opening onboarding
     onAuthSuccess(true, relationship, userId);
