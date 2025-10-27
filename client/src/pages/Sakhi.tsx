@@ -41,8 +41,6 @@ const Sakhi = () => {
     console.log("isNewUser:", isNewUser);
     console.log("relationship:", relationship);
     console.log("userId:", userId);
-    console.log("Current showAuthModal:", showAuthModal);
-    console.log("Current showOnboarding:", showOnboarding);
     
     if (isNewUser) {
       // New user - show onboarding questions
@@ -51,29 +49,26 @@ const Sakhi = () => {
       const finalRelationship = relationship || "herself";
       const finalUserId = userId || "";
       
+      console.log("Setting relationship:", finalRelationship);
+      console.log("Setting userId:", finalUserId);
+      
+      // Set the user data immediately
       setUserRelationship(finalRelationship);
       setUserId(finalUserId);
       
-      console.log("Set userRelationship to:", finalRelationship);
-      console.log("Set userId to:", finalUserId);
-      
-      // Close auth modal first
-      console.log("Closing auth modal...");
+      // Close auth modal
       setShowAuthModal(false);
       
-      // Small delay to ensure modal transition completes
+      // Open onboarding modal after auth modal closes
       setTimeout(() => {
-        console.log("Attempting to open onboarding modal...");
+        console.log("Opening onboarding modal...");
         setShowOnboarding(true);
-        console.log("setShowOnboarding(true) called");
-      }, 200);
+      }, 300);
       
-      console.log("Onboarding flow initiated");
     } else {
-      // Existing user - redirect to /sakhi/try immediately after login webhook success
+      // Existing user - redirect to /sakhi/try
       console.log("Existing user - redirecting to /sakhi/try");
       
-      // Close auth modal
       setShowAuthModal(false);
       
       toast({
@@ -81,9 +76,7 @@ const Sakhi = () => {
         description: "You're all set to continue your journey.",
       });
       
-      // Navigate immediately after successful login
       setTimeout(() => {
-        console.log("Navigating to /sakhi/try");
         setLocation("/sakhi/try");
       }, 500);
     }
