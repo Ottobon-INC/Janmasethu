@@ -48,6 +48,7 @@ export default function LeadManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [leadsData, setLeadsData] = useState<Lead[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -62,6 +63,7 @@ export default function LeadManagement() {
     age: "",
     location: ""
   });
+  const [editingLead, setEditingLead] = useState<Lead | null>(null);
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -127,35 +129,27 @@ export default function LeadManagement() {
   const handleAddLead = async () => {
     if (newLead.name && newLead.email && newLead.phone) {
       try {
-        console.log('🔵 Triggering lead creation webhook...');
+        console.log('🔵 Creating new lead...');
         
         // Split the name into first_name and last_name
         const nameParts = newLead.name.trim().split(' ');
         const first_name = nameParts[0] || '';
         const last_name = nameParts.slice(1).join(' ') || '';
         
-        // Prepare the payload in the exact format required
         const payload = {
-          query: {},
-          body: {
-            first_name: first_name,
-            last_name: last_name,
-            email: newLead.email,
-            phone: newLead.phone,
-            age: newLead.age ? parseInt(newLead.age) : 29,
-            source: newLead.source || 'Chatbot',
-            campaign: 'Parenthood_Awareness',
-            utm_source: 'Facebook',
-            utm_medium: 'Ad',
-            utm_campaign: 'IVF_Journey_2025',
-            inquiry_type: newLead.interest || 'IVF_Consultation',
-            priority: newLead.priority === 'high' ? 'High' : newLead.priority === 'medium' ? 'Medium' : 'Low'
-          }
+          first_name,
+          last_name,
+          email: newLead.email,
+          phone: newLead.phone,
+          age: newLead.age,
+          source: newLead.source,
+          interest: newLead.interest,
+          priority: newLead.priority
         };
 
-        console.log('📤 Sending lead to webhook:', payload);
+        console.log('📤 Sending to backend API:', payload);
 
-        const webhookResponse = await fetch('https://n8n.ottobon.in/webhook/lead_details', {
+        const response = await fetch('/api/leads', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -163,13 +157,11 @@ export default function LeadManagement() {
           body: JSON.stringify(payload)
         });
 
-        console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
-
-        if (webhookResponse.ok) {
-          const responseData = await webhookResponse.json();
+        if (response.ok) {
+          const responseData = await response.json();
           console.log('✅ Lead created successfully:', responseData);
 
-          // Add the response data directly to state
+          // Add the new lead to state
           setLeadsData([responseData, ...leadsData]);
           
           // Reset form
@@ -186,7 +178,7 @@ export default function LeadManagement() {
           });
           setIsModalOpen(false);
         } else {
-          console.error('❌ Lead creation failed:', webhookResponse.statusText);
+          console.error('❌ Lead creation failed:', response.statusText);
           alert('Failed to create lead. Please try again.');
         }
       } catch (error) {
@@ -198,6 +190,46 @@ export default function LeadManagement() {
 
   const handleInputChange = (field: string, value: string) => {
     setNewLead(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleEditLead = async () => {
+    if (!editingLead) return;
+
+    try {
+      console.log('🔵 Updating lead:', editingLead.lead_id);
+
+      const response = await fetch(`/api/leads/${editingLead.lead_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editingLead)
+      });
+
+      if (response.ok) {
+        const updatedLead = await response.json();
+        console.log('✅ Lead updated successfully:', updatedLead);
+
+        // Update the lead in state
+        setLeadsData(leadsData.map(lead => 
+          lead.lead_id === updatedLead.lead_id ? updatedLead : lead
+        ));
+        
+        setIsEditModalOpen(false);
+        setEditingLead(null);
+      } else {
+        console.error('❌ Lead update failed:', response.statusText);
+        alert('Failed to update lead. Please try again.');
+      }
+    } catch (error) {
+      console.error('❌ Error during lead update:', error);
+      alert('An error occurred while updating the lead. Please try again.');
+    }
+  };
+
+  const openEditModal = (lead: Lead) => {
+    setEditingLead(lead);
+    setIsEditModalOpen(true);
   };
 
   return (
@@ -525,7 +557,7 @@ export default function LeadManagement() {
                         <Button variant="ghost" size="sm">
                           <Eye className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => openEditModal(lead)}>
                           <Edit className="w-4 h-4" />
                         </Button>
                         <Button variant="ghost" size="sm">
@@ -554,6 +586,149 @@ export default function LeadManagement() {
                         <th className="text-left py-3 px-4 font-medium text-gray-700">Inquiry</th>
                         <th className="text-left py-3 px-4 font-medium text-gray-700">Campaign</th>
                         <th className="text-left py-3 px-4 font-medium text-gray-700">Source</th>
+
+
+        {/* Edit Lead Modal */}
+        <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+          <DialogContent className="max-w-md max-h-[85vh] overflow-hidden flex flex-col">
+            <DialogHeader className="flex-shrink-0">
+              <DialogTitle>Edit Lead</DialogTitle>
+            </DialogHeader>
+            {editingLead && (
+              <div className="space-y-4 overflow-y-auto pr-1 flex-1 scrollbar-hide">
+                <div>
+                  <Label htmlFor="edit-first-name">First Name *</Label>
+                  <Input
+                    id="edit-first-name"
+                    value={editingLead.first_name}
+                    onChange={(e) => setEditingLead({...editingLead, first_name: e.target.value})}
+                    className="mt-1 px-4 py-3"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="edit-last-name">Last Name</Label>
+                  <Input
+                    id="edit-last-name"
+                    value={editingLead.last_name || ''}
+                    onChange={(e) => setEditingLead({...editingLead, last_name: e.target.value})}
+                    className="mt-1 px-4 py-3"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="edit-email">Email *</Label>
+                  <Input
+                    id="edit-email"
+                    type="email"
+                    value={editingLead.email}
+                    onChange={(e) => setEditingLead({...editingLead, email: e.target.value})}
+                    className="mt-1 px-4 py-3"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="edit-phone">Phone *</Label>
+                  <Input
+                    id="edit-phone"
+                    value={editingLead.phone}
+                    onChange={(e) => setEditingLead({...editingLead, phone: e.target.value})}
+                    className="mt-1 px-4 py-3"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="edit-age">Age</Label>
+                  <Input
+                    id="edit-age"
+                    type="number"
+                    value={editingLead.age || ''}
+                    onChange={(e) => setEditingLead({...editingLead, age: parseInt(e.target.value)})}
+                    className="mt-1 px-4 py-3"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="edit-inquiry">Inquiry Type</Label>
+                  <Input
+                    id="edit-inquiry"
+                    value={editingLead.inquiry_type || ''}
+                    onChange={(e) => setEditingLead({...editingLead, inquiry_type: e.target.value})}
+                    className="mt-1 px-4 py-3"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="edit-source">Source</Label>
+                  <Input
+                    id="edit-source"
+                    value={editingLead.source || ''}
+                    onChange={(e) => setEditingLead({...editingLead, source: e.target.value})}
+                    className="mt-1 px-4 py-3"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="edit-priority">Priority</Label>
+                  <select 
+                    id="edit-priority"
+                    value={editingLead.priority?.toLowerCase() || 'medium'}
+                    onChange={(e) => setEditingLead({...editingLead, priority: e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1)})}
+                    className="w-full appearance-none cursor-pointer bg-white border-2 border-purple-200 rounded-2xl px-4 py-3 pr-10 text-sm font-medium text-gray-700"
+                  >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <Label htmlFor="edit-status">Status</Label>
+                  <select 
+                    id="edit-status"
+                    value={editingLead.status?.toLowerCase() || 'new'}
+                    onChange={(e) => setEditingLead({...editingLead, status: e.target.value})}
+                    className="w-full appearance-none cursor-pointer bg-white border-2 border-purple-200 rounded-2xl px-4 py-3 pr-10 text-sm font-medium text-gray-700"
+                  >
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="qualified">Qualified</option>
+                    <option value="scheduled">Scheduled</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <Label htmlFor="edit-notes">Notes</Label>
+                  <Input
+                    id="edit-notes"
+                    value={editingLead.notes || ''}
+                    onChange={(e) => setEditingLead({...editingLead, notes: e.target.value})}
+                    className="mt-1 px-4 py-3"
+                  />
+                </div>
+                
+                <div className="flex justify-end space-x-2 pt-4">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      setIsEditModalOpen(false);
+                      setEditingLead(null);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    onClick={handleEditLead}
+                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                  >
+                    Save Changes
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
                         <th className="text-left py-3 px-4 font-medium text-gray-700">Actions</th>
                       </tr>
                     </thead>
@@ -606,7 +781,7 @@ export default function LeadManagement() {
                               <Button variant="ghost" size="sm">
                                 <Eye className="w-4 h-4" />
                               </Button>
-                              <Button variant="ghost" size="sm">
+                              <Button variant="ghost" size="sm" onClick={() => openEditModal(lead)}>
                                 <Edit className="w-4 h-4" />
                               </Button>
                               <Button variant="ghost" size="sm">
