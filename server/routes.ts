@@ -313,67 +313,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Webhook receiver to store leads from n8n
-  app.post("/api/leads/webhook", async (req, res) => {
-    try {
-      const leadData = req.body;
-      
-      // Insert or update lead in database
-      await query(`
-        INSERT INTO leads (
-          lead_id, first_name, last_name, email, phone, age,
-          source, campaign, utm_source, utm_medium, utm_campaign,
-          inquiry_type, priority, status, assigned_to, clinic_id,
-          notes, last_contact_date, next_follow_up_date, converted_date,
-          created_at, updated_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)
-        ON CONFLICT (lead_id) 
-        DO UPDATE SET
-          first_name = EXCLUDED.first_name,
-          last_name = EXCLUDED.last_name,
-          email = EXCLUDED.email,
-          phone = EXCLUDED.phone,
-          age = EXCLUDED.age,
-          source = EXCLUDED.source,
-          campaign = EXCLUDED.campaign,
-          utm_source = EXCLUDED.utm_source,
-          utm_medium = EXCLUDED.utm_medium,
-          utm_campaign = EXCLUDED.utm_campaign,
-          inquiry_type = EXCLUDED.inquiry_type,
-          priority = EXCLUDED.priority,
-          status = EXCLUDED.status,
-          updated_at = EXCLUDED.updated_at
-      `, [
-        leadData.lead_id,
-        leadData.first_name,
-        leadData.last_name,
-        leadData.email,
-        leadData.phone,
-        leadData.age,
-        leadData.source,
-        leadData.campaign,
-        leadData.utm_source,
-        leadData.utm_medium,
-        leadData.utm_campaign,
-        leadData.inquiry_type,
-        leadData.priority,
-        leadData.status,
-        leadData.assigned_to,
-        leadData.clinic_id,
-        leadData.notes,
-        leadData.last_contact_date,
-        leadData.next_follow_up_date,
-        leadData.converted_date,
-        leadData.created_at,
-        leadData.updated_at
-      ]);
-
-      res.json({ ok: true, message: "Lead stored successfully" });
-    } catch (error) {
-      console.error("Error storing lead:", error);
-      res.status(500).json({ ok: false, error: "Failed to store lead" });
-    }
-  });
+  
 
   // =========================
   // DOCTOR API ENDPOINTS
