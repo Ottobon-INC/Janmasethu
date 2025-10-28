@@ -1461,13 +1461,13 @@ textarea:focus-visible {
   }
 }
 
-/* FAQ Accordion Hover Effect - Enhanced Professional Design */
+/* FAQ Accordion Hover Effect - Compact Design */
 .faq-accordion-trigger {
   position: relative;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: linear-gradient(135deg, transparent 0%, transparent 100%);
-  padding: 1.25rem 1.5rem;
-  border-radius: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
   overflow: hidden;
 }
 
@@ -1479,10 +1479,10 @@ textarea:focus-visible {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(236, 72, 153, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, rgba(236, 72, 153, 0.04) 100%);
   opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 1rem;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0.5rem;
   z-index: -1;
 }
 
@@ -1497,78 +1497,78 @@ textarea:focus-visible {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 4px;
+  width: 2px;
   height: 0;
   background: linear-gradient(180deg, #8B5CF6 0%, #EC4899 100%);
-  border-radius: 0 4px 4px 0;
-  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 2px 2px 0;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .faq-accordion-trigger:hover::after {
-  height: 60%;
+  height: 50%;
 }
 
 .faq-accordion-trigger:hover {
   background: linear-gradient(135deg, rgba(248, 250, 255, 0.8) 0%, rgba(243, 232, 255, 0.6) 100%);
-  transform: translateX(8px);
+  transform: translateX(4px);
   box-shadow: 
-    0 4px 20px rgba(139, 92, 246, 0.12),
-    0 2px 8px rgba(139, 92, 246, 0.08);
-  padding-left: 2rem;
+    0 2px 10px rgba(139, 92, 246, 0.1),
+    0 1px 4px rgba(139, 92, 246, 0.06);
+  padding-left: 1rem;
 }
 
 /* Active/Open state styling */
 .faq-accordion-trigger[data-state=open] {
-  background: linear-gradient(135deg, rgba(243, 232, 255, 0.9) 0%, rgba(251, 207, 232, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(243, 232, 255, 0.8) 0%, rgba(251, 207, 232, 0.4) 100%);
   color: #8B5CF6;
   font-weight: 500;
   box-shadow: 
-    0 2px 12px rgba(139, 92, 246, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    0 1px 6px rgba(139, 92, 246, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .faq-accordion-trigger[data-state=open]::after {
-  height: 70%;
+  height: 60%;
   background: linear-gradient(180deg, #7C3AED 0%, #DB2777 100%);
 }
 
 .faq-accordion-trigger[data-state=open]:hover {
-  background: linear-gradient(135deg, rgba(237, 233, 254, 1) 0%, rgba(251, 207, 232, 0.7) 100%);
+  background: linear-gradient(135deg, rgba(237, 233, 254, 0.9) 0%, rgba(251, 207, 232, 0.6) 100%);
   box-shadow: 
-    0 6px 24px rgba(139, 92, 246, 0.2),
-    0 3px 12px rgba(139, 92, 246, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  transform: translateX(10px);
+    0 3px 12px rgba(139, 92, 246, 0.15),
+    0 1.5px 6px rgba(139, 92, 246, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: translateX(5px);
 }
 
 /* Text styling with smooth transitions */
 .faq-accordion-trigger .font-semibold {
   position: relative;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-block;
   z-index: 1;
+  font-size: 0.875rem;
 }
 
 .faq-accordion-trigger:hover .font-semibold {
   color: #7C3AED;
-  font-size: 1.05em;
-  letter-spacing: 0.01em;
-  text-shadow: 0 1px 2px rgba(139, 92, 246, 0.1);
+  font-size: 0.9rem;
 }
 
 .faq-accordion-trigger[data-state=open] .font-semibold {
   color: #6D28D9;
-  font-size: 1.03em;
+  font-size: 0.875rem;
 }
 
 /* Chevron icon smooth rotation and color change */
 .faq-accordion-trigger svg {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 1rem;
+  height: 1rem;
 }
 
 .faq-accordion-trigger:hover svg {
   color: #8B5CF6;
-  transform: scale(1.1);
 }
 
 .faq-accordion-trigger[data-state=open] svg {
@@ -1577,16 +1577,16 @@ textarea:focus-visible {
 
 /* Enhanced Accordion Content Styling */
 .faq-accordion-content {
-  background: linear-gradient(135deg, rgba(249, 250, 255, 0.95) 0%, rgba(245, 243, 255, 0.9) 100%);
-  border-left: 2px solid transparent;
+  background: linear-gradient(135deg, rgba(249, 250, 255, 0.8) 0%, rgba(245, 243, 255, 0.7) 100%);
+  border-left: 1px solid transparent;
   border-image: linear-gradient(180deg, #8B5CF6 0%, #EC4899 100%) 1;
-  padding: 0.75rem 1.25rem;
-  margin: 0.25rem 0 0.5rem 0.5rem;
-  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.4rem 0.75rem;
+  margin: 0.15rem 0 0.25rem 0.25rem;
+  border-radius: 0 0.375rem 0.375rem 0;
   box-shadow: 
-    inset 4px 0 12px rgba(139, 92, 246, 0.08),
-    0 2px 8px rgba(0, 0, 0, 0.04);
-  animation: accordionContentSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    inset 2px 0 6px rgba(139, 92, 246, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.03);
+  animation: accordionContentSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
 }
@@ -1596,18 +1596,17 @@ textarea:focus-visible {
   position: absolute;
   top: 0;
   left: 0;
-  width: 2px;
+  width: 1px;
   height: 100%;
   background: linear-gradient(180deg, #8B5CF6 0%, #EC4899 100%);
-  border-radius: 0 2px 2px 0;
 }
 
 .faq-accordion-content p {
   color: #4B5563;
-  line-height: 1.5;
-  font-size: 0.875rem;
+  line-height: 1.4;
+  font-size: 0.75rem;
   margin: 0;
-  padding-left: 0.25rem;
+  padding-left: 0.15rem;
 }
 
 @keyframes accordionContentSlideIn {
@@ -1626,13 +1625,17 @@ textarea:focus-visible {
 /* Mobile responsive accordion content */
 @media (max-width: 768px) {
   .faq-accordion-content {
-    padding: 0.65rem 1rem;
-    margin: 0.25rem 0 0.5rem 0.25rem;
-    border-radius: 0 0.5rem 0.5rem 0;
+    padding: 0.35rem 0.65rem;
+    margin: 0.15rem 0 0.25rem 0.15rem;
+    border-radius: 0 0.375rem 0.375rem 0;
   }
 
   .faq-accordion-content p {
-    font-size: 0.813rem;
-    line-height: 1.5;
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+  
+  .faq-accordion-trigger {
+    padding: 0.4rem 0.6rem;
   }
 }

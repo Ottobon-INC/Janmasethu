@@ -811,27 +811,26 @@ const Home = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-8">
-          <div className="text-center mb-6">
+        <section className="py-4">
+          <div className="text-center mb-3">
             <h2
-              className="text-2xl md:text-3xl font-bold text-foreground font-serif mb-2"
+              className="text-xl md:text-2xl font-bold text-foreground font-serif mb-1"
               data-testid="text-faq-title"
             >
               Frequently Asked Questions
             </h2>
-            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about JanmaSethu and how we support
-              your journey
+            <p className="text-xs text-muted-foreground max-w-2xl mx-auto">
+              Everything you need to know about JanmaSethu
             </p>
           </div>
 
           <div className="max-w-3xl mx-auto">
-            <Card className="rounded-2xl p-4 card-shadow bg-gradient-to-br from-white to-purple-50/30">
+            <Card className="rounded-xl p-2 card-shadow bg-gradient-to-br from-white to-purple-50/30">
               <CardContent className="p-0">
                 <Accordion
                   type="single"
                   collapsible
-                  className="w-full space-y-2"
+                  className="w-full space-y-1"
                 >
                   <AccordionItem
                     value="item-1"
