@@ -9,6 +9,7 @@ export default function ClinicLanding() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
     if (!username || !password) return;
@@ -76,15 +77,15 @@ export default function ClinicLanding() {
         } else {
           // Login failed - incorrect credentials
           console.error('❌ Login failed - invalid credentials');
-          alert('Login failed. Please check your credentials.');
+          setErrorMessage('Login failed. Please check your credentials.');
         }
       } else {
         console.error('❌ Login failed:', webhookResponse.statusText);
-        alert('Login failed. Please check your credentials.');
+        setErrorMessage('Login failed. Please check your credentials.');
       }
     } catch (error) {
       console.error('❌ Error during login:', error);
-      alert('An error occurred during login. Please try again.');
+      setErrorMessage('An error occurred during login. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -136,7 +137,10 @@ export default function ClinicLanding() {
                     type="text"
                     placeholder="Enter your username"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                      setErrorMessage("");
+                    }}
                     className="pl-10 h-12 rounded-xl border-gray-200 focus:border-purple-400 focus:ring-purple-400 transition-all duration-200"
                     data-testid="input-username"
                   />
@@ -158,12 +162,22 @@ export default function ClinicLanding() {
                     type="password"
                     placeholder="Enter your password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setErrorMessage("");
+                    }}
                     className="pl-10 h-12 rounded-xl border-gray-200 focus:border-purple-400 focus:ring-purple-400 transition-all duration-200"
                     data-testid="input-password"
                   />
                 </div>
               </div>
+
+              {/* Error Message */}
+              {errorMessage && (
+                <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
+                  {errorMessage}
+                </div>
+              )}
 
               {/* Login Button */}
               <Button
