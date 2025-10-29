@@ -273,15 +273,22 @@ const Home = () => {
         <WhoWeServe />
 
         {/* Parenthood Journey Strip */}
-        <section className="py-16 bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50 rounded-3xl mx-4">
-          <div className="text-center mb-12">
+        <section className="py-16 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 rounded-3xl mx-4 relative overflow-hidden">
+          {/* Animated background patterns */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-10 left-10 w-32 h-32 bg-purple-400 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-10 right-10 w-40 h-40 bg-pink-400 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-orange-400 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          </div>
+
+          <div className="text-center mb-12 relative z-10">
             <h2
-              className="text-4xl font-bold text-foreground font-serif mb-4"
+              className="text-4xl font-bold text-foreground font-serif mb-4 animate-fadeInUp"
               data-testid="text-journey-title"
             >
               {t("journey_title")}
             </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
               {t("journey_subtitle")}
             </p>
           </div>
@@ -291,92 +298,124 @@ const Home = () => {
             <div className="journey-timeline-mobile flex items-center justify-between min-w-[800px] px-12 py-8">
               {/* Stage 1: Thinking of Parenthood */}
               <div
-                className="flex flex-col items-center group cursor-pointer hover:scale-105 transition-all duration-300"
+                className="flex flex-col items-center group cursor-pointer transition-all duration-500 ease-out journey-stage"
                 data-testid="journey-stage-thinking"
+                style={{ '--stage-index': 0 } as React.CSSProperties}
               >
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors shadow-lg">
-                  <span className="text-2xl">🌱</span>
+                <div className="relative">
+                  <div className="absolute inset-0 w-16 h-16 bg-green-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-2xl relative z-10">
+                    <span className="text-2xl group-hover:scale-125 transition-transform duration-500">🌱</span>
+                  </div>
                 </div>
-                <h3 className="text-sm font-bold text-foreground text-center mb-2">
+                <h3 className="text-sm font-bold text-foreground text-center mb-2 group-hover:text-green-700 transition-colors duration-300">
                   {t("journey_stage_1_title")}
                 </h3>
-                <p className="text-xs text-muted-foreground text-center max-w-[120px]">
+                <p className="text-xs text-muted-foreground text-center max-w-[120px] group-hover:text-green-600 transition-colors duration-300">
                   {t("journey_stage_1_desc")}
                 </p>
               </div>
 
-              {/* Connection Line 1 */}
-              <div className="flex-1 h-1 bg-gradient-to-r from-green-200 to-pink-200 mx-4 rounded-full min-w-[40px]"></div>
+              {/* Connection Line 1 with animated gradient */}
+              <div className="flex-1 mx-4 min-w-[40px] relative h-2 group">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-200 to-pink-200 rounded-full transition-all duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-pink-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              </div>
 
               {/* Stage 2: Trying Naturally */}
               <div
-                className="flex flex-col items-center group cursor-pointer hover:scale-105 transition-all duration-300"
+                className="flex flex-col items-center group cursor-pointer transition-all duration-500 ease-out journey-stage"
                 data-testid="journey-stage-trying"
+                style={{ '--stage-index': 1 } as React.CSSProperties}
               >
-                <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-pink-200 transition-colors shadow-lg">
-                  <span className="text-2xl">💖</span>
+                <div className="relative">
+                  <div className="absolute inset-0 w-16 h-16 bg-pink-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                  <div className="w-16 h-16 bg-gradient-to-br from-pink-100 to-pink-200 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-2xl relative z-10">
+                    <span className="text-2xl group-hover:scale-125 transition-transform duration-500">💖</span>
+                  </div>
                 </div>
-                <h3 className="text-sm font-bold text-foreground text-center mb-2">
+                <h3 className="text-sm font-bold text-foreground text-center mb-2 group-hover:text-pink-700 transition-colors duration-300">
                   {t("journey_stage_2_title")}
                 </h3>
-                <p className="text-xs text-muted-foreground text-center max-w-[120px]">
+                <p className="text-xs text-muted-foreground text-center max-w-[120px] group-hover:text-pink-600 transition-colors duration-300">
                   {t("journey_stage_2_desc")}
                 </p>
               </div>
 
-              {/* Connection Line 2 */}
-              <div className="flex-1 h-1 bg-gradient-to-r from-pink-200 to-blue-200 mx-4 rounded-full min-w-[40px]"></div>
+              {/* Connection Line 2 with animated gradient */}
+              <div className="flex-1 mx-4 min-w-[40px] relative h-2 group">
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-200 to-blue-200 rounded-full transition-all duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-blue-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              </div>
 
               {/* Stage 3: Exploring Options */}
               <div
-                className="flex flex-col items-center group cursor-pointer hover:scale-105 transition-all duration-300"
+                className="flex flex-col items-center group cursor-pointer transition-all duration-500 ease-out journey-stage"
                 data-testid="journey-stage-exploring"
+                style={{ '--stage-index': 2 } as React.CSSProperties}
               >
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors shadow-lg">
-                  <span className="text-2xl">🔬</span>
+                <div className="relative">
+                  <div className="absolute inset-0 w-16 h-16 bg-blue-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-2xl relative z-10">
+                    <span className="text-2xl group-hover:scale-125 transition-transform duration-500">🔬</span>
+                  </div>
                 </div>
-                <h3 className="text-sm font-bold text-foreground text-center mb-2">
+                <h3 className="text-sm font-bold text-foreground text-center mb-2 group-hover:text-blue-700 transition-colors duration-300">
                   {t("journey_stage_3_title")}
                 </h3>
-                <p className="text-xs text-muted-foreground text-center max-w-[120px]">
+                <p className="text-xs text-muted-foreground text-center max-w-[120px] group-hover:text-blue-600 transition-colors duration-300">
                   {t("journey_stage_3_desc")}
                 </p>
               </div>
 
-              {/* Connection Line 3 */}
-              <div className="flex-1 h-1 bg-gradient-to-r from-blue-200 to-purple-200 mx-4 rounded-full min-w-[40px]"></div>
+              {/* Connection Line 3 with animated gradient */}
+              <div className="flex-1 mx-4 min-w-[40px] relative h-2 group">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-purple-200 rounded-full transition-all duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              </div>
 
               {/* Stage 4: Pregnancy */}
               <div
-                className="flex flex-col items-center group cursor-pointer hover:scale-105 transition-all duration-300"
+                className="flex flex-col items-center group cursor-pointer transition-all duration-500 ease-out journey-stage"
                 data-testid="journey-stage-pregnancy"
+                style={{ '--stage-index': 3 } as React.CSSProperties}
               >
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors shadow-lg">
-                  <span className="text-2xl">🤰</span>
+                <div className="relative">
+                  <div className="absolute inset-0 w-16 h-16 bg-purple-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-2xl relative z-10">
+                    <span className="text-2xl group-hover:scale-125 transition-transform duration-500">🤰</span>
+                  </div>
                 </div>
-                <h3 className="text-sm font-bold text-foreground text-center mb-2">
+                <h3 className="text-sm font-bold text-foreground text-center mb-2 group-hover:text-purple-700 transition-colors duration-300">
                   {t("journey_stage_4_title")}
                 </h3>
-                <p className="text-xs text-muted-foreground text-center max-w-[120px]">
+                <p className="text-xs text-muted-foreground text-center max-w-[120px] group-hover:text-purple-600 transition-colors duration-300">
                   {t("journey_stage_4_desc")}
                 </p>
               </div>
 
-              {/* Connection Line 4 */}
-              <div className="flex-1 h-1 bg-gradient-to-r from-purple-200 to-orange-200 mx-4 rounded-full min-w-[40px]"></div>
+              {/* Connection Line 4 with animated gradient */}
+              <div className="flex-1 mx-4 min-w-[40px] relative h-2 group">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-200 to-orange-200 rounded-full transition-all duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-orange-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              </div>
 
               {/* Stage 5: Post-Delivery */}
               <div
-                className="flex flex-col items-center group cursor-pointer hover:scale-105 transition-all duration-300"
+                className="flex flex-col items-center group cursor-pointer transition-all duration-500 ease-out journey-stage"
                 data-testid="journey-stage-postdelivery"
+                style={{ '--stage-index': 4 } as React.CSSProperties}
               >
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-orange-200 transition-colors shadow-lg">
-                  <span className="text-2xl">👶</span>
+                <div className="relative">
+                  <div className="absolute inset-0 w-16 h-16 bg-orange-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                  <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-2xl relative z-10">
+                    <span className="text-2xl group-hover:scale-125 transition-transform duration-500">👶</span>
+                  </div>
                 </div>
-                <h3 className="text-sm font-bold text-foreground text-center mb-2">
+                <h3 className="text-sm font-bold text-foreground text-center mb-2 group-hover:text-orange-700 transition-colors duration-300">
                   {t("journey_stage_5_title")}
                 </h3>
-                <p className="text-xs text-muted-foreground text-center max-w-[120px]">
+                <p className="text-xs text-muted-foreground text-center max-w-[120px] group-hover:text-orange-600 transition-colors duration-300">
                   {t("journey_stage_5_desc")}
                 </p>
               </div>
