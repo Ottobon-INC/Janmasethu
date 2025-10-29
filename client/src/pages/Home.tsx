@@ -762,51 +762,64 @@ const Home = () => {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {getTreatmentCards().map((treatment, index) => (
-              <Link
-                key={treatment.slug}
-                href={`/treatments/${treatment.slug}`}
-                className="group h-full"
-              >
-                <Card
-                  className="rounded-3xl p-8 card-shadow hover:shadow-2xl transition-all duration-500 h-full flex flex-col cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-purple-200 relative overflow-hidden bg-gradient-to-br from-white to-purple-50/30"
-                  data-testid={`card-treatment-${index}`}
-                >
-                  <CardContent className="p-0 flex flex-col h-full">
-                    <div
-                      className={`w-16 h-16 ${treatment.bgColor} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md`}
+          {/* Horizontal scrollable container */}
+          <div className="relative -mx-4 px-4 md:mx-0 md:px-0">
+            <div className="overflow-x-auto scrollbar-hide pb-4">
+              <div className="flex gap-6 md:gap-8 min-w-min">
+                {getTreatmentCards().map((treatment, index) => (
+                  <Link
+                    key={treatment.slug}
+                    href={`/treatments/${treatment.slug}`}
+                    className="group flex-shrink-0"
+                  >
+                    <Card
+                      className="w-[280px] sm:w-[320px] md:w-[340px] lg:w-[360px] rounded-3xl p-8 card-shadow hover:shadow-2xl transition-all duration-500 flex flex-col cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-purple-200 relative overflow-hidden bg-gradient-to-br from-white to-purple-50/30 h-full"
+                      data-testid={`card-treatment-${index}`}
                     >
-                      <treatment.icon
-                        className={`${treatment.iconColor} w-8 h-8`}
-                      />
-                    </div>
-                    <h3
-                      className="text-2xl font-bold text-foreground font-serif mb-4 group-hover:text-purple-600 transition-colors"
-                      data-testid={`text-treatment-name-${index}`}
-                    >
-                      {treatment.name}
-                    </h3>
-                    <p
-                      className="text-muted-foreground flex-grow mb-6"
-                      data-testid={`text-treatment-desc-${index}`}
-                    >
-                      {treatment.description}
-                    </p>
+                      <CardContent className="p-0 flex flex-col h-full">
+                        <div
+                          className={`w-16 h-16 ${treatment.bgColor} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md`}
+                        >
+                          <treatment.icon
+                            className={`${treatment.iconColor} w-8 h-8`}
+                          />
+                        </div>
+                        <h3
+                          className="text-2xl font-bold text-foreground font-serif mb-4 group-hover:text-purple-600 transition-colors"
+                          data-testid={`text-treatment-name-${index}`}
+                        >
+                          {treatment.name}
+                        </h3>
+                        <p
+                          className="text-muted-foreground flex-grow mb-6"
+                          data-testid={`text-treatment-desc-${index}`}
+                        >
+                          {treatment.description}
+                        </p>
 
-                    {/* Call to action */}
-                    <div className="flex items-center justify-between mt-auto">
-                      <span className="text-sm text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        {lang === "en" && "Learn more"}
-                        {lang === "hi" && "और जानें"}
-                        {lang === "te" && "మరింత తెలుసుకోండి"}
-                      </span>
-                      <ArrowRight className="w-5 h-5 text-purple-600 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+                        {/* Call to action */}
+                        <div className="flex items-center justify-between mt-auto">
+                          <span className="text-sm text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            {lang === "en" && "Learn more"}
+                            {lang === "hi" && "और जानें"}
+                            {lang === "te" && "మరింత తెలుసుకోండి"}
+                          </span>
+                          <ArrowRight className="w-5 h-5 text-purple-600 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
+            
+            {/* Scroll indicator for mobile */}
+            <div className="flex justify-center mt-4 md:hidden">
+              <div className="flex gap-2 items-center text-xs text-muted-foreground">
+                <ArrowRight className="w-3 h-3 animate-bounce" style={{ animationDirection: 'alternate' }} />
+                <span>Swipe to see more</span>
+              </div>
+            </div>
           </div>
         </section>
 
