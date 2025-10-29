@@ -764,7 +764,7 @@ const Home = () => {
 
           {/* Horizontal scrollable container */}
           <div className="relative -mx-4 px-4 md:mx-0 md:px-0">
-            <div className="overflow-x-auto scrollbar-hide pb-4">
+            <div className="overflow-x-auto scrollbar-hide py-6">
               <div className="flex gap-6 md:gap-8 min-w-min">
                 {getTreatmentCards().map((treatment, index) => (
                   <Link
