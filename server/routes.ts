@@ -163,6 +163,98 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // =========================
+  // CLINIC API ENDPOINTS
+  // =========================
+
+  // Clinic login endpoint
+  app.post("/api/clinic/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+
+      if (!username || !password) {
+        return res.status(400).json({ 
+          success: false, 
+          error: "Username and password are required" 
+        });
+      }
+
+      console.log('🔵 Processing clinic login for:', username);
+
+      // Call n8n webhook for authentication
+      const webhookPayload = {
+        body: {
+          username,
+          password
+        }
+      };
+
+      console.log('📤 Calling n8n webhook for clinic login:', webhookPayload);
+
+      const webhookResponse = await fetch('https://n8nottobon.duckdns.org/webhook-test/clinic_details', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(webhookPayload)
+      });
+
+      console.log('🔵 Webhook response status:', webhookResponse.status);
+
+      if (!webhookResponse.ok) {
+        console.error('❌ Webhook failed:', webhookResponse.statusText);
+        return res.status(401).json({ 
+          success: false, 
+          error: 'Invalid credentials' 
+        });
+      }
+
+      const responseData = await webhookResponse.json();
+      console.log('✅ n8n response:', responseData);
+
+      // Check if login was successful based on n8n response
+      let isSuccess = false;
+      
+      if (Array.isArray(responseData)) {
+        if (responseData.length > 0) {
+          const firstItem = responseData[0];
+          if (firstItem.success === true) {
+            isSuccess = true;
+          } else if (firstItem.username && firstItem.password && 
+                     firstItem.username !== "false" && firstItem.password !== "false") {
+            isSuccess = true;
+          }
+        }
+      } else if (typeof responseData === 'object' && responseData !== null) {
+        if (responseData.success === true) {
+          isSuccess = true;
+        }
+      }
+
+      console.log('🔍 Login success status:', isSuccess);
+
+      if (isSuccess) {
+        return res.json({ 
+          success: true, 
+          username,
+          message: 'Login successful' 
+        });
+      } else {
+        return res.status(401).json({ 
+          success: false, 
+          error: 'Invalid credentials' 
+        });
+      }
+
+    } catch (error) {
+      console.error("❌ Error in clinic login:", error);
+      res.status(500).json({ 
+        success: false, 
+        error: "An error occurred during login" 
+      });
+    }
+  });
+
+  // =========================
   // LEADS API ENDPOINTS
   // =========================
 

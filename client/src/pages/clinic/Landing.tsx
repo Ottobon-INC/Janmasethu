@@ -17,71 +17,37 @@ export default function ClinicLanding() {
     setIsLoading(true);
     
     try {
-      console.log('🔵 Triggering clinic login webhook...');
+      console.log('🔵 Sending login request to backend...');
       
-      const webhookResponse = await fetch('https://n8nottobon.duckdns.org/webhook-test/clinic_details', {
+      const response = await fetch('/api/clinic/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          body: {
-            username: username,
-            password: password
-          }
+          username,
+          password
         })
       });
 
-      console.log('📤 Sent to webhook:', { username, password });
-      console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
+      console.log('📤 Login request sent for:', username);
+      console.log('🔵 Response status:', response.status);
 
-      if (webhookResponse.ok) {
-        const responseData = await webhookResponse.json();
-        console.log('✅ Login response:', responseData);
+      const responseData = await response.json();
+      console.log('✅ Login response:', responseData);
+
+      if (response.ok && responseData.success) {
+        // Store credentials in localStorage
+        localStorage.setItem('clinicUsername', username);
         
-        // Check if login was successful
-        let isSuccess = false;
+        console.log('✅ Login successful, redirecting to dashboard...');
         
-        // Handle different response formats from n8n
-        if (Array.isArray(responseData)) {
-          // Array format: [{ success: true }] or [{ username: "false", password: "false" }]
-          if (responseData.length > 0) {
-            const firstItem = responseData[0];
-            // Check if success is explicitly true
-            if (firstItem.success === true) {
-              isSuccess = true;
-            }
-            // Check if username/password are not "false" (string)
-            else if (firstItem.username && firstItem.password && 
-                     firstItem.username !== "false" && firstItem.password !== "false") {
-              isSuccess = true;
-            }
-          }
-        } else if (typeof responseData === 'object' && responseData !== null) {
-          // Object format: { success: true }
-          if (responseData.success === true) {
-            isSuccess = true;
-          }
-        }
-        
-        console.log('🔍 Login success status:', isSuccess);
-        
-        if (isSuccess) {
-          // Store credentials in localStorage
-          localStorage.setItem('clinicUsername', username);
-          
-          console.log('✅ Redirecting to dashboard...');
-          
-          // Redirect to dashboard
-          window.location.href = "/clinic/dashboard";
-        } else {
-          // Login failed - incorrect credentials
-          console.error('❌ Login failed - invalid credentials');
-          setErrorMessage('Login failed. Please check your credentials.');
-        }
+        // Redirect to dashboard
+        window.location.href = "/clinic/dashboard";
       } else {
-        console.error('❌ Login failed:', webhookResponse.statusText);
-        setErrorMessage('Login failed. Please check your credentials.');
+        // Login failed
+        console.error('❌ Login failed:', responseData.error || 'Invalid credentials');
+        setErrorMessage(responseData.error || 'Login failed. Please check your credentials.');
       }
     } catch (error) {
       console.error('❌ Error during login:', error);
