@@ -425,15 +425,14 @@ const Home = () => {
 
           {/* CTA under strip - Mobile Responsive */}
           <div className="journey-mobile-cta text-center mt-12">
-            <Link href="/sakhi" className="inline-block w-full sm:w-auto">
-              <Button
-                className="mobile-cta-fix gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-flex items-center"
-                data-testid="button-sakhi-support"
-              >
-                {t("journey_cta")}
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
+            <Button
+              onClick={() => setLocation("/sakhi")}
+              className="mobile-cta-fix gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-flex items-center"
+              data-testid="button-sakhi-support"
+            >
+              {t("journey_cta")}
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
           </div>
         </section>
 
