@@ -303,7 +303,8 @@ const Home = () => {
 
           {/* Journey Timeline */}
           <div className="relative overflow-x-auto pb-8">
-            <div className="journey-timeline-mobile flex items-center justify-center gap-3 md:gap-4 max-w-4xl mx-auto px-4 md:px-6 py-8">
+            {/* Adjusted for mobile visibility of the first stage */}
+            <div className="journey-timeline-mobile flex items-center justify-start gap-3 md:gap-4 max-w-4xl mx-auto px-4 md:px-6 py-8">
               {/* Stage 1: Thinking of Parenthood */}
               <Dialog>
                 <DialogTrigger asChild>
@@ -330,8 +331,9 @@ const Home = () => {
                     </span>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-white via-green-50/30 to-purple-50/30">
-                  <DialogHeader className="border-b border-green-100 pb-4">
+                {/* Changed DialogContent to be full-screen on mobile */}
+                <DialogContent className="sm:max-w-2xl sm:max-h-[80vh] max-h-screen max-w-screen h-screen m-0 p-0 overflow-y-auto bg-gradient-to-br from-white via-green-50/30 to-purple-50/30">
+                  <DialogHeader className="border-b border-green-100 pb-4 px-6 pt-6">
                     <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-serif">
                       <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center shadow-lg">
                         <span className="text-3xl">🌱</span>
@@ -339,7 +341,7 @@ const Home = () => {
                       <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">Thinking of Parenthood</span>
                     </DialogTitle>
                   </DialogHeader>
-                  <div className="space-y-6 mt-6">
+                  <div className="space-y-6 mt-6 px-6 pb-6">
                     <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl shadow-md border border-green-200">
                       <h4 className="font-bold text-green-900 mb-3 text-lg flex items-center gap-2">
                         <Heart className="w-5 h-5 text-green-600" />
@@ -347,7 +349,7 @@ const Home = () => {
                       </h4>
                       <p className="text-green-800 leading-relaxed italic">"Hopeful, but also anxious and uncertain. Are we really ready for this?"</p>
                     </div>
-                    
+
                     <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
                       <h4 className="font-bold text-foreground mb-4 text-lg flex items-center gap-2">
                         <MessageCircle className="w-5 h-5 text-pink-500" />
@@ -406,10 +408,10 @@ const Home = () => {
                       </ul>
                     </div>
 
-                    <Button onClick={() => setLocation("/sakhi")} className="w-full gradient-button text-white py-6 text-lg font-semibold hover:shadow-xl transition-all duration-300">
-                      <MessageCircle className="mr-2 w-5 h-5" />
+                    <Button onClick={() => setLocation("/sakhi")} className="w-full gradient-button text-white py-4 md:py-6 text-base md:text-lg font-semibold hover:shadow-xl transition-all duration-300">
+                      <MessageCircle className="mr-2 w-4 h-4 md:w-5 md:h-5" />
                       Talk to Sakhi About This Stage
-                      <ArrowRight className="ml-2 w-5 h-5" />
+                      <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5" />
                     </Button>
                   </div>
                 </DialogContent>
@@ -447,8 +449,8 @@ const Home = () => {
                     </span>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-white via-pink-50/30 to-purple-50/30">
-                  <DialogHeader className="border-b border-pink-100 pb-4">
+                <DialogContent className="sm:max-w-2xl sm:max-h-[80vh] max-h-screen max-w-screen h-screen m-0 p-0 overflow-y-auto bg-gradient-to-br from-white via-pink-50/30 to-purple-50/30">
+                  <DialogHeader className="border-b border-pink-100 pb-4 px-6 pt-6">
                     <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-serif">
                       <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-full flex items-center justify-center shadow-lg">
                         <span className="text-3xl">💖</span>
@@ -456,7 +458,7 @@ const Home = () => {
                       <span className="bg-gradient-to-r from-pink-600 to-pink-800 bg-clip-text text-transparent">Trying Naturally</span>
                     </DialogTitle>
                   </DialogHeader>
-                  <div className="space-y-6 mt-6">
+                  <div className="space-y-6 mt-6 px-6 pb-6">
                     <div className="bg-gradient-to-br from-pink-50 to-pink-100 p-6 rounded-2xl shadow-md border border-pink-200">
                       <h4 className="font-bold text-pink-900 mb-3 text-lg flex items-center gap-2">
                         <Heart className="w-5 h-5 text-pink-600" />
@@ -464,7 +466,7 @@ const Home = () => {
                       </h4>
                       <p className="text-pink-800 leading-relaxed italic">"Optimistic at first, but with each month that passes, more and more anxious."</p>
                     </div>
-                    
+
                     <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
                       <h4 className="font-bold text-foreground mb-4 text-lg flex items-center gap-2">
                         <MessageCircle className="w-5 h-5 text-pink-500" />
@@ -517,10 +519,10 @@ const Home = () => {
                       </ul>
                     </div>
 
-                    <Button onClick={() => setLocation("/sakhi")} className="w-full gradient-button text-white py-6 text-lg font-semibold hover:shadow-xl transition-all duration-300">
-                      <MessageCircle className="mr-2 w-5 h-5" />
+                    <Button onClick={() => setLocation("/sakhi")} className="w-full gradient-button text-white py-4 md:py-6 text-base md:text-lg font-semibold hover:shadow-xl transition-all duration-300">
+                      <MessageCircle className="mr-2 w-4 h-4 md:w-5 md:h-5" />
                       Talk to Sakhi About This Stage
-                      <ArrowRight className="ml-2 w-5 h-5" />
+                      <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5" />
                     </Button>
                   </div>
                 </DialogContent>
@@ -558,8 +560,8 @@ const Home = () => {
                     </span>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30">
-                  <DialogHeader className="border-b border-blue-100 pb-4">
+                <DialogContent className="sm:max-w-2xl sm:max-h-[80vh] max-h-screen max-w-screen h-screen m-0 p-0 overflow-y-auto bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30">
+                  <DialogHeader className="border-b border-blue-100 pb-4 px-6 pt-6">
                     <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-serif">
                       <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center shadow-lg">
                         <span className="text-3xl">🔬</span>
@@ -567,7 +569,7 @@ const Home = () => {
                       <span className="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Exploring Options (IUI, IVF, Donor)</span>
                     </DialogTitle>
                   </DialogHeader>
-                  <div className="space-y-6 mt-6">
+                  <div className="space-y-6 mt-6 px-6 pb-6">
                     <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl shadow-md border border-blue-200">
                       <h4 className="font-bold text-blue-900 mb-3 text-lg flex items-center gap-2">
                         <Heart className="w-5 h-5 text-blue-600" />
@@ -575,7 +577,7 @@ const Home = () => {
                       </h4>
                       <p className="text-blue-800 leading-relaxed italic">"Completely overwhelmed. Sometimes ashamed, and tired of making so many decisions."</p>
                     </div>
-                    
+
                     <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
                       <h4 className="font-bold text-foreground mb-4 text-lg flex items-center gap-2">
                         <MessageCircle className="w-5 h-5 text-pink-500" />
@@ -634,10 +636,10 @@ const Home = () => {
                       </ul>
                     </div>
 
-                    <Button onClick={() => setLocation("/sakhi")} className="w-full gradient-button text-white py-6 text-lg font-semibold hover:shadow-xl transition-all duration-300">
-                      <MessageCircle className="mr-2 w-5 h-5" />
+                    <Button onClick={() => setLocation("/sakhi")} className="w-full gradient-button text-white py-4 md:py-6 text-base md:text-lg font-semibold hover:shadow-xl transition-all duration-300">
+                      <MessageCircle className="mr-2 w-4 h-4 md:w-5 md:h-5" />
                       Talk to Sakhi About This Stage
-                      <ArrowRight className="ml-2 w-5 h-5" />
+                      <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5" />
                     </Button>
                   </div>
                 </DialogContent>
@@ -675,8 +677,8 @@ const Home = () => {
                     </span>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-white via-purple-50/30 to-pink-50/30">
-                  <DialogHeader className="border-b border-purple-100 pb-4">
+                <DialogContent className="sm:max-w-2xl sm:max-h-[80vh] max-h-screen max-w-screen h-screen m-0 p-0 overflow-y-auto bg-gradient-to-br from-white via-purple-50/30 to-pink-50/30">
+                  <DialogHeader className="border-b border-purple-100 pb-4 px-6 pt-6">
                     <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-serif">
                       <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center shadow-lg">
                         <span className="text-3xl">🤰</span>
@@ -684,7 +686,7 @@ const Home = () => {
                       <span className="bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">Pregnancy</span>
                     </DialogTitle>
                   </DialogHeader>
-                  <div className="space-y-6 mt-6">
+                  <div className="space-y-6 mt-6 px-6 pb-6">
                     <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-2xl shadow-md border border-purple-200">
                       <h4 className="font-bold text-purple-900 mb-3 text-lg flex items-center gap-2">
                         <Heart className="w-5 h-5 text-purple-600" />
@@ -692,7 +694,7 @@ const Home = () => {
                       </h4>
                       <p className="text-purple-800 leading-relaxed italic">"So relieved and excited, but now you have a whole new set of anxieties."</p>
                     </div>
-                    
+
                     <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
                       <h4 className="font-bold text-foreground mb-4 text-lg flex items-center gap-2">
                         <MessageCircle className="w-5 h-5 text-pink-500" />
@@ -745,10 +747,10 @@ const Home = () => {
                       </ul>
                     </div>
 
-                    <Button onClick={() => setLocation("/sakhi")} className="w-full gradient-button text-white py-6 text-lg font-semibold hover:shadow-xl transition-all duration-300">
-                      <MessageCircle className="mr-2 w-5 h-5" />
+                    <Button onClick={() => setLocation("/sakhi")} className="w-full gradient-button text-white py-4 md:py-6 text-base md:text-lg font-semibold hover:shadow-xl transition-all duration-300">
+                      <MessageCircle className="mr-2 w-4 h-4 md:w-5 md:h-5" />
                       Talk to Sakhi About This Stage
-                      <ArrowRight className="ml-2 w-5 h-5" />
+                      <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5" />
                     </Button>
                   </div>
                 </DialogContent>
@@ -786,8 +788,8 @@ const Home = () => {
                     </span>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-white via-orange-50/30 to-purple-50/30">
-                  <DialogHeader className="border-b border-orange-100 pb-4">
+                <DialogContent className="sm:max-w-2xl sm:max-h-[80vh] max-h-screen max-w-screen h-screen m-0 p-0 overflow-y-auto bg-gradient-to-br from-white via-orange-50/30 to-purple-50/30">
+                  <DialogHeader className="border-b border-orange-100 pb-4 px-6 pt-6">
                     <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-serif">
                       <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center shadow-lg">
                         <span className="text-3xl">👶</span>
@@ -795,7 +797,7 @@ const Home = () => {
                       <span className="bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">Post-Delivery & New Parent</span>
                     </DialogTitle>
                   </DialogHeader>
-                  <div className="space-y-6 mt-6">
+                  <div className="space-y-6 mt-6 px-6 pb-6">
                     <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-2xl shadow-md border border-orange-200">
                       <h4 className="font-bold text-orange-900 mb-3 text-lg flex items-center gap-2">
                         <Heart className="w-5 h-5 text-orange-600" />
@@ -803,7 +805,7 @@ const Home = () => {
                       </h4>
                       <p className="text-orange-800 leading-relaxed italic">"Full of joy, but also completely exhausted and overwhelmed."</p>
                     </div>
-                    
+
                     <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
                       <h4 className="font-bold text-foreground mb-4 text-lg flex items-center gap-2">
                         <MessageCircle className="w-5 h-5 text-pink-500" />
@@ -856,10 +858,10 @@ const Home = () => {
                       </ul>
                     </div>
 
-                    <Button onClick={() => setLocation("/sakhi")} className="w-full gradient-button text-white py-6 text-lg font-semibold hover:shadow-xl transition-all duration-300">
-                      <MessageCircle className="mr-2 w-5 h-5" />
+                    <Button onClick={() => setLocation("/sakhi")} className="w-full gradient-button text-white py-4 md:py-6 text-base md:text-lg font-semibold hover:shadow-xl transition-all duration-300">
+                      <MessageCircle className="mr-2 w-4 h-4 md:w-5 md:h-5" />
                       Talk to Sakhi About This Stage
-                      <ArrowRight className="ml-2 w-5 h-5" />
+                      <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5" />
                     </Button>
                   </div>
                 </DialogContent>
@@ -1158,7 +1160,7 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            
+
             {/* Scroll indicator for mobile */}
             <div className="flex justify-center mt-4 lg:hidden">
               <div className="flex gap-2 items-center text-xs text-muted-foreground">
@@ -1237,7 +1239,7 @@ const Home = () => {
                 ))}
               </div>
             </div>
-            
+
             {/* Scroll indicator for mobile */}
             <div className="flex justify-center mt-4 lg:hidden">
               <div className="flex gap-2 items-center text-xs text-muted-foreground">
@@ -1309,7 +1311,7 @@ const Home = () => {
                 ))}
               </div>
             </div>
-            
+
             {/* Scroll indicator for mobile */}
             <div className="flex justify-center mt-4 md:hidden">
               <div className="flex gap-2 items-center text-xs text-muted-foreground">
