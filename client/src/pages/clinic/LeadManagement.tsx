@@ -152,13 +152,8 @@ export default function LeadManagement() {
           const responseData = await response.json();
           console.log('✅ Lead created successfully:', responseData);
 
-          // Add status field if not present
-          const leadWithStatus = { ...responseData, status: 'new' };
-          
-          // Add the new lead to state
-          setLeadsData([leadWithStatus, ...leadsData]);
-          
-          // Reset form
+          // Close modal and reset form
+          setIsModalOpen(false);
           setNewLead({
             name: "",
             email: "",
@@ -170,10 +165,13 @@ export default function LeadManagement() {
             age: "",
             location: ""
           });
-          setIsModalOpen(false);
+          
+          // Refresh the entire leads list from the server
+          await fetchLeads();
         } else {
-          console.error('❌ Lead creation failed:', response.statusText);
-          alert('Failed to create lead. Please try again.');
+          const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+          console.error('❌ Lead creation failed:', errorData);
+          alert(`Failed to create lead: ${errorData.error || response.statusText}`);
         }
       } catch (error) {
         console.error('❌ Error during lead creation:', error);
@@ -218,19 +216,16 @@ export default function LeadManagement() {
         const updatedLead = await response.json();
         console.log('✅ Lead updated successfully:', updatedLead);
 
-        // Add status field if not present
-        const leadWithStatus = { ...updatedLead, status: editingLead.status || 'new' };
-
-        // Update the lead in state
-        setLeadsData(leadsData.map(lead => 
-          lead.lead_id === updatedLead.lead_id ? leadWithStatus : lead
-        ));
-        
+        // Close modal
         setIsEditModalOpen(false);
         setEditingLead(null);
+        
+        // Refresh the entire leads list from the server
+        await fetchLeads();
       } else {
-        console.error('❌ Lead update failed:', response.statusText);
-        alert('Failed to update lead. Please try again.');
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('❌ Lead update failed:', errorData);
+        alert(`Failed to update lead: ${errorData.error || response.statusText}`);
       }
     } catch (error) {
       console.error('❌ Error during lead update:', error);

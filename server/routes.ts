@@ -299,11 +299,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         if (!webhookResponse.ok) {
+          const errorText = await webhookResponse.text();
+          console.error('❌ Webhook failed:', errorText);
           throw new Error(`n8n webhook failed: ${webhookResponse.statusText}`);
         }
 
-        const leadData = await webhookResponse.json();
-        console.log('✅ n8n response (insert):', leadData);
+        const responseData = await webhookResponse.json();
+        console.log('✅ n8n raw response (insert):', responseData);
+
+        // Handle array response from n8n
+        const leadData = Array.isArray(responseData) ? responseData[0] : responseData;
+        console.log('✅ Processed lead data:', leadData);
+
+        if (!leadData || !leadData.lead_id) {
+          throw new Error('Invalid response from webhook - missing lead_id');
+        }
 
         // Store in database
         await query(`
@@ -311,13 +321,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
             lead_id, full_name, email, phone, age, location,
             interest, source, priority, status, created_at
           ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW())
-          ON CONFLICT (lead_id) DO NOTHING
+          ON CONFLICT (lead_id) DO UPDATE SET
+            full_name = EXCLUDED.full_name,
+            email = EXCLUDED.email,
+            phone = EXCLUDED.phone,
+            age = EXCLUDED.age,
+            location = EXCLUDED.location,
+            interest = EXCLUDED.interest,
+            source = EXCLUDED.source,
+            priority = EXCLUDED.priority,
+            updated_at = NOW()
         `, [
           leadData.lead_id,
           leadData.full_name,
           leadData.email,
           leadData.phone,
-          leadData.age,
+          leadData.age || 0,
           leadData.location || '',
           leadData.interest,
           leadData.source,
@@ -325,8 +344,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
           'new'
         ]);
 
-        console.log('✅ Lead stored in database');
-        return res.json(leadData);
+        console.log('✅ Lead stored in database with ID:', leadData.lead_id);
+        
+        // Return the complete lead object
+        return res.json({
+          lead_id: leadData.lead_id,
+          full_name: leadData.full_name,
+          email: leadData.email,
+          phone: leadData.phone,
+          age: leadData.age || 0,
+          location: leadData.location || '',
+          interest: leadData.interest,
+          source: leadData.source,
+          priority: leadData.priority,
+          status: 'new'
+        });
       }
 
       // UPDATE action - update existing lead
@@ -359,11 +391,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         if (!webhookResponse.ok) {
+          const errorText = await webhookResponse.text();
+          console.error('❌ Webhook failed:', errorText);
           throw new Error(`n8n webhook failed: ${webhookResponse.statusText}`);
         }
 
-        const leadData = await webhookResponse.json();
-        console.log('✅ n8n response (update):', leadData);
+        const responseData = await webhookResponse.json();
+        console.log('✅ n8n raw response (update):', responseData);
+
+        // Handle array response from n8n
+        const leadData = Array.isArray(responseData) ? responseData[0] : responseData;
+        console.log('✅ Processed lead data:', leadData);
+
+        if (!leadData || !leadData.lead_id) {
+          throw new Error('Invalid response from webhook - missing lead_id');
+        }
 
         // Update in database
         await query(`
@@ -382,16 +424,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
           leadData.full_name,
           leadData.email,
           leadData.phone,
-          leadData.age,
+          leadData.age || 0,
           leadData.location || '',
           leadData.interest,
           leadData.source,
           leadData.priority,
-          leadData.lead_id
+          lead_id
         ]);
 
-        console.log('✅ Lead updated in database');
-        return res.json(leadData);
+        console.log('✅ Lead updated in database:', lead_id);
+        
+        // Return the complete lead object
+        return res.json({
+          lead_id: leadData.lead_id,
+          full_name: leadData.full_name,
+          email: leadData.email,
+          phone: leadData.phone,
+          age: leadData.age || 0,
+          location: leadData.location || '',
+          interest: leadData.interest,
+          source: leadData.source,
+          priority: leadData.priority,
+          status: 'new'
+        });
       }
 
       return res.status(400).json({ error: "Invalid action. Use 'fetch', 'insert', or 'update'" });
