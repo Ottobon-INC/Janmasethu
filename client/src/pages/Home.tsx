@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import {
   ArrowRight,
   Heart,
@@ -44,6 +44,7 @@ import WhoWeServe from "../components/WhoWeServe";
 
 const Home = () => {
   const { t, lang } = useLanguage();
+  const [, setLocation] = useLocation();
 
   const featuredArticles = articles.slice(0, 4);
   const featuredStories = stories.slice(0, 3);
@@ -478,15 +479,14 @@ const Home = () => {
                 </ul>
 
                 <div className="flex justify-center lg:justify-start">
-                  <Link href="/sakhi">
-                    <Button
-                      className="mobile-cta-fix lg:inline-flex gradient-button-secondary text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 items-center"
-                      data-testid="button-try-sakhi"
-                    >
-                      {t("sakhi_try")}
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={() => setLocation("/sakhi")}
+                    className="mobile-cta-fix lg:inline-flex gradient-button-secondary text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 items-center"
+                    data-testid="button-try-sakhi"
+                  >
+                    {t("sakhi_try")}
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
                 </div>
               </div>
 
