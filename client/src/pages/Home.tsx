@@ -304,7 +304,7 @@ const Home = () => {
           {/* Journey Timeline */}
           <div className="relative overflow-x-auto pb-8 px-4">
             {/* Centered and aligned timeline for all screens */}
-            <div className="flex items-center justify-start md:justify-center gap-3 md:gap-2 lg:gap-3 min-w-max md:min-w-0 max-w-5xl mx-auto py-8">
+            <div className="flex items-center justify-start md:justify-center gap-3 md:gap-4 min-w-max md:min-w-0 max-w-4xl mx-auto py-8">
               {/* Stage 1: Thinking of Parenthood */}
               <Dialog>
                 <DialogTrigger asChild>
@@ -418,7 +418,7 @@ const Home = () => {
               </Dialog>
 
               {/* Connection Line 1 with animated gradient */}
-              <div className="w-10 md:w-8 lg:w-10 mx-1 md:mx-1 lg:mx-1.5 relative h-2 group flex-shrink-0">
+              <div className="w-10 md:w-12 mx-1 md:mx-2 relative h-2 group flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-r from-green-200 to-pink-200 rounded-full transition-all duration-700"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-pink-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               </div>
@@ -529,7 +529,7 @@ const Home = () => {
               </Dialog>
 
               {/* Connection Line 2 with animated gradient */}
-              <div className="w-10 md:w-8 lg:w-10 mx-1 md:mx-1 lg:mx-1.5 relative h-2 group flex-shrink-0">
+              <div className="w-10 md:w-12 mx-1 md:mx-2 relative h-2 group flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-200 to-blue-200 rounded-full transition-all duration-700"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-blue-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               </div>
@@ -646,7 +646,7 @@ const Home = () => {
               </Dialog>
 
               {/* Connection Line 3 with animated gradient */}
-              <div className="w-10 md:w-8 lg:w-10 mx-1 md:mx-1 lg:mx-1.5 relative h-2 group flex-shrink-0">
+              <div className="w-10 md:w-12 mx-1 md:mx-2 relative h-2 group flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-purple-200 rounded-full transition-all duration-700"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               </div>
@@ -757,7 +757,7 @@ const Home = () => {
               </Dialog>
 
               {/* Connection Line 4 with animated gradient */}
-              <div className="w-10 md:w-8 lg:w-10 mx-1 md:mx-1 lg:mx-1.5 relative h-2 group flex-shrink-0">
+              <div className="w-10 md:w-12 mx-1 md:mx-2 relative h-2 group flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-200 to-orange-200 rounded-full transition-all duration-700"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-orange-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               </div>
