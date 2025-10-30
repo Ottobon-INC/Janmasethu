@@ -1269,7 +1269,7 @@ textarea:focus-visible {
 
 /* Journey Timeline Responsive Alignment */
 @media (max-width: 767px) {
-  /* Ensure first stage is visible on mobile */
+  /* Ensure first stage is fully visible on mobile */
   .journey-timeline-mobile {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -1279,6 +1279,7 @@ textarea:focus-visible {
   .overflow-x-auto {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    scroll-padding-left: 1rem;
   }
 
   /* Stage spacing on mobile */
@@ -1289,16 +1290,17 @@ textarea:focus-visible {
   }
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
-  /* Tablet view - ensure scrollable with first stage visible */
+@media (min-width: 768px) and (max-width: 1279px) {
+  /* Tablet view - scrollable with proper padding to show first stage */
   .journey-timeline-mobile {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .overflow-x-auto {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    scroll-padding-left: 2rem;
   }
 
   .journey-stage {
@@ -1308,7 +1310,7 @@ textarea:focus-visible {
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   /* Desktop - fully centered with all stages visible */
   .journey-stage {
     min-width: 180px;
@@ -1317,6 +1319,11 @@ textarea:focus-visible {
 
   .journey-timeline-mobile {
     justify-content: center !important;
+  }
+
+  /* Hide scroll indicators on desktop */
+  .overflow-x-auto {
+    overflow-x: visible !important;
   }
 }
 
