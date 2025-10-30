@@ -426,8 +426,11 @@ const Home = () => {
           {/* CTA under strip - Mobile Responsive */}
           <div className="journey-mobile-cta text-center mt-12">
             <Button
-              onClick={() => setLocation("/sakhi")}
-              className="mobile-cta-fix gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-flex items-center"
+              onClick={() => {
+                console.log("Button clicked, navigating to /sakhi");
+                setLocation("/sakhi");
+              }}
+              className="mobile-cta-fix gradient-button text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 inline-flex items-center cursor-pointer"
               data-testid="button-sakhi-support"
             >
               {t("journey_cta")}
