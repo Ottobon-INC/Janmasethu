@@ -82,7 +82,7 @@ const WhoWeServe = () => {
             </Card>
 
             {/* Back */}
-            <Card className="flip-card-back absolute w-full h-full rounded-3xl p-8 card-shadow backdrop-blur-sm bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+            <Card className="flip-card-back absolute w-full h-full rounded-3xl p-8 card-shadow backdrop-blur-sm bg-gradient-to-br from-purple-100 to-pink-100 border-2 border-purple-200" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
               <CardContent className="p-0 h-full overflow-y-auto">
                 <div className="flex items-center space-x-4 mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -128,7 +128,7 @@ const WhoWeServe = () => {
             </Card>
 
             {/* Back */}
-            <Card className="flip-card-back absolute w-full h-full rounded-3xl p-8 card-shadow backdrop-blur-sm bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-200" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+            <Card className="flip-card-back absolute w-full h-full rounded-3xl p-8 card-shadow backdrop-blur-sm bg-gradient-to-br from-blue-100 to-cyan-100 border-2 border-blue-200" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
               <CardContent className="p-0 h-full overflow-y-auto">
                 <div className="flex items-center space-x-4 mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center flex-shrink-0">
