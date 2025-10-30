@@ -1320,8 +1320,8 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Scroll indicator for mobile */}
-            <div className="flex justify-center mt-4 md:hidden">
+            {/* Scroll indicator for mobile, tablet, and laptop */}
+            <div className="flex justify-center mt-4 xl:hidden">
               <div className="flex gap-2 items-center text-xs text-muted-foreground">
                 <ArrowRight className="w-3 h-3 animate-bounce" style={{ animationDirection: 'alternate' }} />
                 <span>Swipe to see more</span>
