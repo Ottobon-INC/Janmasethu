@@ -13,36 +13,16 @@ export default function Experts() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadDoctors = async () => {
+    (async () => {
       try {
-        const res = await fetch("/api/doctors");
-        if (!res.ok) {
-          console.warn("⚠️ API fetch failed, using fallback data...");
-          // Fallback to local data if API fails
-          const { expertsData } = await import("@/data/experts");
-          setDoctors(expertsData.map((doc, idx) => ({
-            id: idx + 1,
-            source_site: 'medcyivf.in',
-            slug: doc.name.toLowerCase().replace(/\s+/g, '-'),
-            name: doc.name,
-            designation: doc.specialization,
-            image_url: doc.image
-          })));
-          setLoading(false);
-          return;
-        }
-        const json = await res.json();
-        if (json.ok && Array.isArray(json.results)) {
-          setDoctors(json.results);
-        }
-      } catch (err: any) {
-        console.error("Error loading doctors:", err);
-        setError(err.message);
+        const rows = await fetchDoctors();
+        setDoctors(rows);
+      } catch (e: any) {
+        setError(e.message || "Failed to load doctors");
       } finally {
         setLoading(false);
       }
-    };
-    loadDoctors();
+    })();
   }, []);
 
   return (
