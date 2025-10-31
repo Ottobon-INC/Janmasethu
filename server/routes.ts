@@ -229,14 +229,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
             isSuccess = false;
           }
         }
-      } else if (typeof responseData === 'object' && responseData !== null) {
+      } else if (responseData && typeof responseData === 'object') {
         // Handle object format: { "success": true }
-        if (responseData.success === true) {
+        if ('success' in responseData && responseData.success === true) {
           isSuccess = true;
         }
       }
 
       console.log('🔍 Login success status:', isSuccess);
+      console.log('🔍 Response data type:', Array.isArray(responseData) ? 'array' : typeof responseData);
+      console.log('🔍 Response data:', JSON.stringify(responseData));
 
       if (isSuccess) {
         return res.json({
