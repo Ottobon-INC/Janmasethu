@@ -162,6 +162,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // --- DEV: strip appointment forms from existing database records (run once)
+  app.post("/api/dev/doctors/strip-appointment", requireKey, async (req, res) => {
+    try {
+      const { stripAppointment } = await import("./scraper/doctorSanitizer");
+      const { rows } = await query(
+        "SELECT id, about_html FROM public.scraped_doctors WHERE source_site = 'medcyivf.in'"
+      );
+      
+      let updated = 0;
+      for (const row of rows) {
+        const cleaned = stripAppointment(row.about_html || "");
+        if (cleaned !== row.about_html) {
+          await query(
+            "UPDATE public.scraped_doctors SET about_html = $1, last_changed_at = NOW() WHERE id = $2",
+            [cleaned, row.id]
+          );
+          updated++;
+        }
+      }
+
+      res.json({ ok: true, updated, total: rows.length });
+    } catch (e: any) {
+      console.error("POST /api/dev/doctors/strip-appointment error:", e);
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  });
+
   // =========================
   // CLINIC API ENDPOINTS
   // =========================
