@@ -48,15 +48,15 @@ export default function AuthModal({
     try {
       if (isSignUp) {
         // Sign up - send to backend webhook
-        const response = await fetch("https://n8nottobon.duckdns.org/webhook/sakhi_start", {
+        const response = await fetch("https://n8n.ottobon.in/webhook/start", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            Name: formData.fullName,
-            Email: formData.email,
-            Password: formData.password,
+            fullName: formData.fullName,
+            email: formData.email,
+            password: formData.password,
           }),
         });
 
@@ -66,18 +66,14 @@ export default function AuthModal({
         }
 
         const data = await response.json();
-        console.log("✅ Signup response:", data);
-        
-        // Handle the response format: [{ message: "Signup Successful", user: { userId, name, email } }]
-        const responseData = Array.isArray(data) ? data[0] : data;
-        const userData = responseData.user;
-        const uniqueId = userData.userId;
+        const uniqueId =
+          data.id || data.userId || data.user_id || `user_${Date.now()}`;
         
         console.log("✅ Signup successful! User ID:", uniqueId);
         
         // Store data in localStorage
-        localStorage.setItem('userName', userData.name);
-        localStorage.setItem('userEmail', userData.email);
+        localStorage.setItem('userName', formData.fullName);
+        localStorage.setItem('userEmail', formData.email);
         localStorage.setItem('userId', uniqueId);
 
         // Store userId in state
