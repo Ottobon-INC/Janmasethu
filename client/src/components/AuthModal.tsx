@@ -48,6 +48,15 @@ export default function AuthModal({
     try {
       if (isSignUp) {
         // Sign up - send to backend webhook
+        console.log("=== SIGNUP WEBHOOK REQUEST ===");
+        console.log("URL:", "https://n8nottobon.duckdns.org/webhook/sakhi_start");
+        console.log("Method: POST");
+        console.log("Payload:", {
+          Name: formData.fullName,
+          Email: formData.email,
+          Password: "***hidden***"
+        });
+
         const response = await fetch("https://n8nottobon.duckdns.org/webhook/sakhi_start", {
           method: "POST",
           headers: {
@@ -60,31 +69,64 @@ export default function AuthModal({
           }),
         });
 
+        console.log("=== WEBHOOK RESPONSE ===");
+        console.log("Status:", response.status);
+        console.log("Status Text:", response.statusText);
+        console.log("OK:", response.ok);
+        console.log("Headers:", Object.fromEntries(response.headers.entries()));
+
+        // Try to get the response text first for debugging
+        const responseText = await response.text();
+        console.log("Raw response body:", responseText);
+
         if (!response.ok) {
           setIsLoading(false);
+          console.error("❌ Webhook failed with status:", response.status);
+          console.error("Response body:", responseText);
           toast({
             title: "Signup Failed",
-            description: "Unable to create account. Please try again.",
+            description: `Server returned status ${response.status}. Please try again.`,
             variant: "destructive",
           });
-          throw new Error("Signup failed");
+          throw new Error(`Signup failed with status ${response.status}`);
         }
 
-        const data = await response.json();
-        console.log("✅ Signup response:", data);
-
-        // Handle the response format: [{ message: "Signup Successful", user: { userId, name, email } }]
-        const responseData = Array.isArray(data) ? data[0] : data;
-
-        // Validate response
-        if (!responseData || !responseData.user || !responseData.user.userId) {
+        // Parse the JSON response
+        let data;
+        try {
+          data = JSON.parse(responseText);
+          console.log("✅ Parsed JSON response:", data);
+        } catch (parseError) {
+          console.error("❌ Failed to parse JSON:", parseError);
+          console.error("Response was:", responseText);
           setIsLoading(false);
           toast({
             title: "Signup Failed",
             description: "Invalid response from server. Please try again.",
             variant: "destructive",
           });
-          throw new Error("Invalid signup response");
+          throw new Error("Invalid JSON response");
+        }
+
+        // Handle the response format: [{ message: "Signup Successful", user: { userId, name, email } }]
+        const responseData = Array.isArray(data) ? data[0] : data;
+        console.log("Response data after array check:", responseData);
+
+        // Validate response
+        if (!responseData || !responseData.user || !responseData.user.userId) {
+          console.error("❌ Invalid response structure:", {
+            hasResponseData: !!responseData,
+            hasUser: responseData?.user !== undefined,
+            hasUserId: responseData?.user?.userId !== undefined,
+            actualStructure: responseData
+          });
+          setIsLoading(false);
+          toast({
+            title: "Signup Failed",
+            description: "Invalid response from server. Please try again.",
+            variant: "destructive",
+          });
+          throw new Error("Invalid signup response structure");
         }
 
         const userData = responseData.user;
