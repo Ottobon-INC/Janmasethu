@@ -1,4 +1,5 @@
 import { Link, useLocation } from "wouter";
+import React from "react";
 import {
   ArrowRight,
   Heart,
@@ -52,6 +53,7 @@ import WhoWeServe from "../components/WhoWeServe";
 const Home = () => {
   const { t, lang } = useLanguage();
   const [, setLocation] = useLocation();
+  const [isVideoPlaying, setIsVideoPlaying] = React.useState(true);
 
   const featuredArticles = articles.slice(0, 4);
   const featuredStories = stories.slice(0, 3);
@@ -103,9 +105,10 @@ const Home = () => {
     <>
       {/* Responsive Video Section */}
       <section className="w-full py-4 px-2 sm:px-4 lg:py-8 lg:px-8">
-        <div className="relative w-full mx-auto overflow-hidden rounded-2xl md:rounded-3xl">
+        <div className="relative w-full mx-auto overflow-hidden rounded-2xl md:rounded-3xl group">
           <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
             <video
+              id="hero-video"
               className="absolute top-0 left-0 w-full h-full object-cover"
               autoPlay
               loop
@@ -123,6 +126,38 @@ const Home = () => {
               <source src="/Janmasethu1.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
+            
+            {/* Play/Pause Button */}
+            <button
+              onClick={() => {
+                const video = document.getElementById('hero-video') as HTMLVideoElement;
+                if (video) {
+                  if (video.paused) {
+                    video.play();
+                    setIsVideoPlaying(true);
+                  } else {
+                    video.pause();
+                    setIsVideoPlaying(false);
+                  }
+                }
+              }}
+              className="absolute top-3 right-3 w-10 h-10 sm:w-12 sm:h-12 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 z-10 backdrop-blur-sm"
+              aria-label={isVideoPlaying ? "Pause video" : "Play video"}
+            >
+              {isVideoPlaying ? (
+                <svg 
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6" />
+                  <circle cx="12" cy="12" r="10" strokeWidth={2} />
+                </svg>
+              ) : (
+                <PlayCircle className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+              )}
+            </button>
           </div>
         </div>
       </section>
