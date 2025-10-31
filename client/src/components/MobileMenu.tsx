@@ -36,11 +36,11 @@ const MobileMenu = ({ isOpen, onClose, navItems }: MobileMenuProps) => {
                   alt="JanmaSethu Logo" 
                   className="w-12 h-12 object-contain"
                 />
-                <div className="flex flex-col gap-0">
-                  <h2 className="text-lg font-bold text-gray-900 leading-none mb-0">
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900" style={{ lineHeight: '1', margin: 0 }}>
                     Janma <span className="text-teal-500">Sethu</span>
                   </h2>
-                  <p className="text-sm text-gray-600 leading-none mt-0">Connecting Care & Parenthood</p>
+                  <p className="text-sm text-gray-600" style={{ lineHeight: '1', margin: 0 }}>Connecting Care & Parenthood</p>
                 </div>
               </div>
               <Button
