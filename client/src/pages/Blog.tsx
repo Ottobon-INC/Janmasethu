@@ -124,11 +124,11 @@ const Blog = () => {
             <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
               <Card className="rounded-3xl overflow-hidden card-shadow hover:shadow-xl transition-all duration-300 h-full" data-testid={`card-blog-post-${index}`}>
                 <CardContent className="p-0">
-                  <div className="w-full h-48 overflow-hidden">
+                  <div className="w-full h-48 bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center p-4 rounded-t-3xl">
                     <img
                       src={post.image_url || imgAt(index)}
                       alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                   <div className="p-6">
