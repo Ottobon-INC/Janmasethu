@@ -219,7 +219,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Handle array format
         if (responseData.length > 0) {
           const firstItem = responseData[0];
-          
+
           // Check for success field
           if (firstItem.success === true) {
             isSuccess = true;
@@ -502,6 +502,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/doctors/:slug", async (req, res) => {
     try {
       const slug = req.params.slug;
+      const { stripAppointment } = await import("./scraper/doctorSanitizer");
       const { rows } = await query(
         `SELECT id, source_site, slug, name, designation, specialties, qualifications,
                 experience_years, languages, location, image_url, profile_url, about_html
@@ -511,7 +512,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         [slug]
       );
       if (rows.length === 0) return res.status(404).json({ ok: false, error: "not found" });
-      res.json({ ok: true, doctor: rows[0] });
+
+      const doc = rows[0];
+      // Sanitize appointment forms/sections from HTML content
+      doc.about_html = stripAppointment(doc.about_html || "");
+
+      res.json({ ok: true, doctor: doc });
     } catch (e: any) {
       console.error("GET /api/doctors/:slug error:", e);
       res.status(500).json({ ok: false, error: e.message });
