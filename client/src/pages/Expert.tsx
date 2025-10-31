@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link } from "wouter";
 import { fetchDoctor, type DoctorDetail } from "@/lib/api";
@@ -45,54 +44,18 @@ export default function Expert() {
       {!loading && !doc && !error && <div className="text-muted-foreground">Expert not found.</div>}
 
       {doc && (
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <Card className="rounded-3xl overflow-hidden">
-              <CardContent className="p-6">
-                <h1 className="text-3xl font-bold font-serif text-foreground">{doc.name}</h1>
-                {doc.designation && (
-                  <p className="text-muted-foreground mt-1">{doc.designation}</p>
-                )}
+        <div className="max-w-4xl mx-auto">
+          <Card className="rounded-3xl overflow-hidden">
+            <CardContent className="p-6">
+              <h1 className="text-3xl font-bold font-serif text-foreground">{doc.name}</h1>
+              {doc.designation && (
+                <p className="text-muted-foreground mt-1">{doc.designation}</p>
+              )}
 
-                <div className="prose max-w-none mt-6"
-                     dangerouslySetInnerHTML={{ __html: doc.about_html || "" }} />
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="space-y-6">
-            <Card className="rounded-3xl">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold">Profile</h3>
-                <ul className="text-sm text-muted-foreground mt-3 space-y-2">
-                  {doc.experience_years != null && (
-                    <li><span className="font-medium text-foreground">Experience:</span> {doc.experience_years}+ years</li>
-                  )}
-                  {doc.qualifications && (
-                    <li><span className="font-medium text-foreground">Qualifications:</span> {doc.qualifications}</li>
-                  )}
-                  {doc.specialties && doc.specialties.length > 0 && (
-                    <li>
-                      <span className="font-medium text-foreground">Specialties:</span>{" "}
-                      {doc.specialties.join(", ")}
-                    </li>
-                  )}
-                  {doc.languages && doc.languages.length > 0 && (
-                    <li><span className="font-medium text-foreground">Languages:</span> {doc.languages.join(", ")}</li>
-                  )}
-                  {doc.location && (
-                    <li><span className="font-medium text-foreground">Location:</span> {doc.location}</li>
-                  )}
-                  <li className="truncate">
-                    <span className="font-medium text-foreground">Source:</span>{" "}
-                    <a className="underline" href={doc.profile_url} target="_blank" rel="noreferrer">
-                      {new URL(doc.profile_url).hostname}
-                    </a>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
+              <div className="prose max-w-none mt-6"
+                   dangerouslySetInnerHTML={{ __html: doc.about_html || "" }} />
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>
