@@ -48,37 +48,58 @@ export default function AuthModal({
     try {
       if (isSignUp) {
         // Sign up - send to backend webhook
-        const response = await fetch("https://n8n.ottobon.in/webhook/start", {
+        const response = await fetch("https://n8nottobon.duckdns.org/webhook/sakhi_start", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            fullName: formData.fullName,
-            email: formData.email,
-            password: formData.password,
+            Name: formData.fullName,
+            Email: formData.email,
+            Password: formData.password,
           }),
         });
 
         if (!response.ok) {
           setIsLoading(false);
+          toast({
+            title: "Signup Failed",
+            description: "Unable to create account. Please try again.",
+            variant: "destructive",
+          });
           throw new Error("Signup failed");
         }
 
         const data = await response.json();
-        const uniqueId =
-          data.id || data.userId || data.user_id || `user_${Date.now()}`;
-        
+        console.log("✅ Signup response:", data);
+
+        // Handle the response format: [{ message: "Signup Successful", user: { userId, name, email } }]
+        const responseData = Array.isArray(data) ? data[0] : data;
+
+        // Validate response
+        if (!responseData || !responseData.user || !responseData.user.userId) {
+          setIsLoading(false);
+          toast({
+            title: "Signup Failed",
+            description: "Invalid response from server. Please try again.",
+            variant: "destructive",
+          });
+          throw new Error("Invalid signup response");
+        }
+
+        const userData = responseData.user;
+        const uniqueId = userData.userId;
+
         console.log("✅ Signup successful! User ID:", uniqueId);
-        
+
         // Store data in localStorage
-        localStorage.setItem('userName', formData.fullName);
-        localStorage.setItem('userEmail', formData.email);
+        localStorage.setItem('userName', userData.name);
+        localStorage.setItem('userEmail', userData.email);
         localStorage.setItem('userId', uniqueId);
 
         // Store userId in state
         setUserId(uniqueId);
-        
+
         // Show success toast
         toast({
           title: "Account created!",
@@ -88,7 +109,7 @@ export default function AuthModal({
         // Set loading to false and show relationship form
         setIsLoading(false);
         setShowRelationship(true);
-        
+
         return;
       } else {
         // Login - Call the login webhook with full error handling
@@ -129,7 +150,7 @@ export default function AuthModal({
           // Show success message
           toast({
             title: "Login successful",
-            description: "Welcome back! Redirecting to Sakhi...",
+            description: "Welcome back to JanmaSethu!",
           });
 
           // Navigate to Sakhi (existing user flow)
@@ -137,7 +158,7 @@ export default function AuthModal({
         } else {
           // Login failed - False response or any other response
           setLoginError("Either your email or password is wrong. Please try again.");
-          
+
           toast({
             title: "Login Failed",
             description: "Invalid email or password. Please check your credentials and try again.",
@@ -156,7 +177,7 @@ export default function AuthModal({
           : "Unable to connect to the server. Please check your internet connection and try again.",
         variant: "destructive",
       });
-      
+
       // Always reset loading state on error
       setIsLoading(false);
     }
@@ -175,10 +196,10 @@ export default function AuthModal({
     console.log("=== Relationship submitted ===");
     console.log("Relationship:", relationship);
     console.log("User ID:", userId);
-    
+
     // Store relationship in localStorage for persistence
     localStorage.setItem('userRelationship', relationship);
-    
+
     // Call onAuthSuccess to trigger onboarding flow
     console.log("Calling onAuthSuccess with isNewUser=true");
     onAuthSuccess(true, relationship, userId);
