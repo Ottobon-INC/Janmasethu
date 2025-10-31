@@ -47,12 +47,82 @@ export default function AuthModal({
 
     try {
       if (isSignUp) {
-        // Sign up - static demonstration
-        const uniqueId = `user_${Date.now()}`;
+        // Sign up - Call the webhook
+        console.log("=== SIGNUP WEBHOOK REQUEST ===");
+        console.log("URL:", "https://n8nottobon.duckdns.org/webhook/sakhi_start");
+        console.log("Payload:", {
+          Name: formData.fullName,
+          Email: formData.email,
+          Password: "***hidden***"
+        });
+
+        const response = await fetch("https://n8nottobon.duckdns.org/webhook/sakhi_start", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Name: formData.fullName,
+            Email: formData.email,
+            Password: formData.password,
+          }),
+        });
+
+        console.log("=== WEBHOOK RESPONSE ===");
+        console.log("Status:", response.status);
+        console.log("OK:", response.ok);
+
+        if (!response.ok) {
+          setIsLoading(false);
+          toast({
+            title: "Signup Failed",
+            description: `Server error (${response.status}). Please try again.`,
+            variant: "destructive",
+          });
+          return;
+        }
+
+        // Parse the response
+        const responseText = await response.text();
+        console.log("Response body:", responseText);
+
+        let data;
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error("Failed to parse JSON:", parseError);
+          setIsLoading(false);
+          toast({
+            title: "Signup Failed",
+            description: "Invalid response from server. Please try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        // Handle response format: [{ message: "Signup Successful", user: { userId, name, email } }]
+        const responseData = Array.isArray(data) ? data[0] : data;
+        console.log("Parsed response:", responseData);
+
+        if (!responseData || !responseData.user || !responseData.user.userId) {
+          console.error("Invalid response structure:", responseData);
+          setIsLoading(false);
+          toast({
+            title: "Signup Failed",
+            description: "Invalid response from server. Please try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        const userData = responseData.user;
+        const uniqueId = userData.userId;
+
+        console.log("✅ Signup successful! User ID:", uniqueId);
 
         // Store data in localStorage
-        localStorage.setItem('userName', formData.fullName);
-        localStorage.setItem('userEmail', formData.email);
+        localStorage.setItem('userName', userData.name);
+        localStorage.setItem('userEmail', userData.email);
         localStorage.setItem('userId', uniqueId);
 
         // Store userId in state
