@@ -1,4 +1,3 @@
-
 import { Link } from "wouter";
 import { useEffect, useState } from "react";
 import { Calendar, User } from "lucide-react";
@@ -36,17 +35,30 @@ const Blog = () => {
   useEffect(() => window.scrollTo(0, 0), []);
 
   useEffect(() => {
-    (async () => {
+    const fetchPosts = async () => {
       try {
-        const r = await fetch("/api/blogs?limit=24");
-        if (!r.ok) throw new Error(await r.text());
-        setItems(await r.json());
+        const res = await fetch("/api/blogs?limit=24");
+        if (!res.ok) {
+          console.warn("⚠️ API fetch failed, trying fallback JSON...");
+          // Fallback to static JSON if API fails
+          const fallbackRes = await fetch("/blog-posts.json");
+          if (fallbackRes.ok) {
+            const fallbackData = await fallbackRes.json();
+            console.log("Using fallback JSON articles:", fallbackData.length);
+            setItems(fallbackData);
+            setLoading(false);
+            return;
+          }
+          throw new Error(`HTTP ${res.status}`);
+        }
+        setItems(await res.json());
       } catch (e: any) {
         setErr(e.message || "Failed to load blogs");
       } finally {
         setLoading(false);
       }
-    })();
+    };
+    fetchPosts();
   }, []);
 
   if (loading) return <div className="p-8">Loading articles…</div>;
@@ -121,7 +133,7 @@ const Blog = () => {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {items.map((post, index) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
+            <Link href={`/blog/${post.slug}`} className="group">
               <Card className="rounded-3xl p-6 card-shadow hover:shadow-xl transition-all duration-300 h-full" data-testid={`card-blog-post-${index}`}>
                 <CardContent className="p-0">
                   <img
