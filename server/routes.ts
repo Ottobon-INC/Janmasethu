@@ -202,7 +202,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.error('❌ Webhook failed:', webhookResponse.statusText);
         return res.status(401).json({
           success: false,
-          error: 'Login failed. Please check your credentials.'
+          error: 'Invalid credentials'
         });
       }
 
@@ -211,19 +211,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Check if login was successful based on n8n response
       // Expected response formats:
-      // - [{ "success": true }] (array format)
-      // - { "success": true } (object format)
+      // Success: [{ "success": true }]
+      // Failure: [{ "user_id": null, "username": "false", "password": "false" }]
       let isSuccess = false;
 
-      if (Array.isArray(responseData)) {
-        // Handle array format: [{ "success": true }]
-        if (responseData.length > 0 && responseData[0].success === true) {
+      if (Array.isArray(responseData) && responseData.length > 0) {
+        const firstItem = responseData[0];
+
+        // Check for success field
+        if (firstItem.success === true) {
           isSuccess = true;
         }
-      } else if (typeof responseData === 'object' && responseData !== null) {
-        // Handle object format: { "success": true }
-        if (responseData.success === true) {
-          isSuccess = true;
+        // Check if username or password are "false" (failure indicator)
+        else if (firstItem.username === "false" || firstItem.password === "false") {
+          isSuccess = false;
         }
       }
 
@@ -238,7 +239,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else {
         return res.status(401).json({
           success: false,
-          error: 'Login failed. Please check your credentials.'
+          error: 'Invalid credentials'
         });
       }
 
@@ -345,7 +346,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ]);
 
         console.log('✅ Lead stored in database with ID:', leadData.lead_id);
-        
+
         // Return the complete lead object
         return res.json({
           lead_id: leadData.lead_id,
@@ -433,7 +434,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ]);
 
         console.log('✅ Lead updated in database:', lead_id);
-        
+
         // Return the complete lead object
         return res.json({
           lead_id: leadData.lead_id,
