@@ -197,7 +197,7 @@ export default function LeadManagement() {
         last_name: "",
         email: editingLead.email,
         phone: editingLead.phone,
-        age: editingLead.age?.toString() || "0",
+        age: parseInt(editingLead.age?.toString() || "0"),
         location: editingLead.location || "",
         interest: editingLead.interest || "IVF Consultation",
         source: editingLead.source || "Website",

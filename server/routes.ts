@@ -376,6 +376,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (action === "update") {
         const { lead_id, full_name, last_name, email, phone, age, location, interest, source, priority } = req.body;
 
+        if (!lead_id) {
+          return res.status(400).json({ error: "lead_id is required for update action" });
+        }
+
         // Call n8n webhook for update
         const webhookPayload = {
           action: "update",
@@ -384,9 +388,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           last_name: last_name || '',
           email,
           phone,
-          age: age ? parseInt(age) : null,
+          age: age ? parseInt(age.toString()) : 0,
           location: location || '',
-          interest: interest || '',
+          interest: interest || 'IVF Consultation',
           source: source || 'Website',
           priority: priority || 'Medium'
         };
@@ -410,7 +414,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const responseData = await webhookResponse.json();
         console.log('✅ n8n raw response (update):', responseData);
 
-        // Handle array response from n8n
+        // Handle both object and array response from n8n
         const leadData = Array.isArray(responseData) ? responseData[0] : responseData;
         console.log('✅ Processed lead data:', leadData);
 
@@ -435,15 +439,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
           leadData.full_name,
           leadData.email,
           leadData.phone,
-          leadData.age || 0,
+          parseInt(leadData.age?.toString() || '0'),
           leadData.location || '',
-          leadData.interest,
-          leadData.source,
-          leadData.priority,
+          leadData.interest || 'IVF Consultation',
+          leadData.source || 'Website',
+          leadData.priority || 'Medium',
           lead_id
         ]);
 
         console.log('✅ Lead updated in database:', lead_id);
+
+        // Fetch the current status from the database
+        const { rows } = await query(`SELECT status FROM leads WHERE lead_id = $1`, [lead_id]);
+        const currentStatus = rows.length > 0 ? rows[0].status : 'new';
 
         // Return the complete lead object
         return res.json({
@@ -451,12 +459,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           full_name: leadData.full_name,
           email: leadData.email,
           phone: leadData.phone,
-          age: leadData.age || 0,
+          age: parseInt(leadData.age?.toString() || '0'),
           location: leadData.location || '',
-          interest: leadData.interest,
-          source: leadData.source,
-          priority: leadData.priority,
-          status: 'new'
+          interest: leadData.interest || 'IVF Consultation',
+          source: leadData.source || 'Website',
+          priority: leadData.priority || 'Medium',
+          status: currentStatus
         });
       }
 
