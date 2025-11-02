@@ -47,26 +47,49 @@ export default function AuthModal({
 
     try {
       if (isSignUp) {
-        // Sign up - static demonstration
-        const uniqueId = `user_${Date.now()}`;
-
-        // Store data in localStorage
-        localStorage.setItem('userName', formData.fullName);
-        localStorage.setItem('userEmail', formData.email);
-        localStorage.setItem('userId', uniqueId);
-
-        // Store userId in state
-        setUserId(uniqueId);
-
-        // Show success toast
-        toast({
-          title: "Account created!",
-          description: "Please tell us about yourself.",
+        // Send signup data to webhook
+        const response = await fetch("https://n8nottobon.duckdns.org/webhook/sakhi_start", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Name: formData.fullName,
+            Email: formData.email,
+            Password: formData.password,
+          }),
         });
 
-        // Set loading to false and show relationship form
-        setIsLoading(false);
-        setShowRelationship(true);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Check if signup was successful
+        if (data && data[0] && data[0].message === "Signup Successful" && data[0].user) {
+          const userData = data[0].user;
+
+          // Store data in localStorage
+          localStorage.setItem('userName', userData.name);
+          localStorage.setItem('userEmail', userData.email);
+          localStorage.setItem('userId', userData.userId);
+
+          // Store userId in state
+          setUserId(userData.userId);
+
+          // Show success toast
+          toast({
+            title: "Account created!",
+            description: "Please tell us about yourself.",
+          });
+
+          // Set loading to false and show relationship form
+          setIsLoading(false);
+          setShowRelationship(true);
+        } else {
+          throw new Error("Signup response format was unexpected");
+        }
 
         return;
       } else {
