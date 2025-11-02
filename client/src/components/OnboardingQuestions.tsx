@@ -494,8 +494,15 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
   };
 
   const handleBack = () => {
+    console.log("=== handleBack called ===");
+    console.log("Current step:", currentStep);
+    
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+      const newStep = currentStep - 1;
+      console.log("Moving to step:", newStep);
+      setCurrentStep(newStep);
+    } else {
+      console.log("Already at first question, cannot go back");
     }
   };
 
