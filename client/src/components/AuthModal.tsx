@@ -62,7 +62,7 @@ export default function AuthModal({
         let webhookSuccess = false;
 
         try {
-          response = await fetch("https://n8nottobon.duckdns.org/webhook/sakhi_start", {
+          response = await fetch("https://n8nottobon.duckdns.org/webhook/start", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
