@@ -43,52 +43,63 @@ export default function AuthModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setLoginError(""); // Clear any previous errors
+    setLoginError("");
 
     try {
       if (isSignUp) {
-        // Send signup data to webhook
+        console.log("Starting signup process...");
+        
+        const payload = {
+          Name: formData.fullName,
+          Email: formData.email,
+          Password: formData.password,
+        };
+        
+        console.log("Sending payload:", payload);
+
         const response = await fetch("https://n8nottobon.duckdns.org/webhook/sakhi_start", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            Name: formData.fullName,
-            Email: formData.email,
-            Password: formData.password,
-          }),
+          body: JSON.stringify(payload),
         });
 
+        console.log("Response status:", response.status);
+
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          const errorText = await response.text();
+          console.error("Webhook error:", errorText);
+          throw new Error(`Signup failed with status ${response.status}`);
         }
 
         const data = await response.json();
+        console.log("Webhook response data:", data);
 
-        // Check if signup was successful
-        if (data && data[0] && data[0].message === "Signup Successful" && data[0].user) {
-          const userData = data[0].user;
+        // The response is an array, get the first element
+        const result = Array.isArray(data) ? data[0] : data;
 
-          // Store data in localStorage
+        if (result && result.message === "Signup Successful" && result.user) {
+          const userData = result.user;
+
+          console.log("Signup successful, user data:", userData);
+
           localStorage.setItem('userName', userData.name);
           localStorage.setItem('userEmail', userData.email);
           localStorage.setItem('userId', userData.userId);
 
-          // Store userId in state
           setUserId(userData.userId);
 
-          // Show success toast
           toast({
             title: "Account created!",
             description: "Please tell us about yourself.",
           });
 
-          // Set loading to false and show relationship form
           setIsLoading(false);
           setShowRelationship(true);
         } else {
-          throw new Error("Signup response format was unexpected");
+          console.error("Unexpected response format:", result);
+          throw new Error("Signup was not successful");
         }
 
         return;
