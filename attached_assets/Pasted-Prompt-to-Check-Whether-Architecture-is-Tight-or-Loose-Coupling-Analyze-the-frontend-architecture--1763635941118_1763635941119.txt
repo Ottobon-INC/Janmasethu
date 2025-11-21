@@ -1,0 +1,48 @@
+Prompt to Check Whether Architecture is Tight or Loose Coupling
+“Analyze the frontend architecture and tell me whether it is tightly coupled or loosely coupled.
+Evaluate:
+
+API logic inside components
+
+business logic mixed with UI
+
+global state misuse
+
+routing dependency
+
+any hard-coded backend URLs
+Give me a rating (tightly/loosely coupled) with reasons.”
+
+✅ 8. Prompt to Check If Future Backend Migration Will Be a Problem
+
+“Check how dependent this frontend is on the current backend structure.
+Identify risks if we decide to change the backend later (e.g., moving from our current API to a new microservices backend).
+List all coupling points and how to reduce them.”
+
+✅ 9. Prompt for Risks & Hurdles With the Current Architecture
+
+“Identify all risks, bottlenecks, or hurdles with the current architecture.
+Evaluate:
+
+scalability issues
+
+folder structure problems
+
+state management issues
+
+code duplication
+
+cross-component dependencies
+
+technical debt
+
+maintainability
+Give me severity levels (Low/Medium/High) and fixes.”
+
+✅ 10. Prompt to Recommend Whether We Should Stay With This Architecture
+
+“Based on your analysis, should we continue using this architecture or migrate to a more loosely coupled frontend architecture?
+Give recommendations, migration roadmap, pros/cons, and the cost vs benefit.”
+
+Based on your analysis, should we continue using this architecture or migrate to a more loosely coupled frontend architecture?
+Give recommendations, migration roadmap, pros/cons, and the cost vs benefit.” okay based on all this tell me whether our architetcture is tightly coupled or loosely coupled which means can we shift our backedn or databse architecture (like our database is connected to our backend right how easy will it be if in future i will change my database that way if its loosely coupled tell me the pros and cons the challenges and if tightly coupled then the pros and cons and if in some plaes it is tightly coupled or loosely coupled tell me the reasons whether it can be chanegd any alternatives the risks involved is it better to chaneg , where coupling would be easy where it will be hard
