@@ -1086,6 +1086,107 @@ const Home = () => {
           </div>
         </section>
 
+        {/* Knowledge Hub Introduction Section */}
+        <section className="py-16 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 rounded-3xl mx-4 relative overflow-hidden">
+          {/* Animated background patterns */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-10 left-10 w-32 h-32 bg-purple-400 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-10 right-10 w-40 h-40 bg-pink-400 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-orange-400 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          </div>
+
+          <div className="text-center mb-12 relative z-10 px-4">
+            <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow mb-6 animate-fadeInUp">
+              <BookOpen className="w-4 h-4 text-purple-500" />
+              <span className="text-sm font-medium text-foreground">
+                {lang === "en" && "Knowledge Hub"}
+                {lang === "hi" && "ज्ञान केंद्र"}
+                {lang === "te" && "జ్ఞాన కేంద్రం"}
+              </span>
+            </div>
+            
+            <h2
+              className="text-3xl md:text-4xl font-bold text-foreground font-serif mb-6 animate-fadeInUp"
+              style={{ animationDelay: '0.1s' }}
+            >
+              {lang === "en" && "Your Trusted Guide to Parenthood"}
+              {lang === "hi" && "माता-पिता बनने की आपकी विश्वसनीय मार्गदर्शिका"}
+              {lang === "te" && "తల్లిదండ్రులుగా మారడానికి మీ విश్వసనీయ మార్గదర్శి"}
+            </h2>
+            
+            <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto mb-8 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+              {lang === "en" && "Expert-verified articles covering every aspect of your fertility and pregnancy journey. Browse through different perspectives to find the information you need."}
+              {lang === "hi" && "विशेषज्ञ-सत्यापित लेख जो आपकी प्रजनन और गर्भावस्था यात्रा के हर पहलू को कवर करते हैं। आपको जो जानकारी चाहिए, उसे खोजने के लिए विभिन्न दृष्टिकोणों को देखें।"}
+              {lang === "te" && "మీ సంతానోత్పత్తి మరియు గర్భధారణ ప్రయాణంలో ప్రతి అంశాన్ని కవర్ చేసే నిపుణుల-ధృవీకరించబడిన వ్యాసాలు. మీకు అవసరమైన సమాచారాన్ని కనుగొనడానికి వివిధ దృక్కోణాలను చూడండి."}
+            </p>
+
+            {/* Knowledge Hub Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-8">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 card-shadow transform hover:scale-105 transition-all duration-300 animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <BookOpen className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="text-2xl font-bold text-foreground mb-1">16+</div>
+                <div className="text-xs text-muted-foreground">
+                  {lang === "en" && "Expert Articles"}
+                  {lang === "hi" && "विशेषज्ञ लेख"}
+                  {lang === "te" && "నిపుణుల వ్యాసాలు"}
+                </div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 card-shadow transform hover:scale-105 transition-all duration-300 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
+                <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Shield className="w-6 h-6 text-pink-600" />
+                </div>
+                <div className="text-2xl font-bold text-foreground mb-1">100%</div>
+                <div className="text-xs text-muted-foreground">
+                  {lang === "en" && "Doctor Verified"}
+                  {lang === "hi" && "डॉक्टर सत्यापित"}
+                  {lang === "te" && "డాక్టర్ ధృవీకరించబడింది"}
+                </div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 card-shadow transform hover:scale-105 transition-all duration-300 animate-fadeInUp" style={{ animationDelay: '0.5s' }}>
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Users className="w-6 h-6 text-green-600" />
+                </div>
+                <div className="text-2xl font-bold text-foreground mb-1">4</div>
+                <div className="text-xs text-muted-foreground">
+                  {lang === "en" && "Key Perspectives"}
+                  {lang === "hi" && "मुख्य दृष्टिकोण"}
+                  {lang === "te" && "ముఖ్య దృక్కోణాలు"}
+                </div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 card-shadow transform hover:scale-105 transition-all duration-300 animate-fadeInUp" style={{ animationDelay: '0.6s' }}>
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Clock className="w-6 h-6 text-orange-600" />
+                </div>
+                <div className="text-2xl font-bold text-foreground mb-1">24/7</div>
+                <div className="text-xs text-muted-foreground">
+                  {lang === "en" && "Always Available"}
+                  {lang === "hi" && "हमेशा उपलब्ध"}
+                  {lang === "te" && "ఎల్లప్పుడూ అందుబాటులో"}
+                </div>
+              </div>
+            </div>
+
+            {/* Call to Action */}
+            <Link href="/knowledge">
+              <Button
+                className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-base md:text-lg hover:shadow-xl transition-all duration-300 group animate-fadeInUp"
+                style={{ animationDelay: '0.7s' }}
+              >
+                <BookOpen className="mr-2 w-5 h-5" />
+                {lang === "en" && "Explore Knowledge Hub"}
+                {lang === "hi" && "ज्ञान केंद्र देखें"}
+                {lang === "te" && "జ్ఞాన కేంద్రాన్ని అన్వేషించండి"}
+                <ArrowRight className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </div>
+        </section>
+
         {/* Explore by Lens Section */}
         <section className="py-16">
           <div className="text-center mb-12">
@@ -1095,6 +1196,11 @@ const Home = () => {
             >
               {t("lens_title")}
             </h2>
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
+              {lang === "en" && "Choose the perspective that matters most to you"}
+              {lang === "hi" && "वह दृष्टिकोण चुनें जो आपके लिए सबसे महत्वपूर्ण है"}
+              {lang === "te" && "మీకు అత్యంత ముఖ్యమైన దృక్కోణాన్ని ఎంచుకోండి"}
+            </p>
           </div>
 
           {/* Horizontal scrollable container */}
