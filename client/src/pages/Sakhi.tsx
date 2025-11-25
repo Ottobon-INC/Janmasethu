@@ -120,30 +120,6 @@ const Sakhi = () => {
 
   return (
     <>
-      {/* Responsive Video Section */}
-      <section className="w-full py-4 px-2 sm:px-4 lg:py-8 lg:px-8">
-        <div className="responsive-video-container relative overflow-hidden">
-          <video
-            className="absolute inset-0 w-full h-full"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            poster="/babyFeet.jpg"
-            webkit-playsinline="true"
-            x5-playsinline="true"
-            onLoadStart={() => console.log('Sakhi video loading started...')}
-            onLoadedData={() => console.log('Sakhi video data loaded')}
-            onCanPlay={() => console.log('Sakhi video can play')}
-            onPlay={() => console.log('Sakhi video started playing')}
-          >
-            <source src="/sakhi.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </section>
-
       <div className="container mx-auto px-4 py-6">
       {/* Hero Section */}
       <section className="text-center py-12 relative">
