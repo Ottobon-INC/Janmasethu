@@ -1371,16 +1371,14 @@ textarea:focus-visible {
 
 /* Hero Video Responsive Styles */
 @media (min-width: 1024px) {
-  /* Desktop/Laptop - Full height video section */
+  /* Desktop/Laptop - Contained video section */
   #hero-video {
     animation: videoFadeIn 1s ease-in-out;
   }
   
-  /* Remove padding-bottom on desktop, use fixed height instead */
-  .lg\:h-\[calc\(100vh-80px\)\] {
-    padding-bottom: 0 !important;
-    height: calc(100vh - 80px) !important;
-    min-height: 600px;
+  /* Maintain 16:9 aspect ratio within hero section on desktop */
+  .lg\:rounded-none {
+    max-height: calc(100vh - 200px);
   }
 }
 
