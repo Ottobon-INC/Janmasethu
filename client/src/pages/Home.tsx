@@ -133,7 +133,7 @@ const Home = () => {
               onCanPlay={() => console.log("Video can play")}
               onPlay={() => console.log("Video started playing")}
             >
-              <source src="/Janmasethu1.mp4" type="video/mp4" />
+              <source src="/Videooooo.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
 
