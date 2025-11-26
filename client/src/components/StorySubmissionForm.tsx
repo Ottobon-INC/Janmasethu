@@ -1,10 +1,11 @@
+
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Heart, Sparkles, Upload, X } from "lucide-react";
+import { Heart, Sparkles, Upload, X, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface StorySubmissionFormProps {
@@ -46,6 +47,8 @@ const outcomes = [
 export default function StorySubmissionForm({ open, onClose }: StorySubmissionFormProps) {
   const { toast } = useToast();
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [storyData, setStoryData] = useState<StoryData>({
     isAnonymous: false,
     name: "",
@@ -72,7 +75,7 @@ export default function StorySubmissionForm({ open, onClose }: StorySubmissionFo
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleContinueToPreview = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validation
@@ -95,14 +98,19 @@ export default function StorySubmissionForm({ open, onClose }: StorySubmissionFo
       return;
     }
 
+    setShowPreview(true);
+  };
+
+  const handlePublish = () => {
     setShowConfetti(true);
+    setShowSuccess(true);
+    
     setTimeout(() => {
-      toast({
-        title: "Story Published! 💝",
-        description: "Your journey will inspire others.",
-      });
-      onClose();
       setShowConfetti(false);
+      setShowSuccess(false);
+      setShowPreview(false);
+      onClose();
+      
       // Reset form
       setStoryData({
         isAnonymous: false,
@@ -118,7 +126,7 @@ export default function StorySubmissionForm({ open, onClose }: StorySubmissionFo
         messageToOthers: "",
         uploadedImage: null,
       });
-    }, 2000);
+    }, 4000);
   };
 
   const toggleEmotion = (emotion: string) => {
@@ -139,8 +147,14 @@ export default function StorySubmissionForm({ open, onClose }: StorySubmissionFo
     });
   };
 
+  const handleClose = () => {
+    setShowPreview(false);
+    setShowSuccess(false);
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-3xl max-w-[95vw] w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 border-0 rounded-3xl">
         {/* Confetti Effect */}
         {showConfetti && (
@@ -169,353 +183,515 @@ export default function StorySubmissionForm({ open, onClose }: StorySubmissionFo
           </div>
         )}
 
-        {/* Header */}
-        <DialogHeader className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4 border-b border-pink-100 sticky top-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 z-10">
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl sm:text-3xl font-serif bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Share Your Journey
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onClose}
-              className="rounded-full hover:bg-pink-100"
-            >
-              <X className="w-5 h-5" />
-            </Button>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Your story can guide, heal, and bring hope to another family. 🌸
-          </p>
-        </DialogHeader>
-
-        {/* Form Container */}
-        <form onSubmit={handleSubmit} className="px-4 sm:px-8 py-6 space-y-8">
-          {/* Welcome Message */}
-          <div className="flex gap-3 items-start animate-fadeIn">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-purple-400 flex items-center justify-center flex-shrink-0">
-              <Heart className="w-5 h-5 text-white" />
+        {/* Success Message */}
+        {showSuccess ? (
+          <div className="px-6 sm:px-8 py-12 text-center">
+            <div className="w-24 h-24 bg-gradient-to-br from-pink-400 via-purple-400 to-blue-400 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+              <Heart className="w-12 h-12 text-white fill-white" />
             </div>
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl rounded-tl-none p-4 shadow-sm">
-              <p className="text-gray-700 leading-relaxed">
-                Hi, I'm here to help you share your journey. Take your time — this is your safe space. ✨
+            
+            <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-4 font-serif">
+              Thank You for Sharing! 💝
+            </h2>
+            
+            <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto leading-relaxed">
+              Your story has been published and will inspire countless families on their journey.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+              <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full">
+                <CheckCircle2 className="w-5 h-5 text-green-500" />
+                <span className="text-sm font-medium text-gray-700">Story Published</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full">
+                <Heart className="w-5 h-5 text-pink-500" />
+                <span className="text-sm font-medium text-gray-700">Helping Others</span>
+              </div>
+            </div>
+            
+            <p className="text-sm text-gray-600 italic">
+              Your courage and openness will light the way for others 🌟
+            </p>
+          </div>
+        ) : showPreview ? (
+          <>
+            {/* Preview Header */}
+            <DialogHeader className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4 border-b border-pink-100 sticky top-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 z-10">
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowPreview(false)}
+                  className="rounded-full hover:bg-pink-100"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </Button>
+                <DialogTitle className="text-2xl sm:text-3xl font-serif bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Preview Your Story
+                </DialogTitle>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleClose}
+                  className="rounded-full hover:bg-pink-100"
+                >
+                  <X className="w-5 h-5" />
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground text-center">
+                Review your story before publishing. You can go back to edit if needed. 📖
               </p>
-            </div>
-          </div>
+            </DialogHeader>
 
-          {/* Section 1: Identity */}
-          <div className="space-y-4 animate-fadeIn">
-            <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              About You
-            </h3>
-
-            <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
-              <div className="space-y-3">
-                <Label className="text-sm font-medium text-gray-700">
-                  How would you like to share your story? <span className="text-red-500">*</span>
-                </Label>
-                <div className="flex flex-wrap gap-3">
-                  <Button
-                    type="button"
-                    onClick={() => setStoryData({ ...storyData, isAnonymous: false })}
-                    variant="outline"
-                    className={`px-6 py-2 rounded-full border-2 transition-all duration-300 ${
-                      !storyData.isAnonymous 
-                        ? "bg-pink-100 border-pink-400 text-pink-700" 
-                        : "border-pink-300 hover:bg-pink-50 hover:border-pink-400"
-                    }`}
-                  >
-                    With my name
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => setStoryData({ ...storyData, isAnonymous: true, name: "" })}
-                    variant="outline"
-                    className={`px-6 py-2 rounded-full border-2 transition-all duration-300 ${
-                      storyData.isAnonymous 
-                        ? "bg-purple-100 border-purple-400 text-purple-700" 
-                        : "border-purple-300 hover:bg-purple-50 hover:border-purple-400"
-                    }`}
-                  >
-                    Anonymous
-                  </Button>
-                </div>
-              </div>
-
-              {!storyData.isAnonymous && (
-                <div className="space-y-2 animate-fadeIn">
-                  <Label htmlFor="name" className="text-sm font-medium text-gray-700">
-                    Your name <span className="text-red-500">*</span>
-                  </Label>
-                  <Input
-                    id="name"
-                    value={storyData.name}
-                    onChange={(e) => setStoryData({ ...storyData, name: e.target.value })}
-                    placeholder="What should I call you?"
-                    className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base"
-                  />
-                </div>
-              )}
-
-              <div className="space-y-2">
-                <Label htmlFor="location" className="text-sm font-medium text-gray-700">
-                  Where are you from? <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="location"
-                  value={storyData.location}
-                  onChange={(e) => setStoryData({ ...storyData, location: e.target.value })}
-                  placeholder="Your city..."
-                  className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="duration" className="text-sm font-medium text-gray-700">
-                  How long have you been on this journey? <span className="text-red-500">*</span>
-                </Label>
-                <select
-                  id="duration"
-                  value={storyData.duration}
-                  onChange={(e) => setStoryData({ ...storyData, duration: e.target.value })}
-                  className="w-full bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base"
-                >
-                  <option value="">Select duration...</option>
-                  <option value="Less than 1 year">Less than 1 year</option>
-                  <option value="1-2 years">1-2 years</option>
-                  <option value="2-3 years">2-3 years</option>
-                  <option value="3-5 years">3-5 years</option>
-                  <option value="5+ years">5+ years</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Section 2: Challenges */}
-          <div className="space-y-4 animate-fadeIn">
-            <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              Your Journey
-            </h3>
-
-            <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
-              <div className="space-y-2">
-                <Label htmlFor="challenges" className="text-sm font-medium text-gray-700">
-                  Tell me about the challenges you faced when your journey began <span className="text-red-500">*</span>
-                </Label>
-                <p className="text-xs text-gray-500 italic">
-                  Write freely — there are no right or wrong answers.
-                </p>
-                <Textarea
-                  id="challenges"
-                  value={storyData.challenges}
-                  onChange={(e) => setStoryData({ ...storyData, challenges: e.target.value })}
-                  placeholder="Your thoughts..."
-                  className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base min-h-[120px] resize-none"
-                  style={{
-                    backgroundImage: "repeating-linear-gradient(transparent, transparent 31px, #e5e7eb 31px, #e5e7eb 32px)",
-                    lineHeight: "32px",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Section 3: Emotions */}
-          <div className="space-y-4 animate-fadeIn">
-            <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              Your Emotions
-            </h3>
-
-            <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
-              <div className="space-y-3">
-                <Label className="text-sm font-medium text-gray-700">
-                  What emotions were a big part of your journey? <span className="text-red-500">*</span>
-                </Label>
-                <div className="flex flex-wrap gap-2">
-                  {emotions.map((emotion, idx) => (
-                    <button
-                      key={emotion}
-                      type="button"
-                      onClick={() => toggleEmotion(emotion)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
-                        storyData.emotions.includes(emotion)
-                          ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md"
-                          : "bg-white/80 text-gray-700 border-2 border-pink-200 hover:border-pink-300"
-                      }`}
-                      style={{
-                        animation: `chipBounce 0.5s ease-out ${idx * 0.05}s backwards`,
-                      }}
-                    >
-                      {emotion}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="emotionDetails" className="text-sm font-medium text-gray-700">
-                  Would you like to describe how you felt during those moments? (Optional)
-                </Label>
-                <Textarea
-                  id="emotionDetails"
-                  value={storyData.emotionDetails}
-                  onChange={(e) => setStoryData({ ...storyData, emotionDetails: e.target.value })}
-                  placeholder="Your feelings..."
-                  className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base min-h-[100px] resize-none"
-                  style={{
-                    backgroundImage: "repeating-linear-gradient(transparent, transparent 31px, #e5e7eb 31px, #e5e7eb 32px)",
-                    lineHeight: "32px",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Section 4: Treatments */}
-          <div className="space-y-4 animate-fadeIn">
-            <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              Your Path
-            </h3>
-
-            <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
-              <div className="space-y-3">
-                <Label className="text-sm font-medium text-gray-700">
-                  What path or treatments did you explore? <span className="text-red-500">*</span>
-                </Label>
-                <div className="flex flex-wrap gap-2">
-                  {treatments.map((treatment, idx) => (
-                    <button
-                      key={treatment}
-                      type="button"
-                      onClick={() => toggleTreatment(treatment)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
-                        storyData.treatments.includes(treatment)
-                          ? "bg-gradient-to-r from-blue-400 to-purple-400 text-white shadow-md"
-                          : "bg-white/80 text-gray-700 border-2 border-blue-200 hover:border-blue-300"
-                      }`}
-                      style={{
-                        animation: `chipBounce 0.5s ease-out ${idx * 0.05}s backwards`,
-                      }}
-                    >
-                      {treatment}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Section 5: Outcome */}
-          <div className="space-y-4 animate-fadeIn">
-            <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              Where You Are Now
-            </h3>
-
-            <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
-              <div className="space-y-2">
-                <Label htmlFor="outcome" className="text-sm font-medium text-gray-700">
-                  Where has your journey led you so far? <span className="text-red-500">*</span>
-                </Label>
-                <select
-                  id="outcome"
-                  value={storyData.outcome}
-                  onChange={(e) => setStoryData({ ...storyData, outcome: e.target.value })}
-                  className="w-full bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base"
-                >
-                  <option value="">Select outcome...</option>
-                  {outcomes.map(outcome => (
-                    <option key={outcome} value={outcome}>{outcome}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="outcomeDetails" className="text-sm font-medium text-gray-700">
-                  Tell us more... (Optional)
-                </Label>
-                <Textarea
-                  id="outcomeDetails"
-                  value={storyData.outcomeDetails}
-                  onChange={(e) => setStoryData({ ...storyData, outcomeDetails: e.target.value })}
-                  placeholder="Share more details if you'd like..."
-                  className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base min-h-[80px] resize-none"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Section 6: Message to Others */}
-          <div className="space-y-4 animate-fadeIn">
-            <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              Message of Hope
-            </h3>
-
-            <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
-              <div className="space-y-2">
-                <Label htmlFor="message" className="text-sm font-medium text-gray-700">
-                  Would you like to leave a message for another family who might be reading your story? (Optional)
-                </Label>
-                <Textarea
-                  id="message"
-                  value={storyData.messageToOthers}
-                  onChange={(e) => setStoryData({ ...storyData, messageToOthers: e.target.value })}
-                  placeholder="Your message of hope..."
-                  className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base min-h-[120px] resize-none"
-                  style={{
-                    backgroundImage: "repeating-linear-gradient(transparent, transparent 31px, #e5e7eb 31px, #e5e7eb 32px)",
-                    lineHeight: "32px",
-                  }}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-sm font-medium text-gray-700">Add a photo (Optional)</Label>
-                <div className="flex items-center gap-3">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                    id="image-upload"
-                  />
-                  <label
-                    htmlFor="image-upload"
-                    className="cursor-pointer px-4 py-2 bg-white/80 border-2 border-pink-200 rounded-full text-sm font-medium hover:border-pink-300 transition-all duration-300 flex items-center gap-2"
-                  >
-                    <Upload className="w-4 h-4" />
-                    Upload Image
-                  </label>
-                  {storyData.uploadedImage && (
-                    <span className="text-sm text-green-600">✓ Image added</span>
-                  )}
-                </div>
+            {/* Preview Content */}
+            <div className="px-4 sm:px-8 py-6 space-y-6">
+              {/* Story Card Preview */}
+              <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border-2 border-pink-100">
                 {storyData.uploadedImage && (
                   <img
                     src={storyData.uploadedImage}
-                    alt="Preview"
-                    className="w-full max-w-xs h-32 object-cover rounded-2xl mt-2"
+                    alt="Story"
+                    className="w-full h-48 object-cover rounded-2xl mb-6"
                   />
                 )}
+
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-2">Author</h3>
+                    <p className="text-lg font-semibold text-gray-800">
+                      {storyData.isAnonymous ? "Anonymous" : storyData.name}
+                    </p>
+                    <p className="text-sm text-gray-600">{storyData.location}</p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-2">Journey Duration</h3>
+                    <p className="text-base text-gray-800">{storyData.duration}</p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-2">The Challenges</h3>
+                    <p className="text-base text-gray-800 leading-relaxed">{storyData.challenges}</p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-2">Emotions Felt</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {storyData.emotions.map((emotion) => (
+                        <span
+                          key={emotion}
+                          className="px-3 py-1 bg-gradient-to-r from-pink-100 to-purple-100 text-purple-700 rounded-full text-sm font-medium"
+                        >
+                          {emotion}
+                        </span>
+                      ))}
+                    </div>
+                    {storyData.emotionDetails && (
+                      <p className="text-base text-gray-800 leading-relaxed mt-3">{storyData.emotionDetails}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-2">Treatments Explored</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {storyData.treatments.map((treatment) => (
+                        <span
+                          key={treatment}
+                          className="px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-sm font-medium"
+                        >
+                          {treatment}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-2">Current Status</h3>
+                    <p className="text-base text-gray-800">{storyData.outcome}</p>
+                    {storyData.outcomeDetails && (
+                      <p className="text-base text-gray-800 leading-relaxed mt-2">{storyData.outcomeDetails}</p>
+                    )}
+                  </div>
+
+                  {storyData.messageToOthers && (
+                    <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-4 border-l-4 border-pink-400">
+                      <h3 className="text-sm font-medium text-gray-500 mb-2">Message to Others</h3>
+                      <p className="text-base text-gray-800 leading-relaxed italic">"{storyData.messageToOthers}"</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 pb-2">
+                <Button
+                  onClick={() => setShowPreview(false)}
+                  variant="outline"
+                  className="px-6 py-3 rounded-full border-2 border-pink-300 hover:bg-pink-50 text-base"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Edit Story
+                </Button>
+                <Button
+                  onClick={handlePublish}
+                  className="gradient-button text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg"
+                >
+                  Publish My Story 💝
+                </Button>
               </div>
             </div>
-          </div>
+          </>
+        ) : (
+          <>
+            {/* Header */}
+            <DialogHeader className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4 border-b border-pink-100 sticky top-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 z-10">
+              <div className="flex items-center justify-between">
+                <DialogTitle className="text-2xl sm:text-3xl font-serif bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Share Your Journey
+                </DialogTitle>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleClose}
+                  className="rounded-full hover:bg-pink-100"
+                >
+                  <X className="w-5 h-5" />
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Your story can guide, heal, and bring hope to another family. 🌸
+              </p>
+            </DialogHeader>
 
-          {/* Submit Button */}
-          <div className="flex justify-center pt-4 pb-2">
-            <Button
-              type="submit"
-              className="gradient-button text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg"
-            >
-              Publish My Story 💝
-            </Button>
-          </div>
-        </form>
+            {/* Form Container */}
+            <form onSubmit={handleContinueToPreview} className="px-4 sm:px-8 py-6 space-y-8">
+              {/* Welcome Message */}
+              <div className="flex gap-3 items-start animate-fadeIn">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-purple-400 flex items-center justify-center flex-shrink-0">
+                  <Heart className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl rounded-tl-none p-4 shadow-sm">
+                  <p className="text-gray-700 leading-relaxed">
+                    Hi, I'm here to help you share your journey. Take your time — this is your safe space. ✨
+                  </p>
+                </div>
+              </div>
+
+              {/* Section 1: Identity */}
+              <div className="space-y-4 animate-fadeIn">
+                <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5" />
+                  About You
+                </h3>
+
+                <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium text-gray-700">
+                      How would you like to share your story? <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="flex flex-wrap gap-3">
+                      <Button
+                        type="button"
+                        onClick={() => setStoryData({ ...storyData, isAnonymous: false })}
+                        variant="outline"
+                        className={`px-6 py-2 rounded-full border-2 transition-all duration-300 ${
+                          !storyData.isAnonymous 
+                            ? "bg-pink-100 border-pink-400 text-pink-700" 
+                            : "border-pink-300 hover:bg-pink-50 hover:border-pink-400"
+                        }`}
+                      >
+                        With my name
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={() => setStoryData({ ...storyData, isAnonymous: true, name: "" })}
+                        variant="outline"
+                        className={`px-6 py-2 rounded-full border-2 transition-all duration-300 ${
+                          storyData.isAnonymous 
+                            ? "bg-purple-100 border-purple-400 text-purple-700" 
+                            : "border-purple-300 hover:bg-purple-50 hover:border-purple-400"
+                        }`}
+                      >
+                        Anonymous
+                      </Button>
+                    </div>
+                  </div>
+
+                  {!storyData.isAnonymous && (
+                    <div className="space-y-2 animate-fadeIn">
+                      <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+                        Your name <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="name"
+                        value={storyData.name}
+                        onChange={(e) => setStoryData({ ...storyData, name: e.target.value })}
+                        placeholder="What should I call you?"
+                        className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base"
+                      />
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <Label htmlFor="location" className="text-sm font-medium text-gray-700">
+                      Where are you from? <span className="text-red-500">*</span>
+                    </Label>
+                    <Input
+                      id="location"
+                      value={storyData.location}
+                      onChange={(e) => setStoryData({ ...storyData, location: e.target.value })}
+                      placeholder="Your city..."
+                      className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="duration" className="text-sm font-medium text-gray-700">
+                      How long have you been on this journey? <span className="text-red-500">*</span>
+                    </Label>
+                    <select
+                      id="duration"
+                      value={storyData.duration}
+                      onChange={(e) => setStoryData({ ...storyData, duration: e.target.value })}
+                      className="w-full bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base"
+                    >
+                      <option value="">Select duration...</option>
+                      <option value="Less than 1 year">Less than 1 year</option>
+                      <option value="1-2 years">1-2 years</option>
+                      <option value="2-3 years">2-3 years</option>
+                      <option value="3-5 years">3-5 years</option>
+                      <option value="5+ years">5+ years</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 2: Challenges */}
+              <div className="space-y-4 animate-fadeIn">
+                <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5" />
+                  Your Journey
+                </h3>
+
+                <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="challenges" className="text-sm font-medium text-gray-700">
+                      Tell me about the challenges you faced when your journey began <span className="text-red-500">*</span>
+                    </Label>
+                    <p className="text-xs text-gray-500 italic">
+                      Write freely — there are no right or wrong answers.
+                    </p>
+                    <Textarea
+                      id="challenges"
+                      value={storyData.challenges}
+                      onChange={(e) => setStoryData({ ...storyData, challenges: e.target.value })}
+                      placeholder="Your thoughts..."
+                      className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base min-h-[120px] resize-none"
+                      style={{
+                        backgroundImage: "repeating-linear-gradient(transparent, transparent 31px, #e5e7eb 31px, #e5e7eb 32px)",
+                        lineHeight: "32px",
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 3: Emotions */}
+              <div className="space-y-4 animate-fadeIn">
+                <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5" />
+                  Your Emotions
+                </h3>
+
+                <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium text-gray-700">
+                      What emotions were a big part of your journey? <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="flex flex-wrap gap-2">
+                      {emotions.map((emotion, idx) => (
+                        <button
+                          key={emotion}
+                          type="button"
+                          onClick={() => toggleEmotion(emotion)}
+                          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
+                            storyData.emotions.includes(emotion)
+                              ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md"
+                              : "bg-white/80 text-gray-700 border-2 border-pink-200 hover:border-pink-300"
+                          }`}
+                          style={{
+                            animation: `chipBounce 0.5s ease-out ${idx * 0.05}s backwards`,
+                          }}
+                        >
+                          {emotion}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="emotionDetails" className="text-sm font-medium text-gray-700">
+                      Would you like to describe how you felt during those moments? (Optional)
+                    </Label>
+                    <Textarea
+                      id="emotionDetails"
+                      value={storyData.emotionDetails}
+                      onChange={(e) => setStoryData({ ...storyData, emotionDetails: e.target.value })}
+                      placeholder="Your feelings..."
+                      className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base min-h-[100px] resize-none"
+                      style={{
+                        backgroundImage: "repeating-linear-gradient(transparent, transparent 31px, #e5e7eb 31px, #e5e7eb 32px)",
+                        lineHeight: "32px",
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 4: Treatments */}
+              <div className="space-y-4 animate-fadeIn">
+                <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5" />
+                  Your Path
+                </h3>
+
+                <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium text-gray-700">
+                      What path or treatments did you explore? <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="flex flex-wrap gap-2">
+                      {treatments.map((treatment, idx) => (
+                        <button
+                          key={treatment}
+                          type="button"
+                          onClick={() => toggleTreatment(treatment)}
+                          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
+                            storyData.treatments.includes(treatment)
+                              ? "bg-gradient-to-r from-blue-400 to-purple-400 text-white shadow-md"
+                              : "bg-white/80 text-gray-700 border-2 border-blue-200 hover:border-blue-300"
+                          }`}
+                          style={{
+                            animation: `chipBounce 0.5s ease-out ${idx * 0.05}s backwards`,
+                          }}
+                        >
+                          {treatment}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 5: Outcome */}
+              <div className="space-y-4 animate-fadeIn">
+                <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5" />
+                  Where You Are Now
+                </h3>
+
+                <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="outcome" className="text-sm font-medium text-gray-700">
+                      Where has your journey led you so far? <span className="text-red-500">*</span>
+                    </Label>
+                    <select
+                      id="outcome"
+                      value={storyData.outcome}
+                      onChange={(e) => setStoryData({ ...storyData, outcome: e.target.value })}
+                      className="w-full bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base"
+                    >
+                      <option value="">Select outcome...</option>
+                      {outcomes.map(outcome => (
+                        <option key={outcome} value={outcome}>{outcome}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="outcomeDetails" className="text-sm font-medium text-gray-700">
+                      Tell us more... (Optional)
+                    </Label>
+                    <Textarea
+                      id="outcomeDetails"
+                      value={storyData.outcomeDetails}
+                      onChange={(e) => setStoryData({ ...storyData, outcomeDetails: e.target.value })}
+                      placeholder="Share more details if you'd like..."
+                      className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base min-h-[80px] resize-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 6: Message to Others */}
+              <div className="space-y-4 animate-fadeIn">
+                <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5" />
+                  Message of Hope
+                </h3>
+
+                <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-sm font-medium text-gray-700">
+                      Would you like to leave a message for another family who might be reading your story? (Optional)
+                    </Label>
+                    <Textarea
+                      id="message"
+                      value={storyData.messageToOthers}
+                      onChange={(e) => setStoryData({ ...storyData, messageToOthers: e.target.value })}
+                      placeholder="Your message of hope..."
+                      className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base min-h-[120px] resize-none"
+                      style={{
+                        backgroundImage: "repeating-linear-gradient(transparent, transparent 31px, #e5e7eb 31px, #e5e7eb 32px)",
+                        lineHeight: "32px",
+                      }}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">Add a photo (Optional)</Label>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        id="image-upload"
+                      />
+                      <label
+                        htmlFor="image-upload"
+                        className="cursor-pointer px-4 py-2 bg-white/80 border-2 border-pink-200 rounded-full text-sm font-medium hover:border-pink-300 transition-all duration-300 flex items-center gap-2"
+                      >
+                        <Upload className="w-4 h-4" />
+                        Upload Image
+                      </label>
+                      {storyData.uploadedImage && (
+                        <span className="text-sm text-green-600">✓ Image added</span>
+                      )}
+                    </div>
+                    {storyData.uploadedImage && (
+                      <img
+                        src={storyData.uploadedImage}
+                        alt="Preview"
+                        className="w-full max-w-xs h-32 object-cover rounded-2xl mt-2"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex justify-center pt-4 pb-2">
+                <Button
+                  type="submit"
+                  className="gradient-button text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg"
+                >
+                  Continue to Preview →
+                </Button>
+              </div>
+            </form>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
