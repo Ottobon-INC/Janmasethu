@@ -259,25 +259,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
         isAnonymous
       } = req.body;
 
+      // Map frontend data to exact database schema column names
+      const storyData = {
+        share_with_name: isAnonymous ? "Anonymous" : (name || "Anonymous"),
+        name: isAnonymous ? null : name,
+        city: location || null,
+        duration: duration,
+        challenges: challenges,
+        emotions: emotions,
+        emotionDetails: emotionDetails || null,
+        treatments_explored: treatments,
+        outcome: outcome,
+        outcome_description: outcomeDetails || null,
+        message_of_hope: messageToOthers || null,
+        image_url: uploadedImage || null,
+        consent_accepted: true,
+        created_at: new Date().toISOString()
+      };
+
       // Insert story into Supabase
       const { data, error } = await supabase
         .from("sakhi_success_stories")
-        .insert([{
-          name: isAnonymous ? "Anonymous" : name,
-          location,
-          journey_duration: duration,
-          challenges_faced: challenges,
-          emotions_list: emotions,
-          emotions_description: emotionDetails,
-          treatments_explored: treatments,
-          outcome,
-          outcome_description: outcomeDetails,
-          message_of_hope: messageToOthers,
-          image_url: uploadedImage,
-          share_with_name: isAnonymous ? "Anonymous" : name,
-          consent_accepted: true,
-          created_at: new Date().toISOString()
-        }])
+        .insert([storyData])
         .select();
 
       if (error) {
