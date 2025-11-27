@@ -516,9 +516,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // STORIES API ENDPOINTS
   // =========================
 
+  // Handle CORS preflight
+  app.options("/api/success-stories", (_req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.status(204).send();
+  });
+
   // Get all stories
   app.get("/api/success-stories", async (_req, res) => {
     try {
+      // Set CORS headers
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
       const { data, error } = await supabase
         .from("sakhi_success_stories")
         .select("*")
@@ -539,6 +552,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Submit a new story
   app.post("/api/success-stories", async (req, res) => {
     try {
+      // Set CORS headers
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
       const {
         name,
         location,
