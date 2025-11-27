@@ -106,7 +106,7 @@ export default function StorySubmissionForm({ open, onClose }: StorySubmissionFo
   const handlePublish = async () => {
     try {
       // Submit story to backend
-      const response = await fetch('https://zainab-sanguineous-niels.ngrok-free.dev/api/stories', {
+      const response = await fetch('https://zainab-sanguineous-niels.ngrok-free.dev/api/success-stories', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

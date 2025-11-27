@@ -35,7 +35,7 @@ const SuccessStories = () => {
   useEffect(() => {
     const fetchStories = async () => {
       try {
-        const response = await fetch('https://zainab-sanguineous-niels.ngrok-free.dev/api/stories');
+        const response = await fetch('https://zainab-sanguineous-niels.ngrok-free.dev/api/success-stories');
         if (response.ok) {
           const data = await response.json();
           setBackendStories(data);

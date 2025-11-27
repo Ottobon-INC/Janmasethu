@@ -517,7 +517,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // =========================
 
   // Get all stories
-  app.get("/api/stories", async (_req, res) => {
+  app.get("/api/success-stories", async (_req, res) => {
     try {
       const { data, error } = await supabase
         .from("sakhi_success_stories")
@@ -525,19 +525,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.error("Supabase error /api/stories:", error);
+        console.error("Supabase error /api/success-stories:", error);
         return res.status(500).json({ error: error.message });
       }
 
       res.json(data ?? []);
     } catch (e: any) {
-      console.error("GET /api/stories error:", e);
+      console.error("GET /api/success-stories error:", e);
       res.status(500).json({ error: e.message });
     }
   });
 
   // Submit a new story
-  app.post("/api/stories", async (req, res) => {
+  app.post("/api/success-stories", async (req, res) => {
     try {
       const {
         name,
@@ -575,13 +575,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .select();
 
       if (error) {
-        console.error("Supabase error /api/stories POST:", error);
+        console.error("Supabase error /api/success-stories POST:", error);
         return res.status(500).json({ error: error.message });
       }
 
       res.json({ success: true, story: data[0] });
     } catch (e: any) {
-      console.error("POST /api/stories error:", e);
+      console.error("POST /api/success-stories error:", e);
       res.status(500).json({ error: e.message });
     }
   });
