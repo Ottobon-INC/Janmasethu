@@ -467,13 +467,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // PUBLIC: list doctors (simplified card list for your Experts page)
   app.get("/api/doctors", async (req, res) => {
     try {
-      const { rows } = await query(
-        `SELECT id, source_site, slug, name, designation, image_url
-           FROM public.scraped_doctors
-          WHERE source_site = 'medcyivf.in'
-          ORDER BY name ASC`
-      );
-      res.json({ ok: true, results: rows });
+      const { data, error } = await supabase
+        .from("sakhi_scraped_doctors")
+        .select("id, source_site, slug, name, designation, image_url")
+        .eq("source_site", "medcyivf.in")
+        .order("name", { ascending: true });
+
+      if (error) {
+        console.error("Supabase error /api/doctors:", error);
+        return res.status(500).json({ ok: false, error: error.message });
+      }
+
+      res.json({ ok: true, results: data ?? [] });
     } catch (e: any) {
       console.error("GET /api/doctors error:", e);
       res.status(500).json({ ok: false, error: e.message });
@@ -485,17 +490,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const slug = req.params.slug;
       const { stripAppointment } = await import("./scraper/doctorSanitizer");
-      const { rows } = await query(
-        `SELECT id, source_site, slug, name, designation, specialties, qualifications,
-                experience_years, languages, location, image_url, profile_url, about_html
-           FROM public.scraped_doctors
-          WHERE source_site = 'medcyivf.in' AND slug = $1
-          LIMIT 1`,
-        [slug]
-      );
-      if (rows.length === 0) return res.status(404).json({ ok: false, error: "not found" });
+      
+      const { data, error } = await supabase
+        .from("sakhi_scraped_doctors")
+        .select("id, source_site, slug, name, designation, specialties, qualifications, experience_years, languages, location, image_url, profile_url, about_html")
+        .eq("source_site", "medcyivf.in")
+        .eq("slug", slug)
+        .limit(1);
 
-      const doc = rows[0];
+      if (error) {
+        console.error("Supabase error /api/doctors/:slug:", error);
+        return res.status(500).json({ ok: false, error: error.message });
+      }
+
+      if (!data || data.length === 0) {
+        return res.status(404).json({ ok: false, error: "not found" });
+      }
+
+      const doc = data[0];
       // Sanitize appointment forms/sections from HTML content
       doc.about_html = stripAppointment(doc.about_html || "");
 
