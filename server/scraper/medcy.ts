@@ -3,6 +3,7 @@ import { fetch } from "undici";
 import * as cheerio from "cheerio";
 import { createHash } from "crypto";
 import { query } from "../db";
+import { supabase } from "../supabaseClient";
 
 type ScrapedPost = {
   title: string;
@@ -123,51 +124,30 @@ export async function collectPostUrls(startUrl = "https://medcyivf.in/blog/", ma
   return Array.from(urls).slice(0, max);
 }
 
-/** Upsert into public.scraped_blogs by slug */
+/** Upsert into sakhi_scraped_blogs by source_url */
 async function upsert(post: ScrapedPost) {
   const content_hash = hash(post.content_html);
 
-  await query(
-    `
-    INSERT INTO public.scraped_blogs
-      (title, slug, excerpt, content_html, image_url, source_url, content_hash, last_scraped_at, last_changed_at)
-    VALUES
-      ($1,$2,$3,$4,$5,$6,$7, NOW(), NOW())
-    ON CONFLICT (slug) DO UPDATE
-    SET
-      -- only rewrite content if hash changed
-      title         = EXCLUDED.title,
-      excerpt       = EXCLUDED.excerpt,
-      image_url     = EXCLUDED.image_url,
-      source_url    = EXCLUDED.source_url,
-      last_scraped_at = NOW(),
-      -- update these only when new content is different
-      content_html  = CASE
-                        WHEN public.scraped_blogs.content_hash IS DISTINCT FROM EXCLUDED.content_hash
-                        THEN EXCLUDED.content_html
-                        ELSE public.scraped_blogs.content_html
-                      END,
-      content_hash  = CASE
-                        WHEN public.scraped_blogs.content_hash IS DISTINCT FROM EXCLUDED.content_hash
-                        THEN EXCLUDED.content_hash
-                        ELSE public.scraped_blogs.content_hash
-                      END,
-      last_changed_at = CASE
-                        WHEN public.scraped_blogs.content_hash IS DISTINCT FROM EXCLUDED.content_hash
-                        THEN NOW()
-                        ELSE public.scraped_blogs.last_changed_at
-                      END
-    `,
-    [
-      post.title,
-      post.slug,
-      post.excerpt,
-      post.content_html,
-      post.image_url,
-      post.source_url,
-      content_hash,
-    ]
-  );
+  const blogRow = {
+    title: post.title,
+    slug: post.slug,
+    excerpt: post.excerpt,
+    content_html: post.content_html,
+    image_url: post.image_url,
+    source_url: post.source_url,
+    content_hash,
+    last_scraped_at: new Date().toISOString(),
+    last_changed_at: new Date().toISOString(),
+  };
+
+  const { error } = await supabase
+    .from("sakhi_scraped_blogs")
+    .upsert(blogRow, { onConflict: "source_url" });
+
+  if (error) {
+    console.error("Supabase upsert error:", error);
+    throw new Error(error.message);
+  }
 }
 
 /** Main entry: crawl listing → scrape each post → upsert */
@@ -181,6 +161,7 @@ export async function runMedcyScrape({ max = 8 }: { max?: number } = {}) {
       await upsert(post);
       results.push({ url, ok: true });
     } catch (e: any) {
+      console.error(`Failed to scrape ${url}:`, e.message);
       results.push({ url, ok: false, error: e.message || String(e) });
     }
     await sleep(SLEEP_MS);
