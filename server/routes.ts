@@ -186,6 +186,100 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // =========================
+  // STORIES API ENDPOINTS
+  // =========================
+
+  // Handle CORS preflight
+  app.options("/api/success-stories", (_req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.status(204).send();
+  });
+
+  // Get all stories
+  app.get("/api/success-stories", async (_req, res) => {
+    try {
+      // Set CORS headers
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+      const { data, error } = await supabase
+        .from("sakhi_success_stories")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Supabase error /api/success-stories:", error);
+        return res.status(500).json({ ok: false, error: error.message });
+      }
+
+      res.json(data ?? []);
+    } catch (e: any) {
+      console.error("GET /api/success-stories error:", e);
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  });
+
+  // Submit a new story
+  app.post("/api/success-stories", async (req, res) => {
+    try {
+      // Set CORS headers
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+      const {
+        name,
+        location,
+        duration,
+        challenges,
+        emotions,
+        emotionDetails,
+        treatments,
+        outcome,
+        outcomeDetails,
+        messageToOthers,
+        uploadedImage,
+        isAnonymous
+      } = req.body;
+
+      // Insert story into Supabase
+      const { data, error } = await supabase
+        .from("sakhi_success_stories")
+        .insert([{
+          name: isAnonymous ? "Anonymous" : name,
+          location,
+          journey_duration: duration,
+          challenges_faced: challenges,
+          emotions_list: emotions,
+          emotions_description: emotionDetails,
+          treatments_explored: treatments,
+          outcome,
+          outcome_description: outcomeDetails,
+          message_of_hope: messageToOthers,
+          image_url: uploadedImage,
+          share_with_name: isAnonymous ? "Anonymous" : name,
+          consent_accepted: true,
+          created_at: new Date().toISOString()
+        }])
+        .select();
+
+      if (error) {
+        console.error("Supabase error POST /api/success-stories:", error);
+        return res.status(500).json({ ok: false, error: error.message });
+      }
+
+      console.log("✅ Story submitted successfully:", data);
+      res.json({ ok: true, story: data?.[0] });
+    } catch (e: any) {
+      console.error("POST /api/success-stories error:", e);
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  });
+
+  // =========================
   // CLINIC API ENDPOINTS
   // =========================
 
@@ -484,7 +578,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const slug = req.params.slug;
       const { stripAppointment } = await import("./scraper/doctorSanitizer");
-      
+
       const { data, error } = await supabase
         .from("sakhi_scraped_doctors")
         .select("id, source_site, slug, name, designation, specialties, qualifications, experience_years, languages, location, image_url, profile_url, about_html")

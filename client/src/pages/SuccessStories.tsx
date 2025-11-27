@@ -5,12 +5,38 @@ import { useLanguage } from "../i18n/LanguageProvider";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { stories } from "@/data/stories";
+import { stories as staticStories } from "@/data/stories";
 import StorySubmissionForm from "@/components/StorySubmissionForm";
 
 const SuccessStories = () => {
   const { t, lang } = useLanguage();
   const [showStoryForm, setShowStoryForm] = useState(false);
+  const [backendStories, setBackendStories] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch stories from backend
+  useEffect(() => {
+    const fetchStories = async () => {
+      try {
+        const response = await fetch("https://zainab-sanguineous-niels.ngrok-free.dev/api/success-stories");
+        if (response.ok) {
+          const data = await response.json();
+          setBackendStories(data);
+        } else {
+          console.error("Failed to fetch stories from backend");
+        }
+      } catch (error) {
+        console.error("Error fetching stories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStories();
+  }, []);
+
+  // Combine static stories with backend stories
+  const stories = [...staticStories, ...backendStories];
 
   // Scroll to top when component mounts
   useEffect(() => {

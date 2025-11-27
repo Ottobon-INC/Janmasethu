@@ -103,33 +103,60 @@ export default function StorySubmissionForm({ open, onClose }: StorySubmissionFo
     setShowPreview(true);
   };
 
-  const handlePublish = () => {
-    setShowConfetti(true);
-    setShowSuccess(true);
-    
-    setTimeout(() => {
-      setShowConfetti(false);
-      setShowSuccess(false);
-      setShowPreview(false);
-      setConsentAccepted(false);
-      onClose();
-      
-      // Reset form
-      setStoryData({
-        isAnonymous: false,
-        name: "",
-        location: "",
-        duration: "",
-        challenges: "",
-        emotions: [],
-        emotionDetails: "",
-        treatments: [],
-        outcome: "",
-        outcomeDetails: "",
-        messageToOthers: "",
-        uploadedImage: null,
+  const handlePublish = async () => {
+    try {
+      // Submit story to backend
+      const response = await fetch("https://zainab-sanguineous-niels.ngrok-free.dev/api/success-stories", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(storyData),
       });
-    }, 4000);
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to submit story");
+      }
+
+      console.log("Story submitted:", result);
+
+      // Show success animation
+      setShowConfetti(true);
+      setShowSuccess(true);
+      
+      setTimeout(() => {
+        setShowConfetti(false);
+        setShowSuccess(false);
+        setShowPreview(false);
+        setConsentAccepted(false);
+        onClose();
+        
+        // Reset form
+        setStoryData({
+          isAnonymous: false,
+          name: "",
+          location: "",
+          duration: "",
+          challenges: "",
+          emotions: [],
+          emotionDetails: "",
+          treatments: [],
+          outcome: "",
+          outcomeDetails: "",
+          messageToOthers: "",
+          uploadedImage: null,
+        });
+      }, 4000);
+    } catch (error: any) {
+      console.error("Error submitting story:", error);
+      toast({
+        title: "Submission Failed",
+        description: error.message || "Failed to submit your story. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const toggleEmotion = (emotion: string) => {
