@@ -13,16 +13,18 @@ export default function Experts() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    (async () => {
+    async function load() {
       try {
-        const rows = await fetchDoctors();
-        setDoctors(rows);
+        const res = await fetch("/api/experts");
+        const json = await res.json();
+        setDoctors(json.experts || []);
       } catch (e: any) {
         setError(e.message || "Failed to load doctors");
       } finally {
         setLoading(false);
       }
-    })();
+    }
+    load();
   }, []);
 
   return (

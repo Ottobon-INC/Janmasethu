@@ -36,17 +36,18 @@ const Blog = () => {
   useEffect(() => window.scrollTo(0, 0), []);
 
   useEffect(() => {
-    (async () => {
+    async function load() {
       try {
-        const r = await fetch("/api/blogs?limit=24");
-        if (!r.ok) throw new Error(await r.text());
-        setItems(await r.json());
+        const res = await fetch("/api/blogs");
+        const json = await res.json();
+        setItems(json.blogs || []);
       } catch (e: any) {
         setErr(e.message || "Failed to load blogs");
       } finally {
         setLoading(false);
       }
-    })();
+    }
+    load();
   }, []);
 
   if (loading) return <div className="p-8">Loading articles…</div>;
