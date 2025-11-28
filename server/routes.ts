@@ -4,6 +4,8 @@ import { db } from "@db";
 import { createServer, type Server } from "http";
 import { query } from "./db";
 import { runMedcyDoctorsScrape } from "./scraper/medcyDoctors";
+import { scrapeAndStoreDoctors } from "./scraper/doctors";
+import { scrapeAndStoreBlogs } from "./scraper/medcy";
 import { supabase } from "./supabaseClient";
 
 // Dev key for scraping - use environment variable in production
@@ -169,6 +171,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true, inserted: result });
     } catch (e: any) {
       res.status(500).json({ error: e.message });
+    }
+  });
+
+  // --- NEW: Scrape doctors using axios/cheerio approach
+  app.get("/api/scrape/doctors-v2", requireKey, async (req, res) => {
+    try {
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
+      const result = await scrapeAndStoreDoctors(limit);
+      res.json(result);
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  // --- NEW: Scrape blogs using axios/cheerio approach
+  app.get("/api/scrape/blogs", requireKey, async (req, res) => {
+    try {
+      const max = req.query.max ? parseInt(req.query.max as string) : undefined;
+      const result = await scrapeAndStoreBlogs(max);
+      res.json(result);
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  // --- NEW: Manual trigger for doctor scraping (POST)
+  app.post("/api/scrape/doctors", requireKey, async (req, res) => {
+    try {
+      const { limit } = req.body;
+      const result = await scrapeAndStoreDoctors(limit);
+      res.json(result);
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  // --- NEW: Manual trigger for blog scraping (POST)
+  app.post("/api/scrape/blogs", requireKey, async (req, res) => {
+    try {
+      const { max } = req.body;
+      const result = await scrapeAndStoreBlogs(max);
+      res.json(result);
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
     }
   });
 
