@@ -1,4 +1,5 @@
 
+// server/supabaseClient.ts
 import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
 
@@ -8,7 +9,7 @@ const url = process.env.SUPABASE_URL;
 const key = process.env.SUPABASE_ANON_KEY;
 
 if (!url || !key) {
-  console.error("❌ MISSING SUPABASE_URL or SUPABASE_ANON_KEY");
+  console.error("❌ MISSING SUPABASE_URL or SUPABASE_ANON_KEY in .env");
   process.exit(1);
 }
 
