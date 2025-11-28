@@ -718,18 +718,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // 2) Single blog by slug
   app.get("/api/blogs/:slug", async (req, res) => {
     try {
-      const { rows } = await query(
-        `
-        SELECT id, slug, title, excerpt, content_html, source_url, created_at
-        FROM public.scraped_blogs
-        WHERE slug = $1
-        LIMIT 1
-        `,
-        [req.params.slug]
-      );
+      const slug = req.params.slug;
 
-      if (!rows.length) return res.status(404).json({ error: "Not found" });
-      res.json(rows[0]);
+      const { data, error } = await supabase
+        .from("sakhi_scraped_blogs")
+        .select("id, slug, title, excerpt, content_html, source_url, created_at")
+        .eq("slug", slug)
+        .single();
+
+      if (error || !data) {
+        return res.status(404).json({ error: "Not found" });
+      }
+
+      res.json(data);
     } catch (e: any) {
       console.error("GET /api/blogs/:slug error:", e);
       res.status(500).json({ error: e.message });
