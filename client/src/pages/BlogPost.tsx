@@ -133,65 +133,57 @@ const BlogPost = () => {
 
       {/* Post Content */}
       <div className="max-w-4xl mx-auto">
-        <Card className="rounded-3xl p-8 md:p-12 card-shadow mb-8">
-          <CardContent className="p-0">
-            <div
-              className="prose prose-lg max-w-none"
-              data-testid="section-post-content"
-              dangerouslySetInnerHTML={{ __html: post.content_html }}
-            />
-          </CardContent>
-        </Card>
+        <div className="mb-12">
+          <div
+            className="prose prose-lg prose-headings:font-serif prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-purple-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl prose-img:shadow-lg max-w-none"
+            data-testid="section-post-content"
+            dangerouslySetInnerHTML={{ __html: post.content_html }}
+          />
+        </div>
 
         {/* Author, Tags, and Source - Below Content */}
-        <div className="space-y-6">
-          <Card className="rounded-3xl p-6 card-shadow">
-            <CardContent className="p-0">
-              <h3 className="text-lg font-bold text-foreground font-serif mb-4">
-                About the Author
-              </h3>
-              <div className="space-y-2">
-                <p className="font-medium text-foreground">Editorial Team</p>
-                <p className="text-sm text-muted-foreground">
-                  Evidence-based content for fertility and parenting guidance.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="border-t border-border pt-8 mt-12 space-y-8">
+          <div>
+            <h3 className="text-lg font-bold text-foreground font-serif mb-3">
+              About the Author
+            </h3>
+            <div className="space-y-1">
+              <p className="font-medium text-foreground">Editorial Team</p>
+              <p className="text-sm text-muted-foreground">
+                Evidence-based content for fertility and parenting guidance.
+              </p>
+            </div>
+          </div>
 
-          <Card className="rounded-3xl p-6 card-shadow">
-            <CardContent className="p-0">
-              <h3 className="text-lg font-bold text-foreground font-serif mb-4">
-                Tags
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                <Badge
-                  variant="outline"
-                  className="cursor-pointer hover:bg-muted"
-                >
-                  <Tag className="w-3 h-3 mr-1" />
-                  Blog
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
+          <div>
+            <h3 className="text-lg font-bold text-foreground font-serif mb-3">
+              Tags
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              <Badge
+                variant="outline"
+                className="cursor-pointer hover:bg-muted"
+              >
+                <Tag className="w-3 h-3 mr-1" />
+                Blog
+              </Badge>
+            </div>
+          </div>
 
           {post.source_url && (
-            <Card className="rounded-3xl p-6 card-shadow">
-              <CardContent className="p-0">
-                <h3 className="text-lg font-bold text-foreground font-serif mb-4">
-                  Source
-                </h3>
-                <a
-                  href={post.source_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:text-blue-800 underline break-all text-sm"
-                >
-                  {post.source_url}
-                </a>
-              </CardContent>
-            </Card>
+            <div>
+              <h3 className="text-lg font-bold text-foreground font-serif mb-3">
+                Source
+              </h3>
+              <a
+                href={post.source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800 underline break-all text-sm"
+              >
+                {post.source_url}
+              </a>
+            </div>
           )}
         </div>
       </div>
