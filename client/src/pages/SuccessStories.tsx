@@ -18,15 +18,16 @@ const SuccessStories = () => {
   useEffect(() => {
     const fetchStories = async () => {
       try {
-        const response = await fetch("/api/success-stories");
-        if (response.ok) {
-          const data = await response.json();
-          setBackendStories(data);
-        } else {
-          console.error("Failed to fetch stories from backend");
+        const response = await fetch("https://zainab-sanguineous-niels.ngrok-free.dev/api/success-stories");
+        if (!response.ok) {
+          throw new Error("Failed to fetch stories");
         }
+        const data = await response.json();
+        setBackendStories(data);
       } catch (error) {
-        console.error("Error fetching stories:", error);
+        console.error("Failed to fetch stories from backend");
+        // Fallback to static data if backend fails
+        setBackendStories(staticStories); // Assuming staticStories is available and intended as fallback
       } finally {
         setLoading(false);
       }
@@ -38,8 +39,25 @@ const SuccessStories = () => {
   // Handle new story submission
   const handleStorySubmitted = (story: any) => {
     if (!story) return;
-    setBackendStories(prev => [story, ...prev]); // newest first
+    // Here, you would typically POST the new story to your backend
+    // For now, we'll just prepend it to the frontend state
+    fetch("https://zainab-sanguineous-niels.ngrok-free.dev/api/success-stories", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(story),
+    })
+      .then(response => response.json())
+      .then(newStory => {
+        setBackendStories(prev => [newStory, ...prev]);
+      })
+      .catch(error => {
+        console.error("Error submitting story:", error);
+        // Optionally, provide user feedback about the submission failure
+      });
   };
+
 
   // Combine static stories with backend stories
   const stories = [...staticStories, ...backendStories];
@@ -62,6 +80,15 @@ const SuccessStories = () => {
     ];
     return images[index % images.length];
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        {/* You can add a loading spinner here */}
+        <p>Loading stories...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -100,7 +127,7 @@ const SuccessStories = () => {
 
                 <img
                   src={getStoryImage(index)}
-                  alt={story.title[lang]}
+                  alt={story.title?.[lang] || "Story Image"}
                   className="rounded-xl w-full h-32 object-cover mb-4 group-hover:shadow-lg transition-shadow"
                 />
 
@@ -110,9 +137,9 @@ const SuccessStories = () => {
                     className="text-xs group-hover:shadow-sm transition-shadow"
                     data-testid={`badge-story-stage-${index}`}
                   >
-                    {story.stage[lang]}
+                    {story.stage?.[lang] || "Unknown Stage"}
                   </Badge>
-                  {story.treatment && (
+                  {story.treatment?.[lang] && (
                     <Badge
                       variant="outline"
                       className="text-xs group-hover:shadow-sm transition-shadow"
@@ -127,25 +154,25 @@ const SuccessStories = () => {
                   className="text-lg font-bold text-foreground font-serif mb-2 group-hover:text-pink-600 transition-colors"
                   data-testid={`text-story-title-${index}`}
                 >
-                  {story.title[lang]}
+                  {story.title?.[lang] || "Untitled Story"}
                 </h3>
                 <p
                   className="text-sm text-muted-foreground mb-4 flex-grow group-hover:text-pink-700 transition-colors"
                   data-testid={`text-story-summary-${index}`}
                 >
-                  {story.summary[lang]}
+                  {story.summary?.[lang] || "No summary available."}
                 </p>
 
                 <div className="flex items-center justify-between mt-auto">
                   <div className="flex items-center text-xs text-muted-foreground">
                     <MapPin className="w-3 h-3 mr-1" />
                     <span data-testid={`text-story-city-${index}`}>
-                      {story.city[lang]}
+                      {story.city?.[lang] || "Unknown City"}
                     </span>
                   </div>
                   <div className="flex items-center text-xs text-muted-foreground space-x-2">
                     <span data-testid={`text-story-language-${index}`}>
-                      {story.language[lang]}
+                      {story.language?.[lang] || "Unknown Language"}
                     </span>
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-pink-600 font-medium">
                       • Read story
@@ -167,20 +194,20 @@ const SuccessStories = () => {
             <div className="absolute bottom-10 right-10 w-32 h-32 bg-purple-300 rounded-full blur-xl"></div>
             <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-orange-300 rounded-full blur-lg"></div>
           </div>
-          
+
           <div className="relative z-10">
             <div className="bg-white/80 backdrop-blur-sm rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
               <Heart className="w-12 h-12 text-pink-500" />
             </div>
-            
+
             <h2 className="text-3xl md:text-4xl font-bold text-foreground font-serif mb-4">
               {t("share_story_title")}
             </h2>
-            
+
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
               {t("share_story_description")}
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button
                 onClick={() => setShowStoryForm(true)}
@@ -189,7 +216,7 @@ const SuccessStories = () => {
               >
                 {t("share_story_button")}
               </Button>
-              
+
               <div className="text-sm text-muted-foreground flex items-center gap-2">
                 <div className="flex -space-x-2">
                   <div className="w-8 h-8 bg-gradient-to-br from-pink-400 to-purple-400 rounded-full border-2 border-white"></div>
@@ -204,8 +231,8 @@ const SuccessStories = () => {
       </section>
 
       {/* Story Submission Form */}
-      <StorySubmissionForm 
-        open={showStoryForm} 
+      <StorySubmissionForm
+        open={showStoryForm}
         onClose={() => setShowStoryForm(false)}
         onSubmitted={handleStorySubmitted}
       />
