@@ -22,11 +22,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .from("sakhi_scraped_blogs")
         .select("id")
         .limit(1);
-      
+
       if (error) {
         return res.status(500).json({ ok: false, error: error.message });
       }
-      
+
       res.json({ ok: true, connection: "supabase", timestamp: new Date().toISOString() });
     } catch (e: any) {
       console.error("DB error:", e);
@@ -249,8 +249,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // =========================
-  // STORIES API ENDPOINTS
+  // STORIES API ENDPOINTS (IN-MEMORY - NO DATABASE)
   // =========================
+
+  // In-memory storage for stories
+  const inMemoryStories: any[] = [];
 
   // Handle CORS preflight
   app.options("/api/success-stories", (_req, res) => {
@@ -260,7 +263,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.status(204).send();
   });
 
-  // Get all stories
+  // Get all stories (in-memory only)
   app.get("/api/success-stories", async (_req, res) => {
     try {
       // Set CORS headers
@@ -268,24 +271,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
       res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-      const { data, error } = await supabase
-        .from("sakhi_success_stories")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Supabase error /api/success-stories:", error);
-        return res.status(500).json({ ok: false, error: error.message });
-      }
-
-      res.json(data ?? []);
+      console.log("📖 Fetching stories from memory:", inMemoryStories.length);
+      res.json(inMemoryStories);
     } catch (e: any) {
       console.error("GET /api/success-stories error:", e);
       res.status(500).json({ ok: false, error: e.message });
     }
   });
 
-  // Submit a new story
+  // Submit a new story (in-memory only)
   app.post("/api/success-stories", async (req, res) => {
     try {
       // Set CORS headers
@@ -316,15 +310,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log("📥 Received story submission:", { name, city, isAnonymous });
 
-      // Map frontend data to exact database schema column names
-      const storyData = {
-        share_with_name: isAnonymous === "true" || isAnonymous === true ? "Anonymous" : (name || "Anonymous"),
-        name: isAnonymous === "true" || isAnonymous === true ? null : name,
+      const shareName = isAnonymous === "true" || isAnonymous === true ? "Anonymous" : (name || "Anonymous");
+      const actualName = isAnonymous === "true" || isAnonymous === true ? null : name;
+
+      // Create story object
+      const newStory = {
+        id: inMemoryStories.length + 1,
+        share_with_name: shareName,
+        name: actualName,
         city: city || null,
         duration: duration,
         challenges: challenges,
         emotions: emotions,
-        emotionDetails: emotionDetails || null,
+        emotion_details: emotionDetails || null,
         treatments_explored: treatments,
         outcome: outcome,
         outcome_description: outcomeDetails || null,
@@ -339,19 +337,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         created_at: new Date().toISOString()
       };
 
-      // Insert story into Supabase
-      const { data, error } = await supabase
-        .from("sakhi_success_stories")
-        .insert([storyData])
-        .select();
+      // Add to in-memory array (newest first)
+      inMemoryStories.unshift(newStory);
 
-      if (error) {
-        console.error("Supabase error POST /api/success-stories:", error);
-        return res.status(500).json({ ok: false, error: error.message });
-      }
+      console.log("✅ Story stored in memory:", newStory.title);
+      console.log("📊 Total stories in memory:", inMemoryStories.length);
 
-      console.log("✅ Story submitted successfully:", data);
-      res.json({ ok: true, story: data?.[0] });
+      res.json({ ok: true, story: newStory });
     } catch (e: any) {
       console.error("POST /api/success-stories error:", e);
       res.status(500).json({ ok: false, error: e.message });
