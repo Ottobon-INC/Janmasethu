@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 interface StorySubmissionFormProps {
   open: boolean;
   onClose: () => void;
+  onSubmitted?: (story: any) => void;
 }
 
 interface StoryData {
@@ -44,7 +45,7 @@ const outcomes = [
   "Adopted", "Chose to pause", "Processing emotionally"
 ];
 
-export default function StorySubmissionForm({ open, onClose }: StorySubmissionFormProps) {
+export default function StorySubmissionForm({ open, onClose, onSubmitted }: StorySubmissionFormProps) {
   const { toast } = useToast();
   const [showConfetti, setShowConfetti] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -106,7 +107,7 @@ export default function StorySubmissionForm({ open, onClose }: StorySubmissionFo
   const handlePublish = async () => {
     try {
       // Submit story to backend
-      const response = await fetch("https://zainab-sanguineous-niels.ngrok-free.dev/api/success-stories", {
+      const response = await fetch("/api/success-stories", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -114,13 +115,13 @@ export default function StorySubmissionForm({ open, onClose }: StorySubmissionFo
         body: JSON.stringify(storyData),
       });
 
-      const result = await response.json();
-      
       if (!response.ok) {
+        const result = await response.json();
         throw new Error(result.error || "Failed to submit story");
       }
 
-      console.log("Story submitted:", result);
+      const { data } = await response.json();
+      console.log("Story submitted:", data);
 
       // Show success animation
       setShowConfetti(true);
@@ -131,6 +132,10 @@ export default function StorySubmissionForm({ open, onClose }: StorySubmissionFo
         setShowSuccess(false);
         setShowPreview(false);
         setConsentAccepted(false);
+        
+        // Notify parent component to update grid
+        onSubmitted?.(data);
+        
         onClose();
         
         // Reset form

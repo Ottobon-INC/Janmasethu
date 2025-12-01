@@ -18,7 +18,7 @@ const SuccessStories = () => {
   useEffect(() => {
     const fetchStories = async () => {
       try {
-        const response = await fetch("https://zainab-sanguineous-niels.ngrok-free.dev/api/success-stories");
+        const response = await fetch("/api/success-stories");
         if (response.ok) {
           const data = await response.json();
           setBackendStories(data);
@@ -34,6 +34,12 @@ const SuccessStories = () => {
 
     fetchStories();
   }, []);
+
+  // Handle new story submission
+  const handleStorySubmitted = (story: any) => {
+    if (!story) return;
+    setBackendStories(prev => [story, ...prev]); // newest first
+  };
 
   // Combine static stories with backend stories
   const stories = [...staticStories, ...backendStories];
@@ -200,7 +206,8 @@ const SuccessStories = () => {
       {/* Story Submission Form */}
       <StorySubmissionForm 
         open={showStoryForm} 
-        onClose={() => setShowStoryForm(false)} 
+        onClose={() => setShowStoryForm(false)}
+        onSubmitted={handleStorySubmitted}
       />
     </div>
   );
