@@ -128,7 +128,7 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
         slug: (storyData.isAnonymous ? "anonymous" : storyData.name.toLowerCase().replace(/\s+/g, '-')) + '-' + Date.now()
       };
 
-      console.log("Sending payload:", JSON.stringify(payload, null, 2));
+      console.log("📤 Sending payload to ngrok:", JSON.stringify(payload, null, 2));
 
       // Submit story to external backend via ngrok
       const response = await fetch("https://zainab-sanguineous-niels.ngrok-free.dev/api/success-stories", {
@@ -139,14 +139,19 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
         body: JSON.stringify(payload),
       });
 
+      console.log("📥 Response status:", response.status);
+
       if (!response.ok) {
         const result = await response.json();
         throw new Error(result.error || "Failed to submit story");
       }
 
       const responseData = await response.json();
-      const data = responseData.story || responseData.data || responseData;
-      console.log("Story submitted:", data);
+      console.log("📥 Response data:", responseData);
+
+      // Extract the story from response
+      const newStory = responseData.story || responseData.data || responseData;
+      console.log("✅ Story submitted successfully:", newStory);
 
       // Show success animation
       setShowConfetti(true);
@@ -158,8 +163,8 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
         setShowPreview(false);
         setConsentAccepted(false);
         
-        // Notify parent component to update grid
-        onSubmitted?.(data);
+        // Notify parent component to update grid immediately
+        onSubmitted?.(newStory);
         
         onClose();
         
@@ -180,7 +185,7 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
         });
       }, 4000);
     } catch (error: any) {
-      console.error("Error submitting story:", error);
+      console.error("❌ Error submitting story:", error);
       toast({
         title: "Submission Failed",
         description: error.message || "Failed to submit your story. Please try again.",

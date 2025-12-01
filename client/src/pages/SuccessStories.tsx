@@ -23,11 +23,11 @@ const SuccessStories = () => {
           throw new Error("Failed to fetch stories");
         }
         const data = await response.json();
+        console.log("✅ Fetched stories from backend:", data.length);
         setBackendStories(data);
       } catch (error) {
-        console.error("Failed to fetch stories from backend");
-        // Fallback to static data if backend fails
-        setBackendStories(staticStories); // Assuming staticStories is available and intended as fallback
+        console.error("❌ Failed to fetch stories from backend:", error);
+        setBackendStories([]);
       } finally {
         setLoading(false);
       }
@@ -36,30 +36,16 @@ const SuccessStories = () => {
     fetchStories();
   }, []);
 
-  // Handle new story submission
-  const handleStorySubmitted = (story: any) => {
-    if (!story) return;
-    fetch("https://zainab-sanguineous-niels.ngrok-free.dev/api/success-stories", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(story),
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.ok && data.story) {
-          setBackendStories(prev => [data.story, ...prev]);
-        }
-      })
-      .catch(error => {
-        console.error("Error submitting story:", error);
-      });
+  // Handle new story submission - receives the new story from form and adds it to grid
+  const handleStorySubmitted = (newStory: any) => {
+    if (!newStory) return;
+    console.log("✅ Story submitted successfully, adding to grid:", newStory);
+    // Immediately add the new story to the grid (prepend for newest first)
+    setBackendStories(prev => [newStory, ...prev]);
   };
 
-  // Only use backend stories (which are stored in memory on server)
-  // Backend stories from API take precedence, static stories are fallback
-  const stories = backendStories.length > 0 ? backendStories : staticStories;
+  // Combine backend stories with static stories (backend stories first)
+  const stories = [...backendStories, ...staticStories];
 
   // Scroll to top when component mounts
   useEffect(() => {
