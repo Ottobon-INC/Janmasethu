@@ -80,23 +80,112 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
   const handleContinueToPreview = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation
+    // Validation with focus on first missing field
     if (!storyData.isAnonymous && !storyData.name.trim()) {
       toast({
         title: "Name Required",
         description: "Please enter your name or choose anonymous.",
         variant: "destructive",
       });
+      document.getElementById('name')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('name')?.focus();
       return;
     }
 
-    if (!storyData.location.trim() || !storyData.duration || !storyData.challenges.trim() || 
-        storyData.emotions.length === 0 || storyData.treatments.length === 0 || !storyData.outcome) {
+    if (!storyData.location.trim()) {
       toast({
-        title: "Incomplete Form",
-        description: "Please fill in all required fields.",
+        title: "Location Required",
+        description: "Please enter your location.",
         variant: "destructive",
       });
+      document.getElementById('location')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('location')?.focus();
+      return;
+    }
+
+    if (!storyData.duration) {
+      toast({
+        title: "Duration Required",
+        description: "Please select journey duration.",
+        variant: "destructive",
+      });
+      document.getElementById('duration')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('duration')?.focus();
+      return;
+    }
+
+    if (!storyData.challenges.trim()) {
+      toast({
+        title: "Challenges Required",
+        description: "Please describe your challenges.",
+        variant: "destructive",
+      });
+      document.getElementById('challenges')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('challenges')?.focus();
+      return;
+    }
+
+    if (storyData.emotions.length === 0) {
+      toast({
+        title: "Emotions Required",
+        description: "Please select at least one emotion.",
+        variant: "destructive",
+      });
+      document.querySelector('[data-section="emotions"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if (!storyData.emotionDetails.trim()) {
+      toast({
+        title: "Emotion Details Required",
+        description: "Please describe how you felt during those moments.",
+        variant: "destructive",
+      });
+      document.getElementById('emotionDetails')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('emotionDetails')?.focus();
+      return;
+    }
+
+    if (storyData.treatments.length === 0) {
+      toast({
+        title: "Treatments Required",
+        description: "Please select at least one treatment.",
+        variant: "destructive",
+      });
+      document.querySelector('[data-section="treatments"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if (!storyData.outcome) {
+      toast({
+        title: "Outcome Required",
+        description: "Please select your current status.",
+        variant: "destructive",
+      });
+      document.getElementById('outcome')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('outcome')?.focus();
+      return;
+    }
+
+    if (!storyData.outcomeDetails.trim()) {
+      toast({
+        title: "Outcome Details Required",
+        description: "Please tell us more about your journey.",
+        variant: "destructive",
+      });
+      document.getElementById('outcomeDetails')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('outcomeDetails')?.focus();
+      return;
+    }
+
+    if (!storyData.messageToOthers.trim()) {
+      toast({
+        title: "Message Required",
+        description: "Please leave a message for others.",
+        variant: "destructive",
+      });
+      document.getElementById('message')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('message')?.focus();
       return;
     }
 
@@ -591,7 +680,7 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
               </div>
 
               {/* Section 3: Emotions */}
-              <div className="space-y-4 animate-fadeIn">
+              <div className="space-y-4 animate-fadeIn" data-section="emotions">
                 <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
                   <Sparkles className="w-5 h-5" />
                   Your Emotions
@@ -625,7 +714,7 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
 
                   <div className="space-y-2">
                     <Label htmlFor="emotionDetails" className="text-sm font-medium text-gray-700">
-                      Would you like to describe how you felt during those moments? (Optional)
+                      Describe how you felt during those moments <span className="text-red-500">*</span>
                     </Label>
                     <Textarea
                       id="emotionDetails"
@@ -643,7 +732,7 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
               </div>
 
               {/* Section 4: Treatments */}
-              <div className="space-y-4 animate-fadeIn">
+              <div className="space-y-4 animate-fadeIn" data-section="treatments">
                 <h3 className="text-lg font-semibold text-purple-700 flex items-center gap-2">
                   <Sparkles className="w-5 h-5" />
                   Your Path
@@ -704,13 +793,13 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
 
                   <div className="space-y-2">
                     <Label htmlFor="outcomeDetails" className="text-sm font-medium text-gray-700">
-                      Tell us more... (Optional)
+                      Tell us more about your journey <span className="text-red-500">*</span>
                     </Label>
                     <Textarea
                       id="outcomeDetails"
                       value={storyData.outcomeDetails}
                       onChange={(e) => setStoryData({ ...storyData, outcomeDetails: e.target.value })}
-                      placeholder="Share more details if you'd like..."
+                      placeholder="Share more details..."
                       className="bg-white/90 border-2 border-pink-200 focus:border-pink-400 rounded-2xl px-4 py-3 text-base min-h-[80px] resize-none"
                     />
                   </div>
@@ -727,7 +816,7 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
                 <div className="space-y-4 bg-white/60 rounded-2xl p-4 sm:p-6">
                   <div className="space-y-2">
                     <Label htmlFor="message" className="text-sm font-medium text-gray-700">
-                      Would you like to leave a message for another family who might be reading your story? (Optional)
+                      Leave a message for another family who might be reading your story <span className="text-red-500">*</span>
                     </Label>
                     <Textarea
                       id="message"
