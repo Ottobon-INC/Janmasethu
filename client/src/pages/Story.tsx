@@ -24,10 +24,23 @@ export default function Story() {
       try {
         const response = await fetch("/api/success-stories");
         const data = await response.json();
+        console.log("📖 All stories:", data);
+        console.log("🔍 Looking for slug:", params?.slug);
+        
         setAllStories(data);
 
         if (params?.slug) {
-          const foundStory = data.find((s: any) => s.slug === params.slug);
+          // Try exact match first
+          let foundStory = data.find((s: any) => s.slug === params.slug);
+          
+          // If not found, try to match the beginning of the slug (for old URLs)
+          if (!foundStory) {
+            foundStory = data.find((s: any) => 
+              s.slug && s.slug.toLowerCase().startsWith(params.slug.toLowerCase())
+            );
+          }
+          
+          console.log("✅ Found story:", foundStory);
           setStory(foundStory || null);
         }
       } catch (error) {
