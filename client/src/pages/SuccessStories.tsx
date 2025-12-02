@@ -46,10 +46,10 @@ const SuccessStories = () => {
       console.error("❌ No data in response");
       return;
     }
-    
+
     const newStory = responseData.data;
     console.log("✅ Story submitted successfully, adding to grid:", newStory);
-    
+
     // Immediately prepend the new story to the grid
     setBackendStories(prev => [newStory, ...prev]);
   };
@@ -103,7 +103,13 @@ const SuccessStories = () => {
       {/* Stories Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
         {stories.map((story, index) => {
-          const storySlug = story.slug || `story-${index}`;
+          // Ensure we use the correct slug from the story object
+          const storySlug = story.slug;
+          if (!storySlug) {
+            console.warn("Story missing slug:", story);
+            return null;
+          }
+
           return (
           <Link
             key={storySlug}

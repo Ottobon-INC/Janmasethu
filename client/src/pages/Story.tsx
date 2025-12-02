@@ -24,24 +24,42 @@ export default function Story() {
       try {
         const response = await fetch("/api/success-stories");
         const data = await response.json();
-        console.log("📖 All stories:", data);
-        console.log("🔍 Looking for slug:", params?.slug);
         
         setAllStories(data);
 
         if (params?.slug) {
+          console.log("🔍 Looking for slug:", params.slug);
+          console.log("📖 Available slugs:", data.map((s: any) => s.slug));
+          
           // Try exact match first
           let foundStory = data.find((s: any) => s.slug === params.slug);
           
-          // If not found, try to match the beginning of the slug (for old URLs)
+          console.log(foundStory ? "✅ Found story (exact match)" : "❌ No exact match found");
+          
+          // If not found, try partial match (for backwards compatibility)
           if (!foundStory) {
-            foundStory = data.find((s: any) => 
-              s.slug && s.slug.toLowerCase().startsWith(params.slug.toLowerCase())
-            );
+            console.log("🔄 Trying partial match...");
+            foundStory = data.find((s: any) => {
+              if (!s.slug) return false;
+              
+              // Match if the database slug starts with the URL slug
+              // OR if the URL slug is contained in the database slug
+              const dbSlug = s.slug.toLowerCase();
+              const urlSlug = params.slug.toLowerCase();
+              
+              return dbSlug.includes(urlSlug) || urlSlug.includes(dbSlug);
+            });
+            
+            if (foundStory) {
+              console.log("✅ Found story (partial match):", foundStory.slug);
+            }
           }
           
-          console.log("✅ Found story:", foundStory);
           setStory(foundStory || null);
+          
+          if (!foundStory) {
+            console.error("❌ Story not found for slug:", params.slug);
+          }
         }
       } catch (error) {
         console.error("Error fetching stories:", error);
