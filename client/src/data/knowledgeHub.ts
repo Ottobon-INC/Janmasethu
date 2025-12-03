@@ -201,18 +201,35 @@ export async function fetchArticles(params?: {
     console.log('Articles response data:', data);
 
     // Validate response structure
-    if (!data || typeof data !== 'object') {
+    if (!data) {
       console.error('Invalid response format:', data);
       throw new Error('Invalid response format');
     }
 
-    // Ensure items is always an array
-    if (!Array.isArray(data.items)) {
-      console.warn('Response missing items array, returning empty array');
-      data.items = [];
+    // Handle both array and object responses
+    if (Array.isArray(data)) {
+      // Backend returned direct array
+      console.log('Received direct array of articles:', data.length);
+      return {
+        filters: {},
+        pagination: {
+          page: 1,
+          per_page: data.length,
+          total: data.length,
+          has_more: false
+        },
+        items: data
+      };
+    } else if (typeof data === 'object') {
+      // Backend returned object with items property
+      if (!Array.isArray(data.items)) {
+        console.warn('Response missing items array, returning empty array');
+        data.items = [];
+      }
+      return data;
     }
 
-    return data;
+    throw new Error('Invalid response format');
   } catch (error) {
     console.error('Error fetching articles:', error);
     return {
