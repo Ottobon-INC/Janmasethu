@@ -53,15 +53,42 @@ const Knowledge = () => {
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
 
-  // Load JSON articles metadata and handle URL search params
+  // Load articles from backend API
   useEffect(() => {
     const loadArticles = async () => {
-      setLoading(true); // Set loading after mount for instant skeleton
+      setLoading(true);
       try {
-        const data = await fetchAllArticlesMetadata();
-        setJsonArticles(data);
+        // Fetch articles from backend API
+        const articles = await fetchAllArticlesMetadata();
+        
+        // Transform backend data to match frontend structure
+        const transformedArticles = articles.map(article => ({
+          slug: article.slug,
+          title: {
+            en: article.title,
+            hi: article.title,
+            te: article.title
+          },
+          overview: {
+            en: article.summary,
+            hi: article.summary,
+            te: article.summary
+          },
+          readTime: {
+            en: `${article.read_time_minutes} min`,
+            hi: `${article.read_time_minutes} मिनट`,
+            te: `${article.read_time_minutes} నిమిషాలు`
+          },
+          reviewer: {
+            en: 'Reviewed by Expert',
+            hi: 'विशेषज्ञ द्वारा समीक्षित',
+            te: 'నిపుణులచే సమీక్షించబడింది'
+          }
+        }));
+        
+        setJsonArticles(transformedArticles);
       } catch (error) {
-        console.error('Error loading articles metadata:', error);
+        console.error('Error loading articles from backend:', error);
       } finally {
         setLoading(false);
       }

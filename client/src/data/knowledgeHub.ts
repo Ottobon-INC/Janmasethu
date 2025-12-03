@@ -1,3 +1,4 @@
+
 export type ArticleContentType = 'paragraph' | 'subheading' | 'list';
 
 export interface ArticleContent {
@@ -52,34 +53,29 @@ export interface ArticleData {
   sections: ArticleSection[];
 }
 
+// API Base URL
+const API_BASE_URL = 'https://zainab-sanguineous-niels.ngrok-free.dev/api/knowledge';
+
+// Fetch article by slug from backend
 export const fetchArticleData = async (slug: string): Promise<ArticleData | null> => {
   try {
-    // Map article slugs to their corresponding JSON files
-    const slugToFileMap: { [key: string]: string } = {
-      'pmmvy-jsy-how-to-apply': 'pmmvy-jsy-application-guide',
-      'pregnancy-foods': 'safe-pregnancy-foods-india',
-      'embryo-grading-guide': 'embryo-grading-guide',
-      'first-trimester-scan': 'first-trimester-scan',
-      'when-to-see-fertility-specialist': 'when-to-see-fertility-specialist',
-      'ivf-10-min': 'ivf-10-min',
-      'second-trimester-checklist': 'second-trimester-checklist',
-      'ppd-signs-support': 'ppd-signs-and-support',
-      'preeclampsia-basics': 'preeclampsia-basics',
-      'cervical-cerclage-basics': 'cervical-cerclage-basics',
-      'cost-planning-101': 'cost-planning-101',
-      'iycf-after-6-months': 'iycf-after-6-months',
-      'newborn-vaccines-timeline': 'newborn-vaccines-timeline',
-      'partner-playbook': 'partner-playbook',
-      'post-birth-warning-signs': 'post-birth-warning-signs',
-      'vbac-questions-to-ask': 'vbac-questions-to-ask'
-    };
-
-    const fileName = slugToFileMap[slug] || slug;
-    const response = await fetch(`/KnowledgeHub/${fileName}.json`);
+    const response = await fetch(`${API_BASE_URL}/articles/${slug}`, {
+      headers: {
+        'Accept': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+      }
+    });
 
     if (!response.ok) {
+      if (response.status === 404) {
+        console.error(`Article not found: ${slug}`);
+        return null;
+      }
+      const errorData = await response.json();
+      console.error('API error:', errorData.error);
       return null;
     }
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -88,54 +84,148 @@ export const fetchArticleData = async (slug: string): Promise<ArticleData | null
   }
 };
 
-// List of available articles - this matches the JSON files in public/KnowledgeHub
-export const availableArticles = [
-  'cervical-cerclage-basics',
-  'cost-planning-101',
-  'embryo-grading-guide',
-  'first-trimester-scan',
-  'ivf-10-min',
-  'iycf-after-6-months',
-  'newborn-vaccines-timeline',
-  'partner-playbook',
-  'pmmvy-jsy-application-guide',
-  'post-birth-warning-signs',
-  'ppd-signs-and-support',
-  'preeclampsia-basics',
-  'safe-pregnancy-foods-india',
-  'second-trimester-checklist',
-  'vbac-questions-to-ask',
-  'when-to-see-fertility-specialist'
-];
-
-// Function to fetch basic article metadata for listing pages - optimized for parallel loading
-export const fetchAllArticlesMetadata = async (): Promise<Array<{
+// Fetch all articles metadata with optional filters
+export const fetchAllArticlesMetadata = async (filters?: {
+  lifeStage?: number;
+  perspective?: number;
+  search?: string;
+}): Promise<Array<{
+  id: number;
   slug: string;
-  title: { en: string; hi: string; te: string };
-  overview: { en: string; hi: string; te: string };
-  readTime: { en: string; hi: string; te: string };
-  reviewer: { en: string; hi: string; te: string };
+  title: string;
+  summary: string;
+  read_time_minutes: number;
+  is_featured: boolean;
+  published_at: string;
+  life_stage_id: number;
+  perspective_id: number;
 }>> => {
-  // Fetch all articles in parallel for faster loading
-  const articlePromises = availableArticles.map(async (slug) => {
-    try {
-      const data = await fetchArticleData(slug);
-      if (data) {
-        return {
-          slug: data.slug,
-          title: data.title,
-          overview: data.overview,
-          readTime: data.metadata.readTime,
-          reviewer: data.metadata.reviewer
-        };
+  try {
+    const params = new URLSearchParams();
+    if (filters?.lifeStage) params.append('lifeStage', filters.lifeStage.toString());
+    if (filters?.perspective) params.append('perspective', filters.perspective.toString());
+    if (filters?.search) params.append('search', filters.search);
+
+    const url = params.toString() 
+      ? `${API_BASE_URL}/articles?${params.toString()}`
+      : `${API_BASE_URL}/articles`;
+
+    const response = await fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
       }
-      return null;
-    } catch (error) {
-      console.error(`Error fetching metadata for ${slug}:`, error);
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('API error:', errorData.error);
+      return [];
+    }
+
+    const articles = await response.json();
+    return articles;
+  } catch (error) {
+    console.error('Error fetching articles metadata:', error);
+    return [];
+  }
+};
+
+// Fetch bundled data (life stages, perspectives, and articles)
+export const fetchBundledData = async (filters?: {
+  lifeStage?: number;
+  perspective?: number;
+  search?: string;
+}): Promise<{
+  lifeStages: Array<{ id: number; name: string; description: string; sort_order: number }>;
+  perspectives: Array<{ id: number; name: string; description: string; sort_order: number }>;
+  articles: Array<any>;
+} | null> => {
+  try {
+    const params = new URLSearchParams();
+    if (filters?.lifeStage) params.append('lifeStage', filters.lifeStage.toString());
+    if (filters?.perspective) params.append('perspective', filters.perspective.toString());
+    if (filters?.search) params.append('search', filters.search);
+
+    const url = params.toString() 
+      ? `${API_BASE_URL}?${params.toString()}`
+      : API_BASE_URL;
+
+    const response = await fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('API error:', errorData.error);
       return null;
     }
-  });
 
-  const results = await Promise.all(articlePromises);
-  return results.filter((article): article is NonNullable<typeof article> => article !== null);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching bundled data:', error);
+    return null;
+  }
+};
+
+// Fetch life stages for dropdowns
+export const fetchLifeStages = async (): Promise<Array<{
+  id: number;
+  name: string;
+  description: string;
+  sort_order: number;
+}>> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/life-stages`, {
+      headers: {
+        'Accept': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('API error:', errorData.error);
+      return [];
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching life stages:', error);
+    return [];
+  }
+};
+
+// Fetch perspectives for dropdowns
+export const fetchPerspectives = async (): Promise<Array<{
+  id: number;
+  name: string;
+  description: string;
+  sort_order: number;
+}>> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/perspectives`, {
+      headers: {
+        'Accept': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('API error:', errorData.error);
+      return [];
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching perspectives:', error);
+    return [];
+  }
 };
