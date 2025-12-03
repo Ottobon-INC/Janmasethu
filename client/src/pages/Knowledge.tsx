@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { articles, type Lens, type Stage } from '@/data/articles';
-import { fetchAllArticlesMetadata, fetchArticles } from '@/data/knowledgeHub';
+import { fetchArticles } from '@/data/knowledgeHub';
 
 interface WebhookArticle {
   id: string;
@@ -76,11 +76,11 @@ const Knowledge = () => {
           setSelectedStage(stageParam as Stage);
         }
 
-        // Fetch articles from ngrok API
-        const articlesData = await fetchAllArticlesMetadata();
+        // Fetch articles from ngrok API using the correct endpoint
+        const response = await fetchArticles({ perPage: 100 });
         
         // Transform backend data to match frontend structure
-        const transformedArticles = articlesData.map(article => ({
+        const transformedArticles = response.items.map(article => ({
           slug: article.slug,
           title: {
             en: article.title,

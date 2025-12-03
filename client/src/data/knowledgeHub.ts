@@ -221,27 +221,6 @@ export async function fetchArticleBySlug(slug: string): Promise<ArticleDetailRes
   }
 }
 
-export async function fetchAllArticlesMetadata(): Promise<ArticleMetadata[]> {
-  try {
-    const response = await fetch(`${NGROK_API_BASE}/api/knowledge`, {
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: 'Failed to fetch articles metadata' }));
-      throw new Error(errorData.error || `HTTP ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.items || data;
-  } catch (error) {
-    console.error('Error fetching articles metadata:', error);
-    return [];
-  }
-}
-
 // Fetch article by slug from backend (reuses fetchArticleBySlug)
 export const fetchArticleData = async (slug: string): Promise<ArticleData | null> => {
   try {
@@ -252,49 +231,6 @@ export const fetchArticleData = async (slug: string): Promise<ArticleData | null
     return article as any;
   } catch (error) {
     console.error('Error fetching article:', error);
-    return null;
-  }
-};
-
-
-
-// Fetch bundled data (life stages, perspectives, and articles)
-export const fetchBundledData = async (filters?: {
-  lifeStage?: number;
-  perspective?: number;
-  search?: string;
-}): Promise<{
-  lifeStages: Array<{ id: number; name: string; description: string; sort_order: number }>;
-  perspectives: Array<{ id: number; name: string; description: string; sort_order: number }>;
-  articles: Array<any>;
-} | null> => {
-  try {
-    const params = new URLSearchParams();
-    if (filters?.lifeStage) params.append('lifeStage', filters.lifeStage.toString());
-    if (filters?.perspective) params.append('perspective', filters.perspective.toString());
-    if (filters?.search) params.append('search', filters.search);
-
-    const url = params.toString()
-      ? `${NGROK_API_BASE}/api/knowledge?${params.toString()}`
-      : `${NGROK_API_BASE}/api/knowledge`;
-
-    const response = await fetch(url, {
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      console.error('API error:', response.status, response.statusText);
-      const text = await response.text();
-      console.error('Response body:', text);
-      return null;
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching bundled data:', error);
     return null;
   }
 };
