@@ -1,4 +1,3 @@
-
 export type ArticleContentType = 'paragraph' | 'subheading' | 'list';
 
 export interface ArticleContent {
@@ -164,7 +163,7 @@ export async function fetchArticles(params?: {
 }): Promise<ArticlesResponse> {
   try {
     const queryParams = new URLSearchParams();
-    
+
     if (params?.lifeStage) queryParams.set('lifeStage', params.lifeStage);
     if (params?.perspective) queryParams.set('perspective', params.perspective);
     if (params?.search) queryParams.set('search', params.search);
@@ -172,7 +171,7 @@ export async function fetchArticles(params?: {
     if (params?.perPage) queryParams.set('perPage', params.perPage.toString());
 
     const url = `${NGROK_API_BASE}/api/knowledge/articles${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
-    
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -301,7 +300,7 @@ export const fetchAllArticlesMetadata = async (filters?: {
     if (filters?.perspective) params.append('perspective', filters.perspective.toString());
     if (filters?.search) params.append('search', filters.search);
 
-    const url = params.toString() 
+    const url = params.toString()
       ? `${API_BASE_URL}/articles?${params.toString()}`
       : `${API_BASE_URL}/articles`;
 
@@ -342,7 +341,7 @@ export const fetchBundledData = async (filters?: {
     if (filters?.perspective) params.append('perspective', filters.perspective.toString());
     if (filters?.search) params.append('search', filters.search);
 
-    const url = params.toString() 
+    const url = params.toString()
       ? `${API_BASE_URL}?${params.toString()}`
       : API_BASE_URL;
 
