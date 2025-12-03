@@ -6,6 +6,8 @@ import { runMedcyDoctorsScrape } from "./scraper/medcyDoctors";
 import { scrapeAndStoreDoctors } from "./scraper/doctors";
 import { scrapeAndStoreBlogs } from "./scraper/medcy";
 import { supabase } from "./supabaseClient";
+import fs from 'fs/promises'; // Import fs here
+import path from 'path'; // Import path here
 
 // Dev key for scraping - use environment variable in production
 const DEV_SCRAPE_KEY = process.env.DEV_SCRAPE_KEY || "dev-scrape-2025";
@@ -36,7 +38,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // --- DEBUG: Supabase connection info
   app.get("/api/health/db/ssl", (_req, res) => {
-    res.json({ 
+    res.json({
       connection: "supabase",
       ssl: "managed by Supabase",
       url: process.env.SUPABASE_URL ? "configured" : "missing"
@@ -75,7 +77,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       // Note: Supabase client doesn't directly support information_schema queries
       // This endpoint is deprecated - use Supabase dashboard instead
-      res.json({ 
+      res.json({
         message: "Use Supabase dashboard to view tables",
         tables: ["sakhi_scraped_blogs", "sakhi_scraped_doctors", "sakhi_success_stories"]
       });
@@ -87,9 +89,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // --- Deprecated: Tables should be created via Supabase dashboard/migrations
   app.post("/api/dev/create-scraped-table", async (_req, res) => {
-    res.status(410).json({ 
-      ok: false, 
-      error: "This endpoint is deprecated. Create tables via Supabase dashboard or migrations." 
+    res.status(410).json({
+      ok: false,
+      error: "This endpoint is deprecated. Create tables via Supabase dashboard or migrations."
     });
   });
 
@@ -428,7 +430,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // Generate lead_id locally
         const lead_id = `LEAD_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        
+
         console.log('✅ Creating lead locally:', lead_id);
 
         // Store in database
@@ -609,10 +611,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // KNOWLEDGE HUB API ENDPOINTS
   // =========================
 
-  // Import file system to read JSON files
-  const fs = require('fs').promises;
-  const path = require('path');
-
   // Get all articles
   app.get("/api/knowledge/articles", async (req, res) => {
     try {
@@ -621,17 +619,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, ngrok-skip-browser-warning');
 
       const { search, lifeStage, perspective, page = '1', perPage = '20' } = req.query;
-      
+
       // Read all JSON files from KnowledgeHub directory
       const knowledgeHubDir = path.join(process.cwd(), 'client', 'public', 'KnowledgeHub');
       const files = await fs.readdir(knowledgeHubDir);
       const jsonFiles = files.filter((f: string) => f.endsWith('.json'));
-      
+
       let articles = [];
       for (const file of jsonFiles) {
         const content = await fs.readFile(path.join(knowledgeHubDir, file), 'utf-8');
         const articleData = JSON.parse(content);
-        
+
         // Extract metadata from the article
         const article = {
           id: articleData.slug || file.replace('.json', ''),
@@ -645,14 +643,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           read_time_minutes: parseInt(articleData.metadata?.readTime?.en?.replace(/\D/g, '') || '5'),
           published_at: new Date().toISOString()
         };
-        
+
         // Apply filters
         let include = true;
-        if (search && !article.title.toLowerCase().includes(search.toString().toLowerCase()) && 
+        if (search && !article.title.toLowerCase().includes(search.toString().toLowerCase()) &&
             !article.summary.toLowerCase().includes(search.toString().toLowerCase())) {
           include = false;
         }
-        
+
         if (include) {
           articles.push(article);
         }
@@ -694,10 +692,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const { slug } = req.params;
       const filePath = path.join(process.cwd(), 'client', 'public', 'KnowledgeHub', `${slug}.json`);
-      
+
       const content = await fs.readFile(filePath, 'utf-8');
       const articleData = JSON.parse(content);
-      
+
       res.json(articleData);
     } catch (e: any) {
       if (e.code === 'ENOENT') {
