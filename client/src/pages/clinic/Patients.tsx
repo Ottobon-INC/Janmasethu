@@ -80,70 +80,63 @@ export default function Patients() {
         // Generate patient ID locally
         const patientId = `P${Date.now()}`;
 
-          // Calculate age from birth_date
-          const calculateAge = (birthDate: string) => {
-            const today = new Date();
-            const birth = new Date(birthDate);
-            let age = today.getFullYear() - birth.getFullYear();
-            const monthDiff = today.getMonth() - birth.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-              age--;
-            }
-            return age;
-          };
+        // Calculate age from birth_date
+        const calculateAge = (birthDate: string) => {
+          const today = new Date();
+          const birth = new Date(birthDate);
+          let age = today.getFullYear() - birth.getFullYear();
+          const monthDiff = today.getMonth() - birth.getMonth();
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+            age--;
+          }
+          return age;
+        };
 
-          // Handle both array and object response
-          const patientData = Array.isArray(responseData) ? responseData[0] : responseData;
+        // Create patient data locally
+        const newPatientData: Patient = {
+          patient_id: patientId,
+          first_name: newPatient.firstName,
+          last_name: newPatient.lastName,
+          email: newPatient.email,
+          phone: newPatient.phone,
+          gender: newPatient.gender,
+          birth_date: newPatient.dateOfBirth,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          // Additional fields for display
+          id: patientId,
+          name: `${newPatient.firstName} ${newPatient.lastName}`,
+          age: calculateAge(newPatient.dateOfBirth),
+          status: newPatient.status || "active",
+          treatmentType: newPatient.treatmentType || "IVF",
+          cycle: newPatient.cycle || "1",
+          doctor: newPatient.doctor || "Dr. Rao",
+          lastVisit: new Date().toISOString().split('T')[0]
+        };
 
-          // Map webhook response to our patient format
-          const newPatientData: Patient = {
-            patient_id: patientData.patient_id,
-            first_name: patientData.first_name,
-            last_name: patientData.last_name,
-            email: patientData.email,
-            phone: patientData.phone,
-            gender: patientData.gender,
-            birth_date: patientData.birth_date,
-            created_at: patientData.created_at,
-            updated_at: patientData.updated_at,
-            // Additional fields for display
-            id: patientData.patient_id,
-            name: `${patientData.first_name} ${patientData.last_name}`,
-            age: calculateAge(patientData.birth_date),
-            status: newPatient.status || "active",
-            treatmentType: newPatient.treatmentType || "IVF",
-            cycle: newPatient.cycle || "1",
-            doctor: newPatient.doctor || "Dr. Rao",
-            lastVisit: new Date().toISOString().split('T')[0]
-          };
-
-          // Add the new patient to the list
-          setPatientsData([newPatientData, ...patientsData]);
-          
-          // Reset form
-          setNewPatient({
-            firstName: "",
-            lastName: "",
-            name: "",
-            email: "",
-            phone: "",
-            gender: "Female",
-            age: "",
-            dateOfBirth: "",
-            status: "active",
-            treatmentType: "IVF",
-            cycle: "1",
-            doctor: "Dr. Rao",
-            medicalHistory: "",
-            emergencyContact: ""
-          });
-          setIsModalOpen(false);
-        } else {
-          console.error('❌ Patient creation failed:', webhookResponse.statusText);
-          alert('Failed to create patient. Please try again.');
-        }
+        // Add the new patient to the list
+        setPatientsData([newPatientData, ...patientsData]);
+        
+        // Reset form
+        setNewPatient({
+          firstName: "",
+          lastName: "",
+          name: "",
+          email: "",
+          phone: "",
+          gender: "Female",
+          age: "",
+          dateOfBirth: "",
+          status: "active",
+          treatmentType: "IVF",
+          cycle: "1",
+          doctor: "Dr. Rao",
+          medicalHistory: "",
+          emergencyContact: ""
+        });
+        setIsModalOpen(false);
       } catch (error) {
-        console.error('❌ Error triggering patient webhook:', error);
+        console.error('❌ Error creating patient:', error);
         alert('An error occurred while creating the patient. Please try again.');
       } finally {
         setIsLoading(false);
