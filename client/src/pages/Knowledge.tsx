@@ -79,23 +79,32 @@ const Knowledge = () => {
         // Fetch articles from ngrok API using the correct endpoint
         const response = await fetchArticles({ perPage: 100 });
         
+        console.log('Articles API response:', response);
+        
+        // Validate response structure
+        if (!response || !response.items || !Array.isArray(response.items)) {
+          console.error('Invalid response structure:', response);
+          setJsonArticles([]);
+          return;
+        }
+        
         // Transform backend data to match frontend structure
         const transformedArticles = response.items.map(article => ({
-          slug: article.slug,
+          slug: article.slug || '',
           title: {
-            en: article.title,
-            hi: article.title,
-            te: article.title
+            en: article.title || '',
+            hi: article.title || '',
+            te: article.title || ''
           },
           overview: {
-            en: article.summary,
-            hi: article.summary,
-            te: article.summary
+            en: article.summary || '',
+            hi: article.summary || '',
+            te: article.summary || ''
           },
           readTime: {
-            en: `${article.read_time_minutes} min`,
-            hi: `${article.read_time_minutes} मिनट`,
-            te: `${article.read_time_minutes} నిమిషాలు`
+            en: `${article.read_time_minutes || 5} min`,
+            hi: `${article.read_time_minutes || 5} मिनट`,
+            te: `${article.read_time_minutes || 5} నిమిషాలు`
           },
           reviewer: {
             en: 'Reviewed by Expert',
@@ -104,6 +113,7 @@ const Knowledge = () => {
           }
         }));
         
+        console.log('Transformed articles:', transformedArticles.length);
         setJsonArticles(transformedArticles);
       } catch (error) {
         console.error('Error loading articles from ngrok API:', error);

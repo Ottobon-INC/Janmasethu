@@ -172,6 +172,8 @@ export async function fetchArticles(params?: {
 
     const url = `${NGROK_API_BASE}/api/knowledge/articles${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
 
+    console.log('Fetching articles from:', url);
+
     const response = await fetch(url, {
       headers: {
         'Accept': 'application/json',
@@ -179,12 +181,38 @@ export async function fetchArticles(params?: {
       }
     });
 
+    console.log('Response status:', response.status);
+
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: 'Failed to fetch articles' }));
-      throw new Error(errorData.error || `HTTP ${response.status}`);
+      const responseText = await response.text();
+      console.error('Error response text:', responseText);
+      
+      let errorData;
+      try {
+        errorData = JSON.parse(responseText);
+      } catch {
+        errorData = { error: 'Failed to fetch articles' };
+      }
+      
+      throw new Error(errorData.error || `HTTP ${response.status}: ${responseText}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log('Articles response data:', data);
+
+    // Validate response structure
+    if (!data || typeof data !== 'object') {
+      console.error('Invalid response format:', data);
+      throw new Error('Invalid response format');
+    }
+
+    // Ensure items is always an array
+    if (!Array.isArray(data.items)) {
+      console.warn('Response missing items array, returning empty array');
+      data.items = [];
+    }
+
+    return data;
   } catch (error) {
     console.error('Error fetching articles:', error);
     return {
