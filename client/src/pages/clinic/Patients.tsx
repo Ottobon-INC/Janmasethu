@@ -75,35 +75,10 @@ export default function Patients() {
     if (newPatient.firstName && newPatient.lastName && newPatient.email && newPatient.phone && newPatient.dateOfBirth) {
       try {
         setIsLoading(true);
-        console.log('🔵 Triggering patient webhook...');
+        console.log('✅ Creating patient locally...');
         
-        const webhookPayload = {
-          first_name: newPatient.firstName,
-          last_name: newPatient.lastName,
-          gender: newPatient.gender,
-          birth_date: newPatient.dateOfBirth,
-          phone: newPatient.phone,
-          email: newPatient.email
-        };
-
-        console.log('📤 Sending to webhook:', webhookPayload);
-
-        const webhookResponse = await fetch('https://n8n.ottobon.in/webhook/patient-details', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: {},
-            body: webhookPayload
-          })
-        });
-
-        console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
-
-        if (webhookResponse.ok) {
-          const responseData = await webhookResponse.json();
-          console.log('✅ Patient response:', responseData);
+        // Generate patient ID locally
+        const patientId = `P${Date.now()}`;
 
           // Calculate age from birth_date
           const calculateAge = (birthDate: string) => {

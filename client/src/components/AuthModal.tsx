@@ -62,42 +62,19 @@ export default function AuthModal({
         let webhookSuccess = false;
 
         try {
-          response = await fetch("https://n8nottobon.duckdns.org/webhook/start", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-            },
-            mode: "cors",
-            body: JSON.stringify(payload),
-          });
-
-          console.log("Response status:", response.status);
-
-          if (response.ok) {
-            data = await response.json();
-            console.log("Webhook response data:", data);
-
-            // The response is an array, get the first element
-            const result = Array.isArray(data) ? data[0] : data;
-
-            if (result && result.message === "Signup Successful" && result.user) {
-              const userData = result.user;
-              console.log("Signup successful, user data:", userData);
-
-              localStorage.setItem('userName', userData.name);
-              localStorage.setItem('userEmail', userData.email);
-              localStorage.setItem('userId', userData.userId);
-              setUserId(userData.userId);
-              webhookSuccess = true;
-            }
-          } else {
-            const errorText = await response.text();
-            console.error("Webhook error:", errorText);
-          }
-        } catch (fetchError) {
-          console.error("Webhook fetch error:", fetchError);
-          // Continue anyway - we'll use fallback data
+          // Generate user ID locally
+          const userId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+          
+          // Store user data locally
+          localStorage.setItem('userName', name);
+          localStorage.setItem('userEmail', email);
+          localStorage.setItem('userId', userId);
+          setUserId(userId);
+          
+          console.log("Signup successful, user data stored locally");
+          webhookSuccess = true;
+        } catch (error) {
+          console.error("Error during signup:", error);
         }
 
         // If webhook failed, create fallback user data

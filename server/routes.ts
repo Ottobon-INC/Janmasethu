@@ -426,46 +426,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (action === "insert") {
         const { full_name, last_name, email, phone, age, location, interest, source, priority } = req.body;
 
-        // Call n8n webhook for insert
-        const webhookPayload = {
-          action: "insert",
-          full_name,
-          last_name: last_name || '',
-          email,
-          phone,
-          age: age ? parseInt(age) : null,
-          location: location || '',
-          interest: interest || '',
-          source: source || 'Website',
-          priority: priority || 'Medium'
-        };
-
-        console.log('📤 Calling n8n webhook (insert):', webhookPayload);
-
-        const webhookResponse = await fetch('https://n8nottobon.duckdns.org/webhook/lead_details', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(webhookPayload)
-        });
-
-        if (!webhookResponse.ok) {
-          const errorText = await webhookResponse.text();
-          console.error('❌ Webhook failed:', errorText);
-          throw new Error(`n8n webhook failed: ${webhookResponse.statusText}`);
-        }
-
-        const responseData = await webhookResponse.json();
-        console.log('✅ n8n raw response (insert):', responseData);
-
-        // Handle array response from n8n
-        const leadData = Array.isArray(responseData) ? responseData[0] : responseData;
-        console.log('✅ Processed lead data:', leadData);
-
-        if (!leadData || !leadData.lead_id) {
-          throw new Error('Invalid response from webhook - missing lead_id');
-        }
+        // Generate lead_id locally
+        const lead_id = `LEAD_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        
+        console.log('✅ Creating lead locally:', lead_id);
 
         // Store in database
         await query(`
@@ -484,31 +448,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
             priority = EXCLUDED.priority,
             updated_at = NOW()
         `, [
-          leadData.lead_id,
-          leadData.full_name,
-          leadData.email,
-          leadData.phone,
-          leadData.age || 0,
-          leadData.location || '',
-          leadData.interest,
-          leadData.source,
-          leadData.priority,
+          lead_id,
+          full_name,
+          email,
+          phone,
+          age ? parseInt(age) : 0,
+          location || '',
+          interest || '',
+          source || 'Website',
+          priority || 'Medium',
           'new'
         ]);
 
-        console.log('✅ Lead stored in database with ID:', leadData.lead_id);
+        console.log('✅ Lead stored in database with ID:', lead_id);
 
         // Return the complete lead object
         return res.json({
-          lead_id: leadData.lead_id,
-          full_name: leadData.full_name,
-          email: leadData.email,
-          phone: leadData.phone,
-          age: leadData.age || 0,
-          location: leadData.location || '',
-          interest: leadData.interest,
-          source: leadData.source,
-          priority: leadData.priority,
+          lead_id: lead_id,
+          full_name: full_name,
+          email: email,
+          phone: phone,
+          age: age ? parseInt(age) : 0,
+          location: location || '',
+          interest: interest || '',
+          source: source || 'Website',
+          priority: priority || 'Medium',
           status: 'new'
         });
       }
@@ -521,47 +485,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(400).json({ error: "lead_id is required for update action" });
         }
 
-        // Call n8n webhook for update
-        const webhookPayload = {
-          action: "update",
-          lead_id,
-          full_name,
-          last_name: last_name || '',
-          email,
-          phone,
-          age: age ? parseInt(age.toString()) : 0,
-          location: location || '',
-          interest: interest || 'IVF Consultation',
-          source: source || 'Website',
-          priority: priority || 'Medium'
-        };
-
-        console.log('📤 Calling n8n webhook (update):', webhookPayload);
-
-        const webhookResponse = await fetch('https://n8nottobon.duckdns.org/webhook/lead_details', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(webhookPayload)
-        });
-
-        if (!webhookResponse.ok) {
-          const errorText = await webhookResponse.text();
-          console.error('❌ Webhook failed:', errorText);
-          throw new Error(`n8n webhook failed: ${webhookResponse.statusText}`);
-        }
-
-        const responseData = await webhookResponse.json();
-        console.log('✅ n8n raw response (update):', responseData);
-
-        // Handle both object and array response from n8n
-        const leadData = Array.isArray(responseData) ? responseData[0] : responseData;
-        console.log('✅ Processed lead data:', leadData);
-
-        if (!leadData || !leadData.lead_id) {
-          throw new Error('Invalid response from webhook - missing lead_id');
-        }
+        console.log('✅ Updating lead locally:', lead_id);
 
         // Update in database
         await query(`
@@ -577,14 +501,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             updated_at = NOW()
           WHERE lead_id = $9
         `, [
-          leadData.full_name,
-          leadData.email,
-          leadData.phone,
-          parseInt(leadData.age?.toString() || '0'),
-          leadData.location || '',
-          leadData.interest || 'IVF Consultation',
-          leadData.source || 'Website',
-          leadData.priority || 'Medium',
+          full_name,
+          email,
+          phone,
+          age ? parseInt(age.toString()) : 0,
+          location || '',
+          interest || 'IVF Consultation',
+          source || 'Website',
+          priority || 'Medium',
           lead_id
         ]);
 
@@ -596,15 +520,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // Return the complete lead object
         return res.json({
-          lead_id: leadData.lead_id,
-          full_name: leadData.full_name,
-          email: leadData.email,
-          phone: leadData.phone,
-          age: parseInt(leadData.age?.toString() || '0'),
-          location: leadData.location || '',
-          interest: leadData.interest || 'IVF Consultation',
-          source: leadData.source || 'Website',
-          priority: leadData.priority || 'Medium',
+          lead_id: lead_id,
+          full_name: full_name,
+          email: email,
+          phone: phone,
+          age: age ? parseInt(age.toString()) : 0,
+          location: location || '',
+          interest: interest || 'IVF Consultation',
+          source: source || 'Website',
+          priority: priority || 'Medium',
           status: currentStatus
         });
       }

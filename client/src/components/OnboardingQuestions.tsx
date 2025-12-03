@@ -487,16 +487,10 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
   const questions = getQuestions();
   const currentQuestion = questions[currentStep - 1];
 
-  const handleNext = () => {
-    if (currentStep < questions.length) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
   const handleBack = () => {
     console.log("=== handleBack called ===");
     console.log("Current step:", currentStep);
-    
+
     if (currentStep > 1) {
       const newStep = currentStep - 1;
       console.log("Moving to step:", newStep);
@@ -510,27 +504,6 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
     console.log("=== handleComplete called ===");
     console.log("Total questions:", questions.length);
     console.log("Current answers:", answers);
-    
-    // Use userId from props - if not available, generate a temporary one
-    const effectiveUserId = userId || `temp_${Date.now()}`;
-    console.log("Using User ID:", effectiveUserId);
-
-    // Convert answers object to the required array format with question_key and selected_option
-    const answersArray = questions.map((q, index) => ({
-      question_key: `${relationship}_q${index + 1}`,
-      selected_option: answers[q.field] || ""
-    }));
-
-    // Prepare data to send to webhook in the format n8n expects
-    const onboardingData = {
-      user_id: userId,
-      relationship: relationship,
-      answers: answersArray
-    };
-
-    console.log("=== Preparing to send to webhook ===");
-    console.log("Webhook URL: https://n8n.ottobon.in/webhook/parentprofile");
-    console.log("Payload:", JSON.stringify(onboardingData, null, 2));
 
     // Show loading toast
     toast({
@@ -538,99 +511,43 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       description: "Preparing your personalized experience.",
     });
 
+    // Save preferences locally
+    const userPreferences = {
+      user_id: userId,
+      relationship: relationship,
+      answers: answers,
+      timestamp: new Date().toISOString()
+    };
+
     try {
-      console.log("=== SENDING WEBHOOK REQUEST ===");
-      console.log("URL: https://n8n.ottobon.in/webhook/parentprofile");
-      console.log("Method: POST");
-      console.log("Payload:", JSON.stringify(onboardingData, null, 2));
-      
-      // First, test if webhook is reachable with OPTIONS (CORS preflight)
-      console.log("Testing CORS preflight...");
-      const preflightResponse = await fetch("https://n8n.ottobon.in/webhook/parentprofile", {
-        method: "OPTIONS",
-        headers: {
-          "Access-Control-Request-Method": "POST",
-          "Access-Control-Request-Headers": "Content-Type",
-        },
-      }).catch(e => {
-        console.error("Preflight failed:", e);
-        return null;
-      });
+      // Store preferences in localStorage
+      localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+      console.log("✅ Preferences saved locally");
 
-      if (preflightResponse) {
-        console.log("Preflight status:", preflightResponse.status);
-        console.log("Preflight headers:", Object.fromEntries(preflightResponse.headers.entries()));
-      }
-      
-      // Now send the actual POST request
-      console.log("\nSending actual POST request...");
-      const webhookResponse = await fetch("https://n8n.ottobon.in/webhook/parentprofile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify(onboardingData),
-      });
-
-      console.log("\n=== WEBHOOK RESPONSE ===");
-      console.log("Status:", webhookResponse.status);
-      console.log("Status Text:", webhookResponse.statusText);
-      console.log("OK:", webhookResponse.ok);
-      console.log("Type:", webhookResponse.type);
-      console.log("Headers:", Object.fromEntries(webhookResponse.headers.entries()));
-      
-      // Try to read response body
-      const responseText = await webhookResponse.text();
-      console.log("Response Body:", responseText);
-      
-      if (webhookResponse.ok) {
-        console.log("✅ Webhook triggered successfully!");
-        toast({
-          title: "Data submitted successfully",
-          description: "Your information has been recorded.",
-        });
-      } else {
-        console.error("❌ Webhook failed with status:", webhookResponse.status);
-        console.error("Response details:", responseText);
-        toast({
-          title: "Warning",
-          description: `Server returned status ${webhookResponse.status}`,
-          variant: "destructive",
-        });
-      }
-
-    } catch (error) {
-      console.error("\n=== WEBHOOK ERROR ===");
-      if (error instanceof Error) {
-        console.error("Error name:", error.name);
-        console.error("Error message:", error.message);
-        console.error("Error stack:", error.stack);
-      } else {
-        console.error("Error:", error);
-      }
-      
       toast({
-        title: "Connection Error",
-        description: "Could not reach the server. We'll still continue to Sakhi.",
+        title: "Profile Saved",
+        description: "Your preferences have been saved successfully.",
+      });
+    } catch (error) {
+      console.error("Error saving preferences:", error);
+      toast({
+        title: "Warning",
+        description: "Could not save preferences, but we'll continue.",
         variant: "destructive",
       });
-    } finally {
-      // Always close modal and navigate, regardless of webhook success
-      console.log("Closing onboarding modal and navigating...");
-      onClose();
-      
-      // Navigate immediately
-      setLocation("/sakhi/try");
-      
-      // Show welcome toast after navigation
-      setTimeout(() => {
-        toast({
-          title: "Welcome to Sakhi!",
-          description: "Let's begin your journey together.",
-        });
-      }, 500);
     }
+
+    // Close modal and navigate
+    onClose();
+    setLocation("/sakhi/try");
+
+    // Show welcome toast after navigation
+    setTimeout(() => {
+      toast({
+        title: "Welcome to Sakhi!",
+        description: "Let's begin your journey together.",
+      });
+    }, 500);
   };
 
 
@@ -694,10 +611,10 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
               >
                 {currentQuestion.options?.map((option, index) => (
                   <div key={index} className="flex items-center space-x-3 mb-3 p-3 rounded-lg border hover:bg-accent transition-colors">
-                    <RadioGroupItem 
-                      value={option} 
+                    <RadioGroupItem
+                      value={option}
                       id={`option-${index}`}
-                      className="shrink-0" 
+                      className="shrink-0"
                     />
                     <Label htmlFor={`option-${index}`} className="cursor-pointer flex-1">
                       {option}
@@ -723,7 +640,7 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
               onClick={async () => {
                 console.log("=== BUTTON CLICKED ===");
                 console.log("Current step:", currentStep, "Total questions:", questions.length);
-                
+
                 const currentField = currentQuestion.field;
 
                 // Validate current question before proceeding
@@ -735,7 +652,7 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
                   });
                   return;
                 }
-                
+
                 if (currentStep === questions.length) {
                   console.log("Last question - calling handleComplete");
                   await handleComplete();

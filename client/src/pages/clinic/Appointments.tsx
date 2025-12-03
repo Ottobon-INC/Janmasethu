@@ -101,47 +101,21 @@ export default function Appointments() {
         setIsLoading(true);
         console.log('🔵 Triggering appointment webhook...');
 
-        const webhookPayload = {
-          patient_name: newAppointment.patientName,
-          patient_id: newAppointment.patientId,
-          phone: newAppointment.phone,
-          appointment_date: newAppointment.date,
-          appointment_time: newAppointment.time,
-          appointment_type: newAppointment.type,
+        // Generate appointment ID locally
+        const appointmentId = `A${Date.now()}`;
+        console.log('✅ Creating appointment locally:', appointmentId);
+
+        // Add the new appointment to the list
+        const newAppointmentData: Appointment = {
+          id: appointmentId,
+          patientName: newAppointment.patientName,
+          patientId: newAppointment.patientId,
+          time: newAppointment.time,
           doctor: newAppointment.doctor,
+          type: newAppointment.type,
+          status: "scheduled",
           notes: newAppointment.notes
         };
-
-        console.log('📤 Sending to webhook:', webhookPayload);
-
-        const webhookResponse = await fetch('https://n8n.ottobon.in/webhook/appointment-details', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: {},
-            body: webhookPayload
-          })
-        });
-
-        console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
-
-        if (webhookResponse.ok) {
-          const responseData = await webhookResponse.json();
-          console.log('✅ Appointment response:', responseData);
-
-          // Add the new appointment to the list
-          const newAppointmentData: Appointment = {
-            id: responseData.appointment_id || `A${Date.now()}`,
-            patientName: newAppointment.patientName,
-            patientId: newAppointment.patientId,
-            time: newAppointment.time,
-            doctor: newAppointment.doctor,
-            type: newAppointment.type,
-            status: "scheduled",
-            notes: newAppointment.notes
-          };
 
           setAppointments([newAppointmentData, ...appointments]);
 
