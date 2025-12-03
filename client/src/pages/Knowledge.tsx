@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { articles, type Lens, type Stage } from '@/data/articles';
-import { fetchAllArticlesMetadata } from '@/data/knowledgeHub';
+import { fetchAllArticlesMetadata, fetchArticles } from '@/data/knowledgeHub';
 
 interface WebhookArticle {
   id: string;
