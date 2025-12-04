@@ -125,7 +125,16 @@ const Knowledge = () => {
     loadArticles();
   }, []);
 
-  // Auto-trigger search if URL has search parameters
+  // Auto-trigger search when filters change
+  useEffect(() => {
+    // Only trigger if we have at least one filter active
+    if (searchTerm || selectedLens || selectedStage) {
+      console.log('🔄 Filters changed, auto-triggering search');
+      handleSearch();
+    }
+  }, [selectedLens, selectedStage]); // Auto-search when filters change
+
+  // Auto-trigger search if URL has search parameters on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
@@ -301,6 +310,14 @@ const Knowledge = () => {
     setSearching(true);
     setSearchError(null);
     
+    console.log('🔎 Search triggered with:', {
+      searchTerm,
+      selectedLens,
+      selectedStage,
+      lensId: selectedLens ? lensToIdMap[selectedLens] : undefined,
+      stageId: selectedStage ? stageToIdMap[selectedStage] : undefined
+    });
+    
     // Update URL with current search parameters
     const params = new URLSearchParams();
     if (searchTerm) params.set('search', searchTerm);
@@ -312,21 +329,28 @@ const Knowledge = () => {
     
     // If no search term and no filters, just clear results to show all articles
     if (!searchTerm && !selectedLens && !selectedStage) {
+      console.log('🧹 Clearing all filters');
       setWebhookResults(null);
       setSearching(false);
       return;
     }
     
     try {
-      // Fetch from ngrok API with numeric IDs
+      // Fetch from API with numeric IDs
       const response = await fetchArticles({
         search: searchTerm || undefined,
         lifeStage: selectedStage ? stageToIdMap[selectedStage] : undefined,
         perspective: selectedLens ? lensToIdMap[selectedLens] : undefined
       });
 
+      console.log('✅ API returned:', {
+        itemsCount: response.items.length,
+        total: response.pagination.total,
+        samples: response.items.slice(0, 2).map(i => ({ title: i.title, lens: i.lens, stage: i.life_stage }))
+      });
+
       // Transform to webhook format for compatibility
-      setWebhookResults({
+      const webhookData = {
         query: searchTerm || '',
         filters: {
           lenses: selectedLens ? [selectedLens] : [],
@@ -344,11 +368,13 @@ const Knowledge = () => {
           life_stage: item.life_stage,
           published_at: item.published_at
         }))
-      });
+      };
+      
+      console.log('📦 Setting webhook results with', webhookData.items.length, 'items');
+      setWebhookResults(webhookData);
 
-      console.log(`Found ${response.items.length} articles from ngrok API`);
     } catch (error) {
-      console.error('Error during search:', error);
+      console.error('❌ Error during search:', error);
       setSearchError('Search failed. Please try again.');
       setWebhookResults(null);
     } finally {

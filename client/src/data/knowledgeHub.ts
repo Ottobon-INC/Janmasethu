@@ -186,14 +186,14 @@ export async function fetchArticles(params?: {
     if (!response.ok) {
       const responseText = await response.text();
       console.error('Error response text:', responseText);
-      
+
       let errorData;
       try {
         errorData = JSON.parse(responseText);
       } catch {
         errorData = { error: 'Failed to fetch articles' };
       }
-      
+
       throw new Error(errorData.error || `HTTP ${response.status}: ${responseText}`);
     }
 
@@ -275,11 +275,11 @@ export const fetchArticleData = async (slug: string): Promise<ArticleData | null
   try {
     const article = await fetchArticleBySlug(slug);
     if (!article) return null;
-    
+
     // Transform API response to ArticleData format
     // Backend returns: { id, slug, title, summary, content, topic, section, lens, life_stage, read_time_minutes, published_at }
     // Frontend expects: { slug, title, overview, metadata, sections }
-    
+
     const transformedArticle: ArticleData = {
       slug: article.slug,
       title: {
@@ -369,6 +369,3 @@ export const fetchArticleData = async (slug: string): Promise<ArticleData | null
     return null;
   }
 };
-
-
-
