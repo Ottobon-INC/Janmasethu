@@ -305,6 +305,20 @@ const Knowledge = () => {
     { value: 'early-years', label: 'Early Years' },
   ];
 
+  // Handle "All" button click for lens
+  const handleLensAll = () => {
+    setSelectedLens(null);
+    setWebhookResults(null); // Clear webhook results to show all JSON articles
+    window.history.replaceState({}, '', '/knowledge');
+  };
+
+  // Handle "All" button click for stage
+  const handleStageAll = () => {
+    setSelectedStage(null);
+    setWebhookResults(null); // Clear webhook results to show all JSON articles
+    window.history.replaceState({}, '', '/knowledge');
+  };
+
   // Handle search button click
   const handleSearch = async () => {
     setSearching(true);
@@ -427,10 +441,12 @@ const Knowledge = () => {
               variant="outline"
               className="rounded-full px-6"
               onClick={() => {
+                console.log('🧹 Clear All clicked');
                 setSearchTerm('');
                 setSelectedLens(null);
                 setSelectedStage(null);
                 setWebhookResults(null);
+                setSearchError(null);
                 // Clear URL parameters
                 window.history.replaceState({}, '', '/knowledge');
               }}
@@ -446,7 +462,7 @@ const Knowledge = () => {
           <div className="flex flex-wrap gap-2">
             <Button
               variant={selectedLens === null ? "default" : "outline"}
-              onClick={() => setSelectedLens(null)}
+              onClick={handleLensAll}
               className="rounded-full"
               data-testid="button-filter-all-lens"
             >
@@ -473,7 +489,7 @@ const Knowledge = () => {
           <div className="flex flex-wrap gap-2">
             <Button
               variant={selectedStage === null ? "default" : "outline"}
-              onClick={() => setSelectedStage(null)}
+              onClick={handleStageAll}
               className="rounded-full"
               data-testid="button-filter-all-stage"
             >
