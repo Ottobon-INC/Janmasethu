@@ -1337,7 +1337,7 @@ const Home = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-4">
+        <section className="py-4 px-0">
           <div className="text-center mb-3">
             <h2
               className="text-xl md:text-2xl font-bold text-foreground font-serif mb-1"
@@ -1345,13 +1345,13 @@ const Home = () => {
             >
               Frequently Asked Questions
             </h2>
-            <p className="text-xs text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xs text-muted-foreground max-w-2xl mx-auto px-4">
               Everything you need to know about JanmaSethu
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto">
-            <Card className="rounded-xl p-2 card-shadow bg-gradient-to-br from-white to-purple-50/30">
+          <div className="max-w-3xl mx-auto px-2">
+            <Card className="rounded-xl p-4 md:p-6 card-shadow bg-gradient-to-br from-white to-purple-50/30">
               <CardContent className="p-0">
                 <Accordion
                   type="single"

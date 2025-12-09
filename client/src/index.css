@@ -1667,7 +1667,7 @@ textarea:focus-visible {
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: linear-gradient(135deg, transparent 0%, transparent 100%);
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   overflow: hidden;
 }
@@ -1781,9 +1781,9 @@ textarea:focus-visible {
   background: linear-gradient(135deg, rgba(249, 250, 255, 0.8) 0%, rgba(245, 243, 255, 0.7) 100%);
   border-left: 1px solid transparent;
   border-image: linear-gradient(180deg, #8B5CF6 0%, #EC4899 100%) 1;
-  padding: 0.4rem 0.75rem;
-  margin: 0.15rem 0 0.25rem 0.25rem;
-  border-radius: 0 0.375rem 0.375rem 0;
+  padding: 0.75rem 1rem 0.75rem 1.25rem;
+  margin: 0.25rem 0 0.5rem 0.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
   box-shadow: 
     inset 2px 0 6px rgba(139, 92, 246, 0.06),
     0 1px 4px rgba(0, 0, 0, 0.03);
@@ -1804,10 +1804,10 @@ textarea:focus-visible {
 
 .faq-accordion-content p {
   color: #4B5563;
-  line-height: 1.4;
-  font-size: 0.75rem;
+  line-height: 1.6;
+  font-size: 0.875rem;
   margin: 0;
-  padding-left: 0.15rem;
+  padding-left: 0;
 }
 
 @keyframes accordionContentSlideIn {
