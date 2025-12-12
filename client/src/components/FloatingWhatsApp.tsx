@@ -6,7 +6,7 @@ const FloatingWhatsApp = () => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const handleWhatsAppClick = () => {
-    window.open('http://wa.me/919281011683', '_blank');
+    window.open('https://wa.me/919281011683?text=HELLO', '_blank');
   };
 
   return (
