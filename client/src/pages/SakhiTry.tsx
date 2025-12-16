@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { detectScript } from '@/utils/language';
+import { sendChatMessage } from '@/utils/api';
 
 // Scoped Language Context for SakhiTry page only
 interface SakhiLanguageContextType {
@@ -454,81 +455,46 @@ const SakhiTry = () => {
     setLastUserMessage(userQuestion);
     setInputText('');
 
-    console.log('🔵 Send button clicked - triggering webhook with question:', userQuestion);
+    console.log('🔵 Send button clicked - sending to backend API:', userQuestion);
 
-    // Call the webhook with the user's question
+    // Call the backend API with the user's question
     try {
-      console.log('🔵 Sending POST request to: https://n8n.ottobon.in/webhook/sakhibot');
+      console.log('🔵 Sending POST request to backend /sakhi/chat');
       
-      const webhookResponse = await fetch("https://n8n.ottobon.in/webhook/sakhibot", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          question: userQuestion,
-          language: sakhiLang,
-          username: userName,
-          user_id: userId
-        })
-      });
+      const response = await sendChatMessage(userId, userQuestion, sakhiLang);
 
-      console.log('📤 Sent to webhook:', { 
-        question: userQuestion, 
+      console.log('📤 Sent to backend:', { 
+        message: userQuestion, 
         language: sakhiLang, 
-        username: userName,
         user_id: userId 
       });
 
-      console.log('🔵 Webhook response status:', webhookResponse.status, webhookResponse.statusText);
+      console.log('✅ Backend response:', response);
 
-      if (!webhookResponse.ok) {
-        const errorText = await webhookResponse.text();
-        console.error('❌ Webhook failed:', webhookResponse.status, errorText);
-        
-        // Show error message to user
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: "Sorry, I'm having trouble connecting right now. Please try again.",
-          isUser: false,
-          timestamp: new Date(),
-          language: detectedLanguage
-        };
-        setMessages(prev => [...prev, errorMessage]);
-        return;
-      }
-
-      const contentType = webhookResponse.headers.get('content-type');
-      let botResponseText;
-      
-      if (contentType && contentType.includes('application/json')) {
-        const data = await webhookResponse.json();
-        console.log('✅ Webhook JSON response:', data);
-        // Extract the answer from the response (adjust based on your webhook's response structure)
-        botResponseText = data.answer || data.response || data.text || JSON.stringify(data);
-      } else {
-        botResponseText = await webhookResponse.text();
-        console.log('✅ Webhook text response:', botResponseText);
-      }
+      const botResponseText = response.reply || "I'm here to support you.";
 
       // Generate preview content based on the question
       const preview = generatePreviewContent(userQuestion, sakhiLang);
       setPreviewContent(preview);
 
-      // Add bot response to chat
+      // Add bot response to chat with optional YouTube link and infographic
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: botResponseText,
         isUser: false,
         timestamp: new Date(),
         language: detectedLanguage,
-        previewContent: preview
+        previewContent: {
+          ...preview,
+          videoUrl: response.youtube_link || preview.videoUrl,
+          imageUrl: response.infographic_url || preview.imageUrl,
+        }
       };
 
       setMessages(prev => [...prev, botMessage]);
       
     } catch (error) {
-      console.error('❌ Error calling webhook:', error);
+      console.error('❌ Error calling backend API:', error);
       console.error('❌ Error details:', {
         name: (error as Error).name,
         message: (error as Error).message,
@@ -538,7 +504,7 @@ const SakhiTry = () => {
       // Show error message to user
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Sorry, I encountered an error. Please try again later.",
+        text: "Sorry, I'm having trouble connecting right now. Please try again.",
         isUser: false,
         timestamp: new Date(),
         language: detectedLanguage

@@ -4,12 +4,12 @@ export interface RegisterUserData {
   name: string;
   email: string;
   password: string;
-  phone_number?: string | null;
+  phone_number?: string;
   role?: string;
   preferred_language?: string;
   gender?: string;
   location?: string;
-  user_relation?: string | null;
+  user_relation?: string;
 }
 
 export interface LoginUserData {

@@ -77,10 +77,10 @@ export default function AuthModal({
             name: formData.fullName,
             email: formData.email,
             password: formData.password,
-            phone_number: formData.phoneNumber || null,
+            phone_number: formData.phoneNumber || undefined,
             preferred_language: formData.language,
-            gender: formData.gender || null,
-            location: formData.location || null,
+            gender: formData.gender || undefined,
+            location: formData.location || undefined,
           });
 
           console.log("Registration successful:", response);
