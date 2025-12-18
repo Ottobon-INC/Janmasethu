@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Send, X, RotateCcw } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Send, RotateCcw } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageProvider';
 import { detectScript } from '@/utils/language';
 import { Button } from '@/components/ui/button';
@@ -11,12 +11,15 @@ interface Message {
   text: string;
   isUser: boolean;
   lang: string;
+  isStreaming?: boolean;
 }
 
 const ChatInterface = () => {
   const { t } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const quickPrompts = [
     { key: 'chat_p1', text: t('chat_p1') },
@@ -24,8 +27,47 @@ const ChatInterface = () => {
     { key: 'chat_p3', text: t('chat_p3') },
   ];
 
-  const sendMessage = (text: string) => {
-    if (!text.trim()) return;
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Stream text character by character
+  const streamText = async (
+    botMessageId: string,
+    fullText: string,
+    delay: number = 20
+  ) => {
+    let displayedText = '';
+    
+    for (let i = 0; i < fullText.length; i++) {
+      displayedText += fullText[i];
+      
+      setMessages(prev =>
+        prev.map(msg =>
+          msg.id === botMessageId
+            ? { ...msg, text: displayedText }
+            : msg
+        )
+      );
+      
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+
+    // Remove streaming indicator
+    setMessages(prev =>
+      prev.map(msg =>
+        msg.id === botMessageId
+          ? { ...msg, isStreaming: false }
+          : msg
+      )
+    );
+  };
+
+  const sendMessage = async (text: string) => {
+    if (!text.trim() || isLoading) return;
+
+    setIsLoading(true);
 
     const userLang = detectScript(text);
     const userMessage: Message = {
@@ -35,18 +77,56 @@ const ChatInterface = () => {
       lang: userLang,
     };
 
-    const replyKey = `chat_reply_${userLang}` as keyof typeof import('@/i18n/dictionary').dict.en;
-    const reply = t(replyKey);
-    
-    const botMessage: Message = {
-      id: (Date.now() + 1).toString(),
-      text: reply,
-      isUser: false,
-      lang: userLang,
-    };
-
-    setMessages(prev => [...prev, userMessage, botMessage]);
+    // Add user message
+    setMessages(prev => [...prev, userMessage]);
     setInputText('');
+
+    try {
+      // Send to backend API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: text.trim(),
+          lang: userLang,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response');
+      }
+
+      const data = await response.json();
+      const botMessageId = (Date.now() + 1).toString();
+
+      // Add bot message with streaming
+      const botMessage: Message = {
+        id: botMessageId,
+        text: '',
+        isUser: false,
+        lang: userLang,
+        isStreaming: true,
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+
+      // Stream the response text
+      await streamText(botMessageId, data.botResponse);
+    } catch (error) {
+      console.error('Chat error:', error);
+      
+      // Show error message
+      const errorMessage: Message = {
+        id: (Date.now() + 2).toString(),
+        text: 'Sorry, I had trouble responding. Please try again.',
+        isUser: false,
+        lang: userLang,
+      };
+      
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const clearChat = () => {
@@ -89,23 +169,27 @@ const ChatInterface = () => {
               <p>Start a conversation with Sakhi...</p>
             </div>
           ) : (
-            messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
-                data-testid={`message-${message.isUser ? 'user' : 'bot'}-${message.id}`}
-              >
+            <>
+              {messages.map((message) => (
                 <div
-                  className={`max-w-xs px-4 py-2 rounded-2xl ${
-                    message.isUser
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground'
-                  }`}
+                  key={message.id}
+                  className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+                  data-testid={`message-${message.isUser ? 'user' : 'bot'}-${message.id}`}
                 >
-                  {message.text}
+                  <div
+                    className={`max-w-xs px-4 py-2 rounded-2xl ${
+                      message.isUser
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground'
+                    }`}
+                  >
+                    {message.text}
+                    {message.isStreaming && <span className="animate-pulse">▌</span>}
+                  </div>
                 </div>
-              </div>
-            ))
+              ))}
+              <div ref={messagesEndRef} />
+            </>
           )}
         </div>
 
@@ -136,15 +220,17 @@ const ChatInterface = () => {
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Type your message..."
               className="flex-1 rounded-full"
-              onKeyPress={(e) => e.key === 'Enter' && sendMessage(inputText)}
+              onKeyPress={(e) => e.key === 'Enter' && !isLoading && sendMessage(inputText)}
+              disabled={isLoading}
               data-testid="input-chat-message"
             />
             <Button
               onClick={() => sendMessage(inputText)}
+              disabled={isLoading}
               className="gradient-button text-white rounded-full hover:shadow-lg transition-all duration-300"
               data-testid="button-send-message"
             >
-              <Send className="w-4 h-4" />
+              {isLoading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Send className="w-4 h-4" />}
             </Button>
           </div>
 

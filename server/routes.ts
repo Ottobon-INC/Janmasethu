@@ -6,6 +6,8 @@ import { runMedcyDoctorsScrape } from "./scraper/medcyDoctors";
 import { scrapeAndStoreDoctors } from "./scraper/doctors";
 import { scrapeAndStoreBlogs } from "./scraper/medcy";
 import { supabase } from "./supabaseClient";
+import { storage } from "./storage";
+import { insertChatMessageSchema } from "@shared/schema";
 import fs from 'fs/promises'; // Import fs here
 import path from 'path'; // Import path here
 
@@ -262,6 +264,92 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ ok: true, updated, total: rows.length });
     } catch (e: any) {
       console.error("POST /api/dev/doctors/strip-appointment error:", e);
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  });
+
+  // =========================
+  // CHAT API ENDPOINTS
+  // =========================
+
+  // Generate AI-like response based on user message
+  function generateChatResponse(userMessage: string): string {
+    const lowerMessage = userMessage.toLowerCase();
+    
+    // Simple response generation based on keywords
+    const responses: { [key: string]: string } = {
+      "fertility": "Fertility is a complex journey. Every person's path is unique. If you have specific concerns, I'd recommend consulting with a fertility specialist. Would you like information about any particular aspect?",
+      "pregnancy": "Pregnancy is an exciting time! There are many resources available to support you. Is there something specific about pregnancy you'd like to know more about?",
+      "stress": "It's completely normal to feel stressed during fertility treatments. Many people find support from counseling, meditation, or connecting with others going through similar experiences.",
+      "treatment": "There are several treatment options available including IVF, IUI, and other assisted reproductive technologies. Each has different success rates and considerations. What would help you most?",
+      "support": "You're not alone in this journey. Many people find support through support groups, counseling, and connecting with others who understand their experience.",
+      "hope": "I understand you might be feeling hopeful or uncertain. Remember that every person's journey is unique, and there's always room for hope and positivity.",
+      "baby": "Starting or expanding your family is a wonderful goal. Whether through natural conception or assisted methods, there are many paths to parenthood.",
+      "help": "I'm here to provide emotional support and information. Feel free to share what's on your mind, and I'll do my best to help or point you toward resources.",
+      "default": "Thank you for sharing that with me. I'm here to support you through your fertility and parenting journey. Is there anything specific you'd like to talk about?",
+    };
+
+    // Find matching response
+    for (const [key, response] of Object.entries(responses)) {
+      if (key !== "default" && lowerMessage.includes(key)) {
+        return response;
+      }
+    }
+
+    return responses.default;
+  }
+
+  // Chat message endpoint
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { text, lang = "en" } = req.body;
+
+      if (!text || text.trim().length === 0) {
+        return res.status(400).json({ error: "Message text is required" });
+      }
+
+      // Validate with schema
+      const validated = insertChatMessageSchema.safeParse({
+        text: text.trim(),
+        isUser: "true",
+        lang,
+      });
+
+      if (!validated.success) {
+        return res.status(400).json({ error: "Invalid message format" });
+      }
+
+      // Store user message
+      await storage.addChatMessage(validated.data);
+
+      // Generate response
+      const response = generateChatResponse(text);
+
+      // Store bot response
+      await storage.addChatMessage({
+        text: response,
+        isUser: "false",
+        lang,
+      });
+
+      res.json({
+        ok: true,
+        userMessage: text.trim(),
+        botResponse: response,
+      });
+    } catch (e: any) {
+      console.error("POST /api/chat error:", e);
+      res.status(500).json({ ok: false, error: e.message });
+    }
+  });
+
+  // Get all chat messages
+  app.get("/api/chat", async (_req, res) => {
+    try {
+      const messages = await storage.getChatMessages();
+      res.json({ ok: true, messages });
+    } catch (e: any) {
+      console.error("GET /api/chat error:", e);
       res.status(500).json({ ok: false, error: e.message });
     }
   });

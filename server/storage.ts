@@ -1,4 +1,4 @@
-import { type User, type InsertUser } from "@shared/schema";
+import { type User, type InsertUser, type ChatMessage, type InsertChatMessage } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 // modify the interface with any CRUD methods
@@ -8,13 +8,17 @@ export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  addChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
+  getChatMessages(): Promise<ChatMessage[]>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
+  private chatMessages: ChatMessage[];
 
   constructor() {
     this.users = new Map();
+    this.chatMessages = [];
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -32,6 +36,21 @@ export class MemStorage implements IStorage {
     const user: User = { ...insertUser, id };
     this.users.set(id, user);
     return user;
+  }
+
+  async addChatMessage(message: InsertChatMessage): Promise<ChatMessage> {
+    const chatMessage: ChatMessage = {
+      id: randomUUID(),
+      text: message.text,
+      isUser: message.isUser,
+      lang: message.lang || null,
+    };
+    this.chatMessages.push(chatMessage);
+    return chatMessage;
+  }
+
+  async getChatMessages(): Promise<ChatMessage[]> {
+    return this.chatMessages;
   }
 }
 

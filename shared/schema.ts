@@ -43,3 +43,17 @@ export const leads = pgTable("leads", {
 });
 
 export type Lead = typeof leads.$inferSelect;
+
+export const chatMessages = pgTable("chat_messages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  text: text("text").notNull(),
+  isUser: text("is_user").notNull().default("false"),
+  lang: varchar("lang", { length: 10 }).default("en"),
+});
+
+export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({
+  id: true,
+});
+
+export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
+export type ChatMessage = typeof chatMessages.$inferSelect;
