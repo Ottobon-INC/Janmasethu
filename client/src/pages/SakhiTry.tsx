@@ -981,120 +981,89 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
     <div className="h-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
       <div className="p-6 lg:p-8 space-y-6 lg:space-y-8">
         
-        {/* Main Content Grid: Video/Reply (middle), Infographic (right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Left Column: Video + Reply + Follow-ups */}
-          <div className="lg:col-span-2 space-y-6">
+        {/* Single Column Flow: Video → Reply → Infographic → Follow-ups */}
+        <div className="space-y-6">
             
-            {/* Embedded YouTube Video */}
-            {previewContent.videoUrl && (
-              <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl overflow-hidden border border-purple-100">
-                <div className="aspect-video">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={previewContent.videoUrl}
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                    className="w-full h-full"
-                  ></iframe>
-                </div>
+          {/* 1. Embedded YouTube Video */}
+          {previewContent.videoUrl && (
+            <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl overflow-hidden border border-purple-100">
+              <div className="aspect-video">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={previewContent.videoUrl}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="w-full h-full"
+                ></iframe>
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Reply Text */}
-            {previewContent.replyText && (
-              <Card className="border border-gray-100 shadow-sm">
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Bot className="w-5 h-5 text-purple-600" />
+          {/* 2. Reply Text */}
+          {previewContent.replyText && (
+            <Card className="border border-gray-100 shadow-sm">
+              <CardContent className="p-6">
+                <div className="flex items-start space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Bot className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-gray-800 leading-relaxed text-base whitespace-pre-line">
+                      {previewContent.replyText}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* 3. Infographic Image - No separate card, just the image */}
+          {previewContent.infographicUrl && (
+            <div className="rounded-xl overflow-hidden border border-gray-100 shadow-sm">
+              <img
+                src={previewContent.infographicUrl}
+                alt="Infographic"
+                className="w-full h-auto object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
+            </div>
+          )}
+
+          {/* 4. Follow-up Question Buttons */}
+          {previewContent.followUpQuestions && previewContent.followUpQuestions.length > 0 && (
+            <Card className="border border-purple-100 shadow-sm bg-gradient-to-br from-purple-50/50 to-pink-50/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center space-x-2 text-lg">
+                  <MessageCircle className="w-5 h-5 text-purple-500" />
+                  <span>Continue the conversation</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {previewContent.followUpQuestions.map((question, index) => (
+                  <button
+                    key={index}
+                    onClick={() => onFollowUpClick?.(question)}
+                    className="w-full text-left p-4 bg-white hover:bg-purple-50 rounded-xl border border-purple-200 hover:border-purple-300 transition-all duration-200 group shadow-sm hover:shadow-md"
+                    data-testid={`button-followup-${index}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-700 group-hover:text-purple-700 font-medium">
+                        {question}
+                      </span>
+                      <Send className="w-4 h-4 text-purple-400 group-hover:text-purple-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                    <div className="flex-1">
-                      <p className="text-gray-800 leading-relaxed text-base whitespace-pre-line">
-                        {previewContent.replyText}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Follow-up Question Buttons */}
-            {previewContent.followUpQuestions && previewContent.followUpQuestions.length > 0 && (
-              <Card className="border border-purple-100 shadow-sm bg-gradient-to-br from-purple-50/50 to-pink-50/50">
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center space-x-2 text-lg">
-                    <MessageCircle className="w-5 h-5 text-purple-500" />
-                    <span>Continue the conversation</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {previewContent.followUpQuestions.map((question, index) => (
-                    <button
-                      key={index}
-                      onClick={() => onFollowUpClick?.(question)}
-                      className="w-full text-left p-4 bg-white hover:bg-purple-50 rounded-xl border border-purple-200 hover:border-purple-300 transition-all duration-200 group shadow-sm hover:shadow-md"
-                      data-testid={`button-followup-${index}`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-gray-700 group-hover:text-purple-700 font-medium">
-                          {question}
-                        </span>
-                        <Send className="w-4 h-4 text-purple-400 group-hover:text-purple-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </div>
-                    </button>
-                  ))}
-                </CardContent>
-              </Card>
-            )}
-          </div>
-
-          {/* Right Column: Infographic Image */}
-          <div className="lg:col-span-1">
-            {previewContent.infographicUrl && (
-              <Card className="border border-gray-100 shadow-sm sticky top-20">
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center space-x-2 text-lg">
-                    <Heart className="w-5 h-5 text-pink-500" />
-                    <span>Visual Guide</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-4">
-                  <div className="rounded-xl overflow-hidden border border-gray-100">
-                    <img
-                      src={previewContent.infographicUrl}
-                      alt="Infographic"
-                      className="w-full h-auto object-contain"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Show placeholder if no infographic */}
-            {!previewContent.infographicUrl && (
-              <Card className="border border-gray-100 shadow-sm bg-gradient-to-br from-gray-50 to-white">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Shield className="w-8 h-8 text-purple-600" />
-                  </div>
-                  <h4 className="font-semibold text-gray-700 mb-2">Trusted Information</h4>
-                  <p className="text-sm text-gray-500">
-                    All responses are backed by verified medical sources
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-          </div>
+                  </button>
+                ))}
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         {/* Legacy sections - only show if they have content */}
