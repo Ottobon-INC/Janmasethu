@@ -361,16 +361,66 @@ export default function AuthModal({
       <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
-            {isSignUp ? "Create Account" : "Sign In"}
+            Welcome to JanmaSethu
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground text-center">
-            {isSignUp
-              ? "Join JanmaSethu to get personalized support"
-              : "Welcome back to JanmaSethu"}
+            Your trusted companion for fertility and parenting support
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+        {/* Account Type Selector - Visible in first view */}
+        <div className="flex gap-2 mb-6">
+          <Button
+            type="button"
+            onClick={() => {
+              setIsSignUp(true);
+              setLoginError("");
+              setFormData({
+                fullName: "",
+                email: "",
+                password: "",
+                phoneNumber: "",
+                gender: "",
+                location: "",
+                language: "en",
+              });
+            }}
+            className={`flex-1 rounded-lg font-semibold transition-all ${
+              isSignUp
+                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+            data-testid="button-create-account"
+          >
+            Create Account
+          </Button>
+          <Button
+            type="button"
+            onClick={() => {
+              setIsSignUp(false);
+              setLoginError("");
+              setFormData({
+                fullName: "",
+                email: "",
+                password: "",
+                phoneNumber: "",
+                gender: "",
+                location: "",
+                language: "en",
+              });
+            }}
+            className={`flex-1 rounded-lg font-semibold transition-all ${
+              !isSignUp
+                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+            data-testid="button-sign-in"
+          >
+            Sign In
+          </Button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           {isSignUp && (
             <>
               <div className="space-y-2">
@@ -507,31 +557,6 @@ export default function AuthModal({
                 ? "Create Account"
                 : "Sign In"}
           </Button>
-
-          <div className="text-center text-sm">
-            <button
-              type="button"
-              onClick={() => {
-                setIsSignUp(!isSignUp);
-                setFormData({
-                  fullName: "",
-                  email: "",
-                  password: "",
-                  phoneNumber: "",
-                  gender: "",
-                  location: "",
-                  language: "en",
-                });
-                setLoginError("");
-              }}
-              className="text-primary hover:underline font-medium"
-              data-testid="button-toggle-auth-mode"
-            >
-              {isSignUp
-                ? "Already have an account? Sign in"
-                : "Don't have an account? Sign up"}
-            </button>
-          </div>
         </form>
       </DialogContent>
     </Dialog>
