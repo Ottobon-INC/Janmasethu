@@ -31,6 +31,7 @@ interface Message {
   timestamp: Date;
   language: string;
   previewContent?: PreviewContent;
+  intent?: string;
 }
 
 interface PreviewContent {
@@ -568,14 +569,15 @@ const SakhiTry = () => {
       
       setPreviewContent(backendPreview);
 
-      // Add bot response to chat (show only main text without follow-ups)
+      // Add bot response to chat (show only intent, full content in preview)
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: mainText,
+        text: response.intent || mainText,
         isUser: false,
         timestamp: new Date(),
         language: detectedLanguage,
-        previewContent: backendPreview
+        previewContent: backendPreview,
+        intent: response.intent
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -763,13 +765,6 @@ const SakhiTry = () => {
                           {message.timestamp.toLocaleTimeString()}
                         </p>
                       </div>
-
-                      {/* Intent Display in Chat Panel */}
-                      {!message.isUser && message.previewContent?.intent && (
-                        <div className="mt-3 px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-900 leading-relaxed">
-                          {message.previewContent.intent}
-                        </div>
-                      )}
 
                       {/* Mobile Preview Content */}
                       {!message.isUser && message.previewContent && (
