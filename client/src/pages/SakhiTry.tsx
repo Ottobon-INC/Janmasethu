@@ -40,6 +40,7 @@ interface PreviewContent {
   videoUrl?: string;
   imageUrl?: string;
   infographicUrl?: string;
+  shortsUrl?: string;
   tips: string[];
   resources: { title: string; description: string; }[];
   keyPoints: string[];
@@ -83,9 +84,28 @@ const parseFollowUpQuestions = (reply: string): { mainText: string; followUps: s
   return { mainText, followUps: questions };
 };
 
-// Helper function to convert YouTube URL to embed format
-const getYouTubeEmbedUrl = (url: string): string => {
-  if (!url) return '';
+// Helper function to detect if URL is a YouTube Shorts or Instagram link
+const isNonEmbeddableVideo = (url: string): boolean => {
+  if (!url) return false;
+  // YouTube Shorts
+  if (url.includes('youtube.com/shorts/') || url.includes('youtu.be/') && url.includes('?')) {
+    return true;
+  }
+  // Instagram
+  if (url.includes('instagram.com') || url.includes('instagr.am')) {
+    return true;
+  }
+  return false;
+};
+
+// Helper function to convert YouTube URL to embed format (only for regular videos)
+const getYouTubeEmbedUrl = (url: string): string | undefined => {
+  if (!url) return undefined;
+  
+  // Check if this is a Shorts or Instagram link - don't embed these
+  if (isNonEmbeddableVideo(url)) {
+    return undefined;
+  }
   
   // Already an embed URL
   if (url.includes('/embed/')) {
@@ -95,8 +115,8 @@ const getYouTubeEmbedUrl = (url: string): string => {
   // Extract video ID from various YouTube URL formats
   let videoId = '';
   
-  // youtu.be/VIDEO_ID format
-  const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+  // youtu.be/VIDEO_ID format (but not shorts)
+  const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)(?:[?&]|$)/);
   if (shortMatch) {
     videoId = shortMatch[1];
   }
@@ -113,7 +133,7 @@ const getYouTubeEmbedUrl = (url: string): string => {
     return `https://www.youtube.com/embed/${videoId}`;
   }
   
-  return url;
+  return undefined;
 };
 
 // Language Switcher component
@@ -550,14 +570,26 @@ const SakhiTry = () => {
       // Parse follow-up questions from the reply
       const { mainText, followUps } = parseFollowUpQuestions(botResponseText);
 
-      // Convert YouTube URL to embed format
-      const embedUrl = response.youtube_link ? getYouTubeEmbedUrl(response.youtube_link) : undefined;
+      // Handle video URL - separate embeddable from non-embeddable
+      let embedUrl: string | undefined;
+      let shortsUrl: string | undefined;
+      
+      if (response.youtube_link) {
+        if (isNonEmbeddableVideo(response.youtube_link)) {
+          // Shorts or Instagram link - show below infographic
+          shortsUrl = response.youtube_link;
+        } else {
+          // Regular YouTube video - embed at top
+          embedUrl = getYouTubeEmbedUrl(response.youtube_link);
+        }
+      }
 
       // Create preview content from backend response
       const backendPreview: PreviewContent = {
         title: response.mode ? `${response.mode.charAt(0).toUpperCase() + response.mode.slice(1)} Information` : "Sakhi Response",
         description: "",
         videoUrl: embedUrl,
+        shortsUrl: shortsUrl,
         infographicUrl: response.infographic_url,
         replyText: mainText,
         followUpQuestions: followUps,
@@ -981,10 +1013,10 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
     <div className="h-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
       <div className="p-6 lg:p-8 space-y-6 lg:space-y-8">
         
-        {/* Single Column Flow: Video → Reply → Infographic → Follow-ups */}
+        {/* Single Column Flow: Video → Reply → Infographic → Shorts/Instagram → Follow-ups */}
         <div className="space-y-6">
             
-          {/* 1. Embedded YouTube Video */}
+          {/* 1. Embedded YouTube Video (Regular Videos Only) */}
           {previewContent.videoUrl && (
             <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl overflow-hidden border border-purple-100">
               <div className="aspect-video">
@@ -1036,7 +1068,33 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
             </div>
           )}
 
-          {/* 4. Follow-up Question Buttons */}
+          {/* 4. YouTube Shorts / Instagram Links - As clickable card */}
+          {previewContent.shortsUrl && (
+            <Card className="border border-blue-100 shadow-sm bg-gradient-to-br from-blue-50/50 to-purple-50/50">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Play className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <span className="text-gray-700 font-medium">
+                      {previewContent.shortsUrl.includes('instagram') ? 'View on Instagram' : 'Watch on YouTube'}
+                    </span>
+                  </div>
+                  <a
+                    href={previewContent.shortsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+                  >
+                    Open
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* 5. Follow-up Question Buttons */}
           {previewContent.followUpQuestions && previewContent.followUpQuestions.length > 0 && (
             <Card className="border border-purple-100 shadow-sm bg-gradient-to-br from-purple-50/50 to-pink-50/50">
               <CardHeader className="pb-3">
