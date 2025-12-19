@@ -216,22 +216,22 @@ const Home = () => {
               {/* Arrows hidden on mobile, visible on md+ */}
               <CarouselPrevious className="hidden md:flex !left-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
               <CarouselNext className="hidden md:flex !right-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
-              {/* Pagination Bar Indicator - Inside carousel at bottom */}
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                {Array.from({ length: totalSlides }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => carouselApi?.scrollTo(index)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      currentSlide === index
-                        ? "bg-purple-600 w-8"
-                        : "bg-white/70 hover:bg-white w-4"
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
             </Carousel>
+            {/* Pagination Bar Indicator - Positioned at bottom of carousel container */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+              {Array.from({ length: totalSlides }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => carouselApi?.scrollTo(index)}
+                  className={`h-1.5 rounded-full transition-all duration-300 shadow-sm ${
+                    currentSlide === index
+                      ? "bg-purple-600 w-8"
+                      : "bg-white/80 hover:bg-white w-4"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
