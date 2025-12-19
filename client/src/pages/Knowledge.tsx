@@ -617,7 +617,7 @@ const Knowledge = () => {
                       </span>
                     </div>
                     <span data-testid={`text-reviewed-by-${index}`}>
-                      {article.isWebhookResult ? 'Reviewed by Expert' : `by ${article.reviewedBy}`}
+                      Reviewed by Medical Expert
                     </span>
                   </div>
                 </CardContent>
