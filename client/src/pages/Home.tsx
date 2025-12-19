@@ -28,6 +28,7 @@ import {
   Dna,
   HeartHandshake,
   Snowflake,
+  ChevronDown,
 } from "lucide-react";
 import {
   Accordion,
@@ -445,7 +446,7 @@ const Home = () => {
                   </div>
                 </DialogTrigger>
                 {/* Changed DialogContent to be full-screen on mobile */}
-                <DialogContent className="sm:max-w-2xl max-w-[90vw] max-h-[60vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-white via-green-50/30 to-purple-50/30 rounded-2xl">
+                <DialogContent className="sm:max-w-2xl max-w-[90vw] max-h-[60vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-white via-green-50/30 to-purple-50/30 rounded-2xl relative">
                   <DialogHeader className="border-b border-green-100 pb-4 px-6 pt-6">
                     <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-serif">
                       <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
@@ -453,6 +454,10 @@ const Home = () => {
                       </div>
                       <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">Thinking of Parenthood</span>
                     </DialogTitle>
+                    <div className="flex items-center justify-center gap-1 text-xs text-gray-400 mt-2 animate-bounce">
+                      <ChevronDown className="w-4 h-4" />
+                      <span>Scroll for more</span>
+                    </div>
                   </DialogHeader>
                   <div className="space-y-6 mt-6 px-6 pb-6">
                     <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl shadow-md border border-green-200">
@@ -566,7 +571,7 @@ const Home = () => {
                     </span>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-2xl max-w-[90vw] max-h-[60vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-white via-pink-50/30 to-purple-50/30 rounded-2xl">
+                <DialogContent className="sm:max-w-2xl max-w-[90vw] max-h-[60vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-white via-pink-50/30 to-purple-50/30 rounded-2xl relative">
                   <DialogHeader className="border-b border-pink-100 pb-4 px-6 pt-6">
                     <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-serif">
                       <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
@@ -574,6 +579,10 @@ const Home = () => {
                       </div>
                       <span className="bg-gradient-to-r from-pink-600 to-pink-800 bg-clip-text text-transparent">Trying Naturally</span>
                     </DialogTitle>
+                    <div className="flex items-center justify-center gap-1 text-xs text-gray-400 mt-2 animate-bounce">
+                      <ChevronDown className="w-4 h-4" />
+                      <span>Scroll for more</span>
+                    </div>
                   </DialogHeader>
                   <div className="space-y-6 mt-6 px-6 pb-6">
                     <div className="bg-gradient-to-br from-pink-50 to-pink-100 p-6 rounded-2xl shadow-md border border-pink-200">
@@ -681,7 +690,7 @@ const Home = () => {
                     </span>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-2xl max-w-[90vw] max-h-[60vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 rounded-2xl">
+                <DialogContent className="sm:max-w-2xl max-w-[90vw] max-h-[60vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 rounded-2xl relative">
                   <DialogHeader className="border-b border-blue-100 pb-4 px-6 pt-6">
                     <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-serif">
                       <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
@@ -689,6 +698,10 @@ const Home = () => {
                       </div>
                       <span className="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Exploring Options (IUI, IVF, Donor)</span>
                     </DialogTitle>
+                    <div className="flex items-center justify-center gap-1 text-xs text-gray-400 mt-2 animate-bounce">
+                      <ChevronDown className="w-4 h-4" />
+                      <span>Scroll for more</span>
+                    </div>
                   </DialogHeader>
                   <div className="space-y-6 mt-6 px-6 pb-6">
                     <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl shadow-md border border-blue-200">
@@ -802,7 +815,7 @@ const Home = () => {
                     </span>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-2xl max-w-[90vw] max-h-[60vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-white via-purple-50/30 to-pink-50/30 rounded-2xl">
+                <DialogContent className="sm:max-w-2xl max-w-[90vw] max-h-[60vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-white via-purple-50/30 to-pink-50/30 rounded-2xl relative">
                   <DialogHeader className="border-b border-purple-100 pb-4 px-6 pt-6">
                     <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-serif">
                       <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
@@ -810,6 +823,10 @@ const Home = () => {
                       </div>
                       <span className="bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">Pregnancy</span>
                     </DialogTitle>
+                    <div className="flex items-center justify-center gap-1 text-xs text-gray-400 mt-2 animate-bounce">
+                      <ChevronDown className="w-4 h-4" />
+                      <span>Scroll for more</span>
+                    </div>
                   </DialogHeader>
                   <div className="space-y-6 mt-6 px-6 pb-6">
                     <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-2xl shadow-md border border-purple-200">
@@ -917,7 +934,7 @@ const Home = () => {
                     </span>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-2xl max-w-[90vw] max-h-[60vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-white via-orange-50/30 to-purple-50/30 rounded-2xl">
+                <DialogContent className="sm:max-w-2xl max-w-[90vw] max-h-[60vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-white via-orange-50/30 to-purple-50/30 rounded-2xl relative">
                   <DialogHeader className="border-b border-orange-100 pb-4 px-6 pt-6">
                     <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-serif">
                       <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
@@ -925,6 +942,10 @@ const Home = () => {
                       </div>
                       <span className="bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">Post-Delivery & New Parent</span>
                     </DialogTitle>
+                    <div className="flex items-center justify-center gap-1 text-xs text-gray-400 mt-2 animate-bounce">
+                      <ChevronDown className="w-4 h-4" />
+                      <span>Scroll for more</span>
+                    </div>
                   </DialogHeader>
                   <div className="space-y-6 mt-6 px-6 pb-6">
                     <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-2xl shadow-md border border-orange-200">
