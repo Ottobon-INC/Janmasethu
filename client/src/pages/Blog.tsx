@@ -97,11 +97,11 @@ const Blog = () => {
                       )}
                     </div>
                   </div>
-                  <div>
+                  <div className="bg-white/50 rounded-xl p-4 flex items-center justify-center">
                     <img
                       src={featured.image_url || imgAt(0)}
                       alt={featured.title}
-                      className="rounded-xl w-full h-48 object-cover"
+                      className="rounded-lg w-full h-auto max-h-64 object-contain"
                     />
                   </div>
                 </div>
