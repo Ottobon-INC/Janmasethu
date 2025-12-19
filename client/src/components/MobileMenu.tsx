@@ -69,16 +69,6 @@ const MobileMenu = ({ isOpen, onClose, navItems }: MobileMenuProps) => {
             </div>
           </div>
 
-          {/* Welcome Message */}
-          <div className="px-5 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-purple-100">
-            <div className="flex items-center gap-2">
-              <Heart className="w-4 h-4 text-pink-500" />
-              <p className="text-sm text-gray-600">
-                Welcome! How can we help you today?
-              </p>
-            </div>
-          </div>
-
           {/* Navigation Links */}
           <nav className="flex-1 overflow-y-auto py-3 px-3" role="navigation" aria-label="Mobile navigation">
             <div className="space-y-1">
