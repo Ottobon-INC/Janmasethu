@@ -41,4 +41,4 @@ waitForPort = 5000
 [userenv]
 
 [userenv.shared]
-VITE_API_URL = "https://manufactural-lonny-unscalding.ngrok-free.dev"
+VITE_API_URL = "https://uncollectively-unfutile-deandrea.ngrok-free.dev"
