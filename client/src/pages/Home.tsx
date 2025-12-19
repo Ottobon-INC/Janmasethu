@@ -48,6 +48,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "../components/ui/carousel";
 import { useLanguage } from "../i18n/LanguageProvider";
 import { Card, CardContent } from "../components/ui/card";
@@ -61,6 +62,24 @@ import Autoplay from "embla-carousel-autoplay";
 const Home = () => {
   const { t, lang } = useLanguage();
   const [, setLocation] = useLocation();
+  const [carouselApi, setCarouselApi] = React.useState<CarouselApi>();
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+  const totalSlides = 7;
+
+  React.useEffect(() => {
+    if (!carouselApi) return;
+
+    const onSelect = () => {
+      setCurrentSlide(carouselApi.selectedScrollSnap());
+    };
+
+    carouselApi.on("select", onSelect);
+    onSelect();
+
+    return () => {
+      carouselApi.off("select", onSelect);
+    };
+  }, [carouselApi]);
 
   const featuredArticles = articles.slice(0, 4);
   const featuredStories = stories.slice(0, 3);
@@ -122,6 +141,7 @@ const Home = () => {
             <Carousel
               plugins={[plugin.current]}
               className="w-full h-full"
+              setApi={setCarouselApi}
               opts={{
                 align: "center",
                 loop: true,
@@ -192,9 +212,25 @@ const Home = () => {
                   </div>
                 </CarouselItem>
               </CarouselContent>
-              <CarouselPrevious className="!left-2 sm:!left-4 bg-transparent hover:bg-white/30 border-none shadow-none w-10 h-10 sm:w-12 sm:h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
-              <CarouselNext className="!right-2 sm:!right-4 bg-transparent hover:bg-white/30 border-none shadow-none w-10 h-10 sm:w-12 sm:h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
+              {/* Arrows hidden on mobile, visible on md+ */}
+              <CarouselPrevious className="hidden md:flex !left-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
+              <CarouselNext className="hidden md:flex !right-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
             </Carousel>
+            {/* Pagination Dots */}
+            <div className="flex justify-center gap-2 mt-3 pb-2">
+              {Array.from({ length: totalSlides }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => carouselApi?.scrollTo(index)}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    currentSlide === index
+                      ? "bg-purple-600 w-6"
+                      : "bg-gray-300 hover:bg-gray-400"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
