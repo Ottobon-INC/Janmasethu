@@ -121,20 +121,6 @@ const MobileMenu = ({ isOpen, onClose, navItems }: MobileMenuProps) => {
               })}
             </div>
           </nav>
-
-          {/* Footer Section */}
-          <div className="px-5 py-4 border-t border-gray-100 bg-gray-50">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                <span>Secure & Private</span>
-              </div>
-              <span className="text-xs text-gray-400">v1.0</span>
-            </div>
-            <p className="text-[10px] text-gray-400 mt-2 text-center">
-              Made with care for parents everywhere
-            </p>
-          </div>
         </div>
       </div>
 
