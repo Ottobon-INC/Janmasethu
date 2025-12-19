@@ -254,7 +254,7 @@ const Article = () => {
       </header>
 
       {/* Article Body */}
-      <div className="max-w-4xl mx-auto">
+      <div className="w-full">
         <div className="space-y-6">
           {articleData.sections.map((section, index) => (
             <div key={section.id} data-testid={`section-${index}`}>
@@ -263,7 +263,7 @@ const Article = () => {
                   {getLocalizedContent(section.title)}
                 </h2>
               )}
-              <div className="prose prose-lg max-w-none">
+              <div className="prose prose-lg max-w-none w-full">
                 {section.content.map((content, contentIndex) => (
                   <div key={contentIndex}>
                     {renderContent(content)}
