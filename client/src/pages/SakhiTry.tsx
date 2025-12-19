@@ -771,60 +771,133 @@ const PreviewPanel = ({ previewContent, isVideoPlaying, setIsVideoPlaying, isMut
   // Show loading animation when waiting for response
   if (isLoading) {
     return (
-      <div className="h-full bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-100 flex items-center justify-center p-8 lg:p-12">
-        <div className="text-center">
-          <div className="mb-6">
+      <div className="h-full min-h-[400px] bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-100 flex items-center justify-center p-8 lg:p-12">
+        <div className="text-center flex flex-col items-center justify-center">
+          <div className="mb-8 relative" style={{ width: '115px', height: '185px' }}>
             <style>{`
-              .sakhi-loader {
+              .sakhi-timer {
                 display: grid;
                 grid-template-columns: repeat(3, 25px);
                 grid-template-rows: repeat(5, 25px);
                 gap: 10px;
+                grid-template-areas:
+                  "div1 div2 div3"
+                  "div4 div5 div6"
+                  "div7 div8 div9"
+                  "div10 div11 div12"
+                  "div13 div14 div15";
               }
-              .sakhi-loader div {
+              .sakhi-timer > div {
                 width: 25px;
                 height: 25px;
                 background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
                 border-radius: 5px;
               }
-              .sakhi-loader .hide { display: none; }
-              .sakhi-loader .d1 { animation: move1 10s infinite both; }
-              .sakhi-loader .d2 { animation: move2 10s infinite both; }
-              .sakhi-loader .d4 { animation: move4 10s infinite both; }
-              .sakhi-loader .d6 { animation: move6 10s infinite both; }
-              .sakhi-loader .d7 { animation: move7 10s infinite both; }
-              .sakhi-loader .d8 { animation: move8 10s infinite both; }
-              .sakhi-loader .d10 { animation: move10 10s infinite both; }
-              .sakhi-loader .d12 { animation: move12 10s infinite both; }
-              .sakhi-loader .d13 { animation: move13 10s infinite both; }
-              .sakhi-loader .d14 { animation: move14 10s infinite both; }
-              @keyframes move1 { 0%, 20%, 100% { transform: translateX(0); } 10% { transform: translateX(70px); } }
-              @keyframes move2 { 0%, 20%, 50%, 100% { transform: translateX(0); } 10%, 40% { transform: translateX(35px); } }
-              @keyframes move4 { 0%, 40%, 60%, 100% { transform: translateX(0); } 10%, 20%, 30%, 70% { transform: translateX(70px); } }
-              @keyframes move6 { 0%, 40%, 70%, 100% { transform: translateX(0); } 50%, 60% { transform: translateX(-70px); } }
-              @keyframes move7 { 0%, 20%, 60%, 100% { transform: translateX(0); } 10%, 70% { transform: translateX(70px); } }
-              @keyframes move8 { 0%, 10%, 100% { transform: translateX(35px); } 20%, 60% { transform: translateX(0); } 70% { transform: translateX(35px); } }
-              @keyframes move10 { 0%, 20%, 60%, 80%, 100% { transform: translateX(0); } 10%, 30%, 40%, 50%, 70%, 90% { transform: translateX(70px); } }
-              @keyframes move12 { 0%, 10%, 30%, 100% { transform: translateX(0); } 20% { transform: translateX(-70px); } }
-              @keyframes move13 { 0%, 20%, 50%, 100% { transform: translateX(0); } 10%, 40%, 70% { transform: translateX(70px); } }
-              @keyframes move14 { 0%, 20%, 50%, 100% { transform: translateX(0); } 10%, 40%, 70% { transform: translateX(35px); } }
+              .sakhi-timer #d1 { grid-area: div1; animation: div1 10s both infinite; }
+              .sakhi-timer #d2 { grid-area: div2; animation: div2 10s both infinite; }
+              .sakhi-timer #d3 { grid-area: div3; }
+              .sakhi-timer #d4 { grid-area: div4; animation: div4 10s both infinite; }
+              .sakhi-timer #d5 { grid-area: div5; display: none; }
+              .sakhi-timer #d6 { grid-area: div6; animation: div6 10s both infinite; }
+              .sakhi-timer #d7 { grid-area: div7; animation: div7 10s both infinite; }
+              .sakhi-timer #d8 { grid-area: div8; animation: div8 10s both infinite; }
+              .sakhi-timer #d9 { grid-area: div9; }
+              .sakhi-timer #d10 { grid-area: div10; animation: div10 10s both infinite; }
+              .sakhi-timer #d11 { grid-area: div11; display: none; }
+              .sakhi-timer #d12 { grid-area: div12; animation: div12 10s both infinite; }
+              .sakhi-timer #d13 { grid-area: div13; animation: div13 10s both infinite; }
+              .sakhi-timer #d14 { grid-area: div14; animation: div14 10s both infinite; }
+              .sakhi-timer #d15 { grid-area: div15; }
+              
+              @keyframes div1 {
+                0% { transform: translateX(0); }
+                10% { transform: translateX(70px); }
+                20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100% { transform: translateX(0); }
+              }
+              @keyframes div2 {
+                0% { transform: translateX(0); }
+                10% { transform: translateX(35px); }
+                20%, 30% { transform: translateX(0); }
+                40% { transform: translateX(35px); }
+                50%, 60%, 70%, 80%, 90%, 100% { transform: translateX(0); }
+              }
+              @keyframes div4 {
+                0% { transform: translateX(0); }
+                10%, 20%, 30% { transform: translateX(70px); }
+                40%, 50%, 60% { transform: translateX(0); }
+                70% { transform: translateX(70px); }
+                80%, 90%, 100% { transform: translateX(0); }
+              }
+              @keyframes div6 {
+                0%, 10%, 20%, 30%, 40% { transform: translateX(0); }
+                50%, 60% { transform: translateX(-70px); }
+                70%, 80%, 90%, 100% { transform: translateX(0); }
+              }
+              @keyframes div7 {
+                0% { transform: translateX(0); }
+                10% { transform: translateX(70px); }
+                20%, 30%, 40%, 50%, 60% { transform: translateX(0); }
+                70% { transform: translateX(70px); }
+                80%, 90%, 100% { transform: translateX(0); }
+              }
+              @keyframes div8 {
+                0%, 10% { transform: translateX(35px); }
+                20%, 30%, 40%, 50%, 60% { transform: translateX(0); }
+                70% { transform: translateX(35px); }
+                80%, 90% { transform: translateX(0); }
+                100% { transform: translateX(35px); }
+              }
+              @keyframes div10 {
+                0% { transform: translateX(0); }
+                10% { transform: translateX(70px); }
+                20% { transform: translateX(0); }
+                30%, 40%, 50% { transform: translateX(70px); }
+                60% { transform: translateX(0); }
+                70% { transform: translateX(70px); }
+                80% { transform: translateX(0); }
+                90% { transform: translateX(70px); }
+                100% { transform: translateX(0); }
+              }
+              @keyframes div12 {
+                0%, 10% { transform: translateX(0); }
+                20% { transform: translateX(-70px); }
+                30%, 40%, 50%, 60%, 70%, 80%, 90%, 100% { transform: translateX(0); }
+              }
+              @keyframes div13 {
+                0% { transform: translateX(0); }
+                10% { transform: translateX(70px); }
+                20%, 30% { transform: translateX(0); }
+                40% { transform: translateX(70px); }
+                50%, 60% { transform: translateX(0); }
+                70% { transform: translateX(70px); }
+                80%, 90%, 100% { transform: translateX(0); }
+              }
+              @keyframes div14 {
+                0% { transform: translateX(0); }
+                10% { transform: translateX(35px); }
+                20%, 30% { transform: translateX(0); }
+                40% { transform: translateX(35px); }
+                50%, 60% { transform: translateX(0); }
+                70% { transform: translateX(35px); }
+                80%, 90%, 100% { transform: translateX(0); }
+              }
             `}</style>
-            <div className="sakhi-loader mx-auto">
-              <div className="d1"></div>
-              <div className="d2"></div>
-              <div className="d3"></div>
-              <div className="d4"></div>
-              <div className="hide"></div>
-              <div className="d6"></div>
-              <div className="d7"></div>
-              <div className="d8"></div>
-              <div className="d9"></div>
-              <div className="d10"></div>
-              <div className="hide"></div>
-              <div className="d12"></div>
-              <div className="d13"></div>
-              <div className="d14"></div>
-              <div className="d15"></div>
+            <div className="sakhi-timer">
+              <div id="d1"></div>
+              <div id="d2"></div>
+              <div id="d3"></div>
+              <div id="d4"></div>
+              <div id="d5"></div>
+              <div id="d6"></div>
+              <div id="d7"></div>
+              <div id="d8"></div>
+              <div id="d9"></div>
+              <div id="d10"></div>
+              <div id="d11"></div>
+              <div id="d12"></div>
+              <div id="d13"></div>
+              <div id="d14"></div>
+              <div id="d15"></div>
             </div>
           </div>
           <h3 className="text-xl font-bold text-gray-800 mb-2">Sakhi is thinking...</h3>
