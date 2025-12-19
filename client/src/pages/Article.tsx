@@ -102,6 +102,83 @@ const Article = () => {
     return content[langKey] || content.en || fallback;
   };
 
+  // Helper function to parse markdown-like text to formatted HTML
+  const parseMarkdownText = (text: string) => {
+    if (!text) return null;
+    
+    // Split by markdown headings and process
+    const lines = text.split('\n');
+    const elements: JSX.Element[] = [];
+    let currentParagraph = '';
+    
+    lines.forEach((line, index) => {
+      const trimmedLine = line.trim();
+      
+      // Check for ## headings
+      if (trimmedLine.startsWith('## ')) {
+        // Flush current paragraph
+        if (currentParagraph) {
+          elements.push(
+            <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-4" 
+               dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+          );
+          currentParagraph = '';
+        }
+        const headingText = trimmedLine.replace(/^##\s*\d*\.?\s*/, '');
+        elements.push(
+          <h3 key={`h-${index}`} className="text-xl font-bold text-foreground font-serif mt-8 mb-4">
+            {headingText}
+          </h3>
+        );
+      } else if (trimmedLine.startsWith('### ')) {
+        // Flush current paragraph
+        if (currentParagraph) {
+          elements.push(
+            <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-4"
+               dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+          );
+          currentParagraph = '';
+        }
+        const headingText = trimmedLine.replace(/^###\s*/, '');
+        elements.push(
+          <h4 key={`h4-${index}`} className="text-lg font-semibold text-foreground mt-6 mb-3">
+            {headingText}
+          </h4>
+        );
+      } else if (trimmedLine) {
+        currentParagraph += (currentParagraph ? ' ' : '') + trimmedLine;
+      } else if (currentParagraph) {
+        // Empty line - flush paragraph
+        elements.push(
+          <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-4"
+             dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+        );
+        currentParagraph = '';
+      }
+    });
+    
+    // Flush remaining paragraph
+    if (currentParagraph) {
+      elements.push(
+        <p key="p-last" className="text-foreground/80 leading-relaxed mb-4"
+           dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+      );
+    }
+    
+    return elements.length > 0 ? elements : (
+      <p className="text-foreground/80 leading-relaxed mb-4"
+         dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(text) }} />
+    );
+  };
+  
+  // Helper function to format inline markdown (bold, italic)
+  const formatInlineMarkdown = (text: string): string => {
+    return text
+      .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-foreground">$1</strong>')
+      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+      .replace(/`([^`]+)`/g, '<code class="bg-muted px-1 py-0.5 rounded text-sm">$1</code>');
+  };
+
   // Helper function to render article content
   const renderContent = (content: ArticleContent) => {
     const langKey = lang === 'hi' ? 'hi' : lang === 'te' ? 'te' : 'en';
@@ -110,11 +187,7 @@ const Article = () => {
       case 'paragraph':
         const paragraphText = content.text?.[langKey] || content.text?.en || '';
         if (!paragraphText) return null;
-        return (
-          <p className="text-muted-foreground leading-relaxed mb-4">
-            {paragraphText}
-          </p>
-        );
+        return parseMarkdownText(paragraphText);
       case 'subheading':
         const subheadingText = content.text?.[langKey] || content.text?.en || '';
         if (!subheadingText) return null;
@@ -130,9 +203,8 @@ const Article = () => {
             {content.items.map((item, index) => {
               const itemText = typeof item === 'object' ? (item[langKey] || item.en || '') : item;
               return (
-                <li key={index} className="text-muted-foreground leading-relaxed">
-                  {itemText}
-                </li>
+                <li key={index} className="text-foreground/80 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(itemText) }} />
               );
             })}
           </ul>
@@ -182,51 +254,24 @@ const Article = () => {
       </header>
 
       {/* Article Body */}
-      <div className="grid lg:grid-cols-3 gap-12">
-        <div className="lg:col-span-2">
-          <div className="space-y-8">
-            {articleData.sections.map((section, index) => (
-              <Card key={section.id} className="rounded-3xl p-8 card-shadow" data-testid={`card-section-${index}`}>
-                <CardContent className="p-0">
-                  {/* Only show title if it's not empty */}
-                  {getLocalizedContent(section.title) && (
-                    <h2 className="text-2xl font-bold text-foreground font-serif mb-6" data-testid={`text-section-title-${index}`}>
-                      {getLocalizedContent(section.title)}
-                    </h2>
-                  )}
-                  <div className="space-y-4">
-                    {section.content.map((content, contentIndex) => (
-                      <div key={contentIndex}>
-                        {renderContent(content)}
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="space-y-8">
-          {/* Sources */}
-          <Card className="rounded-3xl p-6 card-shadow">
-            <CardHeader className="p-0 pb-4">
-              <CardTitle className="text-lg font-semibold text-foreground">
-                {lang === 'hi' ? 'स्रोत' : lang === 'te' ? 'మూలాలు' : 'Sources'}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="space-y-2">
-                {(articleData.metadata?.sources || []).map((source: string, index: number) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <ExternalLink className="w-3 h-3 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">{source}</span>
+      <div className="max-w-4xl mx-auto">
+        <div className="space-y-6">
+          {articleData.sections.map((section, index) => (
+            <div key={section.id} data-testid={`section-${index}`}>
+              {getLocalizedContent(section.title) && (
+                <h2 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid={`text-section-title-${index}`}>
+                  {getLocalizedContent(section.title)}
+                </h2>
+              )}
+              <div className="prose prose-lg max-w-none">
+                {section.content.map((content, contentIndex) => (
+                  <div key={contentIndex}>
+                    {renderContent(content)}
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          ))}
         </div>
       </div>
     </div>
