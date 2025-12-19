@@ -138,7 +138,7 @@ const Home = () => {
         <div className="relative w-full mx-auto lg:rounded-none transition-all duration-700 ease-in-out">
           {/* Mobile: Compact height for carousel */}
           {/* Carousel Container */}
-          <div className="relative w-full h-[30vh] sm:h-[35vh] md:h-[40vh] lg:h-auto lg:aspect-[16/7] overflow-hidden">
+          <div className="relative w-full h-[30vh] sm:h-[35vh] md:h-[40vh] lg:h-auto lg:aspect-[16/7]">
             <Carousel
               plugins={[plugin.current]}
               className="w-full h-full"
@@ -216,22 +216,22 @@ const Home = () => {
               {/* Arrows hidden on mobile, visible on md+ */}
               <CarouselPrevious className="hidden md:flex !left-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
               <CarouselNext className="hidden md:flex !right-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
+              {/* Pagination Bar Indicator - Inside carousel at bottom */}
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                {Array.from({ length: totalSlides }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => carouselApi?.scrollTo(index)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      currentSlide === index
+                        ? "bg-purple-600 w-8"
+                        : "bg-white/70 hover:bg-white w-4"
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
             </Carousel>
-          </div>
-          {/* Pagination Bar Indicator - Outside carousel container */}
-          <div className="flex justify-center gap-1.5 py-3 bg-gradient-to-br from-purple-50 to-pink-50">
-            {Array.from({ length: totalSlides }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => carouselApi?.scrollTo(index)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  currentSlide === index
-                    ? "bg-purple-600 w-8"
-                    : "bg-gray-300 hover:bg-gray-400 w-4"
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
           </div>
         </div>
       </section>
