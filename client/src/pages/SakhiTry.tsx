@@ -591,17 +591,10 @@ const SakhiTry = () => {
 
                           {/* 2. Reply Text */}
                           {message.previewContent.replyText && (
-                            <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                              <div className="flex items-start space-x-3">
-                                <div className="w-8 h-8 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                  <Bot className="w-4 h-4 text-purple-600" />
-                                </div>
-                                <div className="flex-1">
-                                  <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-line">
-                                    {message.previewContent.replyText}
-                                  </p>
-                                </div>
-                              </div>
+                            <div className="bg-gray-50 rounded-xl p-3 border border-gray-100">
+                              <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-line">
+                                {message.previewContent.replyText}
+                              </p>
                             </div>
                           )}
 
