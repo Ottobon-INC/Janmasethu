@@ -1,0 +1,47 @@
+Access to fetch at 'https://manufactural-lonny-unscalding.ngrok-free.dev/user/login' from origin 'https://b62e9dcc-0da8-4a8f-adb3-4fd9d0a60fc4-00-fu4ypmc9mz9u.janeway.replit.dev' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+api.ts:120  POST https://manufactural-lonny-unscalding.ngrok-free.dev/user/login net::ERR_FAILED
+loginUser @ api.ts:120
+handleSubmit @ AuthModal.tsx:132
+callCallback2 @ chunk-PJEEZAML.js?v=78c9225a:3674
+invokeGuardedCallbackDev @ chunk-PJEEZAML.js?v=78c9225a:3699
+invokeGuardedCallback @ chunk-PJEEZAML.js?v=78c9225a:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-PJEEZAML.js?v=78c9225a:3736
+executeDispatch @ chunk-PJEEZAML.js?v=78c9225a:7014
+processDispatchQueueItemsInOrder @ chunk-PJEEZAML.js?v=78c9225a:7034
+processDispatchQueue @ chunk-PJEEZAML.js?v=78c9225a:7043
+dispatchEventsForPlugins @ chunk-PJEEZAML.js?v=78c9225a:7051
+(anonymous) @ chunk-PJEEZAML.js?v=78c9225a:7174
+batchedUpdates$1 @ chunk-PJEEZAML.js?v=78c9225a:18913
+batchedUpdates @ chunk-PJEEZAML.js?v=78c9225a:3579
+dispatchEventForPluginEventSystem @ chunk-PJEEZAML.js?v=78c9225a:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-PJEEZAML.js?v=78c9225a:5478
+dispatchEvent @ chunk-PJEEZAML.js?v=78c9225a:5472
+dispatchDiscreteEvent @ chunk-PJEEZAML.js?v=78c9225a:5449Understand this error
+AuthModal.tsx:157 Login API error: TypeError: Failed to fetch
+    at loginUser (api.ts:120:26)
+    at handleSubmit (AuthModal.tsx:132:34)
+    at HTMLUnknownElement.callCallback2 (chunk-PJEEZAML.js?v=78c9225a:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-PJEEZAML.js?v=78c9225a:3699:24)
+    at invokeGuardedCallback (chunk-PJEEZAML.js?v=78c9225a:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (chunk-PJEEZAML.js?v=78c9225a:3736:33)
+    at executeDispatch (chunk-PJEEZAML.js?v=78c9225a:7014:11)
+    at processDispatchQueueItemsInOrder (chunk-PJEEZAML.js?v=78c9225a:7034:15)
+    at processDispatchQueue (chunk-PJEEZAML.js?v=78c9225a:7043:13)
+    at dispatchEventsForPlugins (chunk-PJEEZAML.js?v=78c9225a:7051:11)
+handleSubmit @ AuthModal.tsx:157
+await in handleSubmit
+callCallback2 @ chunk-PJEEZAML.js?v=78c9225a:3674
+invokeGuardedCallbackDev @ chunk-PJEEZAML.js?v=78c9225a:3699
+invokeGuardedCallback @ chunk-PJEEZAML.js?v=78c9225a:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-PJEEZAML.js?v=78c9225a:3736
+executeDispatch @ chunk-PJEEZAML.js?v=78c9225a:7014
+processDispatchQueueItemsInOrder @ chunk-PJEEZAML.js?v=78c9225a:7034
+processDispatchQueue @ chunk-PJEEZAML.js?v=78c9225a:7043
+dispatchEventsForPlugins @ chunk-PJEEZAML.js?v=78c9225a:7051
+(anonymous) @ chunk-PJEEZAML.js?v=78c9225a:7174
+batchedUpdates$1 @ chunk-PJEEZAML.js?v=78c9225a:18913
+batchedUpdates @ chunk-PJEEZAML.js?v=78c9225a:3579
+dispatchEventForPluginEventSystem @ chunk-PJEEZAML.js?v=78c9225a:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-PJEEZAML.js?v=78c9225a:5478
+dispatchEvent @ chunk-PJEEZAML.js?v=78c9225a:5472
+dispatchDiscreteEvent @ chunk-PJEEZAML.js?v=78c9225a:5449
