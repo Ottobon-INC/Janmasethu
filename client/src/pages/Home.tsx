@@ -115,10 +115,10 @@ const Home = () => {
   return (
     <>
       {/* Responsive Carousel Section */}
-      <section className="w-full pt-16 md:pt-20 lg:pt-0">
+      <section className="w-full pt-0 md:pt-0 lg:pt-0">
         <div className="relative w-full mx-auto overflow-hidden lg:rounded-none transition-all duration-700 ease-in-out">
-          {/* Mobile: Better height for carousel */}
-          <div className="relative w-full h-[45vh] sm:h-[40vh] md:h-[45vh] lg:h-auto lg:aspect-[16/7]">
+          {/* Mobile: Compact height for carousel */}
+          <div className="relative w-full h-[35vh] sm:h-[35vh] md:h-[40vh] lg:h-auto lg:aspect-[16/7]">
             <Carousel
               plugins={[plugin.current]}
               className="w-full h-full"
@@ -199,11 +199,11 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4 md:py-8">
         {/* Hero Section */}
-        <section className="text-center py-16 relative">
+        <section className="text-center py-6 md:py-16 relative">
           {/* Trust Badge - Centered at top */}
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-4 md:mb-8">
             <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
               <CheckCircle className="w-4 h-4 text-green-500" />
               <span
@@ -217,7 +217,7 @@ const Home = () => {
 
           {/* Hero Title - On its own line below */}
           <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text font-serif mb-6 leading-relaxed"
+            className="text-3xl md:text-5xl lg:text-6xl font-bold gradient-text font-serif mb-4 md:mb-6 leading-tight md:leading-relaxed text-center"
             data-testid="text-hero-title"
           >
             <span dangerouslySetInnerHTML={{ __html: t("hero_title") }} />
