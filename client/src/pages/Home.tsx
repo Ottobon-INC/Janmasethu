@@ -192,18 +192,18 @@ const Home = () => {
                   </div>
                 </CarouselItem>
               </CarouselContent>
-              <CarouselPrevious className="left-2 sm:left-4 bg-white/90 hover:bg-white border-none shadow-lg w-8 h-8 sm:w-10 sm:h-10" />
-              <CarouselNext className="right-2 sm:right-4 bg-white/90 hover:bg-white border-none shadow-lg w-8 h-8 sm:w-10 sm:h-10" />
+              <CarouselPrevious className="left-2 sm:left-4 bg-transparent hover:bg-white/30 border-none shadow-none w-10 h-10 sm:w-12 sm:h-12 top-1/2 -translate-y-1/2 [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
+              <CarouselNext className="right-2 sm:right-4 bg-transparent hover:bg-white/30 border-none shadow-none w-10 h-10 sm:w-12 sm:h-12 top-1/2 -translate-y-1/2 [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
             </Carousel>
           </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-4 md:py-8">
+      <div className="container mx-auto px-4 py-2 md:py-6">
         {/* Hero Section */}
-        <section className="text-center py-6 md:py-16 relative">
+        <section className="text-center py-4 md:py-12 relative">
           {/* Trust Badge - Centered at top */}
-          <div className="flex justify-center mb-4 md:mb-8">
+          <div className="flex justify-center mb-3 md:mb-6">
             <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
               <CheckCircle className="w-4 h-4 text-green-500" />
               <span
@@ -225,14 +225,14 @@ const Home = () => {
 
           {/* Hero Subtitle */}
           <p
-            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto"
+            className="text-base md:text-xl text-muted-foreground mb-4 md:mb-8 max-w-3xl mx-auto"
             data-testid="text-hero-subtitle"
           >
             {t("hero_sub")}
           </p>
 
-          {/* Animated Line Morphing Effect */}
-          <div className="relative mb-8">
+          {/* Animated Line Morphing Effect - Hidden on mobile */}
+          <div className="relative mb-4 md:mb-8 hidden md:block">
             <svg
               className="w-full h-24 mx-auto animated-line"
               viewBox="0 0 400 100"
