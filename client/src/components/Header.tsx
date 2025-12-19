@@ -101,7 +101,7 @@ const Header = () => {
             >
               <div className="flex items-center gap-2 sm:gap-3">
                 <img
-                  src="/JanmaSethu Logo.png"
+                  src="/new js logo without background.svg"
                   alt="JanmaSethu Logo"
                   className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 object-contain"
                 />

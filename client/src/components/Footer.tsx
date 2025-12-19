@@ -12,7 +12,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-1 md:mb-2">
               <img 
-                src="/JanmaSethu Logo.png" 
+                src="/new js logo without background.svg" 
                 alt="Janma Sethu Logo" 
                 className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
               />
