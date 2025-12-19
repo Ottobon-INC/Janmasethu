@@ -311,7 +311,7 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-3xl max-w-[95vw] w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 border-0 rounded-3xl">
+      <DialogContent className="sm:max-w-3xl max-w-[90vw] w-full max-h-[80vh] sm:max-h-[85vh] overflow-y-auto p-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 border-0 rounded-2xl sm:rounded-3xl mx-auto">
         {/* Confetti Effect */}
         {showConfetti && (
           <div className="fixed inset-0 pointer-events-none z-50">
