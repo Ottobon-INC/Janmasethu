@@ -237,16 +237,17 @@ const Article = () => {
           {getLocalizedContent(articleData.overview)}
         </p>
 
-        <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
-          <div className="flex items-center space-x-2">
+        <div className="inline-flex flex-wrap items-center gap-6 text-sm bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-full px-6 py-3">
+          <div className="flex items-center space-x-2 text-purple-700 dark:text-purple-300">
             <Clock className="w-4 h-4" />
-            <span data-testid="text-read-time">
+            <span data-testid="text-read-time" className="font-medium">
               {getLocalizedContent(articleData.metadata?.readTime)}
             </span>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="w-px h-4 bg-purple-300 dark:bg-purple-600"></div>
+          <div className="flex items-center space-x-2 text-purple-700 dark:text-purple-300">
             <User className="w-4 h-4" />
-            <span data-testid="text-reviewed-by">
+            <span data-testid="text-reviewed-by" className="font-medium">
               {getLocalizedContent(articleData.metadata?.reviewer)}
             </span>
           </div>
