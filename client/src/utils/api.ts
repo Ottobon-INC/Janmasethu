@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://72.61.228.9:8100';
+// Use proxy routes to avoid mixed content errors (HTTPS -> HTTP)
+const API_BASE_URL = '/api/proxy';
 
 export interface RegisterUserData {
   name: string;
@@ -90,10 +91,7 @@ export interface OnboardingCompleteRequest {
 export async function registerUser(data: RegisterUserData): Promise<RegisterResponse> {
   const response = await fetch(`${API_BASE_URL}/user/register`, {
     method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': 'true'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       name: data.name,
       email: data.email,
@@ -110,7 +108,7 @@ export async function registerUser(data: RegisterUserData): Promise<RegisterResp
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(result.detail || 'Registration failed');
+    throw new Error(result.detail || result.error || 'Registration failed');
   }
 
   return result;
@@ -119,10 +117,7 @@ export async function registerUser(data: RegisterUserData): Promise<RegisterResp
 export async function loginUser(data: LoginUserData): Promise<LoginResponse> {
   const response = await fetch(`${API_BASE_URL}/user/login`, {
     method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': 'true'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       email: data.email,
       password: data.password,
@@ -132,7 +127,7 @@ export async function loginUser(data: LoginUserData): Promise<LoginResponse> {
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(result.detail || 'Login failed');
+    throw new Error(result.detail || result.error || 'Login failed');
   }
 
   return result;
@@ -141,10 +136,7 @@ export async function loginUser(data: LoginUserData): Promise<LoginResponse> {
 export async function sendChatMessage(userId: string, message: string, language: string = 'en'): Promise<ChatResponse> {
   const response = await fetch(`${API_BASE_URL}/sakhi/chat`, {
     method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': 'true'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       user_id: userId,
       message: message,
@@ -153,7 +145,8 @@ export async function sendChatMessage(userId: string, message: string, language:
   });
 
   if (!response.ok) {
-    throw new Error('Chat request failed');
+    const result = await response.json();
+    throw new Error(result.error || 'Chat request failed');
   }
 
   return await response.json();
@@ -162,10 +155,7 @@ export async function sendChatMessage(userId: string, message: string, language:
 export async function getOnboardingStep(data: OnboardingStepRequest): Promise<OnboardingStepResponse> {
   const response = await fetch(`${API_BASE_URL}/onboarding/step`, {
     method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': 'true'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       parent_profile_id: data.parent_profile_id,
       relationship_type: data.relationship_type,
@@ -175,7 +165,8 @@ export async function getOnboardingStep(data: OnboardingStepRequest): Promise<On
   });
 
   if (!response.ok) {
-    throw new Error('Failed to get onboarding step');
+    const result = await response.json();
+    throw new Error(result.error || 'Failed to get onboarding step');
   }
 
   return await response.json();
@@ -184,10 +175,7 @@ export async function getOnboardingStep(data: OnboardingStepRequest): Promise<On
 export async function completeOnboarding(data: OnboardingCompleteRequest): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/onboarding/complete`, {
     method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': 'true'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       parent_profile_id: data.parent_profile_id,
       user_id: data.user_id,
@@ -197,7 +185,8 @@ export async function completeOnboarding(data: OnboardingCompleteRequest): Promi
   });
 
   if (!response.ok) {
-    throw new Error('Failed to complete onboarding');
+    const result = await response.json();
+    throw new Error(result.error || 'Failed to complete onboarding');
   }
 }
 

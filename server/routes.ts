@@ -650,6 +650,92 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 
   // =========================
+  // SAKHI API PROXY ENDPOINTS (to avoid mixed content errors)
+  // =========================
+  
+  const SAKHI_API_BASE = process.env.SAKHI_API_URL || 'http://72.61.228.9:8100';
+
+  // Proxy: User Login
+  app.post("/api/proxy/user/login", async (req, res) => {
+    try {
+      const response = await fetch(`${SAKHI_API_BASE}/user/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body),
+      });
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (error: any) {
+      console.error("Proxy login error:", error);
+      res.status(500).json({ error: "Failed to connect to authentication server" });
+    }
+  });
+
+  // Proxy: User Register
+  app.post("/api/proxy/user/register", async (req, res) => {
+    try {
+      const response = await fetch(`${SAKHI_API_BASE}/user/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body),
+      });
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (error: any) {
+      console.error("Proxy register error:", error);
+      res.status(500).json({ error: "Failed to connect to authentication server" });
+    }
+  });
+
+  // Proxy: Sakhi Chat
+  app.post("/api/proxy/sakhi/chat", async (req, res) => {
+    try {
+      const response = await fetch(`${SAKHI_API_BASE}/sakhi/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body),
+      });
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (error: any) {
+      console.error("Proxy chat error:", error);
+      res.status(500).json({ error: "Failed to connect to Sakhi server" });
+    }
+  });
+
+  // Proxy: Onboarding Step
+  app.post("/api/proxy/onboarding/step", async (req, res) => {
+    try {
+      const response = await fetch(`${SAKHI_API_BASE}/onboarding/step`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body),
+      });
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (error: any) {
+      console.error("Proxy onboarding step error:", error);
+      res.status(500).json({ error: "Failed to connect to onboarding server" });
+    }
+  });
+
+  // Proxy: Onboarding Complete
+  app.post("/api/proxy/onboarding/complete", async (req, res) => {
+    try {
+      const response = await fetch(`${SAKHI_API_BASE}/onboarding/complete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body),
+      });
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (error: any) {
+      console.error("Proxy onboarding complete error:", error);
+      res.status(500).json({ error: "Failed to connect to onboarding server" });
+    }
+  });
+
+  // =========================
   // DOCTOR API ENDPOINTS
   // =========================
 
