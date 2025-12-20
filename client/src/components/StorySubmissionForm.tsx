@@ -311,7 +311,7 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-3xl max-w-[90vw] w-full max-h-[60vh] sm:max-h-[85vh] overflow-y-auto p-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 border-0 rounded-2xl sm:rounded-3xl mx-auto">
+      <DialogContent className="story-dialog sm:max-w-xl max-w-[92vw] w-full max-h-[70vh] sm:max-h-[80vh] overflow-y-auto p-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 border-0 rounded-xl sm:rounded-2xl mx-auto shadow-2xl">
         {/* Confetti Effect */}
         {showConfetti && (
           <div className="fixed inset-0 pointer-events-none z-50">
@@ -339,63 +339,66 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
           </div>
         )}
 
-        {/* Success Message */}
+        {/* Success Message - Redesigned */}
         {showSuccess ? (
-          <div className="px-6 sm:px-8 py-12 text-center">
-            <div className="w-24 h-24 bg-gradient-to-br from-pink-400 via-purple-400 to-blue-400 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
-              <Heart className="w-12 h-12 text-white fill-white" />
+          <div className="px-4 sm:px-6 py-8 sm:py-10 text-center relative">
+            {/* Close button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleClose}
+              className="absolute top-3 right-3 rounded-full bg-gray-100 hover:bg-gray-200 w-8 h-8 dialog-close-button"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+
+            {/* Success Icon */}
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
             </div>
             
-            <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-4 font-serif">
-              Thank You for Sharing! 💝
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 font-serif">
+              Thank You!
             </h2>
             
-            <p className="text-lg text-gray-700 mb-6 max-w-xl mx-auto leading-relaxed">
-              Your story has been published and will inspire countless families on their journey.
+            <p className="text-sm sm:text-base text-gray-600 mb-4 max-w-sm mx-auto leading-relaxed">
+              Your story has been shared and will inspire other families on their journey.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-              <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full">
-                <CheckCircle2 className="w-5 h-5 text-green-500" />
-                <span className="text-sm font-medium text-gray-700">Story Published</span>
+            <div className="flex justify-center gap-3 mb-4">
+              <div className="flex items-center gap-1.5 bg-green-50 text-green-700 px-3 py-1.5 rounded-full text-xs font-medium">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                Published
               </div>
-              <div className="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full">
-                <Heart className="w-5 h-5 text-pink-500" />
-                <span className="text-sm font-medium text-gray-700">Helping Others</span>
+              <div className="flex items-center gap-1.5 bg-pink-50 text-pink-700 px-3 py-1.5 rounded-full text-xs font-medium">
+                <Heart className="w-3.5 h-3.5" />
+                Inspiring Others
               </div>
             </div>
             
-            <p className="text-sm text-gray-600 italic">
-              Your courage and openness will light the way for others 🌟
+            <p className="text-xs text-gray-500">
+              Your courage will light the way for others
             </p>
           </div>
         ) : showPreview ? (
           <>
             {/* Preview Header */}
-            <DialogHeader className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4 border-b border-pink-100 sticky top-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 z-10">
-              <div className="flex items-center justify-between">
+            <DialogHeader className="px-4 sm:px-6 pt-4 sm:pt-5 pb-3 border-b border-pink-100 sticky top-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 z-10">
+              <div className="flex items-center gap-3">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setShowPreview(false)}
-                  className="rounded-full hover:bg-pink-100"
+                  className="rounded-full hover:bg-pink-100 w-8 h-8 flex-shrink-0"
                 >
-                  <ArrowLeft className="w-5 h-5" />
+                  <ArrowLeft className="w-4 h-4" />
                 </Button>
-                <DialogTitle className="text-2xl sm:text-3xl font-serif bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
-                  Preview Your Story
+                <DialogTitle className="text-lg sm:text-xl font-serif bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Preview Story
                 </DialogTitle>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleClose}
-                  className="rounded-full hover:bg-pink-100"
-                >
-                  <X className="w-5 h-5" />
-                </Button>
               </div>
-              <p className="text-sm text-muted-foreground text-center">
-                Review your story before publishing. You can go back to edit if needed. 📖
+              <p className="text-xs sm:text-sm text-muted-foreground text-center">
+                Review your story before publishing.
               </p>
             </DialogHeader>
 
@@ -532,22 +535,14 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
         ) : (
           <>
             {/* Header */}
-            <DialogHeader className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4 border-b border-pink-100 sticky top-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 z-10">
-              <div className="flex items-center justify-between">
-                <DialogTitle className="text-2xl sm:text-3xl font-serif bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <DialogHeader className="px-4 sm:px-6 pt-4 sm:pt-5 pb-3 border-b border-pink-100 sticky top-0 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 z-10">
+              <div className="flex items-center justify-between pr-8">
+                <DialogTitle className="text-lg sm:text-xl font-serif bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
                   Share Your Journey
                 </DialogTitle>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleClose}
-                  className="rounded-full hover:bg-pink-100"
-                >
-                  <X className="w-5 h-5" />
-                </Button>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Your story can guide, heal, and bring hope to another family. 🌸
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Your story can guide, heal, and bring hope to another family.
               </p>
             </DialogHeader>
 

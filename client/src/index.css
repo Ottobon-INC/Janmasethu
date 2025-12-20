@@ -730,19 +730,25 @@
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     z-index: 9999 !important;
-    max-width: 420px !important;
+    max-width: 480px !important;
     width: 90vw !important;
-    padding: 1.5rem !important;
-    border-radius: 1rem !important;
+    padding: 1.25rem !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* Story form dialog - wider */
+  [role="dialog"].story-dialog {
+    max-width: 600px !important;
   }
 
   [role="dialog"] h2 {
     font-size: 1.25rem !important;
-    margin-bottom: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
   }
 
   [role="dialog"] p {
-    font-size: 0.9rem !important;
+    font-size: 0.875rem !important;
     line-height: 1.5 !important;
   }
 
@@ -750,6 +756,45 @@
     backdrop-filter: blur(8px) !important;
     -webkit-backdrop-filter: blur(8px) !important;
     background: rgba(0, 0, 0, 0.6) !important;
+  }
+}
+
+/* Dialog close button - prominent X */
+[role="dialog"] button[data-radix-dialog-close],
+.dialog-close-button {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: rgba(0, 0, 0, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 1 !important;
+  transition: all 0.2s ease !important;
+  z-index: 50 !important;
+}
+
+[role="dialog"] button[data-radix-dialog-close]:hover,
+.dialog-close-button:hover {
+  background: rgba(0, 0, 0, 0.15) !important;
+  transform: scale(1.1) !important;
+}
+
+[role="dialog"] button[data-radix-dialog-close] svg,
+.dialog-close-button svg {
+  width: 18px !important;
+  height: 18px !important;
+  stroke-width: 2.5 !important;
+}
+
+/* Tablet dialog sizing */
+@media (min-width: 768px) and (max-width: 1023px) {
+  [role="dialog"] {
+    max-width: 440px !important;
+    padding: 1.25rem !important;
   }
 }
 
