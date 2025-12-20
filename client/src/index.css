@@ -730,7 +730,20 @@
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     z-index: 9999 !important;
-    max-width: 90vw !important;
+    max-width: 420px !important;
+    width: 90vw !important;
+    padding: 1.5rem !important;
+    border-radius: 1rem !important;
+  }
+
+  [role="dialog"] h2 {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  [role="dialog"] p {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
   }
 
   [data-state="open"][data-radix-dialog-overlay] {
