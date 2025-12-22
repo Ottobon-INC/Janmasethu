@@ -135,8 +135,8 @@ const Home = () => {
 
   return (
     <>
-      {/* Responsive Carousel Section */}
-      <section className="w-full">
+      {/* Responsive Carousel Section - With bottom spacing on large screens */}
+      <section className="w-full lg:pb-12 xl:pb-16 2xl:pb-20">
         <div className="relative w-full mx-auto transition-all duration-700 ease-in-out">
           {/* Carousel Container - Fixed heights for consistent layout */}
           <div className="relative w-full h-[200px] sm:h-[280px] md:h-[350px] lg:h-[400px] xl:h-[450px] 2xl:h-[500px]">
@@ -185,13 +185,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Spacer - Only visible on laptop and larger screens */}
-      <div className="hidden lg:block lg:h-16 xl:h-20 2xl:h-24"></div>
-
-      {/* Main Content Container - Clear separation from carousel */}
-      <div className="container mx-auto px-4 py-6 md:py-10 lg:py-12">
-        {/* Hero Section */}
-        <section className="text-center py-6 md:py-10 lg:py-12 relative">
+      {/* Main Content Container */}
+      <div className="container mx-auto px-4 py-6 md:py-8">
+        {/* Hero Section - Properly separated from carousel on large screens */}
+        <section className="text-center py-6 md:py-8 lg:py-10 relative bg-white/80 lg:bg-gradient-to-br lg:from-white lg:via-purple-50/50 lg:to-pink-50/50 lg:rounded-3xl lg:shadow-sm lg:border lg:border-purple-100/30">
           {/* Trust Badge - Centered at top */}
           <div className="flex justify-center mb-3 md:mb-6">
             <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
