@@ -185,8 +185,11 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Spacer - Only visible on laptop and larger screens */}
+      <div className="hidden lg:block lg:h-16 xl:h-20 2xl:h-24"></div>
+
       {/* Main Content Container - Clear separation from carousel */}
-      <div className="container mx-auto px-4 py-6 md:py-10 lg:mt-8 xl:mt-12 lg:py-12">
+      <div className="container mx-auto px-4 py-6 md:py-10 lg:py-12">
         {/* Hero Section */}
         <section className="text-center py-6 md:py-10 lg:py-12 relative">
           {/* Trust Badge - Centered at top */}
