@@ -136,10 +136,10 @@ const Home = () => {
   return (
     <>
       {/* Responsive Carousel Section - With bottom spacing on large screens */}
-      <section className="w-full lg:mb-24 xl:mb-32">
+      <section className="w-full lg:mb-16 xl:mb-20">
         <div className="relative w-full mx-auto transition-all duration-700 ease-in-out">
           {/* Carousel Container - Fixed heights for consistent layout */}
-          <div className="relative w-full h-[200px] sm:h-[280px] md:h-[350px] lg:h-[400px] xl:h-[450px] 2xl:h-[500px]">
+          <div className="relative w-full h-[200px] sm:h-[280px] md:h-[350px] lg:h-[320px] xl:h-[360px] 2xl:h-[400px]">
             <Carousel
               plugins={[plugin.current]}
               className="w-full h-full"
@@ -156,7 +156,7 @@ const Home = () => {
                       <img
                         src={`/JS slides/${num}.png`}
                         alt={`Slide ${num}`}
-                        className="w-full h-full object-contain lg:object-cover"
+                        className="w-full h-full object-contain"
                       />
                     </div>
                   </CarouselItem>
@@ -167,7 +167,7 @@ const Home = () => {
               <CarouselNext className="hidden md:flex !right-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
             </Carousel>
             {/* Pagination Bar Indicator - Positioned below carousel container on large screens */}
-            <div className="absolute bottom-3 md:bottom-4 lg:-bottom-12 xl:-bottom-16 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+            <div className="absolute bottom-3 md:bottom-4 lg:-bottom-8 xl:-bottom-10 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
               {Array.from({ length: totalSlides }).map((_, index) => (
                 <button
                   key={index}
@@ -186,7 +186,7 @@ const Home = () => {
       </section>
 
       {/* Main Content Container - COMPLETE separation from carousel on large screens */}
-      <div className="container mx-auto px-4 py-6 md:py-8 lg:mt-32 xl:mt-40">
+      <div className="container mx-auto px-4 py-6 md:py-8 lg:mt-12 xl:mt-16">
         {/* Hero Section */}
         <section className="text-center py-6 md:py-8 lg:py-10 relative overflow-hidden lg:rounded-3xl">
           {/* Trust Badge - Centered at top */}
