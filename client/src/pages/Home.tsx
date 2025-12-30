@@ -135,11 +135,11 @@ const Home = () => {
 
   return (
     <>
-      {/* Responsive Carousel Section - With bottom spacing on large screens */}
-      <section className="w-full md:mb-16 lg:mb-20">
-        <div className="relative w-full mx-auto transition-all duration-700 ease-in-out">
+      {/* ==================== CAROUSEL SECTION (Separate Container) ==================== */}
+      <section className="w-full">
+        <div className="container mx-auto">
           {/* Carousel Container - Fixed heights for consistent layout */}
-          <div className="relative w-full h-[200px] sm:h-[250px] md:h-[130px] lg:h-[150px] xl:h-[170px]">
+          <div className="relative w-full h-[200px] sm:h-[250px] md:h-[180px] lg:h-[200px] xl:h-[220px]">
             <Carousel
               plugins={[plugin.current]}
               className="w-full h-full"
@@ -166,29 +166,29 @@ const Home = () => {
               <CarouselPrevious className="hidden md:flex !left-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
               <CarouselNext className="hidden md:flex !right-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
             </Carousel>
-            {/* Pagination Bar Indicator - Positioned below carousel container on large screens */}
-            <div className="absolute bottom-3 md:-bottom-10 lg:-bottom-12 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
-              {Array.from({ length: totalSlides }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => carouselApi?.scrollTo(index)}
-                  className={`h-1.5 rounded-full transition-all duration-300 shadow-sm ${
-                    currentSlide === index
-                      ? "bg-purple-600 w-6 md:w-8"
-                      : "bg-gray-300 md:bg-gray-200 hover:bg-gray-400 w-3 md:w-4"
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
+          </div>
+          {/* Pagination Bar Indicator - Static positioning below carousel */}
+          <div className="flex justify-center gap-1.5 mt-4 md:mt-6 lg:mt-8">
+            {Array.from({ length: totalSlides }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => carouselApi?.scrollTo(index)}
+                className={`h-1.5 rounded-full transition-all duration-300 shadow-sm ${
+                  currentSlide === index
+                    ? "bg-purple-600 w-6 md:w-8"
+                    : "bg-gray-300 md:bg-gray-200 hover:bg-gray-400 w-3 md:w-4"
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Main Content Container - COMPLETE separation from carousel on large screens */}
-      <div className="container mx-auto px-4 py-6 md:mt-[220px] lg:mt-[260px] xl:mt-[300px]">
-        {/* Hero Section */}
-        <section className="text-center py-6 md:py-8 lg:py-10 relative overflow-hidden lg:rounded-3xl">
+      {/* ==================== HERO SECTION (Separate Container) ==================== */}
+      <section className="w-full mt-8 md:mt-12 lg:mt-16 xl:mt-20 bg-gradient-to-br from-white via-purple-50/30 to-pink-50/30">
+        <div className="container mx-auto px-4 py-8 md:py-12 lg:py-16">
+          <div className="text-center relative overflow-hidden lg:rounded-3xl">
           {/* Trust Badge - Centered at top */}
           <div className="flex justify-center mb-3 md:mb-6">
             <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
@@ -334,8 +334,12 @@ const Home = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-white/90 via-purple-50/70 to-pink-50/70 rounded-3xl"></div>
             </div>
           </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
+      {/* ==================== MAIN CONTENT SECTION (Separate Container) ==================== */}
+      <div className="container mx-auto px-4 py-6">
         {/* Who We Serve - Interactive Cards with Modal */}
         <WhoWeServe />
 
