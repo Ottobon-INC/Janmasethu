@@ -136,7 +136,7 @@ const Home = () => {
   return (
     <>
       {/* Responsive Carousel Section - With bottom spacing on large screens */}
-      <section className="w-full lg:pb-12 xl:pb-16 2xl:pb-20">
+      <section className="w-full lg:mb-24 xl:mb-32">
         <div className="relative w-full mx-auto transition-all duration-700 ease-in-out">
           {/* Carousel Container - Fixed heights for consistent layout */}
           <div className="relative w-full h-[200px] sm:h-[280px] md:h-[350px] lg:h-[400px] xl:h-[450px] 2xl:h-[500px]">
@@ -166,8 +166,8 @@ const Home = () => {
               <CarouselPrevious className="hidden md:flex !left-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
               <CarouselNext className="hidden md:flex !right-4 bg-transparent hover:bg-white/30 border-none shadow-none w-12 h-12 !top-[50%] !-translate-y-[50%] [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-gray-600" />
             </Carousel>
-            {/* Pagination Bar Indicator - Positioned at bottom of carousel container */}
-            <div className="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+            {/* Pagination Bar Indicator - Positioned below carousel container on large screens */}
+            <div className="absolute bottom-3 md:bottom-4 lg:-bottom-12 xl:-bottom-16 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
               {Array.from({ length: totalSlides }).map((_, index) => (
                 <button
                   key={index}
@@ -175,7 +175,7 @@ const Home = () => {
                   className={`h-1.5 rounded-full transition-all duration-300 shadow-sm ${
                     currentSlide === index
                       ? "bg-purple-600 w-6 md:w-8"
-                      : "bg-white/80 hover:bg-white w-3 md:w-4"
+                      : "bg-gray-300 lg:bg-gray-200 hover:bg-gray-400 w-3 md:w-4"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -185,10 +185,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Main Content Container - Complete separation from carousel on large screens */}
-      <div className="container mx-auto px-4 py-6 md:py-8 lg:mt-20 xl:mt-24">
+      {/* Main Content Container - COMPLETE separation from carousel on large screens */}
+      <div className="container mx-auto px-4 py-6 md:py-8 lg:mt-32 xl:mt-40">
         {/* Hero Section */}
-        <section className="text-center py-6 md:py-8 lg:py-10 relative overflow-hidden lg:rounded-3xl lg:bg-gradient-to-br lg:from-white lg:via-purple-50/50 lg:to-pink-50/50">
+        <section className="text-center py-6 md:py-8 lg:py-10 relative overflow-hidden lg:rounded-3xl">
           {/* Trust Badge - Centered at top */}
           <div className="flex justify-center mb-3 md:mb-6">
             <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
