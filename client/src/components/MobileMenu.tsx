@@ -39,33 +39,23 @@ const MobileMenu = ({ isOpen, onClose, navItems }: MobileMenuProps) => {
       <div className={`mobile-menu fixed inset-y-0 left-0 z-50 w-[85%] max-w-sm bg-white shadow-2xl lg:hidden ${isOpen ? 'open' : ''}`}>
         <div className="flex flex-col h-full">
           {/* Header Section */}
-          <div className="px-5 py-4 bg-gradient-to-r from-purple-600 to-pink-500">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                  <img 
-                    src="/JanmaSethu Logo.png" 
-                    alt="JanmaSethu Logo" 
-                    className="w-9 h-9 object-contain"
-                  />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-white">
-                    Janma<span className="text-purple-100">Sethu</span>
-                  </h2>
-                  <p className="text-xs text-purple-100">Your parenting partner</p>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-                className="p-2 hover:bg-white/20 rounded-full transition-colors"
-                aria-label="Close menu"
-                data-testid="button-close-menu"
-              >
-                <X className="w-5 h-5 text-white" />
-              </Button>
+          <div className="px-5 py-6 bg-gradient-to-r from-purple-600 to-pink-500 relative">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-full transition-colors"
+              aria-label="Close menu"
+              data-testid="button-close-menu"
+            >
+              <X className="w-5 h-5 text-white" />
+            </Button>
+            <div className="flex flex-col items-center justify-center pt-4">
+              <img 
+                src="/new JS logo BR.svg" 
+                alt="JanmaSethu Logo" 
+                className="h-20 w-auto object-contain brightness-0 invert"
+              />
             </div>
           </div>
 
