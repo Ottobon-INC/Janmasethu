@@ -325,8 +325,8 @@ const Home = () => {
             </a>
           </div>
 
-          {/* Hero Background Image - Hidden on large screens for clean separation */}
-          <div className="absolute inset-0 -z-10 lg:hidden">
+          {/* Hero Background Image - Visible on all screens for consistent design */}
+          <div className="absolute inset-0 -z-10">
             <div className="relative w-full h-full">
               <img
                 src="/babyFeet.jpg"
