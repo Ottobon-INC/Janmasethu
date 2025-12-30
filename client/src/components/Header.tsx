@@ -102,27 +102,14 @@ const Header = () => {
             {/* Logo with Brand Text */}
             <Link
               href="/"
-              className="flex flex-col items-start gap-0 flex-shrink-0"
+              className="flex items-center gap-0 flex-shrink-0"
               data-testid="link-home-logo"
             >
-              <div className="flex items-center gap-2 sm:gap-3">
-                <img
-                  src="/JanmaSethu Logo.png"
-                  alt="JanmaSethu Logo"
-                  className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 object-contain"
-                />
-                <div className="flex items-baseline gap-1">
-                  <span className="text-black font-bold text-base sm:text-lg md:text-xl lg:text-1xl font-serif mt-2 sm:mt-3">
-                    Janma
-                  </span>
-                  <span className="font-bold text-base sm:text-lg md:text-xl lg:text-1xl font-serif mt-2 sm:mt-3" style={{ color: '#60c4b8' }}>
-                    Sethu
-                  </span>
-                </div>
-              </div>
-              <p className="text-[0.6rem] sm:text-[0.65rem] md:text-xs text-muted-foreground font-small text-left w-full pl-0 sm:pl-2 -mt-2 sm:-mt-3">
-                Connecting Care & Parenthood
-              </p>
+              <img
+                src="/new JS logo BR.svg"
+                alt="JanmaSethu Logo"
+                className="h-10 sm:h-12 md:h-16 lg:h-20 w-auto object-contain"
+              />
             </Link>
 
             {/* Desktop Navigation - Primary Row */}
