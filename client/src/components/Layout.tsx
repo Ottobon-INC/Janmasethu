@@ -33,12 +33,12 @@ const Layout = ({ children }: LayoutProps) => {
       {/* Floating Add Lead Button */}
       <button
         onClick={() => setShowLeadForm(true)}
-        className="fixed bottom-24 right-4 md:right-6 z-50 flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none group"
-        aria-label="Add Lead"
+        className="fixed bottom-6 left-4 md:left-6 z-50 w-12 h-12 bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center"
+        aria-label="New Lead"
         data-testid="button-floating-add-lead"
+        title="New Lead"
       >
         <UserPlus className="w-5 h-5" />
-        <span className="hidden sm:inline">Add Lead</span>
       </button>
 
       {/* Lead Submission Form */}
