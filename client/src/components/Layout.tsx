@@ -30,13 +30,13 @@ const Layout = ({ children }: LayoutProps) => {
       {/* Floating WhatsApp Button */}
       <FloatingWhatsApp />
 
-      {/* Floating Add Lead Button */}
+      {/* Floating Contact Button */}
       <button
         onClick={() => setShowLeadForm(true)}
         className="fixed bottom-6 left-4 md:left-6 z-50 w-12 h-12 bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center"
-        aria-label="New Lead"
+        aria-label="Get in Touch"
         data-testid="button-floating-add-lead"
-        title="New Lead"
+        title="Get in Touch"
       >
         <UserPlus className="w-5 h-5" />
       </button>

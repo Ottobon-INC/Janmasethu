@@ -100,8 +100,8 @@ const LeadSubmissionForm = ({ open, onClose, onSubmitted }: LeadSubmissionFormPr
       localStorage.setItem("janmasethu_leads", JSON.stringify(existingLeads));
 
       toast({
-        title: "Lead Added Successfully!",
-        description: "The lead has been saved.",
+        title: "Thank you!",
+        description: "We'll get back to you soon.",
       });
 
       if (onSubmitted) {
@@ -138,11 +138,11 @@ const LeadSubmissionForm = ({ open, onClose, onSubmitted }: LeadSubmissionFormPr
               <User className="w-5 h-5 text-white" />
             </div>
             <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Add New Lead
+              Get in Touch
             </span>
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground mt-2">
-            Fill in the details below to add a new lead to the system.
+            Share your details and we'll reach out to help you on your journey.
           </DialogDescription>
         </DialogHeader>
 
@@ -150,12 +150,12 @@ const LeadSubmissionForm = ({ open, onClose, onSubmitted }: LeadSubmissionFormPr
           <div className="space-y-2">
             <Label htmlFor="name" className="flex items-center gap-2 text-sm font-medium">
               <User className="w-4 h-4 text-purple-500" />
-              Name *
+              Your Name *
             </Label>
             <Input
               id="name"
               type="text"
-              placeholder="Enter full name"
+              placeholder="Enter your name"
               value={formData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
               className="rounded-xl border-purple-200 focus:border-purple-400"
@@ -166,12 +166,12 @@ const LeadSubmissionForm = ({ open, onClose, onSubmitted }: LeadSubmissionFormPr
           <div className="space-y-2">
             <Label htmlFor="phone" className="flex items-center gap-2 text-sm font-medium">
               <Phone className="w-4 h-4 text-purple-500" />
-              Phone *
+              Your Phone *
             </Label>
             <Input
               id="phone"
               type="tel"
-              placeholder="Enter phone number"
+              placeholder="Enter your phone number"
               value={formData.phone}
               onChange={(e) => handleInputChange("phone", e.target.value)}
               className="rounded-xl border-purple-200 focus:border-purple-400"
@@ -183,7 +183,7 @@ const LeadSubmissionForm = ({ open, onClose, onSubmitted }: LeadSubmissionFormPr
             <div className="space-y-2">
               <Label htmlFor="age" className="flex items-center gap-2 text-sm font-medium">
                 <Calendar className="w-4 h-4 text-purple-500" />
-                Age *
+                Your Age *
               </Label>
               <Input
                 id="age"
@@ -219,7 +219,7 @@ const LeadSubmissionForm = ({ open, onClose, onSubmitted }: LeadSubmissionFormPr
           <div className="space-y-2">
             <Label htmlFor="problemType" className="flex items-center gap-2 text-sm font-medium">
               <AlertCircle className="w-4 h-4 text-purple-500" />
-              Problem Type *
+              What can we help you with? *
             </Label>
             <Select value={formData.problemType} onValueChange={(value) => handleInputChange("problemType", value)}>
               <SelectTrigger className="rounded-xl border-purple-200" data-testid="select-lead-problem">
@@ -238,11 +238,11 @@ const LeadSubmissionForm = ({ open, onClose, onSubmitted }: LeadSubmissionFormPr
           <div className="space-y-2">
             <Label htmlFor="source" className="flex items-center gap-2 text-sm font-medium">
               <Globe className="w-4 h-4 text-purple-500" />
-              Source *
+              How did you find us? *
             </Label>
             <Select value={formData.source} onValueChange={(value) => handleInputChange("source", value)}>
               <SelectTrigger className="rounded-xl border-purple-200" data-testid="select-lead-source">
-                <SelectValue placeholder="How did they find us?" />
+                <SelectValue placeholder="Select an option" />
               </SelectTrigger>
               <SelectContent>
                 {sources.map((source) => (
@@ -270,7 +270,7 @@ const LeadSubmissionForm = ({ open, onClose, onSubmitted }: LeadSubmissionFormPr
               className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl shadow-lg"
               data-testid="button-submit-lead"
             >
-              {isSubmitting ? "Saving..." : "Add Lead"}
+              {isSubmitting ? "Submitting..." : "Submit"}
             </Button>
           </div>
         </form>
