@@ -186,9 +186,9 @@ const Home = () => {
       </section>
 
       {/* Main Content Container - Complete separation from carousel on large screens */}
-      <div className="container mx-auto px-4 py-6 md:py-8 lg:mt-20 xl:mt-24">
+      <div className="container mx-auto px-4 py-6 md:py-8 lg:mt-32 xl:mt-40 2xl:mt-48">
         {/* Hero Section */}
-        <section className="text-center py-6 md:py-8 lg:py-10 relative overflow-hidden lg:rounded-3xl lg:bg-gradient-to-br lg:from-white lg:via-purple-50/50 lg:to-pink-50/50">
+        <section className="text-center py-6 md:py-12 lg:py-20 relative overflow-hidden lg:rounded-[3rem] lg:bg-gradient-to-br lg:from-white lg:via-purple-50/50 lg:to-pink-50/50">
           {/* Trust Badge - Centered at top */}
           <div className="flex justify-center mb-3 md:mb-6">
             <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 card-shadow">
