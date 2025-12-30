@@ -102,13 +102,13 @@ const Header = () => {
             {/* Logo with Brand Text */}
             <Link
               href="/"
-              className="flex items-center gap-0 flex-shrink-0 -my-2"
+              className="flex items-center gap-0 flex-shrink-0"
               data-testid="link-home-logo"
             >
               <img
                 src="/new JS logo BR.svg"
                 alt="JanmaSethu Logo"
-                className="h-[52px] sm:h-[60px] md:h-[76px] lg:h-[92px] w-auto scale-x-[1.1] object-contain mix-blend-multiply origin-left"
+                className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto scale-x-125 scale-y-90 object-contain mix-blend-multiply origin-left"
               />
             </Link>
 
