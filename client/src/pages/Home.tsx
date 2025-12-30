@@ -188,8 +188,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Main Content Container - Ample margin-top to ensure complete separation across all viewports */}
-      <div className="container mx-auto px-4 py-8 mt-4 md:mt-8 lg:mt-12 xl:mt-16">
+      {/* Main Content Container - Minimal spacing to ensure a tight connection with the carousel section */}
+      <div className="container mx-auto px-4 py-2 mt-0 md:mt-1 lg:mt-2">
         {/* Hero Section */}
         <section className="text-center py-6 md:py-12 lg:py-20 relative overflow-hidden lg:rounded-[3rem] lg:bg-gradient-to-br lg:from-white lg:via-purple-50/50 lg:to-pink-50/50">
           {/* Trust Badge - Centered at top */}
