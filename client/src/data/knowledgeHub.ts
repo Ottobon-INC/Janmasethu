@@ -53,7 +53,7 @@ export interface ArticleData {
 }
 
 // Ngrok API Base URL - update this with your actual ngrok domain
-const NGROK_API_BASE = 'https://zainab-sanguineous-niels.ngrok-free.dev';
+const NGROK_API_BASE = 'https://uncollectively-unfutile-deandrea.ngrok-free.dev';
 
 // API Response Types
 export interface LifeStage {
