@@ -54,8 +54,45 @@ const SuccessStories = () => {
     setBackendStories(prev => [newStory, ...prev]);
   };
 
+  // Normalize backend story data to match frontend expectations
+  const normalizeStory = (story: any) => {
+    // If it's already in the correct format (static stories), return as is
+    if (story.title && typeof story.title === 'object') return story;
+
+    // Map backend fields to frontend fields
+    return {
+      ...story,
+      slug: story.slug || `story-${story.id}`,
+      title: {
+        en: story.title || story.name || "Untitled Story",
+        hi: story.title || story.name || "शीर्षकहीन कहानी",
+        te: story.title || story.name || "శీర్షిక లేని కథ"
+      },
+      summary: {
+        en: story.summary || story.challenges || "No summary available.",
+        hi: story.summary || story.challenges || "कोई सारांश उपलब्ध नहीं है।",
+        te: story.summary || story.challenges || "సారాంశం అందుబాటులో లేదు."
+      },
+      stage: {
+        en: story.stage || story.outcome || "Journey",
+        hi: story.stage || story.outcome || "यात्रा",
+        te: story.stage || story.outcome || "ప్రయాణం"
+      },
+      city: {
+        en: story.city || "Unknown City",
+        hi: story.city || "अज्ञात शहर",
+        te: story.city || "తెలియని నగరం"
+      },
+      language: {
+        en: story.language || "English",
+        hi: story.language || "English",
+        te: story.language || "English"
+      }
+    };
+  };
+
   // Combine backend stories with static stories (backend stories first)
-  const stories = [...backendStories, ...staticStories];
+  const stories = [...backendStories.map(normalizeStory), ...staticStories];
 
   // Scroll to top when component mounts
   useEffect(() => {

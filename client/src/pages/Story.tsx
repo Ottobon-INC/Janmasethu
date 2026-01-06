@@ -30,7 +30,8 @@ const Story = () => {
           const backendData = Array.isArray(backendStories) ? backendStories : [];
           
           // Combine all stories (backend first)
-          const combined = [...backendData, ...staticStories];
+          const normalizedBackend = backendData.map(normalizeStory);
+          const combined = [...normalizedBackend, ...staticStories];
           setAllStories(combined);
           
           // Find the current story by slug
@@ -66,6 +67,45 @@ const Story = () => {
     if (!field) return '';
     if (typeof field === 'string') return field;
     return field[lang] || field['en'] || '';
+  };
+
+  // Normalize backend story data to match frontend expectations
+  const normalizeStory = (story: any) => {
+    if (!story) return null;
+    // If it's already in the correct format (static stories), return as is
+    if (story.title && typeof story.title === 'object') return story;
+
+    // Map backend fields to frontend fields
+    return {
+      ...story,
+      slug: story.slug || `story-${story.id}`,
+      title: {
+        en: story.title || story.name || "Untitled Story",
+        hi: story.title || story.name || "शीर्षकहीन कहानी",
+        te: story.title || story.name || "శీర్షిక లేని కథ"
+      },
+      summary: {
+        en: story.summary || story.challenges || "No summary available.",
+        hi: story.summary || story.challenges || "कोई सारांश उपलब्ध नहीं है।",
+        te: story.summary || story.challenges || "సారాంశం అందుబాటులో లేదు."
+      },
+      stage: {
+        en: story.stage || story.outcome || "Journey",
+        hi: story.stage || story.outcome || "यात्रा",
+        te: story.stage || story.outcome || "ప్రయాణం"
+      },
+      city: {
+        en: story.city || "Unknown City",
+        hi: story.city || "अज्ञात शहर",
+        te: story.city || "తెలియని నగరం"
+      },
+      language: {
+        en: story.language || "English",
+        hi: story.language || "English",
+        te: story.language || "English"
+      },
+      longStory: story.longStory || story.outcome_description || story.challenges || ""
+    };
   };
 
   if (loading) {
