@@ -703,8 +703,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const response = await fetch(targetUrl, {
         headers: { 'ngrok-skip-browser-warning': 'true' }
       });
-      const data = await response.json();
-      res.status(response.status).json(data);
+
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        res.status(response.status).json(data);
+      } else {
+        const text = await response.text();
+        console.error(`Proxy knowledge-hub error: Non-JSON response from ${targetUrl}`, text);
+        res.status(response.status).send(text);
+      }
     } catch (error) {
       console.error("Proxy knowledge-hub error:", error);
       res.status(500).json({ error: "Failed to connect to backend server" });
@@ -714,11 +722,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Proxy: Success Stories
   app.get("/api/proxy/stories", async (req, res) => {
     try {
-      const response = await fetch("http://72.61.228.9:8100/stories/", {
+      const targetUrl = "http://72.61.228.9:8100/stories/";
+      const response = await fetch(targetUrl, {
         headers: { 'ngrok-skip-browser-warning': 'true' }
       });
-      const data = await response.json();
-      res.status(response.status).json(data);
+
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        res.status(response.status).json(data);
+      } else {
+        const text = await response.text();
+        console.error(`Proxy stories error: Non-JSON response from ${targetUrl}`, text);
+        res.status(response.status).send(text);
+      }
     } catch (error) {
       console.error("Proxy stories error:", error);
       res.status(500).json({ error: "Failed to connect to backend server" });
@@ -727,7 +744,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/proxy/stories/draft", async (req, res) => {
     try {
-      const response = await fetch("http://72.61.228.9:8100/stories/draft", {
+      const targetUrl = "http://72.61.228.9:8100/stories/draft";
+      const response = await fetch(targetUrl, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -735,8 +753,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
         body: JSON.stringify(req.body),
       });
-      const data = await response.json();
-      res.status(response.status).json(data);
+
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        res.status(response.status).json(data);
+      } else {
+        const text = await response.text();
+        console.error(`Proxy stories draft error: Non-JSON response from ${targetUrl}`, text);
+        res.status(response.status).send(text);
+      }
     } catch (error) {
       console.error("Proxy stories draft error:", error);
       res.status(500).json({ error: "Failed to connect to backend server" });
