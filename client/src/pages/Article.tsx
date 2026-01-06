@@ -106,84 +106,64 @@ const Article = () => {
   const parseMarkdownText = (text: string) => {
     if (!text) return null;
     
-    // Split by newlines and process
+    // Split by markdown headings and process
     const lines = text.split('\n');
     const elements: JSX.Element[] = [];
     let currentParagraph = '';
     
-    const flushParagraph = (index: number) => {
-      if (currentParagraph.trim()) {
-        elements.push(
-          <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-6" 
-             dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph.trim()) }} />
-        );
-        currentParagraph = '';
-      }
-    };
-
     lines.forEach((line, index) => {
       const trimmedLine = line.trim();
       
-      if (!trimmedLine) {
-        flushParagraph(index);
-        return;
-      }
-
-      // Check for headings
+      // Check for ## headings
       if (trimmedLine.startsWith('## ')) {
-        flushParagraph(index);
+        // Flush current paragraph
+        if (currentParagraph) {
+          elements.push(
+            <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-4" 
+               dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+          );
+          currentParagraph = '';
+        }
         const headingText = trimmedLine.replace(/^##\s*\d*\.?\s*/, '');
         elements.push(
-          <h3 key={`h-${index}`} className="text-2xl font-bold text-foreground font-serif mt-10 mb-4 border-b border-purple-100 pb-2">
+          <h3 key={`h-${index}`} className="text-xl font-bold text-foreground font-serif mt-8 mb-4">
             {headingText}
           </h3>
         );
       } else if (trimmedLine.startsWith('### ')) {
-        flushParagraph(index);
+        // Flush current paragraph
+        if (currentParagraph) {
+          elements.push(
+            <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-4"
+               dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+          );
+          currentParagraph = '';
+        }
         const headingText = trimmedLine.replace(/^###\s*/, '');
         elements.push(
-          <h4 key={`h4-${index}`} className="text-xl font-semibold text-foreground mt-8 mb-3">
+          <h4 key={`h4-${index}`} className="text-lg font-semibold text-foreground mt-6 mb-3">
             {headingText}
           </h4>
         );
-      } else if (/^\d+\.\s/.test(trimmedLine)) {
-        // Numbered list item like "1. How Does IUI Work?"
-        flushParagraph(index);
-        const itemText = trimmedLine.replace(/^\d+\.\s*/, '');
-        elements.push(
-          <h4 key={`num-h-${index}`} className="text-lg font-bold text-foreground mt-8 mb-3 flex items-start gap-2">
-            <span className="text-purple-600 bg-purple-50 w-7 h-7 rounded-full flex items-center justify-center text-sm shrink-0 mt-0.5">
-              {trimmedLine.match(/^\d+/)?.[0]}
-            </span>
-            {itemText}
-          </h4>
-        );
-      } else if (trimmedLine.startsWith('•') || trimmedLine.startsWith('-')) {
-        // Bullet points
-        flushParagraph(index);
-        const itemText = trimmedLine.replace(/^[•-]\s*/, '');
-        elements.push(
-          <div key={`bullet-${index}`} className="flex items-start gap-3 mb-3 ml-4">
-            <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2.5 shrink-0" />
-            <p className="text-foreground/80 leading-relaxed" dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(itemText) }} />
-          </div>
-        );
-      } else if (trimmedLine.toUpperCase().startsWith('IMPORTANT NOTE:') || trimmedLine.startsWith('⚠️')) {
-        flushParagraph(index);
-        elements.push(
-          <div key={`note-${index}`} className="bg-orange-50 border-l-4 border-orange-400 p-6 rounded-r-2xl my-8">
-            <div className="flex items-center gap-2 text-orange-800 font-bold mb-2">
-              <span role="img" aria-label="warning">⚠️</span> IMPORTANT NOTE
-            </div>
-            <p className="text-orange-900/80 leading-relaxed italic" dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(trimmedLine.replace(/^IMPORTANT NOTE:\s*|^⚠️\s*/i, '')) }} />
-          </div>
-        );
-      } else {
+      } else if (trimmedLine) {
         currentParagraph += (currentParagraph ? ' ' : '') + trimmedLine;
+      } else if (currentParagraph) {
+        // Empty line - flush paragraph
+        elements.push(
+          <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-4"
+             dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+        );
+        currentParagraph = '';
       }
     });
     
-    flushParagraph(9999);
+    // Flush remaining paragraph
+    if (currentParagraph) {
+      elements.push(
+        <p key="p-last" className="text-foreground/80 leading-relaxed mb-4"
+           dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+      );
+    }
     
     return elements.length > 0 ? elements : (
       <p className="text-foreground/80 leading-relaxed mb-4"
@@ -248,26 +228,26 @@ const Article = () => {
       </div>
 
       {/* Article Header */}
-      <header className="mb-12 max-w-4xl">
-        <h1 className="text-4xl md:text-5xl font-bold text-foreground font-serif mb-6 leading-tight" data-testid="text-article-title">
+      <header className="mb-12">
+        <h1 className="text-4xl md:text-5xl font-bold text-foreground font-serif mb-6" data-testid="text-article-title">
           {getLocalizedContent(articleData.title)}
         </h1>
 
-        <p className="text-xl text-muted-foreground mb-8 leading-relaxed" data-testid="text-article-summary">
+        <p className="text-xl text-muted-foreground mb-8" data-testid="text-article-summary">
           {getLocalizedContent(articleData.overview)}
         </p>
 
-        <div className="inline-flex flex-wrap items-center gap-6 text-sm bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border border-purple-100 dark:border-purple-800 rounded-2xl px-6 py-4 shadow-sm">
+        <div className="inline-flex flex-wrap items-center gap-6 text-sm bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-full px-6 py-3">
           <div className="flex items-center space-x-2 text-purple-700 dark:text-purple-300">
             <Clock className="w-4 h-4" />
-            <span data-testid="text-read-time" className="font-semibold">
+            <span data-testid="text-read-time" className="font-medium">
               {getLocalizedContent(articleData.metadata?.readTime)}
             </span>
           </div>
-          <div className="w-px h-6 bg-purple-200 dark:bg-purple-700 hidden sm:block"></div>
+          <div className="w-px h-4 bg-purple-300 dark:bg-purple-600"></div>
           <div className="flex items-center space-x-2 text-purple-700 dark:text-purple-300">
             <User className="w-4 h-4" />
-            <span data-testid="text-reviewed-by" className="font-semibold">
+            <span data-testid="text-reviewed-by" className="font-medium">
               {getLocalizedContent(articleData.metadata?.reviewer)}
             </span>
           </div>
@@ -275,16 +255,16 @@ const Article = () => {
       </header>
 
       {/* Article Body */}
-      <div className="max-w-4xl">
-        <div className="space-y-10">
+      <div className="w-full">
+        <div className="space-y-6">
           {articleData.sections.map((section, index) => (
-            <div key={section.id} data-testid={`section-${index}`} className="animate-fadeIn">
+            <div key={section.id} data-testid={`section-${index}`}>
               {getLocalizedContent(section.title) && (
-                <h2 className="text-3xl font-bold text-foreground font-serif mb-6 border-l-4 border-purple-400 pl-4 py-1" data-testid={`text-section-title-${index}`}>
+                <h2 className="text-2xl font-bold text-foreground font-serif mb-4" data-testid={`text-section-title-${index}`}>
                   {getLocalizedContent(section.title)}
                 </h2>
               )}
-              <div className="prose prose-lg max-w-none w-full dark:prose-invert prose-headings:font-serif prose-p:text-foreground/80 prose-p:leading-relaxed prose-strong:text-foreground prose-strong:font-bold">
+              <div className="prose prose-lg max-w-none w-full">
                 {section.content.map((content, contentIndex) => (
                   <div key={contentIndex}>
                     {renderContent(content)}
