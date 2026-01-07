@@ -16,7 +16,7 @@ const Article = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load article data from JSON - re-fetch when language changes
+  // Load article data from JSON
   useEffect(() => {
     const loadArticle = async () => {
       if (!slug) return;
@@ -25,8 +25,7 @@ const Article = () => {
       setError(null);
       
       try {
-        // Pass current language to fetch localized content
-        const data = await fetchArticleData(slug, lang);
+        const data = await fetchArticleData(slug);
         if (data) {
           setArticleData(data);
         } else {
@@ -41,7 +40,7 @@ const Article = () => {
     };
 
     loadArticle();
-  }, [slug, lang]); // Re-fetch when language changes
+  }, [slug]);
 
   // Scroll to top when component mounts
   useEffect(() => {
