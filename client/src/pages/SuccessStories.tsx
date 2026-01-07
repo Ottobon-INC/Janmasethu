@@ -87,7 +87,8 @@ const SuccessStories = () => {
         en: story.language || "English",
         hi: story.language || "English",
         te: story.language || "English"
-      }
+      },
+      longStory: story.generated_story || story.outcome_description || story.challenges || ""
     };
   };
 

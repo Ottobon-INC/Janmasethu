@@ -104,7 +104,7 @@ const Story = () => {
         hi: story.language || "English",
         te: story.language || "English"
       },
-      longStory: story.longStory || story.outcome_description || story.challenges || ""
+      longStory: story.generated_story || story.outcome_description || story.challenges || ""
     };
   };
 
