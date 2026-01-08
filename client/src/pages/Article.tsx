@@ -10,8 +10,12 @@ import { fetchArticleData, type ArticleData, type ArticleContent } from '@/data/
 
 const Article = () => {
   const { slug } = useParams();
-  const { t, lang } = useLanguage();
-  
+  const { t } = useLanguage();
+
+  // Get language from URL query parameter, fallback to 'en'
+  const urlParams = new URLSearchParams(window.location.search);
+  const lang = (urlParams.get('lang') as 'en' | 'te') || 'en';
+
   const [articleData, setArticleData] = useState<ArticleData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,12 +24,12 @@ const Article = () => {
   useEffect(() => {
     const loadArticle = async () => {
       if (!slug) return;
-      
+
       setLoading(true);
       setError(null);
-      
+
       try {
-        const data = await fetchArticleData(slug);
+        const data = await fetchArticleData(slug, lang);
         if (data) {
           setArticleData(data);
         } else {
@@ -40,7 +44,7 @@ const Article = () => {
     };
 
     loadArticle();
-  }, [slug]);
+  }, [slug, lang]);
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -72,19 +76,17 @@ const Article = () => {
         <Card className="max-w-2xl mx-auto rounded-3xl p-8 card-shadow">
           <CardContent>
             <h1 className="text-2xl font-bold text-foreground font-serif mb-4">
-              {lang === 'hi' ? 'लेख नहीं मिला' : lang === 'te' ? 'వ్యాసం కనుగొనబడలేదు' : 'Article Not Found'}
+              {lang === 'te' ? 'వ్యాసం కనుగొనబడలేదు' : 'Article Not Found'}
             </h1>
             <p className="text-muted-foreground mb-6">
-              {error || (lang === 'hi' ? 'आप जो लेख खोज रहे हैं वह मौजूद नहीं है।' : 
-               lang === 'te' ? 'మీరు వెతుకుతున్న వ్యాసం ఉనికిలో లేదు।' : 
-               'The article you\'re looking for doesn\'t exist.')}
+              {error || (lang === 'te' ? 'మీరు వెతుకుతున్న వ్యాసం ఉనికిలో లేదు।' :
+                'The article you\'re looking for doesn\'t exist.')}
             </p>
             <Link href="/knowledge">
               <Button className="gradient-button text-white rounded-full">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                {lang === 'hi' ? 'ज्ञान केंद्र में वापस जाएं' : 
-                 lang === 'te' ? 'నాలెడ్జ్ హబ్‌కు తిరిగి వెళ్లండి' : 
-                 'Back to Knowledge Hub'}
+                {lang === 'te' ? 'నాలెడ్జ్ హబ్‌కు తిరిగి వెళ్లండి' :
+                  'Back to Knowledge Hub'}
               </Button>
             </Link>
           </CardContent>
@@ -97,30 +99,30 @@ const Article = () => {
   const getLocalizedContent = (content: any, fallback: string = '') => {
     if (!content) return fallback;
     if (typeof content === 'string') return content;
-    
-    const langKey = lang === 'hi' ? 'hi' : lang === 'te' ? 'te' : 'en';
+
+    const langKey = lang === 'te' ? 'te' : 'en';
     return content[langKey] || content.en || fallback;
   };
 
   // Helper function to parse markdown-like text to formatted HTML
   const parseMarkdownText = (text: string) => {
     if (!text) return null;
-    
+
     // Split by markdown headings and process
     const lines = text.split('\n');
     const elements: JSX.Element[] = [];
     let currentParagraph = '';
-    
+
     lines.forEach((line, index) => {
       const trimmedLine = line.trim();
-      
+
       // Check for ## headings
       if (trimmedLine.startsWith('## ')) {
         // Flush current paragraph
         if (currentParagraph) {
           elements.push(
-            <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-4" 
-               dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+            <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-4"
+              dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
           );
           currentParagraph = '';
         }
@@ -135,7 +137,7 @@ const Article = () => {
         if (currentParagraph) {
           elements.push(
             <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-4"
-               dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+              dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
           );
           currentParagraph = '';
         }
@@ -151,26 +153,26 @@ const Article = () => {
         // Empty line - flush paragraph
         elements.push(
           <p key={`p-${index}`} className="text-foreground/80 leading-relaxed mb-4"
-             dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+            dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
         );
         currentParagraph = '';
       }
     });
-    
+
     // Flush remaining paragraph
     if (currentParagraph) {
       elements.push(
         <p key="p-last" className="text-foreground/80 leading-relaxed mb-4"
-           dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
+          dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(currentParagraph) }} />
       );
     }
-    
+
     return elements.length > 0 ? elements : (
       <p className="text-foreground/80 leading-relaxed mb-4"
-         dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(text) }} />
+        dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(text) }} />
     );
   };
-  
+
   // Helper function to format inline markdown (bold, italic)
   const formatInlineMarkdown = (text: string): string => {
     return text
@@ -181,8 +183,8 @@ const Article = () => {
 
   // Helper function to render article content
   const renderContent = (content: ArticleContent) => {
-    const langKey = lang === 'hi' ? 'hi' : lang === 'te' ? 'te' : 'en';
-    
+    const langKey = lang === 'te' ? 'te' : 'en';
+
     switch (content.type) {
       case 'paragraph':
         const paragraphText = content.text?.[langKey] || content.text?.en || '';
@@ -204,7 +206,7 @@ const Article = () => {
               const itemText = typeof item === 'object' ? (item[langKey] || item.en || '') : item;
               return (
                 <li key={index} className="text-foreground/80 leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(itemText) }} />
+                  dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(itemText) }} />
               );
             })}
           </ul>
@@ -220,9 +222,8 @@ const Article = () => {
         <Link href="/knowledge">
           <Button variant="ghost" className="rounded-full" data-testid="button-back-knowledge">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            {lang === 'hi' ? 'ज्ञान केंद्र में वापस जाएं' : 
-             lang === 'te' ? 'నాలెడ్జ్ హబ్‌కు తిరిగి వెళ్లండి' : 
-             'Back to Knowledge Hub'}
+            {lang === 'te' ? 'నాలెడ్జ్ హబ్‌కు తిరిగి వెళ్లండి' :
+              'Back to Knowledge Hub'}
           </Button>
         </Link>
       </div>

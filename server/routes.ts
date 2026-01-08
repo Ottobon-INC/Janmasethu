@@ -1,6 +1,6 @@
 // server/routes.ts
 import type { Express } from "express";
-import { db } from "@db";
+import { query } from "./db";
 import { createServer, type Server } from "http";
 import { runMedcyDoctorsScrape } from "./scraper/medcyDoctors";
 import { scrapeAndStoreDoctors } from "./scraper/doctors";
@@ -22,12 +22,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, ngrok-skip-browser-warning, x-api-key');
-    
+
     // Handle preflight requests
     if (req.method === 'OPTIONS') {
       return res.status(204).send();
     }
-    
+
     next();
   });
 
@@ -162,9 +162,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // --- Scrape endpoint (GET for external schedulers, secured with requireKey)
   app.get("/api/dev/scrape/medcy", requireKey, async (req, res) => {
     try {
-      const { runMedcyScrape } = await import("./scraper/medcy");
+      const { scrapeAndStoreBlogs } = await import("./scraper/medcy");
       const max = Number(req.query.max ?? "8");
-      const out = await runMedcyScrape({ max: isNaN(max) ? 8 : max });
+      const out = await scrapeAndStoreBlogs(isNaN(max) ? 8 : max);
       res.json({ ok: true, ...out });
     } catch (error: any) {
       res.status(500).json({ ok: false, error: error.message });
@@ -275,7 +275,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Generate AI-like response based on user message
   function generateChatResponse(userMessage: string): string {
     const lowerMessage = userMessage.toLowerCase();
-    
+
     // Simple response generation based on keywords
     const responses: { [key: string]: string } = {
       "fertility": "Fertility is a complex journey. Every person's path is unique. If you have specific concerns, I'd recommend consulting with a fertility specialist. Would you like information about any particular aspect?",
@@ -659,9 +659,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { name, phone, age, gender, problemType, source } = req.body;
 
       if (!name || !phone || !age || !gender || !problemType || !source) {
-        return res.status(400).json({ 
-          ok: false, 
-          error: "All fields are required: name, phone, age, gender, problemType, source" 
+        return res.status(400).json({
+          ok: false,
+          error: "All fields are required: name, phone, age, gender, problemType, source"
         });
       }
 
@@ -696,10 +696,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Proxy: Knowledge Hub
   app.get("/api/proxy/knowledge-hub/*", async (req, res) => {
     try {
-      const path = req.params[0];
+      const path = (req.params as any)[0];
       const queryString = new URL(req.url, `http://${req.headers.host}`).search;
-      const targetUrl = `http://72.61.228.9:8100/api/knowledge-hub/${path}${queryString}`;
-      
+      const targetUrl = `https://zainab-sanguineous-niels.ngrok-free.dev/api/knowledge-hub/${path}${queryString}`;
+
       const response = await fetch(targetUrl, {
         headers: { 'ngrok-skip-browser-warning': 'true' }
       });
@@ -747,7 +747,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const targetUrl = "http://72.61.228.9:8100/stories/";
       const response = await fetch(targetUrl, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': 'true'
         },
@@ -792,7 +792,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // =========================
   // SAKHI API PROXY ENDPOINTS (to avoid mixed content errors)
   // =========================
-  
+
   const SAKHI_API_BASE = process.env.SAKHI_API_URL || 'http://72.61.228.9:8100';
 
   // Proxy: User Login
@@ -985,7 +985,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Apply filters
         let include = true;
         if (search && !article.title.toLowerCase().includes(search.toString().toLowerCase()) &&
-            !article.summary.toLowerCase().includes(search.toString().toLowerCase())) {
+          !article.summary.toLowerCase().includes(search.toString().toLowerCase())) {
           include = false;
         }
 
@@ -1081,7 +1081,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Apply filters
         let include = true;
         if (search && !article.title.toLowerCase().includes(search.toString().toLowerCase()) &&
-            !article.summary.toLowerCase().includes(search.toString().toLowerCase())) {
+          !article.summary.toLowerCase().includes(search.toString().toLowerCase())) {
           include = false;
         }
 

@@ -30,6 +30,7 @@ interface WebhookArticle {
   published_at: string;
 }
 
+
 interface WebhookResponse {
   query: string;
   filters: {
@@ -46,7 +47,12 @@ interface WebhookResponse {
 }
 
 const Knowledge = () => {
-  const { t, lang } = useLanguage();
+  const { t, lang: globalLang } = useLanguage(); // Rename global lang to avoid confusion
+  // Local state for knowledge hub content language, default to 'en' or persisted value
+  const [contentLang, setContentLang] = useState<'en' | 'te'>(() => {
+    return (localStorage.getItem('knowledge_lang') as 'en' | 'te') || 'en';
+  });
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLens, setSelectedLens] = useState<Lens | null>(null);
   const [selectedStage, setSelectedStage] = useState<Stage | null>(null);
@@ -63,6 +69,12 @@ const Knowledge = () => {
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
 
+  // Update content language and persist it
+  const handleLanguageChange = (newLang: 'en' | 'te') => {
+    setContentLang(newLang);
+    localStorage.setItem('knowledge_lang', newLang);
+  };
+
   // Load articles from ngrok API
   useEffect(() => {
     const loadArticles = async () => {
@@ -73,31 +85,34 @@ const Knowledge = () => {
         const searchParam = urlParams.get('search');
         const lensParam = urlParams.get('lens');
         const stageParam = urlParams.get('stage');
-        
+
         if (searchParam) {
           setSearchTerm(searchParam);
         }
-        
+
         if (lensParam && ['medical', 'social', 'financial', 'nutrition'].includes(lensParam)) {
           setSelectedLens(lensParam as Lens);
         }
-        
+
         if (stageParam && ['ttc', 'pregnancy', 'postpartum', 'newborn', 'early-years'].includes(stageParam)) {
           setSelectedStage(stageParam as Stage);
         }
 
-        // Fetch articles from ngrok API using the correct endpoint
-        const response = await fetchArticles({ perPage: 100 });
-        
+        // Fetch articles from API using the correct endpoint with local content language
+        const response = await fetchArticles({
+          perPage: 100,
+          lang: contentLang // Pass local content language
+        });
+
         console.log('Articles API response:', response);
-        
+
         // Validate response structure
         if (!response || !response.items || !Array.isArray(response.items)) {
           console.error('Invalid response structure:', response);
           setJsonArticles([]);
           return;
         }
-        
+
         // Transform backend data to match frontend structure
         const transformedArticles = response.items.map(article => ({
           slug: article.slug || '',
@@ -122,7 +137,7 @@ const Knowledge = () => {
             te: 'నిపుణులచే సమీక్షించబడింది'
           }
         }));
-        
+
         console.log('Transformed articles:', transformedArticles.length);
         setJsonArticles(transformedArticles);
       } catch (error) {
@@ -133,7 +148,7 @@ const Knowledge = () => {
     };
 
     loadArticles();
-  }, []);
+  }, [contentLang]); // Refetch when content language changes
 
   // Auto-trigger search when filters change
   useEffect(() => {
@@ -142,29 +157,30 @@ const Knowledge = () => {
       console.log('🔄 Filters changed, auto-triggering search');
       handleSearch();
     }
-  }, [selectedLens, selectedStage]); // Auto-search when filters change
+  }, [selectedLens, selectedStage, contentLang]); // Refetch when filters or content language change
 
   // Auto-trigger search if URL has search parameters on mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
-    
+
     if (searchParam && searchParam.trim()) {
       // Trigger search automatically when component mounts with search param
       handleSearch();
     }
-    
+
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, [jsonArticles]); // Trigger when articles are loaded
 
-  // Helper function to get localized content
+  // Helper function to get localized content using local content language
   const getLocalizedContent = (content: any) => {
     if (!content) return '';
     if (typeof content === 'string') return content;
-    
-    const langKey = lang === 'hi' ? 'hi' : lang === 'te' ? 'te' : 'en';
-    return content[langKey] || content.en || '';
+
+    const langKey = contentLang === 'te' ? 'te' : 'en';
+    // Fallback cascade: requested lang -> english -> any available
+    return content[langKey] || content.en || Object.values(content)[0] || '';
   };
 
   // Show webhook results if available, otherwise show JSON articles
@@ -179,25 +195,38 @@ const Knowledge = () => {
       // Use webhook results - prioritize webhook data
       console.log('Using webhook results:', webhookResults.items.length);
       return webhookResults.items.map((article, index) => {
-        console.log(`Webhook article ${index}:`, {
-          title: article.title,
-          summary: article.summary,
-          slug: article.slug
-        });
-
-        // Map lens from webhook to our format
+        // ... mapping logic remains similar ...
         let mappedLens: Lens[] = [];
-        if (article.lens) {
-          const lensLower = article.lens.toLowerCase();
+        const rawLens = article.lens || '';
+        const lensId = Number((article as any).perspective_id);
+
+        // Map string lens
+        if (rawLens) {
+          const lensLower = rawLens.toLowerCase();
           if (['medical', 'social', 'financial', 'nutrition'].includes(lensLower)) {
             mappedLens = [lensLower as Lens];
           }
         }
+        // Fallback to lens ID
+        else if (lensId) {
+          const idToLens: Record<number, Lens> = {
+            1: 'medical', 2: 'social', 3: 'nutrition', 4: 'financial'
+          };
+          if (idToLens[lensId]) mappedLens = [idToLens[lensId]];
+        }
 
-        // Map life_stage from webhook to our format
+        // Safety: If user filtered by a lens, and backend returned this article, trust it is that lens.
+        if (selectedLens && !mappedLens.includes(selectedLens)) {
+          mappedLens.push(selectedLens);
+        }
+
         let mappedStages: Stage[] = [];
-        if (article.life_stage) {
-          const stageLower = article.life_stage.toLowerCase();
+        const rawStage = article.life_stage || '';
+        const stageId = Number((article as any).life_stage_id);
+
+        // Map string stage
+        if (rawStage) {
+          const stageLower = rawStage.toLowerCase();
           const stageMapping: Record<string, Stage> = {
             'ttc': 'ttc',
             'pregnancy': 'pregnancy',
@@ -210,11 +239,25 @@ const Knowledge = () => {
             mappedStages = [stageMapping[stageLower]];
           }
         }
+        // Fallback to stage ID
+        else if (stageId) {
+          // Note: ID 7 observed for Pregnancy in debug logs
+          const idToStage: Record<number, Stage> = {
+            1: 'ttc', 2: 'pregnancy', 7: 'pregnancy', // Mapping 7 to pregnancy based on GDM article
+            3: 'postpartum', 4: 'newborn', 5: 'early-years'
+          };
+          if (idToStage[stageId]) mappedStages = [idToStage[stageId]];
+        }
+
+        // Safety: If user filtered by a stage, and backend returned this article, trust it is that stage.
+        if (selectedStage && !mappedStages.includes(selectedStage)) {
+          mappedStages.push(selectedStage);
+        }
 
         return {
           slug: article.slug,
-          title: article.title, // Use webhook title directly
-          summary: article.summary, // Use webhook summary directly
+          title: article.title,
+          summary: article.summary,
           lens: mappedLens,
           stage: mappedStages,
           readMins: 5,
@@ -227,10 +270,9 @@ const Knowledge = () => {
     } else {
       // Fallback to JSON articles only when no webhook results
       console.log('Using fallback JSON articles:', jsonArticles.length);
-      
-      // Map article slugs to their lens and stage data from the articles.ts file
+
       const articleMetaMap = new Map(articles.map(a => [a.slug, { lens: a.lens, stage: a.stage }]));
-      
+
       return jsonArticles.map((article, index) => {
         const meta = articleMetaMap.get(article.slug) || { lens: [], stage: [] };
         return {
@@ -247,43 +289,30 @@ const Knowledge = () => {
         };
       });
     }
-  }, [webhookResults, jsonArticles, lang, getLocalizedContent]);
+  }, [webhookResults, jsonArticles, contentLang, getLocalizedContent]);
 
-  // For webhook results, use them directly since API already filtered
+  // ... filtering logic ...
   const filteredArticles = useMemo(() => {
-    console.log('filteredArticles recalculating:', {
-      hasWebhookResults: !!webhookResults,
-      webhookItemsCount: webhookResults?.items?.length || 0,
-      displayArticlesCount: displayArticles.length
-    });
-
-    if (webhookResults && webhookResults.items) {
-      console.log('Displaying webhook articles directly:', displayArticles.length);
-      // Log each article title and summary for debugging
-      displayArticles.forEach((article, i) => {
-        console.log(`Article ${i}: "${article.title}" - "${article.summary}"`);
-      });
-      return displayArticles; // Webhook already filtered, use as-is - no local filtering
-    }
-    
-    // Apply local filters only for JSON articles when no webhook results
-    if (!searchTerm && !selectedLens && !selectedStage) {
-      // No filters applied, show all local articles
-      return displayArticles;
-    }
-    
+    // Always apply client-side filtering to valid results.
+    // This acts as a double-check in case the backend returns more items than requested.
     return displayArticles.filter(article => {
-      const matchesSearch = !searchTerm || 
+      const matchesSearch = !searchTerm ||
         article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         article.summary.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesLens = !selectedLens || article.lens.includes(selectedLens);
-      const matchesStage = !selectedStage || article.stage.includes(selectedStage);
-      
+
+      // Check for exact match or if the article's lens array includes the selected filter
+      const matchesLens = !selectedLens ||
+        (Array.isArray(article.lens) && article.lens.includes(selectedLens));
+
+      // Check for exact match or if the article's stage array includes the selected filter
+      const matchesStage = !selectedStage ||
+        (Array.isArray(article.stage) && article.stage.includes(selectedStage));
+
       return matchesSearch && matchesLens && matchesStage;
     });
   }, [displayArticles, webhookResults, searchTerm, selectedLens, selectedStage]);
 
-  // Pagination calculations
+  // ... pagination logs ...
   const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE);
   const startIndex = (currentPage - 1) * ARTICLES_PER_PAGE;
   const endIndex = startIndex + ARTICLES_PER_PAGE;
@@ -294,31 +323,23 @@ const Knowledge = () => {
     setCurrentPage(1);
   }, [searchTerm, selectedLens, selectedStage, webhookResults]);
 
-  // Map frontend lens values to backend perspective IDs
+  // ... mapping objects ...
   const lensToIdMap: Record<Lens, number> = {
-    'medical': 1,
-    'social': 2,  // Emotional in backend
-    'nutrition': 3,
-    'financial': 4
+    'medical': 1, 'social': 2, 'nutrition': 3, 'financial': 4
   };
 
-  // Map frontend stage values to backend life stage IDs
   const stageToIdMap: Record<Stage, number> = {
-    'ttc': 1,           // Fertility
-    'pregnancy': 2,
-    'postpartum': 3,
-    'newborn': 4,       // Newborn Care
-    'early-years': 5    // Early Parenting
+    'ttc': 1, 'pregnancy': 2, 'postpartum': 3, 'newborn': 4, 'early-years': 5
   };
 
-  const lensOptions: Array<{value: Lens; label: string; icon: string; color: string}> = [
+  const lensOptions: Array<{ value: Lens; label: string; icon: string; color: string }> = [
     { value: 'medical', label: t('lens_medical'), icon: 'fas fa-stethoscope', color: 'bg-blue-100 text-blue-600' },
     { value: 'social', label: t('lens_social'), icon: 'fas fa-users', color: 'bg-pink-100 text-pink-600' },
     { value: 'financial', label: t('lens_financial'), icon: 'fas fa-rupee-sign', color: 'bg-green-100 text-green-600' },
     { value: 'nutrition', label: t('lens_nutrition'), icon: 'fas fa-apple-alt', color: 'bg-orange-100 text-orange-600' },
   ];
 
-  const stageOptions: Array<{value: Stage; label: string}> = [
+  const stageOptions: Array<{ value: Stage; label: string }> = [
     { value: 'ttc', label: t('orient_ttc') },
     { value: 'pregnancy', label: t('orient_preg') },
     { value: 'postpartum', label: 'Postpartum' },
@@ -326,65 +347,31 @@ const Knowledge = () => {
     { value: 'early-years', label: 'Early Years' },
   ];
 
-  // Handle "All" button click for lens
-  const handleLensAll = () => {
-    setSelectedLens(null);
-    setWebhookResults(null); // Clear webhook results to show all JSON articles
-    window.history.replaceState({}, '', '/knowledge');
-  };
-
-  // Handle "All" button click for stage
-  const handleStageAll = () => {
-    setSelectedStage(null);
-    setWebhookResults(null); // Clear webhook results to show all JSON articles
-    window.history.replaceState({}, '', '/knowledge');
-  };
-
   // Handle search button click
   const handleSearch = async () => {
     setSearching(true);
     setSearchError(null);
-    
-    console.log('🔎 Search triggered with:', {
-      searchTerm,
-      selectedLens,
-      selectedStage,
-      lensId: selectedLens ? lensToIdMap[selectedLens] : undefined,
-      stageId: selectedStage ? stageToIdMap[selectedStage] : undefined
-    });
-    
+
     // Update URL with current search parameters
     const params = new URLSearchParams();
     if (searchTerm) params.set('search', searchTerm);
     if (selectedLens) params.set('lens', selectedLens);
     if (selectedStage) params.set('stage', selectedStage);
-    
+
     const newUrl = params.toString() ? `/knowledge?${params.toString()}` : '/knowledge';
     window.history.replaceState({}, '', newUrl);
-    
-    // If no search term and no filters, just clear results to show all articles
-    if (!searchTerm && !selectedLens && !selectedStage) {
-      console.log('🧹 Clearing all filters');
-      setWebhookResults(null);
-      setSearching(false);
-      return;
-    }
-    
+
+    // If no filters are active, we still want to fetch the default list from backend
+    // but without specific filter params. fetchArticles handles undefined params correctly.
+
     try {
-      // Fetch from API with numeric IDs
       const response = await fetchArticles({
         search: searchTerm || undefined,
         lifeStage: selectedStage ? stageToIdMap[selectedStage] : undefined,
-        perspective: selectedLens ? lensToIdMap[selectedLens] : undefined
+        perspective: selectedLens ? lensToIdMap[selectedLens] : undefined,
+        lang: contentLang // Pass local content language
       });
 
-      console.log('✅ API returned:', {
-        itemsCount: response.items.length,
-        total: response.pagination.total,
-        samples: response.items.slice(0, 2).map(i => ({ title: i.title, lens: i.lens, stage: i.life_stage }))
-      });
-
-      // Transform to webhook format for compatibility
       const webhookData = {
         query: searchTerm || '',
         filters: {
@@ -404,8 +391,7 @@ const Knowledge = () => {
           published_at: item.published_at
         }))
       };
-      
-      console.log('📦 Setting webhook results with', webhookData.items.length, 'items');
+
       setWebhookResults(webhookData);
 
     } catch (error) {
@@ -419,324 +405,268 @@ const Knowledge = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Page Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-foreground font-serif mb-4" data-testid="text-knowledge-title">
           {t('nav_knowledge')}
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          {lang === 'hi' ? 'जीवन चरण और दृष्टिकोण के अनुसार व्यवस्थित, आपकी पेरेंटिंग यात्रा के लिए साक्ष्य-आधारित गाइड' : 
-           lang === 'te' ? 'జీవిత దశ మరియు దృక్పథం ఆధారంగా నిర్వహించబడిన, మీ పేరెంటింగ్ ప్రయాణానికి సాక్ష్యాధార గైడ్లు' :
-           'Evidence-based guides for your parenting journey, organized by life stage and perspective'}
+          {t('hero_subtitle')}
         </p>
       </div>
 
-      {/* Search and Filters */}
-      <div className="mb-8">
-        <div className="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center">
-          {/* Search Input */}
-          <div className="relative flex-1">
-            <form onSubmit={(e) => {
+      {/* Unified Search, Filters, and Language Toggle */}
+      <div className="flex flex-col md:flex-row justify-center items-center gap-3 mb-8">
+        {/* Search Input - Compact */}
+        <div className="relative w-full md:w-auto">
+          <form
+            onSubmit={(e) => {
               e.preventDefault();
               handleSearch();
-            }} className="flex gap-2">
-              <div className="relative flex-1">
-                <Input
-                  type="search"
-                  placeholder="Search articles..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 rounded-full h-11"
-                  data-testid="input-search-articles"
-                />
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 pointer-events-none" />
-              </div>
-            </form>
-          </div>
-
-          {/* Filter Dropdowns */}
-          <div className="flex flex-wrap sm:flex-nowrap gap-2">
-            {/* Lens Filter Dropdown */}
-            <Select
-              value={selectedLens || "all"}
-              onValueChange={(value) => {
-                if (value === "all") {
-                  setSelectedLens(null);
-                  setWebhookResults(null);
-                } else {
-                  setSelectedLens(value as Lens);
-                }
-              }}
-            >
-              <SelectTrigger className="w-full sm:w-[160px] rounded-full h-11" data-testid="select-filter-lens">
-                <Filter className="w-4 h-4 mr-2 text-muted-foreground" />
-                <SelectValue placeholder="Filter by Lens" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Lenses</SelectItem>
-                {lensOptions.map(({ value, label }) => (
-                  <SelectItem key={value} value={value}>{label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Stage Filter Dropdown */}
-            <Select
-              value={selectedStage || "all"}
-              onValueChange={(value) => {
-                if (value === "all") {
-                  setSelectedStage(null);
-                  setWebhookResults(null);
-                } else {
-                  setSelectedStage(value as Stage);
-                }
-              }}
-            >
-              <SelectTrigger className="w-full sm:w-[180px] rounded-full h-11" data-testid="select-filter-stage">
-                <Filter className="w-4 h-4 mr-2 text-muted-foreground" />
-                <SelectValue placeholder="Filter by Stage" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Stages</SelectItem>
-                {stageOptions.map(({ value, label }) => (
-                  <SelectItem key={value} value={value}>{label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Search Button */}
-            <Button 
-              className="rounded-full px-6 h-11 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-              data-testid="button-search"
-              onClick={handleSearch}
-            >
-              Search
-            </Button>
-
-            {/* Clear All Button */}
-            {(webhookResults || selectedLens || selectedStage || searchTerm) && (
-              <Button 
-                variant="outline"
-                className="rounded-full px-4 h-11"
-                onClick={() => {
-                  console.log('🧹 Clear All clicked');
-                  setSearchTerm('');
-                  setSelectedLens(null);
-                  setSelectedStage(null);
-                  setWebhookResults(null);
-                  setSearchError(null);
-                  window.history.replaceState({}, '', '/knowledge');
-                }}
-              >
-                Clear
-              </Button>
-            )}
-          </div>
+            }}
+          >
+            <div className="relative">
+              <Input
+                type="search"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9 pr-4 rounded-full h-10 w-full md:w-[180px] bg-white text-sm"
+                data-testid="input-search-articles"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 pointer-events-none" />
+            </div>
+          </form>
         </div>
 
-        {/* Active Filters Display */}
-        {(selectedLens || selectedStage) && (
-          <div className="flex flex-wrap gap-2 mt-4">
-            {selectedLens && (
-              <Badge 
-                variant="secondary" 
-                className="px-3 py-1 rounded-full cursor-pointer hover:bg-purple-100"
-                onClick={() => setSelectedLens(null)}
-              >
-                {lensOptions.find(l => l.value === selectedLens)?.label} ✕
-              </Badge>
-            )}
-            {selectedStage && (
-              <Badge 
-                variant="secondary" 
-                className="px-3 py-1 rounded-full cursor-pointer hover:bg-purple-100"
-                onClick={() => setSelectedStage(null)}
-              >
-                {stageOptions.find(s => s.value === selectedStage)?.label} ✕
-              </Badge>
-            )}
-          </div>
-        )}
+        {/* Filters */}
+        <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto no-scrollbar">
+          <Select
+            value={selectedLens || "all"}
+            onValueChange={(value) => {
+              if (value === "all") {
+                setSelectedLens(null);
+                setWebhookResults(null);
+              } else {
+                setSelectedLens(value as Lens);
+              }
+            }}
+          >
+            <SelectTrigger className="w-full md:w-[150px] rounded-full h-10 bg-white text-sm" data-testid="select-filter-lens">
+              <Filter className="w-3 h-3 mr-2 text-muted-foreground" />
+              <SelectValue placeholder="Lens" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Lenses</SelectItem>
+              {lensOptions.map(({ value, label }) => (
+                <SelectItem key={value} value={value}>{label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        {/* Results count and error */}
-        {webhookResults && (
-          <div className="mt-4 text-sm text-muted-foreground">
-            Found {webhookResults.pagination.total} articles
-          </div>
-        )}
-        
-        {searchError && (
-          <div className="mt-4 text-sm text-red-600 bg-red-50 p-3 rounded-lg">
-            {searchError}
-          </div>
+          <Select
+            value={selectedStage || "all"}
+            onValueChange={(value) => {
+              if (value === "all") {
+                setSelectedStage(null);
+                setWebhookResults(null);
+              } else {
+                setSelectedStage(value as Stage);
+              }
+            }}
+          >
+            <SelectTrigger className="w-full md:w-[160px] rounded-full h-10 bg-white text-sm" data-testid="select-filter-stage">
+              <Filter className="w-3 h-3 mr-2 text-muted-foreground" />
+              <SelectValue placeholder="Stage" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Stages</SelectItem>
+              {stageOptions.map(({ value, label }) => (
+                <SelectItem key={value} value={value}>{label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Language Toggle */}
+        <div className="bg-white p-1 rounded-full border shadow-sm inline-flex h-10 items-center">
+          <button
+            onClick={() => handleLanguageChange('en')}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${contentLang === 'en'
+              ? 'bg-purple-100 text-purple-700'
+              : 'text-muted-foreground hover:text-purple-600'
+              }`}
+          >
+            Eng
+          </button>
+          <button
+            onClick={() => handleLanguageChange('te')}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${contentLang === 'te'
+              ? 'bg-purple-100 text-purple-700'
+              : 'text-muted-foreground hover:text-purple-600'
+              }`}
+          >
+            తెలుగు
+          </button>
+        </div>
+
+        {/* Clear Filters Button */}
+        {(webhookResults || selectedLens || selectedStage || searchTerm) && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-full h-10 px-3 text-muted-foreground hover:text-foreground"
+            onClick={() => {
+              setSearchTerm('');
+              setSelectedLens(null);
+              setSelectedStage(null);
+              setWebhookResults(null);
+              setSearchError(null);
+              window.history.replaceState({}, '', '/knowledge');
+            }}
+          >
+            Clear
+          </Button>
         )}
       </div>
+      {/* Active Filters */}
+      {(selectedLens || selectedStage) && (
+        <div className="flex flex-wrap gap-2 mt-4">
+          {selectedLens && (
+            <Badge
+              variant="secondary"
+              className="px-3 py-1 rounded-full cursor-pointer hover:bg-purple-100"
+              onClick={() => setSelectedLens(null)}
+            >
+              {lensOptions.find(l => l.value === selectedLens)?.label} ✕
+            </Badge>
+          )}
+          {selectedStage && (
+            <Badge
+              variant="secondary"
+              className="px-3 py-1 rounded-full cursor-pointer hover:bg-purple-100"
+              onClick={() => setSelectedStage(null)}
+            >
+              {stageOptions.find(s => s.value === selectedStage)?.label} ✕
+            </Badge>
+          )}
+        </div>
+      )}
+
+      {webhookResults && (
+        <div className="mt-4 text-sm text-muted-foreground">
+          Found {webhookResults.pagination.total} articles
+        </div>
+      )}
+
+      {searchError && (
+        <div className="mt-4 text-sm text-red-600 bg-red-50 p-3 rounded-lg">
+          {searchError}
+        </div>
+      )}
+
 
       {/* Articles Grid */}
-      {(loading || searching) ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[...Array(6)].map((_, index) => (
-            <Card key={index} className="rounded-3xl p-6 card-shadow animate-pulse">
-              <CardContent className="p-0">
-                <div className="space-y-3">
-                  <div className="flex gap-2">
-                    <div className="h-5 w-16 bg-gray-200 rounded-full"></div>
-                    <div className="h-5 w-20 bg-gray-200 rounded-full"></div>
-                  </div>
-                  <div className="h-6 bg-gray-200 rounded w-4/5"></div>
-                  <div className="h-4 bg-gray-200 rounded w-full"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  <div className="flex justify-between mt-4">
-                    <div className="h-3 bg-gray-200 rounded w-20"></div>
-                    <div className="h-3 bg-gray-200 rounded w-32"></div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {paginatedArticles.map((article, index) => (
-            <Link key={article.key || `article-${article.slug}-${index}`} href={`/knowledge/${article.slug}`} className="group h-full">
-              <Card className="rounded-3xl p-6 card-shadow hover:shadow-2xl transition-all duration-500 h-full cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-purple-200 relative overflow-hidden bg-gradient-to-br from-white to-purple-50/30" data-testid={`card-article-${index}`}>
+      {
+        (loading || searching) ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, index) => (
+              <Card key={index} className="rounded-3xl p-6 card-shadow animate-pulse">
                 <CardContent className="p-0">
-                  {/* Click indicator */}
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                      <Search className="w-4 h-4 text-purple-600" />
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {article.lens.map((lens: Lens) => (
-                      <Badge key={lens} variant="secondary" className="text-xs group-hover:shadow-sm transition-shadow" data-testid={`badge-lens-${lens}-${index}`}>
-                        {lensOptions.find(l => l.value === lens)?.label || lens}
-                      </Badge>
-                    ))}
-                  </div>
-                  
-                  <h3 className="text-lg font-bold text-foreground font-serif mb-2 group-hover:text-purple-600 transition-colors" data-testid={`text-article-title-${index}`}>
-                    {article.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3" data-testid={`text-article-summary-${index}`}>
-                    {article.summary}
-                  </p>
-                  
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <div className="flex items-center space-x-2">
-                      <span data-testid={`text-read-time-${index}`}>{article.readMins} min read</span>
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-purple-600 font-medium">
-                        • Click to read
-                      </span>
-                    </div>
-                    <span data-testid={`text-reviewed-by-${index}`}>
-                      Reviewed by Medical Expert
-                    </span>
+                  <div className="space-y-3">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
                   </div>
                 </CardContent>
               </Card>
-            </Link>
-          ))}
-        </div>
-      )}
-
-      {/* Pagination Controls */}
-      {totalPages > 1 && !loading && !searching && (
-        <div className="flex items-center justify-center gap-2 mt-12 mb-8">
-          {/* Previous Button */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              setCurrentPage(prev => Math.max(1, prev - 1));
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            disabled={currentPage === 1}
-            className="rounded-full px-4"
-            data-testid="button-prev-page"
-          >
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            Previous
-          </Button>
-
-          {/* Page Numbers */}
-          <div className="flex items-center gap-1">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
-              // Show first page, last page, current page, and pages around current
-              const showPage = page === 1 || 
-                page === totalPages || 
-                Math.abs(page - currentPage) <= 1;
-              
-              const showEllipsis = (page === 2 && currentPage > 3) || 
-                (page === totalPages - 1 && currentPage < totalPages - 2);
-
-              if (!showPage && !showEllipsis) return null;
-
-              if (showEllipsis && !showPage) {
-                return (
-                  <span key={`ellipsis-${page}`} className="px-2 text-muted-foreground">
-                    ...
-                  </span>
-                );
-              }
-
-              return (
-                <Button
-                  key={page}
-                  variant={currentPage === page ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => {
-                    setCurrentPage(page);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className={`rounded-full w-10 h-10 ${
-                    currentPage === page 
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500' 
-                      : ''
-                  }`}
-                  data-testid={`button-page-${page}`}
-                >
-                  {page}
-                </Button>
-              );
-            })}
+            ))}
           </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {paginatedArticles.map((article, index) => (
+              // PASS CONTENT LANGUAGE CONFIG TO ARTICLE PAGE
+              <Link key={article.key || `article-${article.slug}-${index}`} href={`/knowledge/${article.slug}?lang=${contentLang}`} className="group h-full">
+                <Card className="rounded-3xl p-6 card-shadow hover:shadow-2xl transition-all duration-500 h-full cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-purple-200 relative overflow-hidden bg-gradient-to-br from-white to-purple-50/30">
+                  <CardContent className="p-0">
+                    <div className="flex flex-wrap gap-1 mb-3">
+                      {article.lens.map((lens: Lens) => (
+                        <Badge key={lens} variant="secondary" className="text-xs group-hover:shadow-sm transition-shadow">
+                          {lensOptions.find(l => l.value === lens)?.label || lens}
+                        </Badge>
+                      ))}
+                    </div>
 
-          {/* Next Button */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              setCurrentPage(prev => Math.min(totalPages, prev + 1));
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            disabled={currentPage === totalPages}
-            className="rounded-full px-4"
-            data-testid="button-next-page"
-          >
-            Next
-            <ChevronRight className="w-4 h-4 ml-1" />
-          </Button>
-        </div>
-      )}
+                    <h3 className="text-lg font-bold text-foreground font-serif mb-2 group-hover:text-purple-600 transition-colors">
+                      {article.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      {article.summary}
+                    </p>
 
-      {/* Page Info */}
-      {totalPages > 1 && !loading && !searching && (
-        <div className="text-center text-sm text-muted-foreground mb-8">
-          Showing {startIndex + 1}-{Math.min(endIndex, filteredArticles.length)} of {filteredArticles.length} articles
-        </div>
-      )}
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <div className="flex items-center space-x-2">
+                        <span>{article.readMins} min read</span>
+                      </div>
+                      <span>Reviewed by Medical Expert</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        )
+      }
 
-      {filteredArticles.length === 0 && !loading && !searching && (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground" data-testid="text-no-articles">
-            {webhookResults ? 'No articles found for your search.' : 'No articles found matching your criteria. Try adjusting your filters.'}
-          </p>
-        </div>
-      )}
-    </div>
+      {/* Pagination */}
+      {
+        totalPages > 1 && !loading && !searching && (
+          <div className="flex items-center justify-center gap-2 mt-12 mb-8">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setCurrentPage(prev => Math.max(1, prev - 1));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              disabled={currentPage === 1}
+              className="rounded-full px-4"
+            >
+              <ChevronLeft className="w-4 h-4 mr-1" />
+              Previous
+            </Button>
+
+            <span className="text-sm text-muted-foreground">
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setCurrentPage(prev => Math.min(totalPages, prev + 1));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              disabled={currentPage === totalPages}
+              className="rounded-full px-4"
+            >
+              Next
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+        )
+      }
+
+      {
+        filteredArticles.length === 0 && !loading && !searching && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground" data-testid="text-no-articles">
+              {webhookResults ? 'No articles found for your search.' : 'No articles found matching your criteria.'}
+            </p>
+          </div>
+        )
+      }
+    </div >
   );
 };
 
 export default Knowledge;
+

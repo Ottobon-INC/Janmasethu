@@ -160,15 +160,17 @@ export async function fetchArticles(params?: {
   search?: string;
   page?: number;
   perPage?: number;
+  lang?: string;
 }): Promise<ArticlesResponse> {
   try {
     const queryParams = new URLSearchParams();
 
-    if (params?.lifeStage) queryParams.set('lifeStage', params.lifeStage.toString());
-    if (params?.perspective) queryParams.set('perspective', params.perspective.toString());
+    if (params?.lifeStage) queryParams.set('life_stage_id', params.lifeStage.toString());
+    if (params?.perspective) queryParams.set('perspective_id', params.perspective.toString());
     if (params?.search) queryParams.set('search', params.search);
     if (params?.page) queryParams.set('page', params.page.toString());
     if (params?.perPage) queryParams.set('perPage', params.perPage.toString());
+    if (params?.lang) queryParams.set('lang', params.lang);
 
     const url = `${NGROK_API_BASE}/${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
 
@@ -245,9 +247,10 @@ export async function fetchArticles(params?: {
   }
 }
 
-export async function fetchArticleBySlug(slug: string): Promise<ArticleDetailResponse | null> {
+export async function fetchArticleBySlug(slug: string, lang?: string): Promise<ArticleDetailResponse | null> {
   try {
-    const response = await fetch(`${NGROK_API_BASE}/${encodeURIComponent(slug)}`, {
+    const url = `${NGROK_API_BASE}/${encodeURIComponent(slug)}${lang ? `?lang=${lang}` : ''}`;
+    const response = await fetch(url, {
       headers: {
         'Accept': 'application/json',
         'ngrok-skip-browser-warning': 'true'
@@ -271,9 +274,9 @@ export async function fetchArticleBySlug(slug: string): Promise<ArticleDetailRes
 }
 
 // Fetch article by slug from backend (reuses fetchArticleBySlug)
-export const fetchArticleData = async (slug: string): Promise<ArticleData | null> => {
+export const fetchArticleData = async (slug: string, lang?: string): Promise<ArticleData | null> => {
   try {
-    const article = await fetchArticleBySlug(slug);
+    const article = await fetchArticleBySlug(slug, lang);
     if (!article) return null;
 
     // Transform API response to ArticleData format
@@ -313,7 +316,7 @@ export const fetchArticleData = async (slug: string): Promise<ArticleData | null
       // If content is a structured object with sections
       if (Array.isArray(article.content.sections)) {
         transformedArticle.sections = article.content.sections;
-      } 
+      }
       // If content is just text, create a single section
       else if (typeof article.content === 'string') {
         transformedArticle.sections = [{

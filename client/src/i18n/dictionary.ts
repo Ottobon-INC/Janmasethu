@@ -101,6 +101,7 @@ export const dict = {
     hero_title: "Nurture Every <span>Journey to Parenthood</span>",
     hero_sub:
       "Simple, source‑backed guides across fertility, pregnancy, birth and early parenting — made for India.",
+    hero_subtitle: "Evidence-based guides for your parenting journey, organized by life stage and perspective",
     trust_pill: "Trusted by families across India",
     cta_primary: "Meet Sakhi",
     cta_secondary: "For Clinics",
@@ -221,7 +222,7 @@ export const dict = {
     chat_breathing_exercise: "Try some deep breathing exercises...",
     chat_type_message: "Type your message...",
     chat_send_message: "Send message",
-    
+
     // Sakhi Try Page
     sakhi_try_welcome: "Welcome to Sakhi",
     sakhi_try_intro: "I'm here to provide compassionate support for your fertility journey. Type in any language - I'll respond in the same language.",
@@ -451,6 +452,7 @@ export const dict = {
     experts_contact_us: "हमसे संपर्क करें",
     hero_title: "<span>मां बनने</span> का सफर।<br />हर कदम में आपके साथ।",
     hero_sub: "भारतीय माँओं के लिए आसान और सच्ची जानकारी।",
+    hero_subtitle: "आपकी पेरेंटिंग यात्रा के लिए साक्ष्य-आधारित गाइड, जीवन के चरण और दृष्टिकोण के अनुसार व्यवस्थित।",
     trust_pill: "हजारों परिवारों का भरोसा",
     cta_primary: "सखी से बात करें",
     cta_secondary: "डॉक्टर्स के लिए",
@@ -552,7 +554,7 @@ export const dict = {
     chat_breathing_exercise: "कुछ गहरी सांस लेने के व्यायाम करें...",
     chat_type_message: "अपना संदेश टाइप करें...",
     chat_send_message: "संदेश भेजें",
-    
+
     // Sakhi Try Page - Hindi
     sakhi_try_welcome: "सखी में आपका स्वागत है",
     sakhi_try_intro: "मैं आपकी प्रजनन यात्रा के लिए दयालु सहायता प्रदान करने के लिए यहाँ हूँ। किसी भी भाषा में टाइप करें - मैं उसी भाषा में जवाब दूंगी।",
@@ -783,6 +785,7 @@ export const dict = {
     hero_title:
       "<span>అమ్మ అవ్వాలని</span> అనుకుంటున్నారా?<br />మేము మీతో ఉన్నాం.",
     hero_sub: "భారతీయ అమ్మలకు సింపుల్ మరియు నిజమైన ఇన్ఫో.",
+    hero_subtitle: "మీ పేరెంటింగ్ ప్రయాణం కోసం ఆధారాలతో కూడిన గైడ్‌లు, జీవిత దశ మరియు దృక్కోణం ద్వారా నిర్వహించబడ్డాయి.",
     trust_pill: "వేలాది ఫ్యామిలీల నమ్మకం",
     cta_primary: "సఖితో మాట్లాడండి",
     cta_secondary: "డాక్టర్లకు",
@@ -888,7 +891,7 @@ export const dict = {
     chat_breathing_exercise: "కొన్ని లోతైన శ్వాస వ్యాయామాలు చేయండి...",
     chat_type_message: "మీ సందేశాన్ని టైప్ చేయండి...",
     chat_send_message: "సందేశం పంపండి",
-    
+
     // Sakhi Try Page - Telugu
     sakhi_try_welcome: "సఖికి స్వాగతం",
     sakhi_try_intro: "మీ ప్రసవ ప్రయాణానికి దయతో కూడిన మద్దతు అందించడానికి నేను ఇక్కడ ఉన్నాను. ఏ భాషలోనైనా టైప్ చేయండి - నేను అదే భాషలో స్పందిస్తాను.",
