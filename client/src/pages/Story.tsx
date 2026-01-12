@@ -21,7 +21,7 @@ const Story = () => {
         // Fetch backend stories
         const response = await fetch("/api/proxy/stories", {
           headers: {
-            "Accept": "application/json"
+            "ngrok-skip-browser-warning": "true"
           }
         });
         

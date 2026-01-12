@@ -116,7 +116,8 @@ export async function fetchLifeStages(): Promise<LifeStage[]> {
   try {
     const response = await fetch(`${NGROK_API_BASE}/life-stages`, {
       headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
       }
     });
 
@@ -136,7 +137,8 @@ export async function fetchPerspectives(): Promise<Perspective[]> {
   try {
     const response = await fetch(`${NGROK_API_BASE}/perspectives`, {
       headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
       }
     });
 
@@ -176,7 +178,8 @@ export async function fetchArticles(params?: {
 
     const response = await fetch(url, {
       headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
       }
     });
 
@@ -249,7 +252,8 @@ export async function fetchArticleBySlug(slug: string, lang?: string): Promise<A
     const url = `${NGROK_API_BASE}/${encodeURIComponent(slug)}${lang ? `?lang=${lang}` : ''}`;
     const response = await fetch(url, {
       headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
       }
     });
 

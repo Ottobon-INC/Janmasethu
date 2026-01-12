@@ -67,11 +67,9 @@ const MobileMenu = ({ isOpen, onClose, navItems }: MobileMenuProps) => {
                 const Icon = navInfo.icon;
                 
                 return (
-                  <a 
+                  <Link 
                     key={href}
                     href={href} 
-                    target={href.startsWith("http") ? "_blank" : undefined}
-                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                     className="group block"
                     onClick={onClose}
                     data-testid={`link-mobile-${key.replace('nav_', '')}`}
@@ -98,7 +96,7 @@ const MobileMenu = ({ isOpen, onClose, navItems }: MobileMenuProps) => {
                       </div>
                       <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-purple-500 group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
                     </div>
-                  </a>
+                  </Link>
                 );
               })}
             </div>
