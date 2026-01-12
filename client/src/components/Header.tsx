@@ -18,7 +18,7 @@ const Header = () => {
   // Navigation configuration with priority for two-row layout
   const navConfig = [
     { key: "nav_home", href: "/", priority: 1 },
-    { key: "nav_knowledge", href: "/knowledge", priority: 2 },
+    { key: "nav_knowledge", href: "/knowledge-hub", priority: 2 },
     { key: "nav_treatments", href: "/treatments", priority: 3 },
     { key: "nav_sakhi", href: "/sakhi", priority: 4 },
     { key: "nav_success", href: "/success-stories", priority: 5, icon: Trophy, description: "Read inspiring journeys" },
