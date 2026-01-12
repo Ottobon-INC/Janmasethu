@@ -181,21 +181,23 @@ const Header = () => {
                   >
                     <div className="p-2">
                       {secondaryNavItems.map(({ key, href, icon: Icon, description }, index) => (
-                        <Link
-                          key={href}
-                          href={href}
-                          className={`flex items-start gap-3 p-3 rounded-xl transition-all duration-200 group hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 ${
-                            location === href
-                              ? "bg-gradient-to-r from-purple-100 to-pink-100"
-                              : ""
-                          }`}
-                          style={{
-                            animationDelay: `${index * 50}ms`,
-                            animation: isExpanded ? "fadeInUp 0.3s ease-out forwards" : "",
-                          }}
-                          data-testid={`link-nav-dropdown-${key.replace("nav_", "")}`}
-                          onClick={() => setIsExpanded(false)}
-                        >
+                          <a
+                            key={href}
+                            href={href}
+                            target={href.startsWith("http") ? "_blank" : undefined}
+                            rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                            className={`flex items-start gap-3 p-3 rounded-xl transition-all duration-200 group hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 ${
+                              location === href
+                                ? "bg-gradient-to-r from-purple-100 to-pink-100"
+                                : ""
+                            }`}
+                            style={{
+                              animationDelay: `${index * 50}ms`,
+                              animation: isExpanded ? "fadeInUp 0.3s ease-out forwards" : "",
+                            }}
+                            data-testid={`link-nav-dropdown-${key.replace("nav_", "")}`}
+                            onClick={() => setIsExpanded(false)}
+                          >
                           <div className={`p-2 rounded-lg transition-all duration-200 ${
                             location === href 
                               ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" 
@@ -213,7 +215,7 @@ const Header = () => {
                               {description}
                             </div>
                           </div>
-                        </Link>
+                          </a>
                       ))}
                     </div>
                   </div>

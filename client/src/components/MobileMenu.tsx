@@ -98,7 +98,7 @@ const MobileMenu = ({ isOpen, onClose, navItems }: MobileMenuProps) => {
                       </div>
                       <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-purple-500 group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
                     </div>
-                  </Link>
+                  </a>
                 );
               })}
             </div>
