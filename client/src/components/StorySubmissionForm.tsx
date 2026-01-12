@@ -217,14 +217,13 @@ export default function StorySubmissionForm({ open, onClose, onSubmitted }: Stor
         slug: (storyData.isAnonymous ? "anonymous" : storyData.name.toLowerCase().replace(/\s+/g, '-')) + '-' + Date.now()
       };
 
-      console.log("📤 Sending payload to ngrok:", JSON.stringify(payload, null, 2));
+      console.log("📤 Sending payload to backend:", JSON.stringify(payload, null, 2));
 
       // Submit story to external backend via proxy
       const response = await fetch("/api/proxy/stories", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "ngrok-skip-browser-warning": "true"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(payload),
       });

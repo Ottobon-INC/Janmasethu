@@ -21,7 +21,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, ngrok-skip-browser-warning, x-api-key');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, x-api-key');
 
     // Handle preflight requests
     if (req.method === 'OPTIONS') {
@@ -365,7 +365,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.options("/api/success-stories", (_req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, ngrok-skip-browser-warning');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.status(204).send();
   });
 
@@ -375,7 +375,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Set CORS headers
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, ngrok-skip-browser-warning');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
       console.log("📖 Fetching stories from memory:", inMemoryStories.length);
       res.json(inMemoryStories);
@@ -391,7 +391,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Set CORS headers
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, ngrok-skip-browser-warning');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
       const {
         isAnonymous,
@@ -698,10 +698,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const path = (req.params as any)[0];
       const queryString = new URL(req.url, `http://${req.headers.host}`).search;
-      const targetUrl = `https://zainab-sanguineous-niels.ngrok-free.dev/api/knowledge-hub/${path}${queryString}`;
+      const targetUrl = `http://72.61.228.9:8100/api/knowledge-hub/${path}${queryString}`;
 
       const response = await fetch(targetUrl, {
-        headers: { 'ngrok-skip-browser-warning': 'true' }
+        headers: { 'Content-Type': 'application/json' }
       });
 
       const contentType = response.headers.get("content-type");
@@ -724,7 +724,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const targetUrl = "http://72.61.228.9:8100/stories/";
       const response = await fetch(targetUrl, {
-        headers: { 'ngrok-skip-browser-warning': 'true' }
+        headers: { 'Content-Type': 'application/json' }
       });
 
       const contentType = response.headers.get("content-type");
@@ -748,8 +748,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const response = await fetch(targetUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(req.body),
       });

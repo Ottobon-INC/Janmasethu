@@ -75,7 +75,7 @@ const Knowledge = () => {
     localStorage.setItem('knowledge_lang', newLang);
   };
 
-  // Load articles from ngrok API
+  // Load articles from API
   useEffect(() => {
     const loadArticles = async () => {
       setLoading(true);
@@ -141,7 +141,7 @@ const Knowledge = () => {
         console.log('Transformed articles:', transformedArticles.length);
         setJsonArticles(transformedArticles);
       } catch (error) {
-        console.error('Error loading articles from ngrok API:', error);
+        console.error('Error loading articles from backend API:', error);
       } finally {
         setLoading(false);
       }

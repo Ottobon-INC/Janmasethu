@@ -20,7 +20,7 @@ const SuccessStories = () => {
       try {
         const response = await fetch("/api/proxy/stories", {
           headers: {
-            "ngrok-skip-browser-warning": "true"
+            "Accept": "application/json"
           }
         });
         if (!response.ok) {
