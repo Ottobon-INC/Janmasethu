@@ -184,11 +184,10 @@ const Home = () => {
                 <button
                   key={index}
                   onClick={() => carouselApi?.scrollTo(index)}
-                  className={`h-1 rounded-full transition-all duration-300 shadow-sm ${
-                    currentSlide === index
+                  className={`h-1 rounded-full transition-all duration-300 shadow-sm ${currentSlide === index
                       ? "bg-purple-600 w-4 md:w-6"
                       : "bg-purple-200/50 hover:bg-purple-300 w-1.5 md:w-2"
-                  }`}
+                    }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
@@ -388,9 +387,9 @@ const Home = () => {
                     <div className="relative">
                       <div className="absolute inset-0 w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-green-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
                       <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-2xl relative z-10 border-2 border-transparent group-hover:border-green-300 overflow-hidden">
-                        <img 
-                          src="/thinking of parenthood.png" 
-                          alt="Thinking of Parenthood" 
+                        <img
+                          src="/thinking of parenthood.png"
+                          alt="Thinking of Parenthood"
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                       </div>
@@ -518,9 +517,9 @@ const Home = () => {
                     <div className="relative">
                       <div className="absolute inset-0 w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-pink-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
                       <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-pink-100 to-pink-200 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-2xl relative z-10 border-2 border-transparent group-hover:border-pink-300 overflow-hidden">
-                        <img 
-                          src="/Trying naturally.png" 
-                          alt="Trying Naturally" 
+                        <img
+                          src="/Trying naturally.png"
+                          alt="Trying Naturally"
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                       </div>
@@ -641,9 +640,9 @@ const Home = () => {
                     <div className="relative">
                       <div className="absolute inset-0 w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-blue-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
                       <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-2xl relative z-10 border-2 border-transparent group-hover:border-blue-300 overflow-hidden">
-                        <img 
-                          src="/Exploring option.png" 
-                          alt="Exploring Options" 
+                        <img
+                          src="/Exploring option.png"
+                          alt="Exploring Options"
                           className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
                         />
                       </div>
@@ -770,9 +769,9 @@ const Home = () => {
                     <div className="relative">
                       <div className="absolute inset-0 w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-purple-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
                       <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-2xl relative z-10 border-2 border-transparent group-hover:border-purple-300 overflow-hidden">
-                        <img 
-                          src="/Pregnancy.png" 
-                          alt="Pregnancy" 
+                        <img
+                          src="/Pregnancy.png"
+                          alt="Pregnancy"
                           className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
                         />
                       </div>
@@ -893,9 +892,9 @@ const Home = () => {
                     <div className="relative">
                       <div className="absolute inset-0 w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-orange-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
                       <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-2xl relative z-10 border-2 border-transparent hover:border-orange-300 overflow-hidden">
-                        <img 
-                          src="/Post-delivery.png" 
-                          alt="Post-Delivery & New Parent" 
+                        <img
+                          src="/Post-delivery.png"
+                          alt="Post-Delivery & New Parent"
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                       </div>
@@ -1008,7 +1007,7 @@ const Home = () => {
             </div>
           </div>
 
-          </section>
+        </section>
 
         {/* Sakhi Preview Section */}
         <section className="py-16">
@@ -1165,13 +1164,13 @@ const Home = () => {
                     {lang === "te" && "జ్ఞాన కేంద్రం"}
                   </span>
                 </div>
-                
+
                 <h2 className="text-3xl md:text-4xl font-bold text-foreground font-serif mb-4">
                   {lang === "en" && "Your Trusted Guide to Parenthood"}
                   {lang === "hi" && "माता-पिता बनने के लिए आपका विश्वसनीय मार्गदर्शक"}
                   {lang === "te" && "మాతృత్వానికి మీ విశ్వసనీయ మార్గదర్శి"}
                 </h2>
-                
+
                 <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
                   {lang === "en" && "Expert-verified articles covering every aspect of your fertility and pregnancy journey. Browse through different perspectives - medical, emotional, financial, and nutritional - to find the information you need."}
                   {lang === "hi" && "विशेषज्ञ-सत्यापित लेख जो आपकी प्रजनन और गर्भावस्था यात्रा के हर पहलू को कवर करते हैं। विभिन्न दृष्टिकोणों - चिकित्सा, भावनात्मक, वित्तीय और पोषण - के माध्यम से ब्राउज़ करें और जरूरी जानकारी प्राप्त करें।"}
@@ -1181,7 +1180,7 @@ const Home = () => {
 
               {/* What You'll Find */}
               <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <Link href="/knowledge?lens=medical" className="group">
+                <Link href="/knowledge-hub?lens=medical" className="group">
                   <Card className="bg-white/80 backdrop-blur-sm border-none shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-blue-200 relative overflow-hidden h-full">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4">
@@ -1213,7 +1212,7 @@ const Home = () => {
                   </Card>
                 </Link>
 
-                <Link href="/knowledge?lens=social" className="group">
+                <Link href="/knowledge-hub?lens=social" className="group">
                   <Card className="bg-white/80 backdrop-blur-sm border-none shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-pink-200 relative overflow-hidden h-full">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4">
@@ -1245,7 +1244,7 @@ const Home = () => {
                   </Card>
                 </Link>
 
-                <Link href="/knowledge?lens=financial" className="group">
+                <Link href="/knowledge-hub?lens=financial" className="group">
                   <Card className="bg-white/80 backdrop-blur-sm border-none shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-green-200 relative overflow-hidden h-full">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4">
@@ -1277,7 +1276,7 @@ const Home = () => {
                   </Card>
                 </Link>
 
-                <Link href="/knowledge?lens=nutrition" className="group">
+                <Link href="/knowledge-hub?lens=nutrition" className="group">
                   <Card className="bg-white/80 backdrop-blur-sm border-none shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-orange-200 relative overflow-hidden h-full">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4">
@@ -1312,7 +1311,7 @@ const Home = () => {
 
               {/* Call to Action */}
               <div className="text-center">
-                <Link href="/knowledge">
+                <Link href="/knowledge-hub">
                   <Button className="gradient-button text-white px-8 py-4 rounded-full font-semibold text-base md:text-lg hover:shadow-xl transition-all duration-300 group">
                     <BookOpen className="mr-2 w-5 h-5" />
                     {lang === "en" && "Browse Articles by Topic"}
@@ -1326,7 +1325,7 @@ const Home = () => {
           </div>
         </section>
 
-        
+
 
 
 

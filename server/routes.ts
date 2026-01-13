@@ -776,7 +776,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const path = (req.params as any)[0];
       const queryString = new URL(req.url, `http://${req.headers.host}`).search;
-      const targetUrl = `https://uncollectively-unfutile-deandrea.ngrok-free.dev/api/knowledge-hub/${path}${queryString}`;
+      const targetUrl = `${process.env.KNOWLEDGE_HUB_API_URL || "https://uncollectively-unfutile-deandrea.ngrok-free.dev/api/knowledge-hub"}/${path}${queryString}`;
 
       const response = await fetch(targetUrl, {
         headers: { "ngrok-skip-browser-warning": "true" },
@@ -803,7 +803,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Proxy: Success Stories
   app.get("/api/proxy/stories", async (req, res) => {
     try {
-      const targetUrl = "http://72.61.228.9:8100/stories/";
+      const targetUrl = process.env.STORIES_API_URL || "http://72.61.228.9:8100/stories/";
       const response = await fetch(targetUrl, {
         headers: { "ngrok-skip-browser-warning": "true" },
       });
@@ -828,7 +828,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/proxy/stories", async (req, res) => {
     try {
-      const targetUrl = "http://72.61.228.9:8100/stories/";
+      const targetUrl = process.env.STORIES_API_URL || "http://72.61.228.9:8100/stories/";
       const response = await fetch(targetUrl, {
         method: "POST",
         headers: {

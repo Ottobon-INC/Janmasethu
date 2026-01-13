@@ -82,7 +82,7 @@ const Article = () => {
               {error || (lang === 'te' ? 'మీరు వెతుకుతున్న వ్యాసం ఉనికిలో లేదు।' :
                 'The article you\'re looking for doesn\'t exist.')}
             </p>
-            <Link href="/knowledge">
+            <Link href="/knowledge-hub">
               <Button className="gradient-button text-white rounded-full">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 {lang === 'te' ? 'నాలెడ్జ్ హబ్‌కు తిరిగి వెళ్లండి' :
@@ -219,7 +219,7 @@ const Article = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <Link href="/knowledge">
+        <Link href="/knowledge-hub">
           <Button variant="ghost" className="rounded-full" data-testid="button-back-knowledge">
             <ArrowLeft className="w-4 h-4 mr-2" />
             {lang === 'te' ? 'నాలెడ్జ్ హబ్‌కు తిరిగి వెళ్లండి' :

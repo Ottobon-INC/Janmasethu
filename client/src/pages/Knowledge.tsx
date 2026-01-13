@@ -358,7 +358,7 @@ const Knowledge = () => {
     if (selectedLens) params.set('lens', selectedLens);
     if (selectedStage) params.set('stage', selectedStage);
 
-    const newUrl = params.toString() ? `/knowledge?${params.toString()}` : '/knowledge';
+    const newUrl = params.toString() ? `/knowledge-hub?${params.toString()}` : '/knowledge-hub';
     window.history.replaceState({}, '', newUrl);
 
     // If no filters are active, we still want to fetch the default list from backend
@@ -521,7 +521,7 @@ const Knowledge = () => {
               setSelectedStage(null);
               setWebhookResults(null);
               setSearchError(null);
-              window.history.replaceState({}, '', '/knowledge');
+              window.history.replaceState({}, '', '/knowledge-hub');
             }}
           >
             Clear
@@ -584,7 +584,7 @@ const Knowledge = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedArticles.map((article, index) => (
               // PASS CONTENT LANGUAGE CONFIG TO ARTICLE PAGE
-              <Link key={article.key || `article-${article.slug}-${index}`} href={`/knowledge/${article.slug}?lang=${contentLang}`} className="group h-full">
+              <Link key={article.key || `article-${article.slug}-${index}`} href={`/knowledge-hub/${article.slug}?lang=${contentLang}`} className="group h-full">
                 <Card className="rounded-3xl p-6 card-shadow hover:shadow-2xl transition-all duration-500 h-full cursor-pointer transform hover:scale-105 border-2 border-transparent hover:border-purple-200 relative overflow-hidden bg-gradient-to-br from-white to-purple-50/30">
                   <CardContent className="p-0">
                     <div className="flex flex-wrap gap-1 mb-3">

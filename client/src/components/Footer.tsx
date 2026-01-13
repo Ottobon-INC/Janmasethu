@@ -11,9 +11,9 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex flex-col items-center md:items-start mb-2 md:mb-4">
-              <img 
-                src="/new JS logo BR.svg" 
-                alt="Janma Sethu Logo" 
+              <img
+                src="/new JS logo BR.svg"
+                alt="Janma Sethu Logo"
                 className="h-16 md:h-20 w-auto object-contain scale-x-125 scale-y-110 origin-center md:origin-left mix-blend-multiply"
               />
             </div>
@@ -24,7 +24,7 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-foreground text-sm mb-1 md:mb-2">Quick Links</h4>
             <div className="space-y-1">
-              <Link href="/knowledge" className="block text-muted-foreground hover:text-primary text-xs" data-testid="link-footer-knowledge">
+              <Link href="/knowledge-hub" className="block text-muted-foreground hover:text-primary text-xs" data-testid="link-footer-knowledge">
                 {t('nav_knowledge')}
               </Link>
               <Link href="/treatments" className="block text-muted-foreground hover:text-primary text-xs" data-testid="link-footer-treatments">
