@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
-import { getOnboardingStep, completeOnboarding} from "@/utils/api";
+import { getOnboardingStep, completeOnboarding } from "@/utils/api";
 
 interface OnboardingQuestionsProps {
   open: boolean;
@@ -32,7 +32,7 @@ const toSnakeCase = (str: string): string => {
   if (str.includes('_') && !/[A-Z]/.test(str)) {
     return str;
   }
-  
+
   return str
     // Insert underscore before sequences of uppercase letters followed by lowercase (e.g., IVF -> _ivf)
     .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
@@ -124,8 +124,13 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
           { id: 5, question: "Did she/his partner have any IVF treatments in the past?", type: "radio", field: "previousIVF", options: ["No, this is their first time.", "Yes, they've been through it before.", "I don't know the details of their past treatments."] },
         ];
       default:
+        // Other family member - comprehensive questions
         return [
           { id: 1, question: "How long has the patient been trying to have a baby?", type: "radio", field: "duration", options: ["For about a year.", "It has been a few years.", "A long time.", "I'm not exactly sure."] },
+          { id: 2, question: "Are they seeing a doctor or taking any treatment?", type: "radio", field: "treatment", options: ["Yes, they are seeing a specialist.", "Yes, but I'm not sure of the details.", "No, I don't think so.", "I'm not aware."] },
+          { id: 3, question: "Do they have any known health problems related to fertility?", type: "radio", field: "healthIssues", options: ["Yes, they have mentioned a condition.", "Not that I know of.", "I'm not sure about their health details."] },
+          { id: 4, question: "How are they feeling emotionally about this journey?", type: "radio", field: "emotionalState", options: ["They seem stressed and worried.", "They are trying to stay positive.", "They don't talk about it much.", "I can see it's affecting them."] },
+          { id: 5, question: "Have they had any IVF treatments in the past?", type: "radio", field: "previousIVF", options: ["No, this would be their first time.", "Yes, they have tried IVF before.", "Yes, they have had multiple attempts.", "I'm not sure about their treatment history."] },
         ];
     }
   };
@@ -156,7 +161,7 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
           options: apiQuestion.options,
           optional: apiQuestion.optional,
         };
-        
+
         // If API returns invalid data, fall back to static questions
         if (!mappedQuestion.question || !mappedQuestion.field) {
           console.warn("Invalid question data from API, using static questions");
@@ -234,10 +239,10 @@ export default function OnboardingQuestions({ open, onClose, relationship = "her
       if (userId) {
         try {
           await completeOnboarding({
-            parent_profile_id: parentProfileId,
             user_id: userId,
-            relationship_type: relationship,
+            relationship_type: relationship, // Will be normalized to snake_case in api.ts
             answers_json: normalizedAnswers,
+            parent_profile_id: parentProfileId, // Optional
           });
           console.log("✅ Preferences saved to backend");
         } catch (error) {

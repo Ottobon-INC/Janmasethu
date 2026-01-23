@@ -82,10 +82,11 @@ export interface OnboardingStepResponse {
 }
 
 export interface OnboardingCompleteRequest {
-  parent_profile_id: string;
-  user_id: string;
-  relationship_type: string;
-  answers_json: Record<string, any>;
+  user_id: string;              // REQUIRED - Must be snake_case
+  relationship_type: string;    // REQUIRED - Must be snake_case (herself, himself, father, mother, father_in_law, mother_in_law, sibling)
+  answers_json: Record<string, any>; // REQUIRED - Must be snake_case
+  target_user_id?: string;      // OPTIONAL - Can be null
+  parent_profile_id?: string;   // OPTIONAL - Only for updates, can be null
 }
 
 export async function registerUser(data: RegisterUserData): Promise<RegisterResponse> {
@@ -173,21 +174,38 @@ export async function getOnboardingStep(data: OnboardingStepRequest): Promise<On
 }
 
 export async function completeOnboarding(data: OnboardingCompleteRequest): Promise<void> {
+  // Normalize relationship_type: convert hyphens to underscores for backend compatibility
+  const normalizedRelationshipType = data.relationship_type.replace(/-/g, '_');
+
+  const requestBody: Record<string, any> = {
+    user_id: data.user_id,                    // REQUIRED
+    relationship_type: normalizedRelationshipType, // REQUIRED - normalized to snake_case
+    answers_json: data.answers_json,          // REQUIRED
+  };
+
+  // Only include optional fields if they have values
+  if (data.target_user_id) {
+    requestBody.target_user_id = data.target_user_id;
+  }
+  if (data.parent_profile_id) {
+    requestBody.parent_profile_id = data.parent_profile_id;
+  }
+
+  console.log('📤 Sending onboarding complete request:', JSON.stringify(requestBody, null, 2));
+
   const response = await fetch(`${API_BASE_URL}/onboarding/complete`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      parent_profile_id: data.parent_profile_id,
-      user_id: data.user_id,
-      relationship_type: data.relationship_type,
-      answers_json: data.answers_json,
-    }),
+    body: JSON.stringify(requestBody),
   });
 
   if (!response.ok) {
     const result = await response.json();
-    throw new Error(result.error || 'Failed to complete onboarding');
+    console.error('❌ Onboarding complete failed:', result);
+    throw new Error(result.detail || result.error || 'Failed to complete onboarding');
   }
+
+  console.log('✅ Onboarding completed successfully');
 }
 
 export { API_BASE_URL };
